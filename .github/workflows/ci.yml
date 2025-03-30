@@ -79,17 +79,6 @@ jobs:
           path: app/build/outputs/mapping/release/mapping.txt
         if: ${{ !cancelled() }}
 
-  # Release master branch
-  github_release:
-    needs: play_store
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2'
-          bundler-cache: true
       - name: Download Universal APK
         uses: maierj/fastlane-action@v3.1.0
         with:
@@ -104,11 +93,22 @@ jobs:
         with:
           custom_tag: ${{ env.VERSION_CODE }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create release
         uses: ncipollo/release-action@v1.14.0
+        id: github-release
         with:
           generateReleaseNotes: true
           artifacts: 'FGA-apk-${{ env.VERSION_CODE }}.zip'
           tag: 'v${{ env.VERSION_CODE }}'
           name: 'FGA ${{ env.VERSION_CODE }}'
           prerelease: true
+
+      - name: Add installation instructions to release
+        uses: irongut/EditRelease@v1.2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          id: ${{ steps.github-release.outputs.id }}
+          replacebody: false
+          body: |
+            ⚠️ Use the [APKMirror Installer](https://play.google.com/store/apps/details?id=com.apkmirror.helper.prod) to install the app on Android 15, otherwise Accessibility can't be enabled.

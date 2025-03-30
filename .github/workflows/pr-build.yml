@@ -78,7 +78,7 @@ jobs:
           path: ${{ env.FGA_MAPPING_PATH }}
       
       - name: Comment the APK
-        if: ${{ github.event_name != 'workflow_dispatch' }}
+        if: ${{ github.event_name != 'workflow_dispatch' && github.actor.login != 'renovate' }}
         uses: thollander/actions-comment-pull-request@v3
         with:
           comment-tag: apk
