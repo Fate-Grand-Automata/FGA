@@ -15,6 +15,7 @@ interface IPerServerConfigPrefs {
     var copperApple: Int
 
     var waitForAPRegen: Boolean
+    var sendSupportFriendRequest: Boolean
 
     var selectedApple: RefillResourceEnum
 
