@@ -129,7 +129,7 @@ class Caster @Inject constructor(
     private fun openMasterSkillMenu() {
         locations.battle.master.masterSkillOpenClick.click()
 
-        0.5.seconds.wait()
+        1.5.seconds.wait()
     }
 
     fun castMasterSkill(skill: Skill.Master, target: ServantTarget? = null) {
