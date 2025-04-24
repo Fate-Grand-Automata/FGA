@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
-
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -106,7 +104,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
 
     implementation(libs.opencv)
-    implementation(libs.tesseract4android)
+    implementation(libs.mlkit.text.recognition)
 
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.viewmodel.savedstate)
