@@ -30,7 +30,7 @@ opencv_version = "4.10.0"
 navigation_compose_version = "2.8.4"
 
 recyclerview_version = "1.3.2"
-tesseract4android_version = "4.7.0"
+tesseract4android_version = "4.8.0"
 
 timber_version = "5.0.1"
 
