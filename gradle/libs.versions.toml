@@ -37,7 +37,7 @@ timber_version = "5.0.1"
 compose_bom_version = "2024.11.00"
 
 
-coil_version = "3.0.3"
+coil_version = "3.1.0"
 junit_bom_version = "5.11.3"
 
 
