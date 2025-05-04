@@ -246,9 +246,8 @@ val MaterialEnum.drawable
         MaterialEnum.Converger -> R.drawable.mat_converger
         MaterialEnum.FlowerOfTheEnd -> R.drawable.mat_flower_of_the_end
         MaterialEnum.UniversalCube -> R.drawable.mat_universal_cube
-        // going to add the images later
-        MaterialEnum.MoonlightNucleus -> R.drawable.mat_universal_cube
-        MaterialEnum.HolyWaterOfDestiny -> R.drawable.mat_universal_cube
+        MaterialEnum.DivineLens -> R.drawable.mat_divine_lens
+        MaterialEnum.HolyWaterOfDestiny -> R.drawable.mat_holy_water_of_destiny
 
         MaterialEnum.Claw -> R.drawable.mat_claw
         MaterialEnum.Heart -> R.drawable.mat_heart
