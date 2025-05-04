@@ -23,7 +23,7 @@ accompanist_version = "0.36.0"
 
 google_android_play_version = "2.1.0"
 
-activity_version = "1.9.3"
+activity_version = "1.10.1"
 mockk_version = "1.13.13"
 
 opencv_version = "4.10.0"
