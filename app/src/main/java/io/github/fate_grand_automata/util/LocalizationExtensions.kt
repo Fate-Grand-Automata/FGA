@@ -124,6 +124,8 @@ val MaterialEnum.stringRes: Int
         MaterialEnum.GoldenCauldron -> R.string.mat_golden_cauldron
         MaterialEnum.UniversalCube -> R.string.mat_universal_cube
         MaterialEnum.MoonlightNucleus -> R.string.mat_moonlight_nucleus
+        MaterialEnum.DivineLens -> R.string.mat_divine_lens
+        MaterialEnum.HolyWaterOfDestiny -> R.string.mat_holy_water_of_destiny
 
         MaterialEnum.MonumentSaber -> R.string.mat_monument_saber
         MaterialEnum.MonumentArcher -> R.string.mat_monument_archer

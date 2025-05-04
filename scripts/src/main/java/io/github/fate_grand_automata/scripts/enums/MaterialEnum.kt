@@ -41,6 +41,7 @@ enum class MaterialEnum {
     Converger,
     FlowerOfTheEnd,
     UniversalCube,
+    DivineLens,
 
     Claw,
     Heart,
@@ -62,6 +63,7 @@ enum class MaterialEnum {
     DemonFlameLantern,
     GoldenCauldron,
     MoonlightNucleus,
+    HolyWaterOfDestiny,
 
     MonumentSaber,
     MonumentArcher,
