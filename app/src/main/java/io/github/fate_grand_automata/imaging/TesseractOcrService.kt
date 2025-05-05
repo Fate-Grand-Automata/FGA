@@ -50,7 +50,7 @@ class TesseractOcrService @Inject constructor(
             val targetFile = File(tessDir, assetFileName)
             val assetPath = "tessdata/$assetFileName"
             if (!targetFile.exists()) {
-                copyFile(assetPath, File(tessDir, assetFileName))
+                copyFile(assetPath, targetFile)
             }
         }
     }
