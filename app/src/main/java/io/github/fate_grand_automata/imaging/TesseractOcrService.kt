@@ -4,8 +4,13 @@ import android.content.Context
 import com.googlecode.tesseract.android.TessBaseAPI
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
+import io.github.fate_grand_automata.di.service.ServiceCoroutineScope
 import io.github.lib_automata.OcrService
 import io.github.lib_automata.Pattern
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.security.MessageDigest
 import java.io.File
@@ -18,13 +23,19 @@ import javax.inject.Inject
 
 @ServiceScoped
 class TesseractOcrService @Inject constructor(
-    @ApplicationContext val context: Context
+    @ApplicationContext val context: Context,
+    @ServiceCoroutineScope private val scope: CoroutineScope,
 ) : OcrService, AutoCloseable  {
+    private val ioDispatcher = Dispatchers.IO
     private val tessApi = TessBaseAPI()
 
     init {
-        extractTesseractTrainingData()
-        tessApi.init(context.filesDir.absolutePath, "eng")
+        scope.launch {
+            withContext(ioDispatcher) {
+                extractTesseractTrainingData()
+            }
+            tessApi.init(context.filesDir.absolutePath, "eng")
+        }
     }
 
     override fun detectText(pattern: Pattern): String {
