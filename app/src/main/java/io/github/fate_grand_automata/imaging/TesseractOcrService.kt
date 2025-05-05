@@ -48,18 +48,19 @@ class TesseractOcrService @Inject constructor(
         }
         for (assetFileName in context.assets.list("tessdata")!!) {
             val targetFile = File(tessDir, assetFileName)
+            val assetPath = "tessdata/$assetFileName"
             if (!targetFile.exists()) {
-                copyFile(context.assets, "tessdata/$assetFileName", File(tessDir, assetFileName))
+                copyFile(assetPath, File(tessDir, assetFileName))
             }
         }
     }
 
     private fun copyFile(
-        am: AssetManager, assetName: String,
+        assetName: String,
         outFile: File
     ) {
         try {
-            am.open(assetName).use { `in` ->
+            context.assets.open(assetName).use { `in` ->
                 FileOutputStream(outFile).use { out ->
                     val buffer = ByteArray(1024)
                     var read: Int
