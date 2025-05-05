@@ -55,7 +55,12 @@ class TesseractOcrService @Inject constructor(
         if (!tessDir.exists()) {
             tessDir.mkdir()
         }
-        for (assetFileName in context.assets.list("tessdata")!!) {
+        val assetList = context.assets.list("tessdata")
+        if (assetList == null) {
+            Timber.e("Failed to list assets in tessdata")
+            return
+        }
+        for (assetFileName in assetList) {
             val targetFile = File(tessDir, assetFileName)
             val assetPath = "tessdata/$assetFileName"
 
