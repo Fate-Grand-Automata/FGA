@@ -1,7 +1,6 @@
 package io.github.fate_grand_automata.imaging
 
 import android.content.Context
-import android.content.res.AssetManager
 import com.googlecode.tesseract.android.TessBaseAPI
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
