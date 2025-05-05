@@ -4,19 +4,20 @@ import android.content.Context
 import android.content.res.AssetManager
 import com.googlecode.tesseract.android.TessBaseAPI
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ServiceScoped
 import io.github.lib_automata.OcrService
 import io.github.lib_automata.Pattern
-import io.github.lib_automata.dagger.ScriptScope
+import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import javax.inject.Inject
 
 
-@ScriptScope
+@ServiceScoped
 class TesseractOcrService @Inject constructor(
     @ApplicationContext val context: Context
-) : OcrService {
+) : OcrService, AutoCloseable  {
     private val tessApi = TessBaseAPI()
 
     init {
@@ -70,5 +71,20 @@ class TesseractOcrService @Inject constructor(
         } catch (e: IOException) {
             e.printStackTrace()
         }
+    }
+
+    override fun close() {
+        Timber.d("Closing TesseractOcrService...")
+
+        synchronized(tessApi) {
+            try {
+                Timber.d("Stopping Tesseract API...")
+                tessApi.recycle()
+                Timber.i("Tesseract API stopped.")
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to stop Tesseract API")
+            }
+        }
+        Timber.d("TesseractOcrService closed.")
     }
 }

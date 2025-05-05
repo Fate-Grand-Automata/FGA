@@ -5,9 +5,11 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ServiceComponent
 import dagger.hilt.android.scopes.ServiceScoped
+import io.github.fate_grand_automata.imaging.TesseractOcrService
 import io.github.fate_grand_automata.scripts.IScriptMessages
 import io.github.fate_grand_automata.util.AndroidImpl
 import io.github.fate_grand_automata.util.ScriptMessages
+import io.github.lib_automata.OcrService
 import io.github.lib_automata.PlatformImpl
 
 @Module
@@ -20,4 +22,8 @@ interface ServiceModule {
     @ServiceScoped
     @Binds
     fun bindScriptMessages(scriptMessages: ScriptMessages): IScriptMessages
+
+    @ServiceScoped
+    @Binds
+    fun bindOcrService(ocrService: TesseractOcrService): OcrService
 }
