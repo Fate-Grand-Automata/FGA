@@ -37,10 +37,6 @@ class TesseractOcrService @Inject constructor(
         }
     }
 
-    protected fun finalize() {
-        tessApi.recycle()
-    }
-
     private fun extractTesseractTrainingData() {
         val tessDir = File(context.filesDir.absolutePath, "tessdata")
         if (!tessDir.exists()) {
