@@ -93,7 +93,9 @@ class TesseractOcrService @Inject constructor(
                 }
             }
         } catch (e: IOException) {
-            e.printStackTrace()
+            Timber.e(e, "Failed to copy file from assets to $outFile")
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to copy file from assets to $outFile")
         }
     }
 
