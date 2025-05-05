@@ -129,6 +129,7 @@ class Caster @Inject constructor(
     private fun openMasterSkillMenu() {
         locations.battle.master.masterSkillOpenClick.click()
 
+        // Increased from 0.5 to 1.5 seconds to account for slower devices and ensure the menu opens reliably.
         1.5.seconds.wait()
     }
 
