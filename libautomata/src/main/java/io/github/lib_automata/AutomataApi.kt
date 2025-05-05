@@ -62,9 +62,15 @@ interface AutomataApi {
 
     fun Region.detectText(outlinedText: Boolean = false): String
 
+
+    fun Region.findNumberInText(
+        replace: List<Pair<String, String>> = emptyList()
+    ): Int?
+
     fun Map<Pattern, Region>.exists(
         timeout: Duration = Duration.ZERO,
         similarity: Double? = null,
         requireAll: Boolean = false
     ): Boolean
+
 }
