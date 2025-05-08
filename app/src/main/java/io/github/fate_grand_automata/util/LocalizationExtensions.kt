@@ -120,6 +120,12 @@ val MaterialEnum.stringRes: Int
         MaterialEnum.VestigeOfMadness -> R.string.mat_vestige_of_madness
         MaterialEnum.Sunscale -> R.string.mat_sunscale
         MaterialEnum.Converger -> R.string.mat_converger
+        MaterialEnum.FlowerOfTheEnd -> R.string.mat_flower_of_the_end
+        MaterialEnum.GoldenCauldron -> R.string.mat_golden_cauldron
+        MaterialEnum.UniversalCube -> R.string.mat_universal_cube
+        MaterialEnum.MoonlightNucleus -> R.string.mat_moonlight_nucleus
+        MaterialEnum.DivineLens -> R.string.mat_divine_lens
+        MaterialEnum.HolyWaterOfDestiny -> R.string.mat_holy_water_of_destiny
 
         MaterialEnum.MonumentSaber -> R.string.mat_monument_saber
         MaterialEnum.MonumentArcher -> R.string.mat_monument_archer

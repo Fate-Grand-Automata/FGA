@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.os.Build
 import android.os.IBinder
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -40,7 +41,9 @@ class ScriptRunnerService: Service() {
         var mediaProjectionToken: Intent? = null
             set(value) {
                 field = value
-                instance?.controller?.onNewMediaProjectionToken()
+                if (value != null) {
+                    instance?.controller?.onNewMediaProjectionToken()
+                }
             }
     }
 

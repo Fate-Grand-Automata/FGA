@@ -211,7 +211,7 @@ fun <T> FgaDialog.multiChoiceList(
                 ChoiceListItem(
                     isSelected = it in selected,
                     onClick = { onSelectedChange(selected.toggle(it)) },
-                    modifier = Modifier.animateItemPlacement(
+                    modifier = Modifier.animateItem(
                         spring(
                             stiffness = Spring.StiffnessMedium
                         )

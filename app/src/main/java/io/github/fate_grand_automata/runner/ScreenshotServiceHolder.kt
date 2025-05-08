@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.runner
 import android.app.Activity
 import android.content.Intent
 import android.media.projection.MediaProjectionManager
+import android.os.Build
 import dagger.hilt.android.scopes.ServiceScoped
 import io.github.fate_grand_automata.imaging.MediaProjectionScreenshotService
 import io.github.fate_grand_automata.root.RootScreenshotService
@@ -54,6 +55,11 @@ class ScreenshotServiceHolder @Inject constructor(
 
                 val mediaProjection =
                     mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, token)
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    // not allowed to reuse tokens on Android 14
+                    ScriptRunnerService.mediaProjectionToken = null
+                }
 
                 val scaledSize = size * (scale ?: 1.0)
                 val scaledDensity = (landscapeMetrics.densityDpi / (scale ?: 1.0)).roundToInt()
