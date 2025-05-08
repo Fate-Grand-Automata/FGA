@@ -39,6 +39,9 @@ enum class MaterialEnum {
     FantasyScales,
     Sunscale,
     Converger,
+    FlowerOfTheEnd,
+    UniversalCube,
+    DivineLens,
 
     Claw,
     Heart,
@@ -58,6 +61,9 @@ enum class MaterialEnum {
     StarShard,
     FruitOfEternity,
     DemonFlameLantern,
+    GoldenCauldron,
+    MoonlightNucleus,
+    HolyWaterOfDestiny,
 
     MonumentSaber,
     MonumentArcher,

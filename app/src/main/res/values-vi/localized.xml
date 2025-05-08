@@ -60,6 +60,7 @@ Master"</string>
     <string name="skill_maker_kukulkan">"Kukulkan"</string>
     <string name="skill_maker_option_1">"Lựa chọn 1"</string>
     <string name="skill_maker_option_2">"Lựa chọn 2"</string>
+    <string name="skill_maker_option_3">"Lựa chọn 3"</string>
     <string name="card_priority_wave_number">"LƯỢT QUÁI %d"</string>
     <string name="card_priority_high">"LỚN"</string>
     <string name="card_priority_low">"BÉ"</string>
@@ -91,7 +92,6 @@ Master"</string>
     <string name="p_battle_config_party">"Tổ đội"</string>
     <string name="p_battle_config_server">"Máy chủ"</string>
     <string name="p_battle_config_card_priority">"Ưu tiên thẻ"</string>
-    <string name="p_battle_config_use_servant_priority">"Sử dụng ưu tiên Servant"</string>
     <string name="p_battle_config_support">"Hỗ trợ"</string>
     <string name="p_battle_config_support_selection_mode">"Lựa chọn chế độ"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"Dự phòng"</string>
@@ -171,6 +171,8 @@ Sao chép hoặc đổi tên nó nếu bạn muốn giữ nó."</string>
     <string name="card_priority">"Ưu tiên thẻ"</string>
     <string name="p_refill_type_gold">"Vàng"</string>
     <string name="p_refill_type_silver">"Bạc"</string>
+
+    <!-- Fuzzy -->
     <string name="p_refill_type_bronze">"Xanh"</string>
     <string name="p_refill_type_copper">"Đồng"</string>
     <string name="p_refill_type_sq">"SQ"</string>
@@ -207,6 +209,8 @@ Sao chép hoặc đổi tên nó nếu bạn muốn giữ nó."</string>
     <string name="p_support_class_berserker">"Berseker"</string>
     <string name="p_support_class_extra">"Extra"</string>
     <string name="p_support_class_mix">"Trộn"</string>
+
+    <!-- Fuzzy -->
     <string name="overlay_notification_text">"Dịch vụ đang chạy"</string>
     <string name="notification_stop">"Dừng lại"</string>
     <string name="accessibility_service">"Dịch vụ tiếp cận: "</string>
@@ -251,8 +255,12 @@ Vui lòng bật khả năng truy cập cho ứng dụng này từ cài đặt H�
     <string name="times_withdrew">"Đã đầu hàng %d lần"</string>
     <string name="avg_time_per_run">"Thời gian trung bình mỗi lần chạy: %s"</string>
     <string name="turns_count">"Lượt: %d"</string>
+
+    <!-- Fuzzy -->
     <string name="turns_stats">"Lượt: %1$d (phút), %2$.02f (trung bình), %3$d (tối đa)"</string>
-    <string name="picked_exp_stacks">"Đã chọn %1$d EXP, tạo ra tổng số %2$d Embers vàng"</string>
+
+    <!-- Fuzzy -->
+    <string name="picked_exp_stacks">Đã chọn %1$d EXP, tạo ra tổng số %2$d Embers vàng</string>
     <string name="no_embers_found">"Không thể tìm thấy Embers trên màn hình. Đảm bảo rằng bạn đã lọc thẻ EXP."</string>
     <string name="root_failed">"Không thể truy cập quyền root"</string>
     <string name="p_mats">"Nguyên vật liệu"</string>
@@ -379,5 +387,5 @@ Sau khi nhấn nút, hãy chuyển bộ lọc ứng dụng từ \"Không đượ
     <string name="support_imgs_extracting">"Trích xuất hình ảnh hỗ trợ"</string>
     <string name="p_max_gold_ember_total_count">"Tổng số lượng than hồng vàng tối đa"</string>
     <string name="update_download_success">"Tải xuống thành công. Khởi động lại ứng dụng sau 5 giây."</string>
-    <string name="skill_maker_melusine">"Mélusine"</string>
-</resources>
+    <string name="p_battle_config_use_servant_priority">"Sử dụng ưu tiên Servant"</string>
+                                                                                                                        </resources>

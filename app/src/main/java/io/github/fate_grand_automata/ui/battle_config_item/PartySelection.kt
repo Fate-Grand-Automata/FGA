@@ -16,8 +16,12 @@ import androidx.compose.material3.CardDefaults.cardElevation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -26,10 +30,26 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.prefs.remember
+import io.github.fate_grand_automata.scripts.enums.GameServer
 
 @Composable
 fun PartySelection(config: BattleConfigCore) {
     var party by config.party.remember()
+    val server by config.server.remember()
+
+    val isSelectionExtended by remember {
+        derivedStateOf {
+            when (server.asGameServer()) {
+                null, is GameServer.Jp -> true
+                else -> false
+            }
+        }
+    }
+    LaunchedEffect(key1 = server) {
+        if (!isSelectionExtended && party > 9) {
+            party = 9
+        }
+    }
 
     val dialog = FgaDialog()
 
@@ -39,6 +59,7 @@ fun PartySelection(config: BattleConfigCore) {
         title(stringResource(R.string.p_battle_config_party))
 
         PartySelectionDialogContent(
+            isSelectionExtended = isSelectionExtended,
             selected = party,
             onSelectedChange = {
                 party = it
@@ -106,11 +127,14 @@ private fun PartySelectionItem(
 
 @Composable
 fun PartySelectionDialogContent(
+    isSelectionExtended: Boolean = false,
     selected: Int,
     onSelectedChange: (Int) -> Unit
 ) {
     Column {
-        (0..9)
+        val partyRange = if (isSelectionExtended) 0..14 else 0..9
+
+        partyRange
             .chunked(5)
             .forEach { chunk ->
                 Row(

@@ -91,6 +91,9 @@ class AutoServantLevel @Inject constructor(
         }
     }
 
+    // This limits the close dialog that appears on 3rd ascension.
+    private var isInAscension = false
+
     private fun loop(): Nothing {
         if (isServantEmpty()) {
             throw ServantUpgradeException(ExitReason.NoServantSelected)
@@ -103,7 +106,7 @@ class AutoServantLevel @Inject constructor(
             { isEmberSelectionDialogVisible() } to { performEnhancement() },
             { isTemporaryServant() } to { locations.tempServantEnhancementLocation.click() },
             { isEmptyEmberOrQPDialogVisible() } to {
-                throw ServantUpgradeException(ExitReason.NoEmbersOrQPLeft)
+                handlePromptDialog()
             },
             { isFinalConfirmDialogVisible(prefs.gameServer) } to { confirmEnhancement() },
             { isAutoSelectVisible() } to { performAutoSelect() },
@@ -188,9 +191,11 @@ class AutoServantLevel @Inject constructor(
      */
     private fun handlePerformedAscension() {
         if (isReturnToLevel()) {
+            isInAscension = false
             handleReturnToEnhancementMenu()
             return
         }
+        isInAscension = true
 
         var confirmationVisible = false
         val retry = 5
@@ -265,6 +270,8 @@ class AutoServantLevel @Inject constructor(
         0.5.seconds.wait()
     }
 
+
+
     /**
      * This function will confirm the enhancement.
      * This is the function that will be called when the final confirmation dialog is visible.
@@ -310,6 +317,21 @@ class AutoServantLevel @Inject constructor(
      */
     private fun isEmptyEmberOrQPDialogVisible() =
         images[Images.Close] in locations.servant.emptyEmberOrQPDialogRegion
+    
+    /**
+     * This function will handle the prompt dialog.
+     *
+     * If the script is in the ascension menu, it will close the prompt dialog and return.
+     * @see isInAscensionMenu
+     */
+    private fun handlePromptDialog() {
+        if (isInAscension) {
+            locations.servant.emptyEmberOrQPDialogRegion.click()
+            return
+        }
+
+        throw ServantUpgradeException(ExitReason.NoEmbersOrQPLeft)
+    }
 
     /**
      * This function will check if the final confirmation dialog is visible.
