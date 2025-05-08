@@ -75,7 +75,7 @@ fun CardPriorityWaveSelector(
                                             if (selectedWave == items.lastIndex) {
                                                 onSelectedWaveChange(items.lastIndex - 1)
                                             }
-                                            items.removeLast()
+                                            items.removeAt(items.lastIndex)
                                         }
                                     }
                             ) {

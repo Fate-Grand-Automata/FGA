@@ -3,18 +3,47 @@ package io.github.fate_grand_automata.ui.skill_maker
 import io.github.fate_grand_automata.scripts.models.AutoSkillAction
 import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.scripts.models.Skill
+import io.github.fate_grand_automata.scripts.models.SpecialCommand
+import io.github.fate_grand_automata.scripts.models.WaveTurn
 
 sealed class SkillMakerEntry {
     class Action(val action: AutoSkillAction) : SkillMakerEntry() {
-        private fun toString(skill: Skill, target: ServantTarget?) =
-            if (target == null)
-                "${skill.autoSkillCode}"
-            else "${skill.autoSkillCode}${target.autoSkillCode}"
+        private fun toString(skill: Skill, target: ServantTarget?) = when (target) {
+            null -> "${skill.autoSkillCode}"
+            else -> {
+                if (target.specialTarget.isNotEmpty()) {
+                    "${skill.autoSkillCode}${target.autoSkillCode}${target.specialTarget}${SpecialCommand.EndSpecialTarget.autoSkillCode}"
+                } else {
+                    "${skill.autoSkillCode}${target.autoSkillCode}"
+                }
+            }
+        }
 
-        private fun toString(skill: Skill, targets: List<ServantTarget>) =
-            if (targets.isEmpty()) "${skill.autoSkillCode}"
-            else if (targets.size == 1) "${skill.autoSkillCode}${targets[0].autoSkillCode}"
-            else "${skill.autoSkillCode}(${targets.map(ServantTarget::autoSkillCode).joinToString("")})"
+        private fun toString(skill: Skill, targets: List<ServantTarget>) = when {
+            targets.isEmpty() -> "${skill.autoSkillCode}"
+            targets.size == 1 -> {
+                if (targets[0].specialTarget.isNotEmpty()) {
+                    "${skill.autoSkillCode}${targets[0].autoSkillCode}${targets[0].specialTarget}${SpecialCommand.EndSpecialTarget.autoSkillCode}"
+                } else {
+                    "${skill.autoSkillCode}${targets[0].autoSkillCode}"
+                }
+            }
+
+            else -> {
+                val start = "${skill.autoSkillCode}${SpecialCommand.StartMultiTarget.autoSkillCode}"
+                val end = "${SpecialCommand.EndMultiTarget.autoSkillCode}"
+
+                val middle = targets.joinToString("") { target ->
+                    if (target.specialTarget.isNotEmpty()) {
+                        "${target.autoSkillCode}${target.specialTarget}${SpecialCommand.EndSpecialTarget.autoSkillCode}"
+                    } else {
+                        "${target.autoSkillCode}"
+                    }
+                }
+
+                start + middle + end
+            }
+        }
 
         override fun toString() = when (action) {
             is AutoSkillAction.Atk -> {
@@ -22,7 +51,7 @@ sealed class SkillMakerEntry {
                     "0"
                 } else {
                     val cardsBeforeNP = if (action.cardsBeforeNP > 0) {
-                        "n${action.cardsBeforeNP}"
+                        "${SpecialCommand.CardsBeforeNP.autoSkillCode}${action.cardsBeforeNP}"
                     } else ""
 
                     cardsBeforeNP + action.nps.joinToString("") {
@@ -33,8 +62,8 @@ sealed class SkillMakerEntry {
 
             is AutoSkillAction.ServantSkill -> toString(action.skill, action.targets)
             is AutoSkillAction.MasterSkill -> toString(action.skill, action.target)
-            is AutoSkillAction.TargetEnemy -> "t${action.enemy.autoSkillCode}"
-            is AutoSkillAction.OrderChange -> "x${action.starting.autoSkillCode}${action.sub.autoSkillCode}"
+            is AutoSkillAction.TargetEnemy -> "${SpecialCommand.EnemyTarget.autoSkillCode}${action.enemy.autoSkillCode}"
+            is AutoSkillAction.OrderChange -> "${SpecialCommand.OrderChange.autoSkillCode}${action.starting.autoSkillCode}${action.sub.autoSkillCode}"
         }
     }
 
@@ -47,11 +76,11 @@ sealed class SkillMakerEntry {
         else Action(this).toString()
 
         class Wave(action: AutoSkillAction.Atk) : Next(action) {
-            override fun toString() = "${action.str()},#,"
+            override fun toString() = "${action.str()}${WaveTurn.Wave.code}"
         }
 
         class Turn(action: AutoSkillAction.Atk) : Next(action) {
-            override fun toString() = "${action.str()},"
+            override fun toString() = "${action.str()}${WaveTurn.Turn.code}"
         }
     }
 }

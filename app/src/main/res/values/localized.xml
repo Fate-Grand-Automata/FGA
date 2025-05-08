@@ -49,12 +49,10 @@ Skills"</string>
     <string name="skill_maker_order_change_starting_member">"Starting Member"</string>
     <string name="skill_maker_order_change_sub_member">"Sub Member"</string>
     <string name="skill_maker_order_change_servant">"Servant
-
 %d"</string>
     <string name="skill_maker_target_header">"Choose Target"</string>
     <string name="skill_maker_target_none">"No Target"</string>
     <string name="skill_maker_target_servant">"Servant
-
 %d"</string>
     <string name="skill_maker_space_ishtar">"Space Ishtar"</string>
     <string name="skill_maker_emiya">"Emiya"</string>
@@ -62,8 +60,10 @@ Skills"</string>
     <string name="skill_maker_arts">"Arts"</string>
     <string name="skill_maker_buster">"Buster"</string>
     <string name="skill_maker_kukulkan">"Kukulkan"</string>
+    <string name="skill_maker_udk_barghest">"UDK-Barghest"</string>
     <string name="skill_maker_option_1">"Option 1"</string>
     <string name="skill_maker_option_2">"Option 2"</string>
+    <string name="skill_maker_option_3">"Option 3"</string>
     <string name="card_priority_wave_number">"WAVE %d"</string>
     <string name="card_priority_high">"HIGH"</string>
     <string name="card_priority_low">"LOW"</string>
@@ -211,7 +211,7 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_support_class_berserker">"Berserker"</string>
     <string name="p_support_class_extra">"Extra"</string>
     <string name="p_support_class_mix">"Mix"</string>
-    <string name="overlay_notification_text">"Overlay service running"</string>
+    <string name="overlay_notification_text">"The FGA service is currently running to show the Play button and to take screenshots if needed."</string>
     <string name="notification_stop">"Stop"</string>
     <string name="accessibility_service">"Accessibility Service: "</string>
     <string name="accessibility_enabled">"ENABLED"</string>
@@ -319,6 +319,12 @@ Please turn on accessibility for this app from System settings. If it is already
     <string name="mat_vestige_of_madness">"Vestige of Madness"</string>
     <string name="mat_sunscale">"Sunscale"</string>
     <string name="mat_converger">"Ether Proton Converger"</string>
+    <string name="mat_flower_of_the_end">Flower of the End</string>
+    <string name="mat_golden_cauldron">Golden Cauldron</string>
+    <string name="mat_universal_cube">Universal Cube</string>
+    <string name="mat_moonlight_nucleus">Moonlight Nucleus</string>
+    <string name="mat_divine_lens">Divine Lens</string>
+    <string name="mat_holy_water_of_destiny">Holy Water of Destiny</string>
     <string name="mat_monument_saber">"Saber Monument"</string>
     <string name="mat_monument_archer">"Archer Monument"</string>
     <string name="mat_monument_lancer">"Lancer Monument"</string>
@@ -383,8 +389,63 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="support_imgs_extracting">"Extracting support images"</string>
     <string name="p_max_gold_ember_total_count">"Max Gold ember total count"</string>
     <string name="update_download_success">"Download successful. Restarting app in 5 seconds."</string>
-    <string name="skill_maker_melusine">"Mélusine"</string>
+    <string name="skill_maker_soujuurou">"Soujuurou"</string>
+    <string name="skill_maker_choices_3">"Choices (3)"</string>
+    <string-array name="skill_maker_choices_3_array_slot_1">
+        <item>"Van Gogh (Miner)"</item>
+    </string-array>
+    <string-array name="skill_maker_choices_3_array_slot_3">
+        <item>"Soujuurou"</item>
+        <item>"Charlotte"</item>
+        <item>"Hakuno"</item>
+    </string-array>
+    <string-array name="skill_maker_choices_2_array_slot_1and2">
+        <item>"Kukulkan"</item>
+    </string-array>
+    <string-array name="skill_maker_choices_2_array_slot_3">
+        <item>"Kukulkan"</item>
+        <item>"UDK-Barghest"</item>
+    </string-array>
+    <string name="skill_maker_kukulkan_choice_1">"Don't use stars"</string>
+    <string name="skill_maker_kukulkan_choice_2">"Use stars"</string>
+    <string name="skill_maker_udk_barghest_choice_1">"AoE"</string>
+    <string name="skill_maker_udk_barghest_choice_2">"Single Target"</string>
+    <string name="skill_maker_change_np_type_2">"NP Type (2)"</string>
+    <string-array name="skill_maker_change_np_type_2_array">
+        <item>"Emiya"</item>
+        <item>"BB Dubai"</item>
+    </string-array>
+    <string name="skill_maker_change_np_type_3">"NP Type (3)"</string>
+    <string-array name="skill_maker_change_np_type_3_array">
+        <item>"Space Ishtar"</item>
+    </string-array>
+    <string name="skill_maker_transform">"Transform"</string>
+    <string-array name="skill_maker_transform_array">
+        <item>"Mélusine"</item>
+        <item>"Ptolemy"</item>
+    </string-array>
+    <string name="skill_maker_update_button_labels">"Update Button Labels"</string>
+    <string name="skill_maker_special_targets_warning">Servants with special skills</string>
+    <string name="skill_maker_van_gogh">Van Gogh (Miner)</string>
+    <string name="skill_maker_hakuno">Hakuno</string>
+    <string name="skill_maker_charlotte">Charlotte</string>
+    <string name="skill_maker_bb_dubai">"BB Dubai"</string>
+    <string name="skill_maker_bb_dubai_target_1">"C.C.C."</string>
+    <string name="skill_maker_bb_dubai_target_2">"G.G.G."</string>
+    <string name="skill_maker_hakuno_choice_1">"Sky"</string>
+    <string name="skill_maker_hakuno_choice_2">"Earth"</string>
+    <string name="skill_maker_hakuno_choice_3">"Man"</string>
+    <string name="skill_maker_charlotte_choice_2">"Crit Damage"</string>
+    <string name="skill_maker_charlotte_choice_3">"NP Damage"</string>
+    <string name="skill_maker_choices_2">"Choices (2)"</string>
 
+    <string name="skill_maker_choices_3_hint">"Servants with 3 choices dialog"</string>
+    <string name="skill_maker_choices_2_hint">"Servants with 2 choices dialog"</string>
+    <string name="skill_maker_change_np_type_2_hint">"Servants with 2 NP Types"</string>
+    <string name="skill_maker_change_np_type_3_hint">"Servants with 3 NP Types"</string>
+    <string name="skill_maker_transform_hint">"Servants which transform"</string>
+
+    <string name="dismiss">"Dismiss"</string>
     <string name="reset_all">"Reset all"</string>
     <string name="reset_to_default">"Reset to default"</string>
 
