@@ -1,16 +1,6 @@
 name: CI
 
 on:
-  pull_request:
-    paths-ignore:
-      - '.idea/**'
-      - '.github/ISSUE_TEMPLATE/**'
-      - '.gitattributes'
-      - '.gitignore'
-      - '*.md'
-      - 'LICENSE'
-      - 'custom-game-area/**'
-      - 'wiki/**'
   push:
     branches:
       - master
@@ -37,42 +27,8 @@ env:
   VERSION_CODE: '${{ github.run_number }}'
 
 jobs:
-  build:
-    runs-on: macos-14
-    if: github.ref != 'refs/heads/master'
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DISTRO }}
-          cache: 'gradle'
-
-      - name: Determine Version Name
-        shell: bash
-        run: |
-          VERSION_NAME=$VERSION_CODE
-          echo "FGA_VERSION_CODE=$VERSION_CODE" >>${GITHUB_ENV}
-          echo "FGA_VERSION_NAME=$VERSION_NAME" >>${GITHUB_ENV}
-
-      - name: Build Android Package
-        run: ./gradlew assembleCi --scan --parallel --no-daemon
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: apk
-          path: app/build/outputs/apk/ci/app-ci.apk
-
-      - name: Upload De-obfuscation mapping file
-        uses: actions/upload-artifact@v4
-        with:
-          name: mapping-ci
-          path: app/build/outputs/mapping/ci/mapping.txt
-
   play_store:
-    runs-on: macos-14
+    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v4
@@ -114,24 +70,15 @@ jobs:
         with:
           name: bundle
           path: app/build/outputs/bundle/release/app-release.aab
+        if: ${{ !cancelled() }}
 
       - name: Upload De-obfuscation mapping file
         uses: actions/upload-artifact@v4
         with:
           name: mapping-release
           path: app/build/outputs/mapping/release/mapping.txt
+        if: ${{ !cancelled() }}
 
-  # Release master branch
-  github_release:
-    needs: play_store
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2'
-          bundler-cache: true
       - name: Download Universal APK
         uses: maierj/fastlane-action@v3.1.0
         with:
@@ -146,11 +93,22 @@ jobs:
         with:
           custom_tag: ${{ env.VERSION_CODE }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create release
-        uses: ncipollo/release-action@v1.14.0
+        uses: ncipollo/release-action@v1.16.0
+        id: github-release
         with:
           generateReleaseNotes: true
           artifacts: 'FGA-apk-${{ env.VERSION_CODE }}.zip'
           tag: 'v${{ env.VERSION_CODE }}'
           name: 'FGA ${{ env.VERSION_CODE }}'
           prerelease: true
+
+      - name: Add installation instructions to release
+        uses: irongut/EditRelease@v1.2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          id: ${{ steps.github-release.outputs.id }}
+          replacebody: false
+          body: |
+            ⚠️ Use the [APKMirror Installer](https://play.google.com/store/apps/details?id=com.apkmirror.helper.prod) to install the app on Android 14+, otherwise Accessibility can't be enabled.

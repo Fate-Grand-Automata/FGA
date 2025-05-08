@@ -1,19 +1,12 @@
 package io.github.fate_grand_automata.ui.skill_maker
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,6 +24,7 @@ import io.github.fate_grand_automata.ui.FGATitle
 @Composable
 fun SkillMakerMasterSkills(
     onMasterSkill: (Skill.Master) -> Unit,
+    onMasterSkillNoTarget: (Skill.Master) -> Unit,
     onOrderChange: () -> Unit
 ) {
     Column(
@@ -65,39 +59,12 @@ fun SkillMakerMasterSkills(
                 Skill.Master.list.forEach {
                     SkillButton(
                         skill = it,
-                        color = colorResource(R.color.colorMasterSkill)
-                    ) {
-                        onMasterSkill(it)
-                    }
+                        color = colorResource(R.color.colorMasterSkill),
+                        onClick = { onMasterSkill(it) },
+                        onDoubleClick = { onMasterSkillNoTarget(it) }
+                    )
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun RowScope.SkillButton(
-    skill: Skill,
-    color: Color,
-    onClick: () -> Unit
-) {
-    Surface(
-        color = color,
-        shape = MaterialTheme.shapes.medium,
-        modifier = Modifier
-            .padding(5.dp)
-            .sizeIn(maxWidth = 45.dp)
-            .aspectRatio(1f)
-            .fillMaxSize()
-            .weight(1f, false),
-        onClick = onClick
-    ) {
-        Box {
-            Text(
-                skill.autoSkillCode.toString(),
-                color = Color.White,
-                modifier = Modifier.align(Alignment.Center)
-            )
         }
     }
 }
@@ -107,6 +74,10 @@ fun RowScope.SkillButton(
 @Composable
 fun TestMasterSkills() {
     FGATheme {
-        SkillMakerMasterSkills(onMasterSkill = { }, onOrderChange = { })
+        SkillMakerMasterSkills(
+            onMasterSkill = { },
+            onMasterSkillNoTarget = { },
+            onOrderChange = { }
+        )
     }
 }
