@@ -8,4 +8,6 @@ interface IGesturesPreferences {
     val clickDelay: Duration
     val swipeWaitTime: Duration
     val swipeDuration: Duration
+    val longPressDuration: Duration
+    val dragDuration: Duration
 }

@@ -461,6 +461,44 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
 
     <string name="bond_level_up">Bond Level up!</string>
 
+    <string name="p_script_mode_ce_bomb">CE Bomb</string>
+    <string name="p_roll_create_ce_bomb_after_summon">"Should the CE bomb script run after the maximum limit of CEs has been reached?"</string>
+    <string name="p_roll_create_ce_bomb_reminder">"- It will only redirect to the Craft Essence Enhancement menu when the maximum number of CEs has been reached."</string>
+    <string name="ce_bomb_explanation">
+        "Please read before starting script!\n\nWithout proper sorting, this script will consume CE indiscriminately.\n\nFor the most optimal pre-setup, please follow the following instructions before starting script:\n\n1) CE list to the smallest possible size\n\n2) Sort the base CE by ascending rarity with \"Smart Sort ON\"\n\n3) Sort the CE fodder by ascending rarity with \"Smart Sort ON\"\n\nIn case confused to follow the above instructions, you may use FGA's sort + filter function for reference,which will be utilized automatically upon starting script.\n\nHowever, please keep in mind if a wrong base CE / CE fodder is used, FGA developers will not be held responsible.\n\nShould the CE have been maxed levelled - it is highly recommended to prevent accidental CE fodder use by locking it and/or put it in the Second Archive."
+    </string>
+    <string name="ce_bomb_no_suitable_ces">No suitable target CE found</string>
+    <string name="ce_bomb_target_ce_max_level">Target CE have reached max level.</string>
+    <string name="ce_bomb_skip_sort_setup">Skip the CE sort settings setup?</string>
+    <string name="ce_bomb_skip_sort_reminder">Make sure the sort settings are configured.</string>
+    <string name="ce_bomb_skip_filter_setup">Skip the CE filter settings setup?</string>
+    <string name="ce_bomb_skip_filter_reminder">Make sure the filter settings are configured.</string>
+    <string name="ce_bomb_target_rarity">Target Rarity</string>
+    <string name="ce_bomb_fodder_rarity">Fodder Rarity</string>
+    <string name="ce_bomb_long_press">Long Press</string>
+    <string name="ce_bomb_drag">Drag</string>
+    <string name="ce_bomb_duration">Duration</string>
+    <string name="ce_bomb_hide_dragging_settings">Hide Dragging Settings</string>
+    <string name="ce_bomb_show_dragging_settings">Show Dragging Settings</string>
+    <string name="ce_bomb_skip_auto_lock_of_target_ce">Skip the auto-lock of target CE?</string>
+    <string name="ce_bomb_skip_display_size_setup">Skip the display size setup?</string>
+    <string name="ce_bomb_skip_display_size_reminder">Please ensure that the display size is set to the smallest option.</string>
+    <string name="ce_bomb_skip_display_size_warning">Set the display size to the smallest option available.</string>
+    <string name="ce_bomb_dragging">Dragging</string>
+    <string name="ce_bomb_clicking">Clicking</string>
+    <string name="ce_bomb_selection_method">Selection method</string>
+
+    <string name="p_fp_gacha_show_ce_bomb_settings">Show CE Bomb Settings</string>
+    <string name="p_fp_gacha_hide_ce_bomb_settings">Hide CE Bomb Settings</string>
+    <string name="p_fp_gacha_show_ce_bomb_warning">Show CE Bomb Warning</string>
+    <string name="p_fp_gacha_hide_ce_bomb_warning">Hide CE Bomb Warning</string>
+    <string name="p_fp_gacha_ce_bomb_pr_for_other_servers">Please open a PR to add support for your server.</string>
+    <string name="unable_to_verify_if_reached_the_ce_menu">"Unable to verify if reached the CE Enhancement Screen, exiting early"</string>
+
+    <string name="p_script_mode_ce_level">CE Level</string>
+    <string name="ce_level_explanation">
+        "This script mode would immediately stop once the current target CE is maxed out to prevent unnecessary picking of the another target CE.\n\nThis mode is made to just level up the current CE.\n\nTo enter CE bomb mode, there should be no target CE.\n\nPlease read before starting script!\n\nWithout proper sorting, this script will consume CE indiscriminately.\n\nFor the most optimal pre-setup, please follow the following instructions before starting script:\n\n1) CE list to the smallest possible size\n\n2) Sort the base CE by ascending rarity with \"Smart Sort ON\"\n\n3) Sort the CE fodder by ascending rarity with \"Smart Sort ON\"\n\nIn case confused to follow the above instructions, you may use FGA's sort + filter function for reference,which will be utilized automatically upon starting script.\n\nHowever, please keep in mind if a wrong base CE / CE fodder is used, FGA developers will not be held responsible.\n\nShould the CE have been maxed levelled - it is highly recommended to prevent accidental CE fodder use by locking it and/or put it in the Second Archive."
+    </string>
     <string name="servant_enhancement">Servant Enhancement</string>
     <string name="servant_enhancement_no_embers_or_qp_left">Insufficient Embers or QP</string>
     <string name="servert_enhancement_warning_notice">This script will use the auto-select feature to select the embers.</string>
@@ -475,4 +513,9 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
     <string name="servant_enhancement_aborted">Enhancement was aborted</string>
     <string name="note">"Note:"</string>
+    <string name="p_fine_tune_drag">"Dragging"</string>
+    <string name="p_fine_tune_long_press_duration">"Long Press duration"</string>
+    <string name="p_fine_tune_drag_duration">"Drag duration"</string>
+
 </resources>
+
