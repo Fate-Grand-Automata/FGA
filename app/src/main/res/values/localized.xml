@@ -503,7 +503,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
     <string name="servant_enhancement_aborted">Enhancement was aborted</string>
 
-    <string name="servant_enhancement_not_implemented">Servant Enhancement is not supported on your FGO server yet."</string>
+    <string name="servant_enhancement_not_implemented">Servant Enhancement is not supported on your FGO server yet.</string>
     <string name="note">"Note:"</string>
     <string name="empty_servant">Must select a servant before proceeding.</string>
 </resources>
