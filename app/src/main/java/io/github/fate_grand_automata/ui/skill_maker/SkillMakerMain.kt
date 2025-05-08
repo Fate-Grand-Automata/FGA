@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.ui.skill_maker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +27,9 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,9 +37,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.models.AutoSkillAction
@@ -57,6 +62,11 @@ fun SkillMakerMain(
         modifier = Modifier
             .padding(vertical = 16.dp)
             .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    vm.clearSelection()
+                }
+            }
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -68,7 +78,14 @@ fun SkillMakerMain(
 
             EnemyTarget(
                 selected = enemyTarget,
-                onSelectedChange = { vm.setEnemyTarget(it) }
+                // Re-selecting the same enemy triggers deletion of the last action, toggling the selection.
+                onSelectedChange = { target ->
+                    if (enemyTarget == target) {
+                        vm.deleteIfLastActionIsTarget(target)
+                    } else {
+                        vm.setEnemyTarget(target)
+                    }
+                }
             )
 
             Column(
@@ -279,7 +296,7 @@ fun SkillHistory(vm: SkillMakerViewModel) {
                     .let {
                         if (isSelected) {
                             it.border(
-                                2.dp,
+                                width = 2.dp,
                                 color = colorResource(android.R.color.darker_gray),
                                 shape = shape
                             )
@@ -295,7 +312,10 @@ fun SkillHistory(vm: SkillMakerViewModel) {
 
                 Text(
                     text,
-                    color = Color.White
+                    color = Color.White,
+                    modifier = Modifier.padding(
+                        all = 4.dp
+                    )
                 )
             }
         }
@@ -320,13 +340,25 @@ fun EnemyTarget(
             ) {
                 RadioButton(
                     selected = isSelected,
-                    onClick = onClick
+                    onClick = onClick,
+                    colors = RadioButtonDefaults.colors(
+                        selectedColor = MaterialTheme.colorScheme.error,
+                        unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 )
 
                 Text(
                     stringResource(R.string.skill_maker_main_enemy, it),
                     modifier = Modifier
-                        .padding(start = 5.dp)
+                        .padding(start = 5.dp),
+                    textDecoration = when (isSelected) {
+                        true -> TextDecoration.Underline
+                        false -> null
+                    },
+                    color = when (isSelected) {
+                        true -> MaterialTheme.colorScheme.error
+                        false -> Color.Unspecified
+                    }
                 )
             }
         }
