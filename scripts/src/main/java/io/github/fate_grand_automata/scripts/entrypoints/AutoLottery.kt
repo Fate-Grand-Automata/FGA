@@ -97,6 +97,8 @@ class AutoLottery @Inject constructor(
         }
 
         
+        // If the loopIntoLotteryAfterPresentBox preference is enabled, 
+        // return silently to allow the script to continue looping into the lottery.
         if (prefs.loopIntoLotteryAfterPresentBox) {
             return
         }
