@@ -160,6 +160,8 @@ class ScriptManager @Inject constructor(
             }
 
             is AutoLottery.ExitException -> {
+                // Resetting these preferences ensures that the script does not loop into the lottery
+                // or assume the present box is full after handling an AutoLottery.ExitException.
                 preferences.loopIntoLotteryAfterPresentBox = false
                 preferences.isPresentBoxFull = false
                 val msg = when (val reason = e.reason) {
