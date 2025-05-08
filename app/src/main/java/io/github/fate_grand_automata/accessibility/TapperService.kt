@@ -29,8 +29,10 @@ class TapperService : AccessibilityService() {
         // We only want events from FGO
         serviceInfo = serviceInfo.apply {
             packageNames = GameServer.packageNames.keys.toTypedArray()
-            flags = AccessibilityServiceInfo.DEFAULT or AccessibilityServiceInfo.FLAG_REQUEST_TOUCH_EXPLORATION_MODE
-            eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED or AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
+            // We only need DEFAULT flags for gesture dispatch and window events.
+            flags = AccessibilityServiceInfo.DEFAULT
+            // Only listen for WINDOW_STATE_CHANGED for server detection.
+            eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
         }
 
         instance = this
@@ -56,23 +58,16 @@ class TapperService : AccessibilityService() {
      * of the FGO APKs.
      */
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        val source = event?.source
-        source?.let {
-            source.performAction(AccessibilityNodeInfo.ACTION_LONG_CLICK)
-        }
-        when (event?.eventType) {
-            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                val foregroundAppName = event.packageName?.toString()
-                    ?: return
+        if (event?.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            val foregroundAppName = event.packageName?.toString() ?: return
 
-                GameServer.fromPackageName(foregroundAppName)?.let { server ->
+            GameServer.fromPackageName(foregroundAppName)?.let { server ->
+                // Update the detected server only if it changed
+                if (detectedFgoServer != server) {
                     Timber.d("Detected FGO: $server")
-
                     detectedFgoServer = server
                 }
             }
-
-            else -> {}
         }
     }
 
