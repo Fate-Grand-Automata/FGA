@@ -78,6 +78,7 @@ fun SkillMakerMain(
 
             EnemyTarget(
                 selected = enemyTarget,
+                // Re-selecting the same enemy triggers deletion of the last action, toggling the selection.
                 onSelectedChange = { target ->
                     if (enemyTarget == target) {
                         vm.deleteIfLastActionIsTarget(target)
