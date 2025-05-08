@@ -393,7 +393,7 @@
 
 ボタンを押した後、アプリフィルターを「最近開いたアプリ」から「すべてのアプリ」に切り替え、FGAを「制限なし」に設定してください。"</string>
     <string name="p_battery_optimization_action">"バッテリー使用最適化が無効"</string>
-    <string name="p_battery_optimization_dontkillmyapp">"また、お使いのデバイス固有の最適化を無効にする必要があるかもしれません。ガイドはdontkillmyapp.comでご覧いただけます。"</string>
+    <string name="p_battery_optimization_dontkillmyapp">"また、お使いのデバイス固有の最適化を無効にする必要があるかもしれません。ガイドは%sでご覧いただけます。"</string>
     <string name="p_youtube_guide">"Youtube ガイド"</string>
     <string name="p_youtube_guide_description">"Youtube ガイドを見ることをお勧めします。このビデオで設定方法を教えてくれます。"</string>
     <string name="p_youtube_guide_action">"ガイドを開く"</string>
