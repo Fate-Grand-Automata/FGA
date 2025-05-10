@@ -1,7 +1,7 @@
 [versions]
 appcompat_version = "1.7.0"
 assertk_version = "0.28.1"
-constraintlayout_version = "2.2.0"
+constraintlayout_version = "2.2.1"
 core_ktx_version = "1.15.0"
 documentfile_version = "1.0.1"
 flow_preferences_version = "1.9.1"
