@@ -18,7 +18,7 @@ ksp_version = "2.1.20-2.0.1"
 gradle_version = "8.10.0"
 
 
-ben-manes_versions = "0.51.0"
+ben-manes_versions = "0.52.0"
 accompanist_version = "0.37.3"
 
 google_android_play_version = "2.1.0"
