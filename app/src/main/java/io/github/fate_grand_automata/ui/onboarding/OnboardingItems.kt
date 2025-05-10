@@ -25,6 +25,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
 import io.github.fate_grand_automata.BuildConfig
@@ -186,8 +192,6 @@ class DisableBatteryOptimization(vm: OnboardingViewModel) : OnboardingItem(vm) {
             text = stringResource(R.string.p_battery_optimization_description),
             style = MaterialTheme.typography.bodyLarge
         )
-
-        val context = LocalContext.current
         val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             onFinished()
         }
@@ -205,20 +209,36 @@ class DisableBatteryOptimization(vm: OnboardingViewModel) : OnboardingItem(vm) {
             )
         }
 
-        HighlightedText(
-            text = String.format(
-                stringResource(R.string.p_battery_optimization_dontkillmyapp),
-                stringResource(R.string.link_dontkillmyapp)
-            ),
-            highlights = listOf(
-                Highlight(
-                    text = "dontkillmyapp.com",
-                    data = stringResource(R.string.link_dontkillmyapp),
-                    onClick = { link ->
-                        context.openLinkIntent(link)
-                    }
+        Text(
+            text = buildAnnotatedString {
+                val linkText = stringResource(R.string.link_dontkillmyapp)
+                val warningText = stringResource(
+                    R.string.p_battery_optimization_dontkillmyapp,
+                    linkText
+                ).split(
+                    // Split while keeping the delimiter
+                    Regex("(?<=$linkText)|(?=$linkText)")
                 )
-            ),
+                warningText.forEach { text ->
+                    if (text == linkText) {
+                        withLink(
+                            LinkAnnotation.Url(
+                                url = linkText,
+                                styles = TextLinkStyles(
+                                    style = SpanStyle(
+                                        color = MaterialTheme.colorScheme.tertiary,
+                                        textDecoration = TextDecoration.Underline
+                                    )
+                                )
+                            )
+                        ) {
+                            append(linkText)
+                        }
+                    } else {
+                        append(text)
+                    }
+                }
+            },
             style = MaterialTheme.typography.bodyLarge
         )
     }

@@ -385,7 +385,7 @@ Order Change"</string>
 
 在点击下方按钮后，将应用程序筛选器由“未优化”切换到“所有应用”，并将下方FGA设置变更为“不优化”"</string>
     <string name="p_battery_optimization_action">"关闭电池优化"</string>
-    <string name="p_battery_optimization_dontkillmyapp">"取决于您的设备，您可能还需要禁用更多的优化设置。您可以在dontkillmyapp.com（英文页面）上找到更多教程"</string>
+    <string name="p_battery_optimization_dontkillmyapp">"取决于您的设备，您可能还需要禁用更多的优化设置。您可以在%s（英文页面）上找到更多教程"</string>
     <string name="p_youtube_guide">"Youtube教学视频"</string>
     <string name="p_youtube_guide_description">"推荐您观看教学视频，它将指导您如何设置周回脚本（英语视频，需要科学上网）"</string>
     <string name="p_youtube_guide_action">"打开教学视频"</string>

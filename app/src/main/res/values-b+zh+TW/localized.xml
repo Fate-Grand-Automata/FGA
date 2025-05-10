@@ -381,7 +381,7 @@ Order Change"</string>
 
 點選按鈕後，請選擇 FGA 並將設定調整為「不進行最佳化」"</string>
     <string name="p_battery_optimization_action">"關閉電池效能最佳化（系統設定）"</string>
-    <string name="p_battery_optimization_dontkillmyapp">"您可能需要調整更多對於您裝置的效能最佳化選項。請參考 dontkillmyapp.com"</string>
+    <string name="p_battery_optimization_dontkillmyapp">"您可能需要調整更多對於您裝置的效能最佳化選項。請參考 %s"</string>
     <string name="p_youtube_guide">"Youtube 教學"</string>
     <string name="p_youtube_guide_description">"請參考此 Youtube 教學影片以認識如何新增自動腳本"</string>
     <string name="p_youtube_guide_action">"至 Youtube 觀看"</string>
