@@ -31,6 +31,8 @@ class ScriptLauncherResponseHandler @Inject constructor(
 
                 giftBoxResp?.let { handleGiftBoxResponse(it) }
 
+                prefs.loopIntoLotteryAfterPresentBox = resp.returnToLottery
+
                 ScriptModeEnum.Lottery
             }
 
