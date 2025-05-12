@@ -137,7 +137,6 @@ dependencies {
 
 
 
-    implementation(libs.accompanist.pager.indicators)
     implementation(libs.accompanist.permissions)
 
     implementation(libs.google.android.play.update.ktx)

@@ -1,44 +1,44 @@
 [versions]
 appcompat_version = "1.7.0"
 assertk_version = "0.28.1"
-constraintlayout_version = "2.2.0"
-core_ktx_version = "1.15.0"
-documentfile_version = "1.0.1"
+constraintlayout_version = "2.2.1"
+core_ktx_version = "1.16.0"
+documentfile_version = "1.1.0"
 flow_preferences_version = "1.9.1"
 hilt_navigation_compose_version = "1.2.0"
-kotlinx_coroutines_core_version = "1.9.0"
-lifecycle_version = "2.8.7"
-hilt_version = "2.52"
-gson_version = "2.11.0"
+kotlinx_coroutines_core_version = "1.10.2"
+lifecycle_version = "2.9.0"
+hilt_version = "2.56.2"
+gson_version = "2.13.1"
 
 
-kotlin_version = "2.0.21"
-ksp_version = "2.0.21-1.0.28"
+kotlin_version = "2.1.20"
+ksp_version = "2.1.20-2.0.1"
 
-gradle_version = "8.7.2"
+gradle_version = "8.10.0"
 
 
-ben-manes_versions = "0.51.0"
-accompanist_version = "0.36.0"
+ben-manes_versions = "0.52.0"
+accompanist_version = "0.37.3"
 
 google_android_play_version = "2.1.0"
 
-activity_version = "1.9.3"
-mockk_version = "1.13.13"
+activity_version = "1.10.1"
+mockk_version = "1.14.2"
 
-opencv_version = "4.10.0"
-navigation_compose_version = "2.8.4"
+opencv_version = "4.11.0"
+navigation_compose_version = "2.9.0"
 
-recyclerview_version = "1.3.2"
+recyclerview_version = "1.4.0"
 tesseract4android_version = "4.8.0"
 
 timber_version = "5.0.1"
 
-compose_bom_version = "2024.11.00"
+compose_bom_version = "2025.05.00"
 
 
-coil_version = "3.0.3"
-junit_bom_version = "5.11.3"
+coil_version = "3.1.0"
+junit_bom_version = "5.12.2"
 
 
 [libraries]
@@ -73,7 +73,6 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson_version" }
 
 # Accompanist
-accompanist-pager-indicators = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanist_version" }
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist_version" }
 
 # Google Android play app update
