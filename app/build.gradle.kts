@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.android.application")
@@ -11,26 +11,15 @@ plugins {
 
 android {
     compileSdk = 35
-    ndkVersion = "21.3.6528147"
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-
-    kotlinOptions {
-        freeCompilerArgs += "-opt-in=androidx.compose.material.ExperimentalMaterialApi"
-        freeCompilerArgs += "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
-        freeCompilerArgs += "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi"
-        freeCompilerArgs += "-opt-in=androidx.compose.animation.ExperimentalAnimationApi"
-        freeCompilerArgs += "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi"
-        freeCompilerArgs += "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi"
-        freeCompilerArgs += "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi"
     }
 
     androidResources {
@@ -143,4 +132,17 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.coil.gif)
 
+}
+
+tasks {
+    withType<KotlinCompile> {
+        compilerOptions.freeCompilerArgs.addAll(
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+            "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+            "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
+            "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
+            "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
+            "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
+        )
+    }
 }
