@@ -1,101 +1,101 @@
 [versions]
-appcompat_version = "1.7.1"
-assertk_version = "0.28.1"
-constraintlayout_version = "2.2.1"
-core_ktx_version = "1.16.0"
-documentfile_version = "1.1.0"
-flow_preferences_version = "1.9.1"
-hilt_navigation_compose_version = "1.2.0"
-kotlinx_coroutines_core_version = "1.10.2"
-lifecycle_version = "2.9.2"
-hilt_version = "2.57"
-gson_version = "2.13.1"
+appcompat = "1.7.1"
+assertk = "0.28.1"
+constraintlayout = "2.2.1"
+core_ktx = "1.16.0"
+documentfile = "1.1.0"
+flow_preferences = "1.9.1"
+hilt_navigation_compose = "1.2.0"
+kotlinx_coroutines = "1.10.2"
+lifecycle = "2.9.2"
+hilt = "2.57"
+gson = "2.13.1"
 
 
-kotlin_version = "2.2.10"
-ksp_version = "2.2.10-2.0.2"
+kotlin = "2.2.10"
+ksp = "2.2.10-2.0.2"
 
-gradle_version = "8.10.0"
+agp = "8.10.0"
 
 
-ben-manes_versions = "0.52.0"
-accompanist_version = "0.37.3"
+ben_manes = "0.52.0"
+accompanist = "0.37.3"
 
-google_android_play_version = "2.1.0"
+google_android_play = "2.1.0"
 
-activity_version = "1.10.1"
-mockk_version = "1.14.5"
+activity = "1.10.1"
+mockk = "1.14.5"
 
-opencv_version = "4.12.0"
-navigation_compose_version = "2.9.3"
+opencv = "4.12.0"
+navigation_compose = "2.9.3"
 
-recyclerview_version = "1.4.0"
-tesseract4android_version = "4.9.0"
+recyclerview = "1.4.0"
+tesseract4android = "4.9.0"
 
 timber_version = "5.0.1"
 
-compose_bom_version = "2025.08.00"
+compose_bom = "2025.08.00"
 
 
-coil_version = "3.3.0"
-junit_bom_version = "5.13.4"
+coil = "3.3.0"
+junit_bom = "5.13.4"
 
 
 [libraries]
-android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle_version" }
-kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin_version" }
-hilt-android-gradle-plugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt_version" }
-ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp_version" }
+android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+hilt-android-gradle-plugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
+ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 
-kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin_version" }
-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx_coroutines_core_version" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx_coroutines" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
 
-fredporciuncula-flow-preferences = { module = "com.fredporciuncula:flow-preferences", version.ref = "flow_preferences_version" }
-mockk = { module = "io.mockk:mockk", version.ref = "mockk_version" }
-willowtreeapps-assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk_version" }
+fredporciuncula-flow-preferences = { module = "com.fredporciuncula:flow-preferences", version.ref = "flow_preferences" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+willowtreeapps-assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk" }
 
 #ViewModel, LiveData
-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle_version" }
-lifecycle-viewmodel-savedstate = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate", version.ref = "lifecycle_version" }
-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle_version" }
+lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+lifecycle-viewmodel-savedstate = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate", version.ref = "lifecycle" }
+lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 
 # Dagger hilt
-dagger-hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt_version" }
-dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt_version" }
-dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt_version" }
+dagger-hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
+dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 
 # Navigation
-androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt_navigation_compose_version" }
-androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation_compose_version" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt_navigation_compose" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation_compose" }
 
 # Gson
-google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson_version" }
+google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 
 # Accompanist
-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist_version" }
+accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
 
 # Google Android play app update
-google-android-play-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "google_android_play_version" }
+google-android-play-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "google_android_play" }
 
 # Activity
-androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity_version" }
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity_version" }
+androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity" }
 
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat_version" }
-androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core_ktx_version" }
-androidx-documentfile = { module = "androidx.documentfile:documentfile", version.ref = "documentfile_version" }
-androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview_version" }
-androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout_version" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core_ktx" }
+androidx-documentfile = { module = "androidx.documentfile:documentfile", version.ref = "documentfile" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 
-opencv = { group = "org.opencv", name = "opencv", version.ref = "opencv_version" }
-tesseract4android = { module = "cz.adaptech.tesseract4android:tesseract4android", version.ref = "tesseract4android_version" }
+opencv = { group = "org.opencv", name = "opencv", version.ref = "opencv" }
+tesseract4android = { module = "cz.adaptech.tesseract4android:tesseract4android", version.ref = "tesseract4android" }
 
-junit-bom = { group = "org.junit", name = "junit-bom", version.ref = "junit_bom_version" }
+junit-bom = { group = "org.junit", name = "junit-bom", version.ref = "junit_bom" }
 
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber_version" }
 
-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose_bom_version" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose_bom" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
@@ -104,12 +104,12 @@ compose-material3-window-size = { group = "androidx.compose.material3", name = "
 compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
-coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil_version" }
-coil-gif = { module = "io.coil-kt.coil3:coil-gif", version.ref = "coil_version" }
+coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-gif = { module = "io.coil-kt.coil3:coil-gif", version.ref = "coil" }
 
 [plugins]
-ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes_versions" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp_version" }
+ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben_manes" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin_version" }
-org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_version" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
