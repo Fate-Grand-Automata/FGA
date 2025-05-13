@@ -3,12 +3,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
 
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-
     dependencies {
         // https://developer.android.com/build/migrate-to-catalogs#migrate-dependencies
         classpath(libs.android.tools.build.gradle)
@@ -24,16 +18,6 @@ plugins {
     alias(libs.plugins.ben.manes.versions)
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.ksp) apply false
-}
-
-
-allprojects {
-    repositories {
-        google()
-        maven { url = uri("https://repo1.maven.org/maven2") }
-        maven { url = uri("https://jitpack.io") }
-        maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
-    }
 }
 
 subprojects {
