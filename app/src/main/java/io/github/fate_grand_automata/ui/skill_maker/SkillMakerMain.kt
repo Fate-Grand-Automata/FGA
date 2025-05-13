@@ -29,6 +29,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +47,7 @@ import io.github.fate_grand_automata.ui.icon
 @Composable
 fun SkillMakerMain(
     vm: SkillMakerViewModel,
+    onCommandSpell: (Int) -> Unit,
     onMasterSkills: () -> Unit,
     onAtk: () -> Unit,
     onSkill: (Skill.Servant) -> Unit,
@@ -128,6 +130,8 @@ fun SkillMakerMain(
                 )
             }
 
+            val commandSpellRemaining by vm.commandSpellRemaining.collectAsState()
+
             Column(
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.End,
@@ -136,6 +140,22 @@ fun SkillMakerMain(
                     .width(IntrinsicSize.Max)
                     .fillMaxHeight()
             ) {
+
+                Button(
+                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorCommandSpell)),
+                    onClick = {
+                        onCommandSpell(commandSpellRemaining)
+                    }
+                ) {
+                    Text(
+                        stringResource(R.string.skill_maker_command_spell_title_short, commandSpellRemaining),
+                        textAlign = TextAlign.Center,
+                        color = Color.White
+                    )
+                }
+
+                Spacer(Modifier.height(8.dp))
+
                 Button(
                     colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorMasterSkill)),
                     onClick = onMasterSkills
@@ -147,7 +167,7 @@ fun SkillMakerMain(
                     )
                 }
 
-                Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(8.dp))
 
                 Button(
                     shape = CircleShape,
@@ -247,6 +267,7 @@ val SkillMakerEntry?.colorRes: Int
                     'g', 'h', 'i' -> R.color.colorServant3
                     else -> defaultColor
                 }
+                is AutoSkillAction.CommandSpell -> R.color.colorCommandSpell
 
                 else -> defaultColor
             }

@@ -13,6 +13,12 @@ import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.scripts.models.Skill
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
+import androidx.lifecycle.viewModelScope
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,6 +54,27 @@ class SkillMakerViewModel @Inject constructor(
         }
 
         m
+    }
+
+    private var _commandSpellRemaining: MutableStateFlow<Int> =
+        MutableStateFlow(
+            value = 3 - skillCommand.count {
+                it is SkillMakerEntry.Action && it.action is AutoSkillAction.CommandSpell
+            }
+        )
+
+    val commandSpellRemaining: StateFlow<Int> = _commandSpellRemaining
+        .map { it.coerceIn(0..3) }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = 3
+        )
+
+    fun initCommandSpell(skill: Skill) {
+        currentSkill = skill.autoSkillCode
+
+        navigation.value = SkillMakerNav.CommandSpellTarget(skill)
     }
 
     private val _wave = mutableIntStateOf(
@@ -183,7 +210,7 @@ class SkillMakerViewModel @Inject constructor(
     }
 
     fun targetSkill(targets: List<ServantTarget>) {
-        val skill = (Skill.Servant.list + Skill.Master.list)
+        val skill = (Skill.Servant.list + Skill.Master.list + Skill.CommandSpell.list)
             .first { it.autoSkillCode == currentSkill }
 
         add(
@@ -191,6 +218,10 @@ class SkillMakerViewModel @Inject constructor(
                 when (skill) {
                     is Skill.Servant -> AutoSkillAction.ServantSkill(skill, targets)
                     is Skill.Master -> AutoSkillAction.MasterSkill(skill, targets.firstOrNull())
+                    is Skill.CommandSpell -> {
+                        --_commandSpellRemaining.value
+                        AutoSkillAction.CommandSpell(skill, targets.firstOrNull())
+                    }
                 }
             )
         )
@@ -315,13 +346,20 @@ class SkillMakerViewModel @Inject constructor(
                 }
 
                 is SkillMakerEntry.Action -> {
-                    if (last.action is AutoSkillAction.TargetEnemy) {
-                        deleteSelected()
-                        revertToPreviousEnemyTarget()
-                    } else deleteSelected()
+                    when(last.action) {
+                        is AutoSkillAction.TargetEnemy -> {
+                            deleteSelected()
+                            revertToPreviousEnemyTarget()
+                        }
+                        is AutoSkillAction.CommandSpell -> {
+                            ++_commandSpellRemaining.value
+                            deleteSelected()
+                        }
+                        else -> deleteSelected()
+                    }
                 }
-                // Do nothing
                 is SkillMakerEntry.Start -> {
+                    // Do nothing
                 }
             }
         }
