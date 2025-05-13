@@ -324,6 +324,8 @@ Please turn on accessibility for this app from System settings. If it is already
     <string name="mat_golden_cauldron">Golden Cauldron</string>
     <string name="mat_universal_cube">Universal Cube</string>
     <string name="mat_moonlight_nucleus">Moonlight Nucleus</string>
+    <string name="mat_divine_lens">Divine Lens</string>
+    <string name="mat_holy_water_of_destiny">Holy Water of Destiny</string>
     <string name="mat_monument_saber">"Saber Monument"</string>
     <string name="mat_monument_archer">"Archer Monument"</string>
     <string name="mat_monument_lancer">"Lancer Monument"</string>
@@ -380,7 +382,7 @@ Please turn on accessibility for this app from System settings. If it is already
 
 After pressing on the button, switch the app filter from \"Not optimized\" to \"All apps\" and set FGA to \"Do not optimize\"."</string>
     <string name="p_battery_optimization_action">"Disable battery optimization"</string>
-    <string name="p_battery_optimization_dontkillmyapp">"You may also need to disable more optimizations specific to your device. Guides are available on dontkillmyapp.com."</string>
+    <string name="p_battery_optimization_dontkillmyapp">"You may also need to disable more optimizations specific to your device. Guides are available on %s."</string>
     <string name="p_youtube_guide">"Youtube guide"</string>
     <string name="p_youtube_guide_description">"It's recommended to watch the Youtube guide as it will teach you how to set up farming configurations."</string>
     <string name="p_youtube_guide_action">"Open guide"</string>

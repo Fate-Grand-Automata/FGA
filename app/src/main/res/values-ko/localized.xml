@@ -378,7 +378,7 @@
 
 아래 버튼을 누르신 후 필터에서 \"최적화 안 함\" 대신 \"모든 앱\"을 선택 후 FGA를 눌러서 최적화 안 함을 선택해주세요."</string>
     <string name="p_battery_optimization_action">"배터리 최적화 비활성화"</string>
-    <string name="p_battery_optimization_dontkillmyapp">"간혹 어떤 기종의 장비에서는 추가적으로 다른 최적화들을 비활성해야할 수 있습니다. 관련 설명은 dontkillmyapp.com (영어)에서 확인하실 수 있습니다."</string>
+    <string name="p_battery_optimization_dontkillmyapp">"간혹 어떤 기종의 장비에서는 추가적으로 다른 최적화들을 비활성해야할 수 있습니다. 관련 설명은 %s (영어)에서 확인하실 수 있습니다."</string>
     <string name="p_youtube_guide">"유튜브 가이드 영상"</string>
     <string name="p_youtube_guide_description">"파밍 설정 방법을 알려드리는 유튜브 영상(영어)이 있으니 확인해보시는 걸 추천드립니다."</string>
     <string name="p_youtube_guide_action">"가이드 열기 (영어)"</string>

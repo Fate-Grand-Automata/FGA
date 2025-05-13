@@ -385,7 +385,7 @@ Order Change"</string>
 
 在点击下方按钮后，将应用程序筛选器由“未优化”切换到“所有应用”，并将下方FGA设置变更为“不优化”"</string>
     <string name="p_battery_optimization_action">"关闭电池优化"</string>
-    <string name="p_battery_optimization_dontkillmyapp">"取决于您的设备，您可能还需要禁用更多的优化设置。您可以在dontkillmyapp.com（英文页面）上找到更多教程"</string>
+    <string name="p_battery_optimization_dontkillmyapp">"取决于您的设备，您可能还需要禁用更多的优化设置。您可以在%s（英文页面）上找到更多教程"</string>
     <string name="p_youtube_guide">"Youtube教学视频"</string>
     <string name="p_youtube_guide_description">"推荐您观看教学视频，它将指导您如何设置周回脚本（英语视频，需要科学上网）"</string>
     <string name="p_youtube_guide_action">"打开教学视频"</string>
@@ -403,23 +403,6 @@ Order Change"</string>
     <string name="skill_maker_main_delete_selected">"删除所选"</string>
     <string name="skill_maker_main_wave">"第 %d 波"</string>
     <string name="skill_maker_main_turn">"第 %d 回合"</string>
-    <string name="p_screenshot_bond"></string>
-    <string name="p_screenshot_bond_summary"></string>
-    <string name="bond_level_up"></string>
-    <string name="servant_enhancement">"从者强化"</string>
-    <string name="servant_enhancement_no_embers_or_qp_left"></string>
-    <string name="servert_enhancement_warning_notice">"该脚本将使用自动选择功能来选择种火。"</string>
-    <string name="servant_enhancement_redirect_ascension_question"></string>
-    <string name="servant_enhancement_perform_ascension_question"></string>
-    <string name="servant_enhancement_perform_ascension_warning"></string>
-    <string name="servant_enhancement_redirect_grail"></string>
-    <string name="servant_enhancement_redirect_ascension_success"></string>
-    <string name="servant_enhancement_redirect_grail_success"></string>
-    <string name="servant_enhancement_perform_ascension_failed"></string>
-    <string name="servant_enhancement_max_level"></string>
-    <string name="servant_enhancement_none_selected"></string>
-    <string name="servant_enhancement_aborted"></string>
-    <string name="note"></string>
-    <string name="p_hide_sq_in_resource"></string>
-    <string name="p_hide_sq_in_resource_summary"></string>
-</resources>
+                <string name="servant_enhancement">"从者强化"</string>
+        <string name="servert_enhancement_warning_notice">"该脚本将使用自动选择功能来选择种火。"</string>
+                                                    </resources>
