@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.prefs
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.prefs.core.map
 import io.github.fate_grand_automata.scripts.enums.GameServer
+import io.github.fate_grand_automata.scripts.prefs.IAppendPreferences
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IGesturesPreferences
 import io.github.fate_grand_automata.scripts.prefs.IPerServerConfigPrefs
@@ -114,10 +115,14 @@ class PreferencesImpl @Inject constructor(
 
     override var receiveEmbersWhenGiftBoxFull by prefs.receiveEmbersWhenGiftBoxFull
 
+    override val append: IAppendPreferences = AppendPrefs(prefs.append)
+
     private val autoSkillMap = mutableMapOf<String, IBattleConfig>()
 
     override val servant: IServantEnhancementPreferences =
         ServantEnhancementPrefs(prefs.servantEnhancement)
+
+    override var emptyEnhance by prefs.emptyEnhance
 
     override fun forBattleConfig(id: String): IBattleConfig =
         autoSkillMap.getOrPut(id) {
