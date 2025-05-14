@@ -23,6 +23,7 @@ internal class PerServerConfigPrefs(
 
 
     override var waitForAPRegen by prefs.waitAPRegen
+    override var sendSupportFriendRequest by prefs.sendSupportFriendRequest
 
     override var selectedApple by prefs.selectedApple
     override var currentAppleCount: Int

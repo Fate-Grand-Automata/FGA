@@ -26,6 +26,7 @@ class PerServerConfigPrefsCore(
     val copperAppleCount = maker.stringAsInt("copperApple", 0)
 
     val waitAPRegen = maker.bool("wait_for_ap_regeneration")
+    val sendSupportFriendRequest = maker.bool("send_support_friend_request")
 
 
     val selectedApple = maker.serialized(
