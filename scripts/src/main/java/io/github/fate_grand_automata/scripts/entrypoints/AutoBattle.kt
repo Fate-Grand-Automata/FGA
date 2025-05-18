@@ -340,11 +340,11 @@ class AutoBattle @Inject constructor(
     }
 
     private fun isInOrdealCallConfirmPodUseScreen(): Boolean {
-        return images[Images.StartQuest] in locations.ordealCallConfirmPodUseRegion
+        return findImage(locations.ordealCallConfirmPodUseRegion, Images.StartQuest)
     }
 
     private fun isInOrdealCallOutOfPodsScreen(): Boolean {
-        return images[Images.Close] in locations.ordealCallOutOfPodsRegion
+        return findImage(locations.ordealCallOutOfPodsRegion, Images.Close)
     }
 
     private fun ordealCallOutOfPods() {
