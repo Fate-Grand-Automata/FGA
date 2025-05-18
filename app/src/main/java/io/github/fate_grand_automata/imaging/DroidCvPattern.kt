@@ -76,9 +76,9 @@ class DroidCvPattern(
     }
 
     private fun match(template: Pattern): Mat? {
-        val result = Mat()
         if (template is DroidCvPattern) {
             if (template.width <= width && template.height <= height) {
+                val result = Mat()
                 Imgproc.matchTemplate(
                     mat,
                     template.mat,

@@ -29,6 +29,8 @@ class Locations @Inject constructor(
 
     val inventoryFullRegion = Region(-280, 860, 560, 190).xFromCenter()
 
+    val ordealCallConfirmPodUseRegion = Region(190, 1096, 420, 62).xFromCenter()
+
     val ordealCallOutOfPodsRegion = Region(-112, 1088, 219, 72).xFromCenter()
 
     val ordealCallOutOfPodsClick = Location(-2, 1124).xFromCenter()
