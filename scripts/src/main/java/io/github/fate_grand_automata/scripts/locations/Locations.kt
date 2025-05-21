@@ -18,6 +18,7 @@ class Locations @Inject constructor(
     val support: SupportScreenLocations,
     val attack: AttackScreenLocations,
     val battle: BattleScreenLocations,
+    val ceBomb: CEBombLocations,
     val servant: ServantLevelLocations,
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
@@ -136,10 +137,7 @@ class Locations @Inject constructor(
     val giftBoxSwipeStart = Location(120, if (canLongSwipe) 1200 else 1050).xFromCenter()
     val giftBoxSwipeEnd = Location(120, if (canLongSwipe) 350 else 575).xFromCenter()
 
-    val emptyEnhanceRegion = when (isWide) {
-        true -> Region(-1100, 600, 400, 400).xFromCenter()
-        false -> Region(200, 600, 400, 400)
-    }
+
     val ceEnhanceClick = Location(200, 600)
     val levelOneCERegion = Region(160, 380, 1840, 900)
 
@@ -148,6 +146,12 @@ class Locations @Inject constructor(
     val rankUpRegion = Region(270, 730, 220, 340).xFromCenter()
 
     val middleOfScreenClick = Location(0, 720).xFromCenter()
+
+    val emptyEnhanceRegion = when (isWide) {
+        true -> Region(-1100, 600, 400, 400).xFromCenter()
+        false -> Region(200, 600, 400, 400)
+    }
+
 
     /**
      * The following region are used for the various enhancement screen listed below:
@@ -168,4 +172,5 @@ class Locations @Inject constructor(
     val enhancementSkipRapidClick = Location(0, 1400).xFromCenter()
 
     val tempServantEnhancementLocation = Location(402, 1124).xFromCenter()
+
 }
