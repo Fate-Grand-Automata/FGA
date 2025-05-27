@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.ui
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -14,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.ui.prefs.StatusWrapper
@@ -60,6 +62,7 @@ fun Stepper(
     valueRange: IntRange,
     enabled: Boolean = true,
     delta: Int = 1,
+    textStyle: TextStyle = LocalTextStyle.current,
     valueRepresentation: (Int) -> String = { it.toString() }
 ) {
     var currentValue by remember(value) { mutableStateOf(value) }
@@ -84,7 +87,8 @@ fun Stepper(
                 valueRepresentation(currentValue),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .padding(horizontal = 5.dp)
+                    .padding(horizontal = 5.dp),
+                style = textStyle
             )
         }
 

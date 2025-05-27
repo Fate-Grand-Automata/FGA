@@ -45,7 +45,7 @@ jobs:
           echo "FGA_VERSION_NAME=$VERSION_NAME" >>${GITHUB_ENV}
 
       - name: Build Android Package
-        run: ./gradlew assembleCi --scan --parallel --no-daemon
+        run: ./gradlew assembleCi --parallel --no-daemon
     
       - name: Rename Artifacts
         run: |

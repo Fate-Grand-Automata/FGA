@@ -21,11 +21,13 @@ import io.github.fate_grand_automata.scripts.entrypoints.AutoFriendGacha
 import io.github.fate_grand_automata.scripts.entrypoints.AutoGiftBox
 import io.github.fate_grand_automata.scripts.entrypoints.AutoLottery
 import io.github.fate_grand_automata.scripts.entrypoints.AutoServantLevel
+import io.github.fate_grand_automata.scripts.entrypoints.AutoSkillUpgrade
 import io.github.fate_grand_automata.scripts.entrypoints.SupportImageMaker
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.exit.BattleExit
+import io.github.fate_grand_automata.ui.exit.SkillExit
 import io.github.fate_grand_automata.ui.launcher.ScriptLauncher
 import io.github.fate_grand_automata.ui.launcher.ScriptLauncherResponse
 import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIState
@@ -98,6 +100,37 @@ class ScriptManager @Inject constructor(
                 setOnDismissListener {
                     composeView.close()
                     continuation.resume(Unit)
+                }
+            }
+        }
+    }
+
+    private suspend fun showAutoSkillMenu(
+        context: Context,
+        exception: AutoSkillUpgrade.ExitException
+    ) = withContext(Dispatchers.Main) {
+        suspendCancellableCoroutine<Unit> { continuation ->
+            var dialog: DialogInterface? = null
+
+            val composeView = FakedComposeView(context) {
+                SkillExit(
+                    exception = exception,
+                    onClose = { dialog?.dismiss() },
+                    onCopy = { clipboardManager.set(context, exception) }
+                )
+            }
+            dialog = showOverlayDialog(context) {
+                setView(composeView.view)
+
+                setOnDismissListener {
+                    uiStateHolder.isPlayButtonEnabled = true
+                    composeView.close()
+
+                    try {
+                        continuation.resume(Unit)
+                    } catch (e: IllegalStateException) {
+                        // Ignore exception on resuming twice
+                    }
                 }
             }
         }
@@ -203,6 +236,12 @@ class ScriptManager @Inject constructor(
 
                 showBattleExit(service, e)
             }
+            is AutoSkillUpgrade.ExitException -> {
+                if (e.reason !is AutoSkillUpgrade.ExitReason.Abort) {
+                    messages.notify(scriptExitedString)
+                }
+                showAutoSkillMenu(service, e)
+            }
             is AutoServantLevel.ExitException -> {
                 val msg = when (val reason = e.reason) {
                     AutoServantLevel.ExitReason.NoServantSelected ->
@@ -276,6 +315,7 @@ class ScriptManager @Inject constructor(
             ScriptModeEnum.PresentBox -> entryPoint.giftBox()
             ScriptModeEnum.SupportImageMaker -> entryPoint.supportImageMaker()
             ScriptModeEnum.CEBomb -> entryPoint.ceBomb()
+            ScriptModeEnum.Skill -> entryPoint.skill()
             ScriptModeEnum.ServantLevel -> entryPoint.servantLevel()
         }
 
