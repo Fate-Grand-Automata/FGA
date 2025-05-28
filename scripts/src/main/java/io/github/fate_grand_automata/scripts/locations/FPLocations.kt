@@ -23,13 +23,14 @@ class FPLocations @Inject constructor(
         Location(2, 977).xFromCenter()
     else
         Location(2, 1052).xFromCenter()
+    val initialSummonContinueClick = Region(341, 1145, 120, 60).xFromCenter()
 
     val continueSummonRegion = Region(-36, 1264, 580, 170).xFromCenter()
     val first10SummonClick = if (afterAnni9)
         // the old location is still valid but only for 10x FP
         Location(400, 1062).xFromCenter()
     else
-        Location(120, 1062).xFromCenter()
+        Location(170, 1062).xFromCenter()
 
     val okClick = Location(320, 1120).xFromCenter()
     val continueSummonClick = Location(320, 1325).xFromCenter()
