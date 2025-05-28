@@ -25,7 +25,7 @@ class FPLocations @Inject constructor(
     val first10SummonClick = when (gameServer) {
         // the old location is still valid but only for 10x FP
         is GameServer.Jp -> Location(400, 1062).xFromCenter()
-        else -> Location(120, 1062).xFromCenter()
+        else -> Location(170, 1062).xFromCenter()
     }
     val okClick = Location(320, 1120).xFromCenter()
     val continueSummonClick = Location(320, 1325).xFromCenter()
