@@ -20,6 +20,7 @@ class FPLocations @Inject constructor(
         is GameServer.Jp -> Location(2, 977).xFromCenter()
         else -> Location(2, 1052).xFromCenter()
     }
+    val initialSummonContinueClick = Region(341, 1145, 120, 60).xFromCenter()
 
     val continueSummonRegion = Region(-36, 1264, 580, 170).xFromCenter()
     val first10SummonClick = when (gameServer) {
