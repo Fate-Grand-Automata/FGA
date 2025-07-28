@@ -9,6 +9,8 @@ sealed class SkillMakerNav {
     data object Atk : SkillMakerNav()
     data object OrderChange : SkillMakerNav()
     data class SkillTarget(val skill: Skill) : SkillMakerNav()
+    data class CommandSpell(val cs: Int) : SkillMakerNav()
+    data class CommandSpellTarget(val skill: Skill) : SkillMakerNav()
     data class ChangeNpType2(val skill: Skill) : SkillMakerNav()
     data class ChangeNpType3(val skill: Skill) : SkillMakerNav()
     data class Choice2(val skill: Skill, val slot: SkillSlot) : SkillMakerNav()
