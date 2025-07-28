@@ -62,9 +62,19 @@ interface AutomataApi {
 
     fun Region.detectText(outlinedText: Boolean = false): String
 
+
+    fun Location.longPress(duration: Int = 2000)
+
+    fun Region.longPress(duration: Int = 2000)
+
     fun Map<Pattern, Region>.exists(
         timeout: Duration = Duration.ZERO,
         similarity: Double? = null,
         requireAll: Boolean = false
     ): Boolean
+
+    fun longPressAndSwipe(
+        clicksArray: List<List<Location>>,
+        chunked: Int
+    )
 }

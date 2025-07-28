@@ -4,12 +4,15 @@ import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.prefs.core.map
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
+import io.github.fate_grand_automata.scripts.prefs.ICraftEssencePreferences
+import io.github.fate_grand_automata.scripts.prefs.IFriendGachaPreferences
 import io.github.fate_grand_automata.scripts.prefs.IGesturesPreferences
 import io.github.fate_grand_automata.scripts.prefs.IPerServerConfigPrefs
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.scripts.prefs.IServantEnhancementPreferences
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferencesCommon
 import io.github.lib_automata.PlatformPrefs
+import io.github.lib_automata.Region
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -101,18 +104,23 @@ class PreferencesImpl @Inject constructor(
 
     override var maxGoldEmberTotalCount by prefs.maxGoldEmberTotalCount
 
-    override var ceBombTargetRarity by prefs.ceBombTargetRarity
-
     override var stopAfterThisRun by prefs.stopAfterThisRun
 
     override var skipServantFaceCardCheck by prefs.skipServantFaceCardCheck
 
     override var treatSupportLikeOwnServant by prefs.treatSupportLikeOwnServant
 
-    override var shouldLimitFP by prefs.shouldLimitFP
-    override var limitFP by prefs.limitFP
-
     override var receiveEmbersWhenGiftBoxFull by prefs.receiveEmbersWhenGiftBoxFull
+
+    override val craftEssence: ICraftEssencePreferences =
+        CraftEssencePrefs(prefs.craftEssence)
+
+    override val friendGacha: IFriendGachaPreferences =
+        FriendGachaPrefs(prefs.friendGacha)
+
+    override var emptyEnhance by prefs.emptyEnhance
+
+    override val playButtonRegion: Region by prefs.playButtonRegion
 
     private val autoSkillMap = mutableMapOf<String, IBattleConfig>()
 
@@ -207,6 +215,11 @@ class PreferencesImpl @Inject constructor(
             .map { it.milliseconds }
 
         override val swipeDuration by prefs.swipeDuration
+            .map { it.milliseconds }
+
+        override val longPressDuration by prefs.longPressDuration
+            .map { it.milliseconds }
+        override val dragDuration by prefs.dragDuration
             .map { it.milliseconds }
     }
 }

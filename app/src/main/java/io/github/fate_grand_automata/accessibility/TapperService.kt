@@ -1,8 +1,10 @@
 package io.github.fate_grand_automata.accessibility
 
 import android.accessibilityservice.AccessibilityService
+import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.Intent
 import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +29,10 @@ class TapperService : AccessibilityService() {
         // We only want events from FGO
         serviceInfo = serviceInfo.apply {
             packageNames = GameServer.packageNames.keys.toTypedArray()
+            // We only need DEFAULT flags for gesture dispatch and window events.
+            flags = AccessibilityServiceInfo.DEFAULT
+            // Only listen for WINDOW_STATE_CHANGED for server detection.
+            eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
         }
 
         instance = this
@@ -52,19 +58,16 @@ class TapperService : AccessibilityService() {
      * of the FGO APKs.
      */
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        when (event?.eventType) {
-            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                val foregroundAppName = event.packageName?.toString()
-                    ?: return
+        if (event?.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            val foregroundAppName = event.packageName?.toString() ?: return
 
-                GameServer.fromPackageName(foregroundAppName)?.let { server ->
+            GameServer.fromPackageName(foregroundAppName)?.let { server ->
+                // Update the detected server only if it changed
+                if (detectedFgoServer != server) {
                     Timber.d("Detected FGO: $server")
-
                     detectedFgoServer = server
                 }
             }
-
-            else -> {}
         }
     }
 

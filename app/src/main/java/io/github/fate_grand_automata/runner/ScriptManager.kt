@@ -188,6 +188,8 @@ class ScriptManager @Inject constructor(
                 val msg = when (val reason = e.reason) {
                     AutoFriendGacha.ExitReason.InventoryFull -> context.getString(R.string.inventory_full)
                     is AutoFriendGacha.ExitReason.Limit -> context.getString(R.string.times_rolled, reason.count)
+                    AutoFriendGacha.ExitReason.UnableVerifyIfReachedCEEnhancementMenu ->
+                        context.getString(R.string.unable_to_verify_if_reached_the_ce_menu)
                 }
 
                 messages.notify(msg)
@@ -240,7 +242,9 @@ class ScriptManager @Inject constructor(
 
             is AutoCEBomb.ExitException -> {
                 val msg = when (e.reason) {
-                    AutoCEBomb.ExitReason.NoSuitableTargetCEFound -> "No suitable target CE found"
+                    AutoCEBomb.ExitReason.NoSuitableTargetCEFound -> context.getString(R.string.ce_bomb_no_suitable_ces)
+                    AutoCEBomb.ExitReason.TargetCEMaxLevel ->
+                        context.getString(R.string.ce_bomb_target_ce_max_level)
                 }
 
                 messages.notify(msg)

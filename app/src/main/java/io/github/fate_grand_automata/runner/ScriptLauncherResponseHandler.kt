@@ -19,9 +19,6 @@ class ScriptLauncherResponseHandler @Inject constructor(
         prefs.scriptMode = when (resp) {
             ScriptLauncherResponse.Cancel -> return
             is ScriptLauncherResponse.FP -> {
-                prefs.shouldLimitFP = resp.limit != null
-                resp.limit?.let { prefs.limitFP = it }
-
                 ScriptModeEnum.FP
             }
 
@@ -42,8 +39,6 @@ class ScriptLauncherResponseHandler @Inject constructor(
 
             ScriptLauncherResponse.SupportImageMaker -> ScriptModeEnum.SupportImageMaker
             is ScriptLauncherResponse.CEBomb -> {
-                prefs.ceBombTargetRarity = resp.targetRarity
-
                 ScriptModeEnum.CEBomb
             }
 
