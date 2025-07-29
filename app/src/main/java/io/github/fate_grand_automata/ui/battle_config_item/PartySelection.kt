@@ -40,7 +40,7 @@ fun PartySelection(config: BattleConfigCore) {
     val isSelectionExtended by remember {
         derivedStateOf {
             when (server.asGameServer()) {
-                null, is GameServer.Jp -> true
+                null, is GameServer.Jp, is GameServer.Cn -> true
                 else -> false
             }
         }
