@@ -92,13 +92,13 @@ class Locations @Inject constructor(
     }.xFromCenter()
 
     val selectedPartyRegion = when (gameServer) {
-        // JP have 15 max party slots
-        is GameServer.Jp -> Region(-370, 62, 740, 72).xFromCenter()
+        // JP and CN have 15 max party slots
+        is GameServer.Jp, is GameServer.Cn -> Region(-370, 62, 740, 72).xFromCenter()
         else -> Region(-270, 62, 550, 72).xFromCenter()
     }
     
     val partySelectionArray = when (gameServer) {
-        is GameServer.Jp -> (0..14).map {
+        is GameServer.Jp, is GameServer.Cn -> (0..14).map {
             // Party 8 is on the center
             val x = ((it - 7) * 50)
 
