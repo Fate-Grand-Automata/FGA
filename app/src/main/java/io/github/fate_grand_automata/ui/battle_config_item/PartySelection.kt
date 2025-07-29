@@ -19,18 +19,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.prefs.remember
-import io.github.fate_grand_automata.scripts.enums.GameServer
 
 @Composable
 fun PartySelection(config: BattleConfigCore) {
@@ -40,7 +39,7 @@ fun PartySelection(config: BattleConfigCore) {
     val isSelectionExtended by remember {
         derivedStateOf {
             when (server.asGameServer()) {
-                null, is GameServer.Jp, is GameServer.Cn -> true
+                null, is GameServer.Jp, GameServer.Cn -> true
                 else -> false
             }
         }
