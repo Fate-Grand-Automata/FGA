@@ -23,11 +23,9 @@ class ServantLevelLocations @Inject constructor(
             is GameServer.Jp -> 774
             else -> 1030
         }
+        val y = if (isWide) 266 else 306
 
-        when (isWide) {
-            true -> Region(x, 266, 242, 57).xFromCenter()
-            false -> Region(x, 306, 242, 57).xFromCenter()
-        }
+        Region(x, y, 242, 57).xFromCenter()
     }
 
     val emptyEmberOrQPDialogRegion =
