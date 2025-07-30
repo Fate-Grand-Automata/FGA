@@ -17,13 +17,17 @@ class ServantLevelLocations @Inject constructor(
         false -> Location(-1096, 1259).xFromRight()
     }
 
-    val servantAutoSelectRegion = when (isWide) {
-        true -> Region(1030, 266, 242, 57).xFromCenter()
-        false -> Region(1030, 306, 242, 57).xFromCenter()
-    }
-    val autoSelectLocation = when (isWide) {
-        true -> Location(-347, 294).xFromRight()
-        false -> Location(-127, 334).xFromRight()
+    val servantAutoSelectRegion: Region = run {
+        val x = when (gameServer) {
+            // 10th anniversary added a Clear button and moved the Auto Select button to the left
+            is GameServer.Jp -> 774
+            else -> 1030
+        }
+
+        when (isWide) {
+            true -> Region(x, 266, 242, 57).xFromCenter()
+            false -> Region(x, 306, 242, 57).xFromCenter()
+        }
     }
 
     val emptyEmberOrQPDialogRegion =
