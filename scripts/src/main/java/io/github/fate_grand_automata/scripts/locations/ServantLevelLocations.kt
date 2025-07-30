@@ -20,12 +20,12 @@ class ServantLevelLocations @Inject constructor(
     val servantAutoSelectRegion: Region = run {
         val x = when (gameServer) {
             // 10th anniversary added a Clear button and moved the Auto Select button to the left
-            is GameServer.Jp -> 774
+            is GameServer.Jp -> 778
             else -> 1030
         }
         val y = if (isWide) 266 else 306
 
-        Region(x, y, 242, 57).xFromCenter()
+        Region(x, y, 250, 57).xFromCenter()
     }
 
     val emptyEmberOrQPDialogRegion =
