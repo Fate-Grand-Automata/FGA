@@ -98,7 +98,7 @@ class AutoBattle @Inject constructor(
             loop()
         } catch (e: BattleExitException) {
             throw ExitException(e.reason, makeExitState())
-        } catch (e: ScriptAbortException) {
+        } catch (_: ScriptAbortException) {
             throw ExitException(ExitReason.Abort, makeExitState())
         } catch (e: Exception) {
             val reason = ExitReason.Unexpected(e)
@@ -339,11 +339,12 @@ class AutoBattle @Inject constructor(
         locations.resultMatRewardsRegion.click()
     }
 
-    private fun isInOrdealCallOutOfPodsScreen(): Boolean {
-        // Lock the Ordeal Call for JP server
-        if (prefs.gameServer !is GameServer.Jp) return false
+    private fun isInOrdealCallConfirmPodUseScreen(): Boolean {
+        return findImage(locations.ordealCallConfirmPodUseRegion, Images.StartQuest)
+    }
 
-        return images[Images.Close] in locations.ordealCallOutOfPodsRegion
+    private fun isInOrdealCallOutOfPodsScreen(): Boolean {
+        return findImage(locations.ordealCallOutOfPodsRegion, Images.Close)
     }
 
     private fun ordealCallOutOfPods() {
@@ -520,15 +521,18 @@ class AutoBattle @Inject constructor(
 
         var closeScreen = false
         var inventoryFull = false
+        var confirmPodUsage = false
 
         useSameSnapIn {
             closeScreen = isInOrdealCallOutOfPodsScreen()
             inventoryFull = isInventoryFull()
+            confirmPodUsage = isInOrdealCallConfirmPodUseScreen()
         }
 
         when {
             closeScreen -> throw BattleExitException(ExitReason.LimitRuns(state.runs))
             inventoryFull -> throw BattleExitException(ExitReason.InventoryFull)
+            confirmPodUsage -> locations.ordealCallConfirmPodUseRegion.center.click()
         }
 
         refill.refill()
