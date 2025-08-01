@@ -19,7 +19,7 @@ jobs:
             
             This action was performed automatically.
       - name: Lock Issue
-        uses: OSDKDev/lock-issues@v1.1
+        uses: OSDKDev/lock-issues@v1.2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
       - name: Label Issue
