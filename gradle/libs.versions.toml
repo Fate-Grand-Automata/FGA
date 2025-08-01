@@ -15,7 +15,7 @@ gson_version = "2.13.1"
 kotlin_version = "2.1.20"
 ksp_version = "2.1.20-2.0.1"
 
-gradle_version = "8.10.0"
+gradle_version = "8.12.0"
 
 
 ben-manes_versions = "0.52.0"
