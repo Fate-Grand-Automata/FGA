@@ -163,7 +163,7 @@ class RealImageMatcher @Inject constructor(
         
         highlight(
             region,
-            color = if (matches.any()) HighlightColor.Success else HighlightColor.Error
+            color = if (matches.isNotEmpty()) HighlightColor.Success else HighlightColor.Error
         )
         
         return matches
