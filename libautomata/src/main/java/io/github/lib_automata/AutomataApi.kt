@@ -54,7 +54,7 @@ interface AutomataApi {
     fun Region.findAll(
         pattern: Pattern,
         similarity: Double? = null
-    ): List<Match>
+    ): Sequence<Match>
 
     fun Region.isWhite(): Boolean
 
