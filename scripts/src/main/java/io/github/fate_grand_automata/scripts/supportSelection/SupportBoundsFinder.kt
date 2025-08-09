@@ -13,7 +13,7 @@ data class SupportBounds(val region: Region)
 class SupportBoundsFinder @Inject constructor(
     api: IFgoAutomataApi
 ) : IFgoAutomataApi by api {
-    fun all(): Sequence<SupportBounds> =
+    fun all(): List<SupportBounds> =
         locations.support.confirmSetupButtonRegion
             .findAll(
                 images[Images.SupportConfirmSetupButton],
