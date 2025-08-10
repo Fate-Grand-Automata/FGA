@@ -101,6 +101,11 @@ Skills"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"Fallback"</string>
     <string name="p_battle_config_support_pref_servants">"Preferred Servants"</string>
     <string name="p_battle_config_support_max_ascended">"Max-ascended"</string>
+    <string name="p_battle_config_support_grand_servant">"Grand Servant"</string>
+    <string name="p_battle_config_support_ce_match_count">"CE Match Count"</string>
+    <string name="ce_match_one">"One"</string>
+    <string name="ce_match_two">"Two"</string>
+    <string name="ce_match_three">"Three"</string>
     <string name="p_battle_config_support_pref_ces">"Preferred CEs"</string>
     <string name="p_battle_config_support_mlb">"Max-limit broken"</string>
     <string name="p_battle_config_support_friend_names">"Friend names"</string>

@@ -4,6 +4,7 @@ import io.github.fate_grand_automata.IStorageProvider
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.modules.Support
+import io.github.fate_grand_automata.scripts.supportSelection.SupportSelectionGrandChecker
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
 import io.github.lib_automata.Pattern
@@ -16,7 +17,8 @@ import javax.inject.Inject
 class SupportImageMaker @Inject constructor(
     storageProvider: IStorageProvider,
     exitManager: ExitManager,
-    api: IFgoAutomataApi
+    api: IFgoAutomataApi,
+    private val grandChecker: SupportSelectionGrandChecker
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     companion object {
         fun getServantImgPath(dir: File, Index: Int): File {
@@ -69,8 +71,14 @@ class SupportImageMaker @Inject constructor(
         for ((i, region) in regionArray.withIndex()) {
             region.getPattern().use {
                 extractServantImage(it, i)
-                extractCeImage(it, i)
-                extractFriendNameImage(region, isInSupport, i)
+
+                if (isGrandServant(region)) {
+                    extractGrandCeImage(region, i)
+                    extractGrandFriendNameImage(region, i)
+                } else {
+                    extractCeImage(it, i*4)
+                    extractFriendNameImage(region, isInSupport, i)
+                }
             }
         }
 
@@ -98,9 +106,38 @@ class SupportImageMaker @Inject constructor(
         servant.save(getServantImgPath(dir, i))
     }
 
+    private fun isGrandServant(supportBound: Region): Boolean {
+        val grandCeLabelRegion = locations.support.grandCeLabelRegion
+            .copy(y = supportBound.y - 98)
+        return grandChecker.isGrandPresent(grandCeLabelRegion)
+    }
+
     private fun extractCeImage(supportRegionImage: Pattern, i: Int) {
         val ce = supportRegionImage.crop(Region(0, 80, supportRegionImage.width, 25))
         ce.save(getCeImgPath(dir, i))
+    }
+
+    private fun extractGrandCeImage(supportBound: Region, i: Int) {
+        val clipRegion = locations.support.grandCeClipRegion
+            .copy(y = supportBound.y + locations.support.grandCeClipRegion.y)
+
+        clipRegion.getPattern().use {
+            val bounds = listOf(
+                Region(0, 0, 142, 25),
+                Region(0, 46, 142, 25),
+                Region(0, 92, 142, 25)
+            )
+            for ((j, bound) in bounds.withIndex()) {
+                val ce = it.crop(bound)
+                ce.save(getCeImgPath(dir, i * 4 + j + 1))
+            }
+        }
+    }
+
+    private  fun extractGrandFriendNameImage(supportBound: Region, i: Int) {
+        val friendBound = Region(supportBound.x + 662, supportBound.y - 95, 400, 110)
+        val friendPattern = friendBound.getPattern()
+        friendPattern.save(getFriendImgPath(dir, i))
     }
 
     private fun extractFriendNameImage(supportBound: Region, isInSupport: Boolean, i: Int) {

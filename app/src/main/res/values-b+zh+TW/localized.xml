@@ -98,6 +98,8 @@ Order Change"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"備用選取方式"</string>
     <string name="p_battle_config_support_pref_servants">"偏好從者"</string>
     <string name="p_battle_config_support_max_ascended">"最終再臨"</string>
+    <string name="p_battle_config_support_grand_servant">"冠位從者"</string>
+    <string name="p_battle_config_support_ce_match_count">"CE Match Count"</string>
     <string name="p_battle_config_support_pref_ces">"偏好禮裝"</string>
     <string name="p_battle_config_support_mlb">"滿破禮裝"</string>
     <string name="p_battle_config_support_friend_names">"好友名稱"</string>

@@ -99,6 +99,8 @@ Order Change"</string>
     <string name="p_battle_config_support_pref_servants">"偏好从者"</string>
     <string name="p_battle_config_support_max_ascended">"最终再临"</string>
     <string name="p_battle_config_support_pref_ces">"偏好礼装"</string>
+    <string name="p_battle_config_support_grand_servant">"冠位从者"</string>
+    <string name="p_battle_config_support_ce_match_count">"CE Match Count"</string>
     <string name="p_battle_config_support_mlb">"满破礼装"</string>
     <string name="p_battle_config_support_friend_names">"好友名称"</string>
     <string name="p_battle_config_support_friends_only">"只选择好友从者"</string>

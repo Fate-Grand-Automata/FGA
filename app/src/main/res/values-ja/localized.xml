@@ -101,6 +101,8 @@
     <string name="p_battle_config_support_fallback_selection_mode">"フォールバック"</string>
     <string name="p_battle_config_support_pref_servants">"選択するサーヴァント"</string>
     <string name="p_battle_config_support_max_ascended">"最終再臨"</string>
+    <string name="p_battle_config_support_grand_servant">"グランドサーヴァント"</string>
+    <string name="p_battle_config_support_ce_match_count">"CE Match Count"</string>
     <string name="p_battle_config_support_pref_ces">"選択する概念礼装"</string>
     <string name="p_battle_config_support_mlb">"最大進化"</string>
     <string name="p_battle_config_support_friend_names">"フレンド名"</string>

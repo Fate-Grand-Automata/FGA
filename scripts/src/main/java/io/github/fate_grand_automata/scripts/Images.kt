@@ -88,5 +88,9 @@ enum class Images {
      */
     OkKR,
     Execute,
-    SupportBlankCE
+    SupportBlankCE,
+    /**
+     * for FGO JP
+     */
+    GrandCeLabel,
 }

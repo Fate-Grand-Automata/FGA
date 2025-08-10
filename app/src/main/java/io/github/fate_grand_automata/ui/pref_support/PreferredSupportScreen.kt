@@ -27,13 +27,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.Pref
 import io.github.fate_grand_automata.prefs.core.SupportPrefsCore
+import io.github.fate_grand_automata.scripts.enums.CEMatchCountEnum
 import io.github.fate_grand_automata.ui.Heading
 import io.github.fate_grand_automata.ui.OnResume
 import io.github.fate_grand_automata.ui.icon
 import io.github.fate_grand_automata.ui.prefs.Preference
 import io.github.fate_grand_automata.ui.prefs.PreferenceGroupHeader
+import io.github.fate_grand_automata.ui.prefs.SingleSelectChipPreference
 import io.github.fate_grand_automata.ui.prefs.SwitchPreference
 import io.github.fate_grand_automata.ui.prefs.remember
+import io.github.fate_grand_automata.util.stringRes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -100,6 +103,10 @@ private fun PreferredSupport(
                             title = stringResource(R.string.p_battle_config_support_max_ascended)
                         )
 
+                        config.grandServant.SwitchPreference(
+                            title = stringResource(R.string.p_battle_config_support_grand_servant)
+                        )
+
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.padding(16.dp)
@@ -148,6 +155,17 @@ private fun PreferredSupport(
                         config.mlb.SwitchPreference(
                             title = stringResource(R.string.p_battle_config_support_mlb)
                         )
+                        Row {
+                            config.ceMatchCount.SingleSelectChipPreference(
+                                title = stringResource(R.string.p_battle_config_support_ce_match_count),
+                                entries = listOf(
+                                    CEMatchCountEnum.One,
+                                    CEMatchCountEnum.Two,
+                                    CEMatchCountEnum.Three
+                                ).associateWith { stringResource(it.stringRes) },
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
                     }
                 }
             }
