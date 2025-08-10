@@ -24,6 +24,18 @@
             android:screenOrientation="sensorLandscape" />
 
         <service
+            android:name=".accessibility.FGATileService"
+            android:exported="true"
+            android:label="FGA Service"
+            android:icon="@drawable/fga_tile_icon_v1"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            >
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
             android:name=".runner.ScriptRunnerService"
             android:foregroundServiceType="mediaProjection|specialUse">
             <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
