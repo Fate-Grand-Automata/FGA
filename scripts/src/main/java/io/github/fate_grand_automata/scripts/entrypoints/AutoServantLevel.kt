@@ -94,6 +94,20 @@ class AutoServantLevel @Inject constructor(
     // This limits the close dialog that appears on 3rd ascension.
     private var isInAscension = false
 
+    /**
+     * JP Update from 2025-07-30
+     * that supports the auto filling of the embers making enhancement faster.
+     *
+     * This is used to check if the script is in the auto fill state.
+     */
+    private var stateAutoFill = false
+
+    /**
+     * JP Update from 2025-08-03. After leveling up a servant,
+     * it will now refund the extra embers/qp used for the enhancement.
+     */
+    private var isRefundWindowClicked = false
+
     private fun loop(): Nothing {
         if (isServantEmpty()) {
             throw ServantUpgradeException(ExitReason.NoServantSelected)
@@ -141,6 +155,9 @@ class AutoServantLevel @Inject constructor(
      * If the user didn't enabled any of the options, it will exit the script.
      */
     private fun checkMaxLevelRedirectOrExit() {
+        // reset of isRefundWindowClicked state
+        isRefundWindowClicked = false
+
         if (prefs.platformPrefs.debugMode) {
             // wait for debug rectangles to disappear
             (Highlighter.DEFAULT_DURATION + 0.1.seconds).wait()
@@ -250,7 +267,41 @@ class AutoServantLevel @Inject constructor(
      * @see isAutoSelectVisible
      */
     private fun performAutoSelect() {
+        if (stateAutoFill) {
+            locations.enhancementClick.click()
+            0.5.seconds.wait()
+            val exist = locations.servant.finalConfirmRegion.exists(
+                image = images[Images.Ok],
+                timeout = 3.seconds,
+            )
+            if (!exist) {
+                throw ServantUpgradeException(ExitReason.NoEmbersOrQPLeft)
+            }
+            return
+        }
         locations.servant.servantAutoSelectRegion.click()
+    }
+
+    /**
+     * This function will attempt to enable the auto fill feature if it is available.
+     * It checks if the feature is already ON, and if not, it tries to click the toggle.
+     * This is only applicable for the JP server.
+     *
+     * @see stateAutoFill
+     */
+    private fun tryEnableAutoFill() {
+        if (prefs.gameServer !is GameServer.Jp) return
+
+        stateAutoFill = images[Images.StateON] in locations.servant.autoFillStateRegion
+
+        run retry@{
+            repeat(2) {
+                if (stateAutoFill) return@retry
+                locations.servant.autoFillStateRegion.click()
+                0.5.seconds.wait()
+                stateAutoFill = images[Images.StateON] in locations.servant.autoFillStateRegion
+            }
+        }
     }
 
     /**
@@ -264,7 +315,8 @@ class AutoServantLevel @Inject constructor(
      * @see isEmptyEmberOrQPDialogVisible
      */
     private fun performEnhancement() {
-        locations.servant.emberConfirmationDialogLocation.click()
+        tryEnableAutoFill()
+        locations.servant.emberConfirmationDialogRegion.click()
         1.seconds.wait()
         locations.enhancementClick.click()
         0.5.seconds.wait()
@@ -309,8 +361,14 @@ class AutoServantLevel @Inject constructor(
     /**
      * This function will check if the ember selection dialog is visible.
      */
-    private fun isEmberSelectionDialogVisible() = images[Images.Ok] in
-            locations.servant.emberConfirmationDialogRegion
+    private fun isEmberSelectionDialogVisible(): Boolean {
+        val pattern = when (prefs.gameServer) {
+            is GameServer.Jp -> images[Images.Execute]
+            else -> images[Images.Ok]
+        }
+        return pattern in locations.servant.emberConfirmationDialogRegion
+    }
+            
 
     /**
      * This function will check if the empty ember or QP dialog is visible.
@@ -329,8 +387,17 @@ class AutoServantLevel @Inject constructor(
             locations.servant.emptyEmberOrQPDialogRegion.click()
             return
         }
-
-        throw ServantUpgradeException(ExitReason.NoEmbersOrQPLeft)
+        // If the script is in the JP server, it will check if the refund window is clicked.
+        // If it is, it will throw an exception to exit the script.
+        // If it is not, it will click the refund window.
+        val isRefundAvailable = prefs.gameServer is GameServer.Jp && !isRefundWindowClicked
+        if (isRefundAvailable) {
+            isRefundWindowClicked = true
+            locations.servant.emptyEmberOrQPDialogRegion.click()
+            0.5.seconds.wait()
+        } else {
+            throw ServantUpgradeException(ExitReason.NoEmbersOrQPLeft)
+        }
     }
 
     /**
