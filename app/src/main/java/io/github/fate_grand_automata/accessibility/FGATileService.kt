@@ -1,11 +1,15 @@
 package io.github.fate_grand_automata.accessibility
 
+import android.app.PendingIntent
+import android.content.Intent
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import io.github.fate_grand_automata.runner.ScriptRunnerService
+import io.github.fate_grand_automata.ui.main.MainActivity
 
 class FGATileService: TileService() {
 
@@ -90,15 +94,47 @@ class FGATileService: TileService() {
                 return
             }
 
-            // Start the service - accessibility is granted
-            try {
-                ScriptRunnerService.startService(this)
-            } catch (e: Exception) {
-                android.util.Log.e("FGATileService", "Failed to start service", e)
+            // For Android 14+ (API 34+), always use activity to start service
+            // For older versions, try direct start first, fallback to activity
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                // Android 14+: Always open activity to avoid ForegroundServiceStartNotAllowedException
+                openFGAAppWithStartIntent()
+            } else {
+                // Pre-Android 14: Try direct start, fallback to activity if needed
+                try {
+                    ScriptRunnerService.startService(this)
+                } catch (e: Exception) {
+                    android.util.Log.e("FGATileService", "Direct service start failed, opening activity", e)
+                    openFGAAppWithStartIntent()
+                }
             }
         }
 
         updateTile()
+    }
+
+    /**
+     * Opens FGA app with intent to start service from there - this is strictly for Android 14+ behaviour
+     *
+     * This is to fix crashes for Android 14 and above devices
+     *
+     * For Android 13 and below, it will start the service as normal
+     */
+    private fun openFGAAppWithStartIntent() {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra("START_SERVICE_FROM_TILE", true)
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            val pendingIntent = PendingIntent.getActivity(
+                this,
+                1,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            startActivityAndCollapse(pendingIntent)
+        }
     }
 
     private fun updateTile() {
