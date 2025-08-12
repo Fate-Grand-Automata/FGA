@@ -78,7 +78,17 @@ class FGATileService: TileService() {
         updateRunnable = null
     }
 
-    // Called when the user taps on your tile in an active or inactive state.
+    /* Called when the user taps on your tile in an active or inactive state.
+    *
+    * Android 13 and below:
+    * - Will not prompt MediaProjectionToken if it's not expired
+    *
+    * Android 14 and above:
+    * - Will prompt everytime because the token is single used, change of behaviour since Android 14
+    * source:
+    * 1) https://developer.android.com/about/versions/14/behavior-changes-14
+    * 2) https://developer.android.com/media/grow/media-projection
+    */
     override fun onClick() {
         super.onClick()
 
@@ -88,25 +98,16 @@ class FGATileService: TileService() {
             // Stop the service
             ScriptRunnerService.stopService(this)
         } else {
-
-            if(!hasScreenRecordingPermission()) {
+            if (!hasScreenRecordingPermission()) {
                 requestScreenRecordingPermission()
                 return
             }
 
-            // For Android 14+ (API 34+), always use activity to start service
-            // For older versions, try direct start first, fallback to activity
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                // Android 14+: Always open activity to avoid ForegroundServiceStartNotAllowedException
+            try {
+                ScriptRunnerService.startService(this)
+            } catch (e: Exception) {
+                Log.e("FGATileService", "Direct service start failed, opening FGA App instead.", e)
                 openFGAAppWithStartIntent()
-            } else {
-                // Pre-Android 14: Try direct start, fallback to activity if needed
-                try {
-                    ScriptRunnerService.startService(this)
-                } catch (e: Exception) {
-                    Log.e("FGATileService", "Direct service start failed, opening activity", e)
-                    openFGAAppWithStartIntent()
-                }
             }
         }
 
@@ -127,11 +128,7 @@ class FGATileService: TileService() {
     }
 
     /**
-     * Opens FGA app with intent to start service from there - this is strictly for Android 14+ behaviour
-     *
-     * This is to fix crashes for Android 14 and above devices
-     *
-     * For Android 13 and below, it will start the service as normal
+     * Opens FGA app if fail to launch service initially onClick().
      */
     private fun openFGAAppWithStartIntent() {
         val intent = Intent(this, MainActivity::class.java).apply {
@@ -147,6 +144,9 @@ class FGATileService: TileService() {
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
             startActivityAndCollapse(pendingIntent)
+        } else {
+            //Android 13 and below fallback
+            startActivity(intent)
         }
     }
 
@@ -192,12 +192,10 @@ class FGATileService: TileService() {
     }
 
     private fun isServiceRunning(): Boolean {
-        // Use the same method as the main app for consistency
         return ScriptRunnerService.serviceStarted.value
     }
 
     private fun isAccessibilityServiceEnabled(): Boolean {
-        // Check if TapperService is enabled and running
         return TapperService.serviceStarted.value
     }
 
