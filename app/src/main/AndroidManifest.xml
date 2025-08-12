@@ -23,8 +23,13 @@
             android:label="Skill Maker"
             android:screenOrientation="sensorLandscape" />
 
+        <activity
+            android:name=".accessibility.tileFGAApp.FGATileMediaProjectionResultActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:exported="false" />
+
         <service
-            android:name=".accessibility.FGATileService"
+            android:name=".accessibility.tileFGAApp.FGATileService"
             android:exported="true"
             android:label="FGA Service"
             android:icon="@drawable/fga_tile_icon_v1"

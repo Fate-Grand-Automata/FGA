@@ -1,13 +1,17 @@
-package io.github.fate_grand_automata.accessibility
+package io.github.fate_grand_automata.accessibility.tileFGAApp
 
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
+import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
+import android.util.Log
+import io.github.fate_grand_automata.accessibility.TapperService
 import io.github.fate_grand_automata.runner.ScriptRunnerService
 import io.github.fate_grand_automata.ui.main.MainActivity
 
@@ -82,15 +86,11 @@ class FGATileService: TileService() {
 
         if (isServiceRunning) {
             // Stop the service
-            try {
-                ScriptRunnerService.stopService(this)
-            } catch (e: Exception) {
-                android.util.Log.e("FGATileService", "Failed to stop service", e)
-            }
+            ScriptRunnerService.stopService(this)
         } else {
-            // Check permissions before starting service
-            if (!isAccessibilityServiceEnabled() || !canDrawOverlays()) {
-                // Return no notification/error code
+
+            if(!hasScreenRecordingPermission()) {
+                requestScreenRecordingPermission()
                 return
             }
 
@@ -104,13 +104,26 @@ class FGATileService: TileService() {
                 try {
                     ScriptRunnerService.startService(this)
                 } catch (e: Exception) {
-                    android.util.Log.e("FGATileService", "Direct service start failed, opening activity", e)
+                    Log.e("FGATileService", "Direct service start failed, opening activity", e)
                     openFGAAppWithStartIntent()
                 }
             }
         }
 
         updateTile()
+    }
+
+    private fun requestScreenRecordingPermission() {
+        val mediaProjectionManager = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
+        val permissionIntent = mediaProjectionManager.createScreenCaptureIntent()
+
+        // This replicates the startMediaProjection.launch() functionality
+        val resultIntent = Intent(this, FGATileMediaProjectionResultActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra("PERMISSION_INTENT", permissionIntent)
+        }
+
+        startActivity(resultIntent)
     }
 
     /**
@@ -149,7 +162,7 @@ class FGATileService: TileService() {
                 tile.state = Tile.STATE_ACTIVE
 
                 // To check if device OS can put subtitle under label, if not change label entirely
-                if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.Q) {
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
                     tile.subtitle = "Stop"
                 } else {
                     tile.label = "FGA Service - STOP"
@@ -158,14 +171,14 @@ class FGATileService: TileService() {
                 // Show different states based on both permissions
                 if (hasAllPermissions) {
                     tile.state = Tile.STATE_INACTIVE
-                    if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.Q) {
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
                         tile.subtitle = "Start"
                     } else {
                         tile.label = "FGA Service - START"
                     }
                 } else {
                     tile.state = Tile.STATE_UNAVAILABLE
-                    if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.Q) {
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
                         tile.subtitle = "Permissions Required"
                     } else {
                         tile.label = "FGA - Permissions Required"
@@ -188,11 +201,16 @@ class FGATileService: TileService() {
         return TapperService.serviceStarted.value
     }
 
+    private fun hasScreenRecordingPermission(): Boolean {
+        return ScriptRunnerService.mediaProjectionToken != null
+    }
+
     private fun canDrawOverlays(): Boolean {
-        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Settings.canDrawOverlays(this)
         } else {
             true // Permission not required for API < 23
         }
     }
+
 }
