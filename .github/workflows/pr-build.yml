@@ -1,7 +1,7 @@
 name: PR Build
 
 on:
-  pull_request:
+  pull_request_target:
     paths-ignore:
       - '.idea/**'
       - '.github/ISSUE_TEMPLATE/**'
@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref }}
   cancel-in-progress: true
 
 env:
@@ -25,11 +25,25 @@ env:
 jobs:
   build:
     runs-on: macos-14
-    if: github.ref != 'refs/heads/master'
     permissions: 
       pull-requests: write 
     steps:
+      # get the PR from the event as JSON
+      - uses: actions/github-script@v6
+        id: pr
+        with:
+          script: |
+            const { data: pullRequest } = await github.rest.pulls.get({
+              ...context.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            return pullRequest
+      
+      # check out the merged result
       - uses: actions/checkout@v4
+        with:
+          ref: ${{fromJSON(steps.pr.outputs.result).merge_commit_sha}}
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -78,7 +92,7 @@ jobs:
           path: ${{ env.FGA_MAPPING_PATH }}
       
       - name: Comment the APK
-        if: ${{ github.event_name != 'workflow_dispatch' && github.actor.login != 'renovate' }}
+        if: ${{ github.event_name != 'workflow_dispatch' && github.actor != 'renovate[bot]' }}
         uses: thollander/actions-comment-pull-request@v3
         with:
           comment-tag: apk
