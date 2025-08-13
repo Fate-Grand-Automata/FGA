@@ -8,7 +8,6 @@ import io.github.fate_grand_automata.scripts.prefs.ISupportPreferences
 import io.github.lib_automata.Region
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.math.min
 
 @ScriptScope
 class CESelection @Inject constructor(
@@ -27,10 +26,6 @@ class CESelection @Inject constructor(
             return !searchRegion.exists(images[Images.SupportBlankCE])
         }
 
-        val (bondCes, ces) = ces.partition {
-            it == BondCEEffectEnum.Default.value || it == BondCEEffectEnum.NP.value
-        }
-
         if (isGrandServant(grandSearchRegion)) {
             val matched = ces
                 .flatMap { entry -> images.loadSupportPattern(SupportImageKind.CE, entry) }
@@ -42,26 +37,31 @@ class CESelection @Inject constructor(
                 }
 
             val grandCeRegion1 = locations.support.grandCeRegion1.copy(y = searchRegion.y + locations.support.grandCeRegion1.y)
-            val grandCeRegion2 = locations.support.grandCeRegion2.copy(y = searchRegion.y + locations.support.grandCeRegion2.y)
             val grandCeRegion3 = locations.support.grandCeRegion3.copy(y = searchRegion.y + locations.support.grandCeRegion3.y)
             val bondRegion = locations.support.bondCeRegion.copy(y = searchRegion.y + locations.support.bondCeRegion.y)
 
-            var count = if (matched.any { grandCeRegion1.contains(it.region) }) 1 else 0
-            count += if (matched.any { grandCeRegion3.contains(it.region)}) 1 else 0
+            val normalMatch = matched.any { grandCeRegion1.contains(it.region) }
+            val rewardMatch = matched.any { grandCeRegion3.contains(it.region) }
 
-            if (matched.any { grandCeRegion2.contains(it.region)}) {
-                count += 1
+            val ceSlotMatch = if (supportPrefs.requireBothNormalAndRewardMatch) {
+                normalMatch && rewardMatch
             } else {
-                val bondMatched = bondCes
-                    .mapNotNull {
-                        val image = if (BondCEEffectEnum.Default.value == it) images[Images.BondCeEffectDefault] else images[Images.BondCeEffectNP]
-                        bondRegion.find(image)
-                    }.any()
-
-                count += if (bondMatched) 1 else 0
+                normalMatch || rewardMatch
             }
 
-            return supportPrefs.ceMatchCount.ordinal < count
+            val bondEffectMatch = when (supportPrefs.bondCEEffect) {
+                BondCEEffectEnum.Default -> {
+                    bondRegion.find(images[Images.BondCeEffectDefault]) != null
+                }
+                BondCEEffectEnum.NP -> {
+                    bondRegion.find(images[Images.BondCeEffectNP]) != null
+                }
+                else -> {
+                    true
+                }
+            }
+
+            return ceSlotMatch && bondEffectMatch
         } else {
             val matched = ces
                 .flatMap { entry -> images.loadSupportPattern(SupportImageKind.CE, entry) }
@@ -71,8 +71,9 @@ class CESelection @Inject constructor(
                 .filter {
                     !supportPrefs.mlb || isLimitBroken(it.region)
                 }
-            // When Pref is exceed ceMatchCount.One, I want non-grand's CE matching to fail.
-            return matched.isNotEmpty()  &&  supportPrefs.ceMatchCount.ordinal < min(matched.count(), 1)
+            return matched.isNotEmpty()
+                && !supportPrefs.requireBothNormalAndRewardMatch
+                && supportPrefs.bondCEEffect == BondCEEffectEnum.Ignore
         }
     }
 

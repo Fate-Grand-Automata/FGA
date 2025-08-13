@@ -1,6 +1,6 @@
 package io.github.fate_grand_automata.prefs.core
 
-import io.github.fate_grand_automata.scripts.enums.CEMatchCountEnum
+import io.github.fate_grand_automata.scripts.enums.BondCEEffectEnum
 import io.github.fate_grand_automata.scripts.enums.SupportClass
 import io.github.fate_grand_automata.scripts.enums.SupportSelectionModeEnum
 
@@ -36,9 +36,10 @@ class SupportPrefsCore(
     val skill2Max = maker.bool("support_skill_max_2")
     val skill3Max = maker.bool("support_skill_max_3")
 
-    val grandServant = maker.bool("grand_servant")
-    val ceMatchCount = maker.enum(
-        "ce_match_count",
-        CEMatchCountEnum.One
+    val grandServant = maker.bool("support_grand_servant")
+    val bondCEEffect = maker.enum(
+        "support_bond_ce_effect",
+        BondCEEffectEnum.Ignore
     )
+    val requireBothNormalAndRewardMatch = maker.bool("support_require_both_normal_and_reward_match")
 }

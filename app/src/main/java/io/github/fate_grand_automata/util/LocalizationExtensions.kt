@@ -2,8 +2,8 @@ package io.github.fate_grand_automata.util
 
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.GameAreaMode
+import io.github.fate_grand_automata.scripts.enums.BondCEEffectEnum
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
-import io.github.fate_grand_automata.scripts.enums.CEMatchCountEnum
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
@@ -57,11 +57,11 @@ val SupportSelectionModeEnum.stringRes
         SupportSelectionModeEnum.Preferred -> R.string.p_support_mode_preferred
     }
 
-val CEMatchCountEnum.stringRes
+val BondCEEffectEnum.stringRes
     get() = when (this) {
-        CEMatchCountEnum.One -> R.string.ce_match_one
-        CEMatchCountEnum.Two -> R.string.ce_match_two
-        CEMatchCountEnum.Three -> R.string.ce_match_three
+        BondCEEffectEnum.Ignore -> R.string.bond_ce_effect_ignore
+        BondCEEffectEnum.Default -> R.string.bond_ce_effect_default
+        BondCEEffectEnum.NP -> R.string.bond_ce_effect_np
     }
 
 val ShuffleCardsEnum.stringRes

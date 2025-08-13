@@ -35,5 +35,6 @@ internal class SupportPreferences(
     override val skill3Max by prefs.skill3Max
 
     override val grandServant by prefs.grandServant
-    override val ceMatchCount by prefs.ceMatchCount
+    override val bondCEEffect by prefs.bondCEEffect
+    override val requireBothNormalAndRewardMatch by prefs.requireBothNormalAndRewardMatch
 }

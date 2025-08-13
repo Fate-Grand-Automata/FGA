@@ -319,11 +319,6 @@ fun PreferredSummary(
                         modifier = Modifier.size(20.dp)
                     )
                 }
-
-                val count by config.ceMatchCount.remember()
-                Text(
-                    stringResource(count.stringRes)
-                )
             }
         }
 

@@ -28,13 +28,12 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.Pref
 import io.github.fate_grand_automata.prefs.core.SupportPrefsCore
 import io.github.fate_grand_automata.scripts.enums.BondCEEffectEnum
-import io.github.fate_grand_automata.scripts.enums.CEMatchCountEnum
 import io.github.fate_grand_automata.ui.Heading
 import io.github.fate_grand_automata.ui.OnResume
 import io.github.fate_grand_automata.ui.icon
+import io.github.fate_grand_automata.ui.prefs.ListPreference
 import io.github.fate_grand_automata.ui.prefs.Preference
 import io.github.fate_grand_automata.ui.prefs.PreferenceGroupHeader
-import io.github.fate_grand_automata.ui.prefs.SingleSelectChipPreference
 import io.github.fate_grand_automata.ui.prefs.SwitchPreference
 import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.util.stringRes
@@ -149,27 +148,23 @@ private fun PreferredSupport(
 
                     config.preferredCEs.SupportSelectPreference(
                         title = stringResource(R.string.p_battle_config_support_pref_ces),
-                        entries = vm.ces + mapOf(
-                            BondCEEffectEnum.Default.value to stringResource(R.string.p_battle_config_support_pref_bond_ce_effect_default),
-                            BondCEEffectEnum.NP.value to stringResource(R.string.p_battle_config_support_pref_bond_ce_effect_np)
-                        )
+                        entries = vm.ces
                     )
 
                     if (prefCEs.isNotEmpty()) {
                         config.mlb.SwitchPreference(
                             title = stringResource(R.string.p_battle_config_support_mlb)
                         )
-                        Row {
-                            config.ceMatchCount.SingleSelectChipPreference(
-                                title = stringResource(R.string.p_battle_config_support_ce_match_count),
-                                entries = listOf(
-                                    CEMatchCountEnum.One,
-                                    CEMatchCountEnum.Two,
-                                    CEMatchCountEnum.Three
-                                ).associateWith { stringResource(it.stringRes) },
-                                modifier = Modifier.weight(1f)
-                            )
-                        }
+
+                        config.bondCEEffect.ListPreference(
+                            title = stringResource(R.string.p_battle_config_support_bond_ce_effect_preference),
+                            entries = BondCEEffectEnum.entries
+                                .associateWith { stringResource(it.stringRes) }
+                        )
+
+                        config.requireBothNormalAndRewardMatch.SwitchPreference(
+                            title = stringResource(R.string.p_battle_config_support_require_both_normal_and_reward_match)
+                        )
                     }
                 }
             }
