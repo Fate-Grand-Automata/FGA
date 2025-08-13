@@ -102,6 +102,8 @@ Skills"</string>
     <string name="p_battle_config_support_pref_servants">"Preferred Servants"</string>
     <string name="p_battle_config_support_max_ascended">"Max-ascended"</string>
     <string name="p_battle_config_support_grand_servant">"Grand Servant"</string>
+    <string name="p_battle_config_support_pref_bond_ce_effect_default">"*Bond CE (Default)"</string>
+    <string name="p_battle_config_support_pref_bond_ce_effect_np">"*Bond CE (NP)"</string>
     <string name="p_battle_config_support_ce_match_count">"CE Match Count"</string>
     <string name="ce_match_one">"One"</string>
     <string name="ce_match_two">"Two"</string>

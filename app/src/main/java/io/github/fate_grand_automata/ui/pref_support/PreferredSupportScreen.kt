@@ -27,6 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.Pref
 import io.github.fate_grand_automata.prefs.core.SupportPrefsCore
+import io.github.fate_grand_automata.scripts.enums.BondCEEffectEnum
 import io.github.fate_grand_automata.scripts.enums.CEMatchCountEnum
 import io.github.fate_grand_automata.ui.Heading
 import io.github.fate_grand_automata.ui.OnResume
@@ -148,7 +149,10 @@ private fun PreferredSupport(
 
                     config.preferredCEs.SupportSelectPreference(
                         title = stringResource(R.string.p_battle_config_support_pref_ces),
-                        entries = vm.ces
+                        entries = vm.ces + mapOf(
+                            BondCEEffectEnum.Default.value to stringResource(R.string.p_battle_config_support_pref_bond_ce_effect_default),
+                            BondCEEffectEnum.NP.value to stringResource(R.string.p_battle_config_support_pref_bond_ce_effect_np)
+                        )
                     )
 
                     if (prefCEs.isNotEmpty()) {

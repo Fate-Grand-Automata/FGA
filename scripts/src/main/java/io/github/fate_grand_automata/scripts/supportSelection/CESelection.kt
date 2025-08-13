@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.scripts.supportSelection
 import io.github.fate_grand_automata.SupportImageKind
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
+import io.github.fate_grand_automata.scripts.enums.BondCEEffectEnum
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferences
 import io.github.lib_automata.Region
 import io.github.lib_automata.dagger.ScriptScope
@@ -26,6 +27,10 @@ class CESelection @Inject constructor(
             return !searchRegion.exists(images[Images.SupportBlankCE])
         }
 
+        val (bondCes, ces) = ces.partition {
+            it == BondCEEffectEnum.Default.value || it == BondCEEffectEnum.NP.value
+        }
+
         if (isGrandServant(grandSearchRegion)) {
             val matched = ces
                 .flatMap { entry -> images.loadSupportPattern(SupportImageKind.CE, entry) }
@@ -39,12 +44,24 @@ class CESelection @Inject constructor(
             val grandCeRegion1 = locations.support.grandCeRegion1.copy(y = searchRegion.y + locations.support.grandCeRegion1.y)
             val grandCeRegion2 = locations.support.grandCeRegion2.copy(y = searchRegion.y + locations.support.grandCeRegion2.y)
             val grandCeRegion3 = locations.support.grandCeRegion3.copy(y = searchRegion.y + locations.support.grandCeRegion3.y)
+            val bondRegion = locations.support.bondCeRegion.copy(y = searchRegion.y + locations.support.bondCeRegion.y)
 
             var count = if (matched.any { grandCeRegion1.contains(it.region) }) 1 else 0
-            count += if (matched.any { grandCeRegion2.contains(it.region)}) 1 else 0
             count += if (matched.any { grandCeRegion3.contains(it.region)}) 1 else 0
 
-            return matched.isNotEmpty() && supportPrefs.ceMatchCount.ordinal < count
+            if (matched.any { grandCeRegion2.contains(it.region)}) {
+                count += 1
+            } else {
+                val bondMatched = bondCes
+                    .mapNotNull {
+                        val image = if (BondCEEffectEnum.Default.value == it) images[Images.BondCeEffectDefault] else images[Images.BondCeEffectNP]
+                        bondRegion.find(image)
+                    }.any()
+
+                count += if (bondMatched) 1 else 0
+            }
+
+            return supportPrefs.ceMatchCount.ordinal < count
         } else {
             val matched = ces
                 .flatMap { entry -> images.loadSupportPattern(SupportImageKind.CE, entry) }

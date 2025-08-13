@@ -90,4 +90,6 @@ enum class Images {
     Execute,
     SupportBlankCE,
     GrandCeLabel,
+    BondCeEffectDefault,
+    BondCeEffectNP,
 }
