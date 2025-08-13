@@ -7,7 +7,8 @@ import io.github.lib_automata.Region
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
-data class SupportBounds(val region: Region)
+@JvmInline
+value class SupportBounds(val region: Region)
 
 @ScriptScope
 class SupportBoundsFinder @Inject constructor(
