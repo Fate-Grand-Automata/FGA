@@ -10,6 +10,7 @@ import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
 import io.github.fate_grand_automata.scripts.enums.SpamEnum
 import io.github.fate_grand_automata.scripts.enums.SupportClass
 import io.github.fate_grand_automata.scripts.enums.SupportSelectionModeEnum
+import io.github.fate_grand_automata.scripts.models.Skill
 
 val RefillResourceEnum.stringRes
     get() = when (this) {
@@ -189,4 +190,10 @@ val GameServer.simpleStringRes
         GameServer.Kr -> R.string.game_server_kr
         is GameServer.En -> R.string.game_server_na
         is GameServer.Jp -> R.string.game_server_jp
+    }
+
+val Skill.CommandSpell.stringRes
+    get() = when (this) {
+        Skill.CommandSpell.CS1 -> R.string.skill_maker_command_spell_full_np
+        Skill.CommandSpell.CS2 -> R.string.skill_maker_command_spell_full_hp
     }
