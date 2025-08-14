@@ -134,6 +134,9 @@ class ImageLoader @Inject constructor(
         Images.OkKR -> "ok-kr.png"
         Images.Execute -> "execute.png"
         Images.SupportBlankCE -> "support_blank_ce.png"
+        Images.GrandCeLabel -> "grand_ce_label.png"
+        Images.BondCeEffectDefault -> "bond_ce_effect_default.png"
+        Images.BondCeEffectNP -> "bond_ce_effect_np.png"
     }
 
     override operator fun get(img: Images, gameServer: GameServer?): Pattern = synchronized(regionCachedPatterns) {

@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.scripts.prefs
 
+import io.github.fate_grand_automata.scripts.enums.BondCEEffectEnum
 import io.github.fate_grand_automata.scripts.enums.SupportClass
 import io.github.fate_grand_automata.scripts.enums.SupportSelectionModeEnum
 
@@ -19,4 +20,8 @@ interface ISupportPreferences {
     val skill1Max: Boolean
     val skill2Max: Boolean
     val skill3Max: Boolean
+
+    val grandServant: Boolean
+    val bondCEEffect: BondCEEffectEnum
+    val requireBothNormalAndRewardMatch: Boolean
 }
