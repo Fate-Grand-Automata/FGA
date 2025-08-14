@@ -98,7 +98,11 @@ Master"</string>
     <string name="p_battle_config_support_pref_servants">"Servants được ưu tiên"</string>
     <string name="p_battle_config_support_max_ascended">"Tăng tối đa"</string>
     <string name="p_battle_config_support_grand_servant">"Grand Servant"</string>
-    <string name="p_battle_config_support_ce_match_count">"CE Match Count"</string>
+    <string name="p_battle_config_support_bond_ce_effect_preference">"Bond CE effect preference"</string>
+    <string name="p_battle_config_support_require_both_normal_and_reward_match">"Match both free slot &amp; bonus-up (Bond/FP/QP/EXP) slot"</string>
+    <string name="bond_ce_effect_ignore">"Ignore"</string>
+    <string name="bond_ce_effect_default">"Default effects"</string>
+    <string name="bond_ce_effect_np">"NP charge"</string>
     <string name="p_battle_config_support_pref_ces">"CEs được ưu tiên"</string>
     <string name="p_battle_config_support_mlb">"Giới hạn tối đa được phá vỡ"</string>
     <string name="p_battle_config_support_friend_names">"Tên của bạn bè"</string>

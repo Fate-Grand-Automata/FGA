@@ -99,7 +99,11 @@
     <string name="p_battle_config_support_pref_servants">"서번트 선호"</string>
     <string name="p_battle_config_support_max_ascended">"최종재림"</string>
     <string name="p_battle_config_support_grand_servant">"그랜드 서번트"</string>
-    <string name="p_battle_config_support_ce_match_count">"CE Match Count"</string>
+    <string name="p_battle_config_support_bond_ce_effect_preference">"Bond CE effect preference"</string>
+    <string name="p_battle_config_support_require_both_normal_and_reward_match">"Match both free slot &amp; bonus-up (Bond/FP/QP/EXP) slot"</string>
+    <string name="bond_ce_effect_ignore">"Ignore"</string>
+    <string name="bond_ce_effect_default">"Default effects"</string>
+    <string name="bond_ce_effect_np">"NP charge"</string>
     <string name="p_battle_config_support_pref_ces">"개념예장 선호"</string>
     <string name="p_battle_config_support_mlb">"최대해방 / 풀돌"</string>
     <string name="p_battle_config_support_friend_names">"친구 이름"</string>
