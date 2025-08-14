@@ -74,6 +74,11 @@ enum class Images {
     SkillUse,
     RankUp,
     Close,
+    AppendBanner,
+    AppendLock,
+    Ok,
+    SkillInsufficientQP,
+    SkillInsufficientMaterials,
     ServantAutoSelect,
     ServantAutoSelectOff,
     ServantMaxLevel,
@@ -82,7 +87,6 @@ enum class Images {
     ServantGrailBanner,
     ServantAscensionBanner,
     ServantAscensionReturnToLevel,
-    Ok,
     /**
      * 2nd OK button for FGO KR
      */

@@ -148,6 +148,10 @@ class PrefsCore @Inject constructor(
             )
         }
 
+
+    val append = AppendPrefsCore(maker)
+
     val servantEnhancement = ServantEnhancementPrefsCore(maker)
 
+    val emptyEnhance = maker.bool("ce_empty_enhance")
 }

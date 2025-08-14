@@ -461,6 +461,34 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
 
     <string name="bond_level_up">Bond Level up!</string>
 
+
+    <string name="append">Append Skill</string>
+    <string name="should_unlock_append">Check(\u2713) to unlock</string>
+    <string name="append_note">We can\'t detect the level of the append skill, so you need to set it manually how many times you want to upgrade it.\n\nFor example Level 1 -> 4, you need to set 3 into the append.</string>
+
+    <string name="append_unable_to_unlock">Unable to unlock append</string>
+    <string name="append_unlock_success">Successfully unlock!</string>
+    <string name="append_number">Append %d</string>
+    <string name="append_unable_to_upgrade_further">Unable to further Upgrade</string>
+    <string name="upgraded_number_of_times">Upgraded %d times</string>
+    <string name="append_unable_to_upgrade_n_times">Unable to upgrade %d times</string>
+    <string name="append_lag">Possible Network Lag. Unable to proceed.</string>
+
+    <string name="mute_notifications">Mute Notifications?</string>
+    
+    <string name="enhancement_error_out_of_qp">Insufficient QP</string>
+    <string name="enhancement_error_out_of_mats">Insufficient mats</string>
+    <string name="enhancement_error_exit_early_out_of_qp">Exit early due to Insufficient QP</string>
+    <string name="enhancement_error_no_enhancement">No enhancement perform</string>
+    <string name="enhancement_halt_aborted">Enhancement halt due to script abort</string>
+
+    <string name="done">Done</string>
+
+    <string name="enhancement_missing_servant">No Servant Selected. Please select a servant before proceeding.</string>
+    <string name="ran_out_of_qp">Ran out of QP</string>
+    <string name="success">Success</string>
+    <string name="reset">"Reset"</string>
+
     <string name="servant_enhancement">Servant Enhancement</string>
     <string name="servant_enhancement_no_embers_or_qp_left">Insufficient Embers or QP</string>
     <string name="servert_enhancement_warning_notice">This script will use the auto-select feature to select the embers.</string>
@@ -474,5 +502,8 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_enhancement_max_level">Max Level Achieved</string>
     <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
     <string name="servant_enhancement_aborted">Enhancement was aborted</string>
+
+    <string name="servant_enhancement_not_implemented">Servant Enhancement is not supported on your FGO server yet.</string>
     <string name="note">"Note:"</string>
+    <string name="empty_servant">Must select a servant before proceeding.</string>
 </resources>

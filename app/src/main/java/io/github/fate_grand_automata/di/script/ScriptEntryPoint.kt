@@ -14,7 +14,11 @@ interface ScriptEntryPoint {
     fun supportImageMaker(): SupportImageMaker
     fun ceBomb(): AutoCEBomb
 
+
+    fun append(): AutoAppend
+
     fun servantLevel(): AutoServantLevel
+
 
     fun autoDetect(): AutoDetect
 }
