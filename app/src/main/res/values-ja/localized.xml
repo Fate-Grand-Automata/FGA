@@ -102,7 +102,11 @@
     <string name="p_battle_config_support_pref_servants">"選択するサーヴァント"</string>
     <string name="p_battle_config_support_max_ascended">"最終再臨"</string>
     <string name="p_battle_config_support_grand_servant">"グランドサーヴァント"</string>
-    <string name="p_battle_config_support_ce_match_count">"CE Match Count"</string>
+    <string name="p_battle_config_support_bond_ce_effect_preference">"選択する絆礼装の効果"</string>
+    <string name="p_battle_config_support_require_both_normal_and_reward_match">"通常礼装＆報酬アップ(絆/FP/QP/EXP)礼装の両方に一致"</string>
+    <string name="bond_ce_effect_ignore">"判定をスキップする"</string>
+    <string name="bond_ce_effect_default">"通常効果"</string>
+    <string name="bond_ce_effect_np">"NPチャージ"</string>
     <string name="p_battle_config_support_pref_ces">"選択する概念礼装"</string>
     <string name="p_battle_config_support_mlb">"最大進化"</string>
     <string name="p_battle_config_support_friend_names">"フレンド名"</string>
