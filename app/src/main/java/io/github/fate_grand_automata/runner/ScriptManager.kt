@@ -160,9 +160,30 @@ class ScriptManager @Inject constructor(
             }
 
             is AutoLottery.ExitException -> {
-                val msg = when (e.reason) {
+                // Resetting these preferences ensures that the script does not loop into the lottery
+                // or assume the present box is full after handling an AutoLottery.ExitException.
+                preferences.loopIntoLotteryAfterPresentBox = false
+                preferences.isPresentBoxFull = false
+                val msg = when (val reason = e.reason) {
                     AutoLottery.ExitReason.PresentBoxFull -> context.getString(R.string.present_box_full)
                     AutoLottery.ExitReason.RanOutOfCurrency -> context.getString(R.string.lottery_currency_depleted)
+                    is AutoLottery.ExitReason.PresentBoxFullAndCannotSelectAnymore -> {
+                        if (reason.pickedGoldEmbers == 0) {
+                            context.getString(R.string.present_box_full_and_embers_are_overflowing)
+                        } else {
+                            context.getString(
+                                R.string.present_box_full_and_have_pick_at_least_embers,
+                                reason.pickedGoldEmbers
+                            )
+                        }
+                    }
+
+                    AutoLottery.ExitReason.NoEmbersFound -> context.getString(R.string.no_embers_found)
+                    is AutoLottery.ExitReason.CannotSelectAnyMore -> {
+                        context.getString(R.string.picked_exp_stacks, reason.pickedStacks, reason.pickedGoldEmbers)
+                    }
+
+                    AutoLottery.ExitReason.Abort -> context.getString(R.string.aborted)
                 }
 
                 messages.notify(msg)
@@ -170,6 +191,8 @@ class ScriptManager @Inject constructor(
             }
 
             is AutoGiftBox.ExitException -> {
+                preferences.loopIntoLotteryAfterPresentBox = false
+                preferences.isPresentBoxFull = false
                 val msg = when (val reason = e.reason) {
                     is AutoGiftBox.ExitReason.CannotSelectAnyMore -> context.getString(
                         R.string.picked_exp_stacks,
@@ -178,6 +201,11 @@ class ScriptManager @Inject constructor(
                     )
 
                     AutoGiftBox.ExitReason.NoEmbersFound -> context.getString(R.string.no_embers_found)
+                    is AutoGiftBox.ExitReason.ReturnToLottery -> context.getString(
+                        R.string.picked_exp_stacks_return_to_lottery,
+                        reason.pickedStacks,
+                        reason.pickedGoldEmbers
+                    )
                 }
 
                 messages.notify(msg)
