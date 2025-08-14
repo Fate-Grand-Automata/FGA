@@ -76,7 +76,7 @@ class SupportImageMaker @Inject constructor(
                     extractGrandCeImage(region, i)
                     extractGrandFriendNameImage(region, i)
                 } else {
-                    extractCeImage(it, i*4)
+                    extractCeImage(it, i*3)
                     extractFriendNameImage(region, isInSupport, i)
                 }
             }
@@ -124,12 +124,11 @@ class SupportImageMaker @Inject constructor(
         clipRegion.getPattern().use {
             val bounds = listOf(
                 Region(0, 0, 142, 25),
-                Region(0, 46, 142, 25),
                 Region(0, 92, 142, 25)
             )
             for ((j, bound) in bounds.withIndex()) {
                 val ce = it.crop(bound)
-                ce.save(getCeImgPath(dir, i * 4 + j + 1))
+                ce.save(getCeImgPath(dir, i * 3 + j + 1))
             }
         }
     }
