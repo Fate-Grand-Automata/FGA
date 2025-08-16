@@ -270,9 +270,11 @@ class AutoServantLevel @Inject constructor(
         if (stateAutoFill) {
             locations.enhancementClick.click()
             0.5.seconds.wait()
-            val exist = locations.servant.finalConfirmRegion.exists(
-                image = images[Images.Ok],
-                timeout = 3.seconds,
+            val exist = mapOf(
+                images[Images.Ok] to locations.servant.finalConfirmRegion,
+                images[Images.Execute] to locations.tempServantEnhancementRegion
+            ).exists(
+                timeout = 3.seconds
             )
             if (!exist) {
                 throw ServantUpgradeException(ExitReason.NoEmbersOrQPLeft)
