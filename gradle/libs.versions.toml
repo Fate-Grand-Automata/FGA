@@ -1,5 +1,5 @@
 [versions]
-appcompat_version = "1.7.0"
+appcompat_version = "1.7.1"
 assertk_version = "0.28.1"
 constraintlayout_version = "2.2.1"
 core_ktx_version = "1.16.0"
@@ -7,13 +7,13 @@ documentfile_version = "1.1.0"
 flow_preferences_version = "1.9.1"
 hilt_navigation_compose_version = "1.2.0"
 kotlinx_coroutines_core_version = "1.10.2"
-lifecycle_version = "2.9.0"
-hilt_version = "2.56.2"
+lifecycle_version = "2.9.2"
+hilt_version = "2.57"
 gson_version = "2.13.1"
 
 
-kotlin_version = "2.1.20"
-ksp_version = "2.1.20-2.0.1"
+kotlin_version = "2.2.10"
+ksp_version = "2.2.10-2.0.2"
 
 gradle_version = "8.10.0"
 
@@ -24,21 +24,21 @@ accompanist_version = "0.37.3"
 google_android_play_version = "2.1.0"
 
 activity_version = "1.10.1"
-mockk_version = "1.14.2"
+mockk_version = "1.14.5"
 
-opencv_version = "4.11.0"
-navigation_compose_version = "2.9.0"
+opencv_version = "4.12.0"
+navigation_compose_version = "2.9.3"
 
 recyclerview_version = "1.4.0"
-tesseract4android_version = "4.8.0"
+tesseract4android_version = "4.9.0"
 
 timber_version = "5.0.1"
 
-compose_bom_version = "2025.05.00"
+compose_bom_version = "2025.08.00"
 
 
-coil_version = "3.1.0"
-junit_bom_version = "5.12.2"
+coil_version = "3.3.0"
+junit_bom_version = "5.13.4"
 
 
 [libraries]
