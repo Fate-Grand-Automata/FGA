@@ -9,18 +9,22 @@ class ServantLevelLocations @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
-    val emberConfirmationDialogRegion =
-        Region(339, 1227, 124, 64).xFromCenter()
+    val emberConfirmationDialogRegion = when (gameServer) {
+        is GameServer.Jp -> Region(321, 1209, 160, 100).xFromCenter()
+        else -> Region(341, 1229, 120, 60).xFromCenter()
+    }
 
     val emberConfirmationDialogLocation = when (isWide) {
         true -> Location(-1096, 1259).xFromRight()
         false -> Location(-1096, 1259).xFromRight()
     }
 
-    val servantAutoSelectRegion = when (isWide) {
-        true -> Region(1030, 266, 242, 57).xFromCenter()
-        false -> Region(1030, 306, 242, 57).xFromCenter()
-    }
+    val servantAutoSelectRegion = when (gameServer) {
+        is GameServer.Jp -> Region(764, 0, 260, 60).xFromCenter()
+        else -> Region(1032, 0, 238, 53).xFromCenter()
+    }.copy(y = if (isWide) 268 else 308)
+     
+
     val autoSelectLocation = when (isWide) {
         true -> Location(-347, 294).xFromRight()
         false -> Location(-127, 334).xFromRight()
@@ -58,4 +62,6 @@ class ServantLevelLocations @Inject constructor(
         true -> Region(566, 487, 47, 86).xFromCenter()
         false -> Region(566, 527, 47, 86).xFromCenter()
     }
+
+    val autoFillStateRegion = Region(265, 836, 100, 80).xFromCenter()
 }

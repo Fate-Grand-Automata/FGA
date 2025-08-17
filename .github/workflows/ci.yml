@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -111,4 +111,5 @@ jobs:
           id: ${{ steps.github-release.outputs.id }}
           replacebody: false
           body: |
-            ⚠️ Use the [APKMirror Installer](https://play.google.com/store/apps/details?id=com.apkmirror.helper.prod) to install the app on Android 14+, otherwise Accessibility can't be enabled.
+            > [!NOTE] 
+            > Use the [APKMirror Installer](https://play.google.com/store/apps/details?id=com.apkmirror.helper.prod) to install the app on Android 14+, otherwise Accessibility can't be enabled.
