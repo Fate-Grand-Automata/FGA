@@ -89,6 +89,7 @@ enum class Images {
     OkKR,
     Execute,
     SupportBlankCE,
+    StateON,
     GrandCeLabel,
     BondCeEffectDefault,
     BondCeEffectNP,
