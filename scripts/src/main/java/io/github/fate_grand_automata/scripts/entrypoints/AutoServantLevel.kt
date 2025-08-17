@@ -281,7 +281,9 @@ class AutoServantLevel @Inject constructor(
             }
             return
         }
-        locations.servant.servantAutoSelectRegion.click()
+        else {
+            locations.servant.servantAutoSelectRegion.click()
+        }
     }
 
     /**
