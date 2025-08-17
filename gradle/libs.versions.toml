@@ -34,7 +34,7 @@ tesseract4android_version = "4.8.0"
 
 timber_version = "5.0.1"
 
-compose_bom_version = "2025.05.00"
+compose_bom_version = "2025.08.00"
 
 
 coil_version = "3.3.0"
