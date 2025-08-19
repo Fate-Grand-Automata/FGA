@@ -15,10 +15,10 @@ import timber.log.Timber
  */
 class MediaProjectionRecording(
     context: Context,
-    mediaProjection: MediaProjection,
-    imageSize: Size,
-    screenDensity: Int,
-    storageProvider: StorageProvider
+    private val mediaProjection: MediaProjection,
+    private val imageSize: Size,
+    private val screenDensity: Int,
+    private val storageProvider: StorageProvider
 ) : AutoCloseable {
     private val mediaRecorder by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
