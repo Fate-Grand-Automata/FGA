@@ -13,6 +13,5 @@ class OnboardingViewModel @Inject constructor(
     val prefsCore: PrefsCore,
     val prefs: IPreferences,
     val storageProvider: StorageProvider,
-    val powerManager: PowerManager
-) : ViewModel() {
-}
+    val powerManager: PowerManager,
+) : ViewModel()

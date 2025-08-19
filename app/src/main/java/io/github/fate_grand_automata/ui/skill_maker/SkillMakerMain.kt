@@ -51,29 +51,29 @@ fun SkillMakerMain(
     onSkill: (Skill.Servant) -> Unit,
     onSkillNoTarget: (Skill.Servant) -> Unit,
     onClear: () -> Unit,
-    onDone: () -> Unit
+    onDone: () -> Unit,
 ) {
     Column(
         modifier = Modifier
             .padding(vertical = 16.dp)
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             val enemyTarget by vm.enemyTarget
 
             EnemyTarget(
                 selected = enemyTarget,
-                onSelectedChange = { vm.setEnemyTarget(it) }
+                onSelectedChange = { vm.setEnemyTarget(it) },
             )
 
             Column(
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 val wave by vm.wave
                 Text(stringResource(R.string.skill_maker_main_wave, wave))
@@ -88,13 +88,13 @@ fun SkillMakerMain(
         Row(
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp),
         ) {
             Column(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceBetween
+                verticalArrangement = Arrangement.SpaceBetween,
             ) {
                 Row {
                     val currentIndex by vm.currentIndex
@@ -104,7 +104,7 @@ fun SkillMakerMain(
                         icon = icon(Icons.Default.Delete),
                         onClick = { vm.onDeleteSelected() },
                         enabled = currentIndex > 0,
-                        modifier = Modifier.padding(end = 5.dp)
+                        modifier = Modifier.padding(end = 5.dp),
                     )
 
                     ButtonWithIcon(
@@ -112,19 +112,19 @@ fun SkillMakerMain(
                         icon = icon(R.drawable.ic_clear),
                         onClick = onClear,
                         enabled = vm.skillCommand.size > 1,
-                        modifier = Modifier.padding(end = 5.dp)
+                        modifier = Modifier.padding(end = 5.dp),
                     )
 
                     ButtonWithIcon(
                         text = R.string.skill_maker_atk_done,
                         icon = icon(Icons.Default.Check),
-                        onClick = onDone
+                        onClick = onDone,
                     )
                 }
 
                 Skills(
                     onSkill = onSkill,
-                    onSkillNoTarget = onSkillNoTarget
+                    onSkillNoTarget = onSkillNoTarget,
                 )
             }
 
@@ -134,16 +134,16 @@ fun SkillMakerMain(
                 modifier = Modifier
                     .padding(start = 16.dp)
                     .width(IntrinsicSize.Max)
-                    .fillMaxHeight()
+                    .fillMaxHeight(),
             ) {
                 Button(
                     colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorMasterSkill)),
-                    onClick = onMasterSkills
+                    onClick = onMasterSkills,
                 ) {
                     Text(
                         stringResource(R.string.skill_maker_main_master_skills),
                         textAlign = TextAlign.Center,
-                        color = Color.White
+                        color = Color.White,
                     )
                 }
 
@@ -155,12 +155,12 @@ fun SkillMakerMain(
                     colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorAccent)),
                     modifier = Modifier
                         .fillMaxSize()
-                        .aspectRatio(1f)
+                        .aspectRatio(1f),
 
                 ) {
                     Text(
                         stringResource(R.string.skill_maker_main_attack),
-                        color = Color.White
+                        color = Color.White,
                     )
                 }
             }
@@ -173,17 +173,17 @@ fun ColumnScope.SkillButtons(
     list: List<Skill.Servant>,
     color: Color,
     onSkill: (Skill.Servant) -> Unit,
-    onSkillNoTarget: (Skill.Servant) -> Unit
+    onSkillNoTarget: (Skill.Servant) -> Unit,
 ) {
     Row(
-        modifier = Modifier.weight(1f, false)
+        modifier = Modifier.weight(1f, false),
     ) {
         list.map { skill ->
             SkillButton(
                 skill = skill,
                 color = color,
                 onClick = { onSkill(skill) },
-                onDoubleClick = { onSkillNoTarget(skill) }
+                onDoubleClick = { onSkillNoTarget(skill) },
             )
         }
     }
@@ -192,13 +192,13 @@ fun ColumnScope.SkillButtons(
 @Composable
 fun Skills(
     onSkill: (Skill.Servant) -> Unit,
-    onSkillNoTarget: (Skill.Servant) -> Unit
+    onSkillNoTarget: (Skill.Servant) -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Bottom,
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Skill.Servant.list.chunked(3)
             .mapIndexed { index, list ->
@@ -211,13 +211,13 @@ fun Skills(
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.weight(1f, false)
+                    modifier = Modifier.weight(1f, false),
                 ) {
                     SkillButtons(
                         list = list,
                         color = colorResource(color),
                         onSkill = onSkill,
-                        onSkillNoTarget = onSkillNoTarget
+                        onSkillNoTarget = onSkillNoTarget,
                     )
 
                     Text(stringResource(R.string.skill_maker_main_servant, index + 1))
@@ -262,16 +262,18 @@ fun SkillHistory(vm: SkillMakerViewModel) {
     val skillCommand = vm.skillCommand
 
     LazyRow(
-        contentPadding = PaddingValues(16.dp)
+        contentPadding = PaddingValues(16.dp),
     ) {
         items(skillCommand.size) { index ->
             val item = skillCommand.getOrNull(index)
             val isSelected = index == currentIndex
 
             val shape =
-                if (isSelected)
+                if (isSelected) {
                     RoundedCornerShape(7.dp)
-                else RectangleShape
+                } else {
+                    RectangleShape
+                }
 
             Box(
                 modifier = Modifier
@@ -281,21 +283,26 @@ fun SkillHistory(vm: SkillMakerViewModel) {
                             it.border(
                                 2.dp,
                                 color = colorResource(android.R.color.darker_gray),
-                                shape = shape
+                                shape = shape,
                             )
-                        } else it
+                        } else {
+                            it
+                        }
                     }
                     .background(colorResource(item.colorRes), shape)
                     .clickable { vm.setCurrentIndex(index) }
-                    .padding(horizontal = 4.dp)
+                    .padding(horizontal = 4.dp),
             ) {
                 val text =
-                    if (item is SkillMakerEntry.Start) ">"
-                    else item.toString()
+                    if (item is SkillMakerEntry.Start) {
+                        ">"
+                    } else {
+                        item.toString()
+                    }
 
                 Text(
                     text,
-                    color = Color.White
+                    color = Color.White,
                 )
             }
         }
@@ -305,7 +312,7 @@ fun SkillHistory(vm: SkillMakerViewModel) {
 @Composable
 fun EnemyTarget(
     selected: Int?,
-    onSelectedChange: (Int) -> Unit
+    onSelectedChange: (Int) -> Unit,
 ) {
     Row {
         (1..3).map {
@@ -316,17 +323,17 @@ fun EnemyTarget(
                 modifier = Modifier
                     .padding(end = 10.dp)
                     .clickable(onClick = onClick),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 RadioButton(
                     selected = isSelected,
-                    onClick = onClick
+                    onClick = onClick,
                 )
 
                 Text(
                     stringResource(R.string.skill_maker_main_enemy, it),
                     modifier = Modifier
-                        .padding(start = 5.dp)
+                        .padding(start = 5.dp),
                 )
             }
         }

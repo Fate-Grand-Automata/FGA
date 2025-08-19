@@ -8,7 +8,7 @@ import androidx.compose.ui.window.DialogProperties
 @Composable
 fun ThemedDialog(
     onDismiss: () -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colors = MaterialTheme.colorScheme
     val typography = MaterialTheme.typography
@@ -17,14 +17,14 @@ fun ThemedDialog(
     Dialog(
         onDismissRequest = onDismiss,
         properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        )
+            usePlatformDefaultWidth = false,
+        ),
     ) {
         MaterialTheme(
             colorScheme = colors,
             typography = typography,
             shapes = shapes,
-            content = content
+            content = content,
         )
     }
 }

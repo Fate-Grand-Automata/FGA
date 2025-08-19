@@ -68,14 +68,14 @@ class ScriptManager @Inject constructor(
     private val clipboardManager: ClipboardManager,
     private val messageBox: ScriptRunnerMessageBox,
     @ServiceCoroutineScope private val scope: CoroutineScope,
-    private val launcherResponseHandler: ScriptLauncherResponseHandler
+    private val launcherResponseHandler: ScriptLauncherResponseHandler,
 ) {
     var scriptState: ScriptState = ScriptState.Stopped
         private set
 
     private suspend fun showBattleExit(
         context: Context,
-        exception: AutoBattle.ExitException
+        exception: AutoBattle.ExitException,
     ) = withContext(Dispatchers.Main) {
         suspendCancellableCoroutine<Unit> { continuation ->
             var dialog: DialogInterface? = null
@@ -88,7 +88,7 @@ class ScriptManager @Inject constructor(
                     onClose = { dialog?.dismiss() },
                     onCopy = {
                         clipboardManager.set(context, exception)
-                    }
+                    },
                 )
             }
 
@@ -134,7 +134,7 @@ class ScriptManager @Inject constructor(
                         val msg = context.getString(R.string.cannot_stop_recording)
                         Timber.e(e, msg)
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(service, "${msg}: ${e.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(service, "$msg: ${e.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
 
@@ -174,7 +174,7 @@ class ScriptManager @Inject constructor(
                     is AutoGiftBox.ExitReason.CannotSelectAnyMore -> context.getString(
                         R.string.picked_exp_stacks,
                         reason.pickedStacks,
-                        reason.pickedGoldEmbers
+                        reason.pickedGoldEmbers,
                     )
 
                     AutoGiftBox.ExitReason.NoEmbersFound -> context.getString(R.string.no_embers_found)
@@ -280,7 +280,9 @@ class ScriptManager @Inject constructor(
         }
 
     enum class PauseAction {
-        Pause, Resume, Toggle
+        Pause,
+        Resume,
+        Toggle,
     }
 
     fun pause(action: PauseAction): Boolean {
@@ -311,25 +313,27 @@ class ScriptManager @Inject constructor(
         val server = prefsCore.gameServerRaw.get()
 
         preferences.gameServer =
-            if (server == PrefsCore.GAME_SERVER_AUTO_DETECT)
+            if (server == PrefsCore.GAME_SERVER_AUTO_DETECT) {
                 (TapperService.instance?.detectedFgoServer ?: GameServer.default).also {
                     Timber.d("Using auto-detected Game Server: $it")
                 }
-            else try {
-                GameServer.deserialize(server)?.also {
-                    Timber.d("Using Game Server: $it")
-                } ?: GameServer.default
-            } catch (e: Exception) {
-                Timber.e(e, "Game Server: Falling back to NA")
+            } else {
+                try {
+                    GameServer.deserialize(server)?.also {
+                        Timber.d("Using Game Server: $it")
+                    } ?: GameServer.default
+                } catch (e: Exception) {
+                    Timber.e(e, "Game Server: Falling back to NA")
 
-                GameServer.default
+                    GameServer.default
+                }
             }
     }
 
     fun startScript(
         context: Context,
         screenshotService: ScreenshotService,
-        componentBuilder: ScriptComponentBuilder
+        componentBuilder: ScriptComponentBuilder,
     ) {
         updateGameServer()
 
@@ -356,7 +360,7 @@ class ScriptManager @Inject constructor(
                 delay(500)
                 runEntryPoint(
                     screenshotService = screenshotService,
-                    entryPointProvider = { getEntryPoint(hiltEntryPoint) }
+                    entryPointProvider = { getEntryPoint(hiltEntryPoint) },
                 )
             }
         }
@@ -382,12 +386,14 @@ class ScriptManager @Inject constructor(
                 withContext(Dispatchers.Main) {
                     screenshotService.startRecording()
                 }
-            } else null
+            } else {
+                null
+            }
         } catch (e: Exception) {
             val msg = context.getString(R.string.cannot_start_recording)
             Timber.e(e, msg)
             withContext(Dispatchers.Main) {
-                Toast.makeText(service, "${msg}: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(service, "$msg: ${e.message}", Toast.LENGTH_SHORT).show()
             }
 
             null
@@ -409,7 +415,7 @@ class ScriptManager @Inject constructor(
 
     private suspend fun scriptPicker(
         context: Context,
-        detectedMode: ScriptModeEnum
+        detectedMode: ScriptModeEnum,
     ) = withContext(Dispatchers.Main) {
         suspendCoroutine<ScriptLauncherResponse> { continuation ->
 
@@ -423,7 +429,7 @@ class ScriptManager @Inject constructor(
                         dialog?.dismiss()
                     },
                     prefs = preferences,
-                    prefsCore = prefsCore
+                    prefsCore = prefsCore,
                 )
             }
 

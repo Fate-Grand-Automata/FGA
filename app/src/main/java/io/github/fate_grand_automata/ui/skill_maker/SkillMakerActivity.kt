@@ -19,11 +19,11 @@ import io.github.fate_grand_automata.ui.FgaScreen
 import io.github.fate_grand_automata.ui.OnPause
 import io.github.fate_grand_automata.ui.PreventRtl
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
-import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice3
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChangeNpType2
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChangeNpType3
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice2
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice2Target
-import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChangeNpType3
-import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChangeNpType2
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice3
 
 @AndroidEntryPoint
 class SkillMakerActivity : AppCompatActivity() {
@@ -39,7 +39,7 @@ class SkillMakerActivity : AppCompatActivity() {
                 PreventRtl {
                     SkillMakerUI(
                         vm = vm,
-                        exit = { finish() }
+                        exit = { finish() },
                     )
                 }
             }
@@ -50,7 +50,7 @@ class SkillMakerActivity : AppCompatActivity() {
 @Composable
 fun SkillMakerUI(
     vm: SkillMakerViewModel,
-    exit: () -> Unit
+    exit: () -> Unit,
 ) {
     OnPause {
         vm.saveState()
@@ -62,7 +62,7 @@ fun SkillMakerUI(
         message(stringResource(R.string.skill_maker_confirm_exit_message))
 
         buttons(
-            onSubmit = exit
+            onSubmit = exit,
         )
     }
 
@@ -72,14 +72,16 @@ fun SkillMakerUI(
         message(stringResource(R.string.skill_maker_confirm_clear_message))
 
         buttons(
-            onSubmit = { vm.clearAll() }
+            onSubmit = { vm.clearAll() },
         )
     }
 
     BackHandler {
         if (vm.navigation.value is SkillMakerNav.Main) {
             exitConfirmDialog.show()
-        } else vm.navigation.value = SkillMakerNav.Main
+        } else {
+            vm.navigation.value = SkillMakerNav.Main
+        }
     }
 
     val (current, navigate) = vm.navigation
@@ -89,7 +91,7 @@ fun SkillMakerUI(
 
     Crossfade(
         current,
-        animationSpec = spring()
+        animationSpec = spring(),
     ) { nav ->
         when (nav) {
             SkillMakerNav.Atk -> {
@@ -97,14 +99,14 @@ fun SkillMakerUI(
                     wave = wave,
                     turn = turn,
                     onNextWave = { vm.nextWave(it) },
-                    onNextTurn = { vm.nextTurn(it) }
+                    onNextTurn = { vm.nextTurn(it) },
                 )
             }
 
             is SkillMakerNav.ChangeNpType2 -> {
                 SkillMakerChangeNpType2(
                     onTargetLeft = { vm.targetSkill(ServantTarget.Left) },
-                    onTargetRight = { vm.targetSkill(ServantTarget.Right) }
+                    onTargetRight = { vm.targetSkill(ServantTarget.Right) },
                 )
             }
 
@@ -119,7 +121,7 @@ fun SkillMakerUI(
                     onDone = {
                         vm.battleConfig.skillCommand = vm.finish()
                         exit()
-                    }
+                    },
                 )
             }
 
@@ -127,7 +129,7 @@ fun SkillMakerUI(
                 SkillMakerMasterSkills(
                     onMasterSkill = { vm.initSkill(it) },
                     onMasterSkillNoTarget = { vm.noTargetSkill(it) },
-                    onOrderChange = { navigate(SkillMakerNav.OrderChange) }
+                    onOrderChange = { navigate(SkillMakerNav.OrderChange) },
                 )
             }
 
@@ -136,7 +138,7 @@ fun SkillMakerUI(
                     onCommit = { starting, sub ->
                         vm.commitOrderChange(starting, sub)
                     },
-                    onCancel = { vm.back() }
+                    onCancel = { vm.back() },
                 )
             }
 
@@ -158,13 +160,13 @@ fun SkillMakerUI(
                     },
                     onChoice3 = { slot ->
                         navigate(SkillMakerNav.Choice3(nav.skill, slot))
-                    }
+                    },
                 )
             }
 
             is SkillMakerNav.ChangeNpType3 -> {
                 SkillMakerChangeNpType3(
-                    onSkillTarget = { vm.targetSkill(it) }
+                    onSkillTarget = { vm.targetSkill(it) },
                 )
             }
 
@@ -174,7 +176,7 @@ fun SkillMakerUI(
                     onOption1 = { vm.targetSkill(ServantTarget.SpecialTarget.Choice2OptionA) },
                     onOption2 = { vm.targetSkill(ServantTarget.SpecialTarget.Choice2OptionB) },
                     goToTarget = nav.skill in Skill.Servant.skill2,
-                    onTarget = { firstTarget -> navigate(SkillMakerNav.Choice2Target(nav.skill, firstTarget)) }
+                    onTarget = { firstTarget -> navigate(SkillMakerNav.Choice2Target(nav.skill, firstTarget)) },
                 )
             }
 

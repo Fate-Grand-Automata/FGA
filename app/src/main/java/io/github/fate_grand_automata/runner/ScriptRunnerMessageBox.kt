@@ -16,7 +16,7 @@ import kotlin.coroutines.resume
 class ScriptRunnerMessageBox @Inject constructor(
     private val service: Service,
     private val clipboardManager: ClipboardManager,
-    private val notification: ScriptRunnerNotification
+    private val notification: ScriptRunnerNotification,
 ) {
     suspend fun show(
         title: String,

@@ -20,7 +20,7 @@ class LanguagePref : Pref<String> {
             "zh-CN" to stringResource(R.string.language_zhCN),
             "zh-TW" to stringResource(R.string.language_zhTW),
             "ko" to stringResource(R.string.language_ko),
-            "vi" to stringResource(R.string.language_vi)
+            "vi" to stringResource(R.string.language_vi),
         )
     }
 
@@ -76,12 +76,11 @@ class LanguagePref : Pref<String> {
 
     override fun set(value: String) {
         AppCompatDelegate.setApplicationLocales(
-            LocaleListCompat.forLanguageTags(value)
+            LocaleListCompat.forLanguageTags(value),
         )
     }
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: String) {
         set(value)
     }
-
 }

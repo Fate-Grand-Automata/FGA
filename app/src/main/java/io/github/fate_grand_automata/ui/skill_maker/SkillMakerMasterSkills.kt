@@ -25,32 +25,32 @@ import io.github.fate_grand_automata.ui.FGATitle
 fun SkillMakerMasterSkills(
     onMasterSkill: (Skill.Master) -> Unit,
     onMasterSkillNoTarget: (Skill.Master) -> Unit,
-    onOrderChange: () -> Unit
+    onOrderChange: () -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         FGATitle(
-            stringResource(R.string.skill_maker_master_skills_header)
+            stringResource(R.string.skill_maker_master_skills_header),
         )
 
         Row(
             modifier = Modifier.weight(1f),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(
                 modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Button(
                     onClick = onOrderChange,
-                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorServant3))
+                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorServant3)),
                 ) {
                     Text(
                         stringResource(R.string.skill_maker_master_skills_order_change),
-                        color = Color.White
+                        color = Color.White,
                     )
                 }
             }
@@ -61,7 +61,7 @@ fun SkillMakerMasterSkills(
                         skill = it,
                         color = colorResource(R.color.colorMasterSkill),
                         onClick = { onMasterSkill(it) },
-                        onDoubleClick = { onMasterSkillNoTarget(it) }
+                        onDoubleClick = { onMasterSkillNoTarget(it) },
                     )
                 }
             }
@@ -77,7 +77,7 @@ fun TestMasterSkills() {
         SkillMakerMasterSkills(
             onMasterSkill = { },
             onMasterSkillNoTarget = { },
-            onOrderChange = { }
+            onOrderChange = { },
         )
     }
 }

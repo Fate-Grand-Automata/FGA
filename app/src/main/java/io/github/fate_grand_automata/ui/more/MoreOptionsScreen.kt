@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -26,7 +26,7 @@ import io.github.fate_grand_automata.util.OpenDocTreePersistable
 @Composable
 fun MoreOptionsScreen(
     vm: MoreOptionsViewModel = viewModel(),
-    navigateToFineTune: () -> Unit
+    navigateToFineTune: () -> Unit,
 ) {
     val pickDirectory = rememberLauncherForActivityResult(OpenDocTreePersistable()) {
         vm.pickedDirectory(it)
@@ -35,7 +35,7 @@ fun MoreOptionsScreen(
     MoreOptionsContent(
         vm = vm,
         goToFineTune = navigateToFineTune,
-        pickDirectory = { pickDirectory.launch(Uri.EMPTY) }
+        pickDirectory = { pickDirectory.launch(Uri.EMPTY) },
     )
 }
 
@@ -43,10 +43,10 @@ fun MoreOptionsScreen(
 private fun MoreOptionsContent(
     vm: MoreOptionsViewModel,
     goToFineTune: () -> Unit,
-    pickDirectory: () -> Unit
+    pickDirectory: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         Heading(stringResource(R.string.p_more_options))
 
@@ -59,11 +59,11 @@ private fun MoreOptionsContent(
                         .padding(16.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    ),
                 ) {
                     LazyColumn(
-                        contentPadding = PaddingValues(bottom = 16.dp)
+                        contentPadding = PaddingValues(bottom = 16.dp),
                     ) {
                         when (it) {
                             MoreSettingsGroup.Battle -> {
@@ -80,7 +80,7 @@ private fun MoreOptionsContent(
                                         directoryName = summary ?: "",
                                         onPickDirectory = pickDirectory,
                                         extractSupportImages = { vm.performSupportImageExtraction(context) },
-                                        extractSummary = extractSummary
+                                        extractSummary = extractSummary,
                                     )
                                 }
                             }
@@ -88,7 +88,7 @@ private fun MoreOptionsContent(
                             MoreSettingsGroup.Advanced -> {
                                 advancedGroup(
                                     vm.prefsCore,
-                                    goToFineTune = goToFineTune
+                                    goToFineTune = goToFineTune,
                                 )
                             }
                         }
@@ -96,13 +96,16 @@ private fun MoreOptionsContent(
                 }
             },
             modifier = Modifier
-                .weight(1f)
+                .weight(1f),
         )
     }
 }
 
 private enum class MoreSettingsGroup {
-    Battle, Storage, Advanced;
+    Battle,
+    Storage,
+    Advanced,
+    ;
 
     val stringRes
         get() = when (this) {

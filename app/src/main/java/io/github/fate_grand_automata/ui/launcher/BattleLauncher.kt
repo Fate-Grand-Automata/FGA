@@ -50,7 +50,7 @@ import io.github.fate_grand_automata.util.stringRes
 @Composable
 fun battleLauncher(
     prefs: IPreferences,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ): ScriptLauncherResponseBuilder {
     val configs = remember {
         prefs.battleConfigs
@@ -69,7 +69,7 @@ fun battleLauncher(
 
     val perServerConfigPref by remember {
         mutableStateOf(
-            prefs.getPerServerConfigPref(prefs.gameServer)
+            prefs.getPerServerConfigPref(prefs.gameServer),
         )
     }
 
@@ -80,14 +80,13 @@ fun battleLauncher(
         refillResources = refillResources.minus(RefillResourceEnum.SQ)
     }
 
-    //TODO remove
+    // TODO remove
     if (refillResources.size > 1) {
         refillResources = setOf(refillResources.first())
     }
 
     val availableRefills = RefillResourceEnum.entries
         .filterNot { it == RefillResourceEnum.SQ && hideSQInAPResources }
-
 
     var copperApple by remember { mutableIntStateOf(perServerConfigPref.copperApple) }
     var blueApple by remember { mutableIntStateOf(perServerConfigPref.blueApple) }
@@ -106,7 +105,7 @@ fun battleLauncher(
                     RefillResourceEnum.SQ in refillResources -> rainbowApple
                     else -> 0
                 }
-            }
+            },
         )
     }
 
@@ -147,13 +146,13 @@ fun battleLauncher(
 
     LaunchedEffect(shouldLimitRuns, limitRuns, shouldLimitMats, limitMats, shouldLimitCEs, limitCEs) {
         resetAllButton = shouldLimitRuns || limitRuns > 1 ||
-                shouldLimitMats || limitMats > 1 ||
-                shouldLimitCEs || limitCEs > 1
+            shouldLimitMats || limitMats > 1 ||
+            shouldLimitCEs || limitCEs > 1
     }
 
     Row(
         modifier = modifier
-            .padding(start = 5.dp, end = 5.dp, top = 5.dp)
+            .padding(start = 5.dp, end = 5.dp, top = 5.dp),
     ) {
         if (configs.isNotEmpty()) {
             // Scrolling the selected config into view
@@ -171,15 +170,15 @@ fun battleLauncher(
                         state = configListState,
                         hiddenAlpha = 0.3f,
                         horizontal = false,
-                        knobColor = MaterialTheme.colorScheme.secondary
+                        knobColor = MaterialTheme.colorScheme.secondary,
                     ),
-                state = configListState
+                state = configListState,
             ) {
                 itemsIndexed(configs) { index, item ->
                     BattleConfigItem(
                         name = item.name,
                         isSelected = selectedConfigIndex == index,
-                        onSelected = { selectedConfigIndex = index }
+                        onSelected = { selectedConfigIndex = index },
                     )
                 }
             }
@@ -188,7 +187,7 @@ fun battleLauncher(
                 stringResource(R.string.battle_config_list_no_items),
                 modifier = Modifier
                     .weight(1f)
-                    .padding(16.dp)
+                    .padding(16.dp),
             )
         }
 
@@ -197,7 +196,7 @@ fun battleLauncher(
                 .fillMaxHeight()
                 .padding(5.dp, 2.dp)
                 .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f))
-                .width(1.dp)
+                .width(1.dp),
         ) { }
 
         val mainConfigState = rememberLazyListState()
@@ -210,21 +209,21 @@ fun battleLauncher(
                     horizontal = false,
                     knobColor = MaterialTheme.colorScheme.secondary,
                     // needs to be adjusted when adding new items
-                    fixedKnobRatio = 0.70f
+                    fixedKnobRatio = 0.70f,
                 )
                 .padding(start = 5.dp),
-            state = mainConfigState
+            state = mainConfigState,
         ) {
             item {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         "${stringResource(R.string.p_refill)}:",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.secondary
+                        color = MaterialTheme.colorScheme.secondary,
                     )
 
                     Stepper(
@@ -239,7 +238,7 @@ fun battleLauncher(
                             }
                         },
                         valueRange = 0..999,
-                        enabled = refillResources.isNotEmpty()
+                        enabled = refillResources.isNotEmpty(),
                     )
                 }
             }
@@ -248,9 +247,8 @@ fun battleLauncher(
                 LazyRow(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.End,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
-
                     items(availableRefills) {
                         it.RefillResource(
                             isSelected = it in refillResources,
@@ -259,7 +257,7 @@ fun battleLauncher(
 
                                 // if the tapped resource is the only one in the list, disable it. otherwise only select the tapped resource
                                 refillResources = if (it in refillResources) emptySet() else setOf(it)
-                            }
+                            },
                         )
                     }
                 }
@@ -269,19 +267,19 @@ fun battleLauncher(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .clickable { waitApRegen = !waitApRegen }
+                        .clickable { waitApRegen = !waitApRegen },
                 ) {
                     Checkbox(
                         checked = waitApRegen,
                         onCheckedChange = { waitApRegen = it },
                         modifier = Modifier
                             .alpha(if (waitApRegen) 1f else 0.7f)
-                            .padding(end = 5.dp)
+                            .padding(end = 5.dp),
                     )
 
                     Text(
                         stringResource(R.string.p_wait_ap_regen_text),
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium,
                     )
                 }
 
@@ -291,7 +289,7 @@ fun battleLauncher(
             item {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = stringResource(R.string.p_limit).uppercase(),
@@ -299,13 +297,13 @@ fun battleLauncher(
                         color = MaterialTheme.colorScheme.secondary,
                         modifier = Modifier
                             .weight(1f)
-                            .padding(start = 8.dp)
+                            .padding(start = 8.dp),
                     )
                     Row(
                         modifier = Modifier
                             .weight(1f)
                             .padding(end = 8.dp),
-                        horizontalArrangement = Arrangement.End
+                        horizontalArrangement = Arrangement.End,
                     ) {
                         Card(
                             shape = CircleShape,
@@ -320,26 +318,27 @@ fun battleLauncher(
                                 limitCEs = 1
                                 shouldLimitMats = false
                                 limitMats = 1
-                            }
+                            },
                         ) {
                             Box(
                                 contentAlignment = Alignment.Center,
                                 modifier = Modifier
-                                    .padding(10.dp, 4.dp)
+                                    .padding(10.dp, 4.dp),
                             ) {
                                 Text(
                                     text = stringResource(R.string.reset_all).uppercase(),
                                     style = MaterialTheme.typography.labelSmall,
                                     textAlign = TextAlign.Center,
-                                    color = if (resetAllButton) MaterialTheme.colorScheme.onSecondaryContainer
-                                    else MaterialTheme.colorScheme.onSecondaryContainer.copy(0.38f)
+                                    color = if (resetAllButton) {
+                                        MaterialTheme.colorScheme.onSecondaryContainer
+                                    } else {
+                                        MaterialTheme.colorScheme.onSecondaryContainer.copy(0.38f)
+                                    },
                                 )
                             }
                         }
                     }
-
                 }
-
             }
 
             item {
@@ -348,7 +347,7 @@ fun battleLauncher(
                     onShouldLimitChange = { shouldLimitRuns = it },
                     text = stringResource(R.string.p_runs),
                     count = limitRuns,
-                    onCountChange = { limitRuns = it }
+                    onCountChange = { limitRuns = it },
                 )
             }
 
@@ -358,7 +357,7 @@ fun battleLauncher(
                     onShouldLimitChange = { shouldLimitMats = it },
                     text = stringResource(R.string.p_mats),
                     count = limitMats,
-                    onCountChange = { limitMats = it }
+                    onCountChange = { limitMats = it },
                 )
             }
 
@@ -368,7 +367,7 @@ fun battleLauncher(
                     onShouldLimitChange = { shouldLimitCEs = it },
                     text = stringResource(R.string.p_ces),
                     count = limitCEs,
-                    onCountChange = { limitCEs = it }
+                    onCountChange = { limitCEs = it },
                 )
             }
         }
@@ -378,7 +377,7 @@ fun battleLauncher(
         canBuild = { selectedConfigIndex != -1 },
         build = {
             ScriptLauncherResponse.Battle
-        }
+        },
     )
 }
 
@@ -389,29 +388,29 @@ fun LimitItem(
     text: String,
     count: Int,
     onCountChange: (Int) -> Unit,
-    valueRange: IntRange = 1..999
+    valueRange: IntRange = 1..999,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .clickable { onShouldLimitChange(!shouldLimit) }
+                .clickable { onShouldLimitChange(!shouldLimit) },
         ) {
             Checkbox(
                 checked = shouldLimit,
                 onCheckedChange = onShouldLimitChange,
                 modifier = Modifier
-                    .alpha(if (shouldLimit) 1f else 0.7f)
+                    .alpha(if (shouldLimit) 1f else 0.7f),
             )
 
             Text(
                 "$text:",
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
 
@@ -419,7 +418,7 @@ fun LimitItem(
             value = count,
             onValueChange = onCountChange,
             valueRange = valueRange,
-            enabled = shouldLimit
+            enabled = shouldLimit,
         )
     }
 }
@@ -435,15 +434,15 @@ fun BattleConfigItem(
             .padding(3.dp)
             .background(
                 color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
-                shape = MaterialTheme.shapes.medium
+                shape = MaterialTheme.shapes.medium,
             )
             .clickable(onClick = onSelected)
             .padding(11.dp, 3.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Text(
             name,
-            color = if (isSelected) MaterialTheme.colorScheme.onPrimary else Color.Unspecified
+            color = if (isSelected) MaterialTheme.colorScheme.onPrimary else Color.Unspecified,
         )
     }
 }
@@ -451,7 +450,7 @@ fun BattleConfigItem(
 @Composable
 fun RefillResourceEnum.RefillResource(
     isSelected: Boolean,
-    toggle: () -> Unit
+    toggle: () -> Unit,
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -461,15 +460,15 @@ fun RefillResourceEnum.RefillResource(
             .border(
                 width = 1.dp,
                 brush = SolidColor(if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent),
-                shape = MaterialTheme.shapes.medium
+                shape = MaterialTheme.shapes.medium,
             )
             .clickable(onClick = toggle)
-            .padding(5.dp, 3.dp)
+            .padding(5.dp, 3.dp),
     ) {
         Text(
             stringResource(stringRes),
             style = MaterialTheme.typography.labelSmall,
-            color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Unspecified
+            color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Unspecified,
         )
     }
 }

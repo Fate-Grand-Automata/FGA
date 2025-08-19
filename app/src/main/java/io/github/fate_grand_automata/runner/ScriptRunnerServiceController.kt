@@ -36,7 +36,7 @@ class ScriptRunnerServiceController @Inject constructor(
     private val displayHelper: DisplayHelper,
     private val messages: ScriptMessages,
     private val messageBox: ScriptRunnerMessageBox,
-    @ServiceCoroutineScope private val scope: CoroutineScope
+    @ServiceCoroutineScope private val scope: CoroutineScope,
 ) {
     private val screenOffReceiver = ScreenOffReceiver()
 
@@ -74,8 +74,8 @@ class ScriptRunnerServiceController @Inject constructor(
             }
         }
 
-        val willAskForToken = prefs.wantsMediaProjectionToken
-                && ScriptRunnerService.mediaProjectionToken == null
+        val willAskForToken = prefs.wantsMediaProjectionToken &&
+            ScriptRunnerService.mediaProjectionToken == null
 
         if (!willAskForToken) {
             if (shouldDisplayPlayButton()) {

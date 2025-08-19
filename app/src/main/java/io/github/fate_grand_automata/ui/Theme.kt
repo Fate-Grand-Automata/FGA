@@ -86,8 +86,8 @@ val typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
-    )
+        fontSize = 16.sp,
+    ),
 )
 
 private val LightColors = lightColorScheme(
@@ -121,7 +121,6 @@ private val LightColors = lightColorScheme(
     outlineVariant = md_theme_light_outlineVariant,
     scrim = md_theme_light_scrim,
 )
-
 
 private val DarkColors = darkColorScheme(
     primary = md_theme_dark_primary,
@@ -157,14 +156,14 @@ private val DarkColors = darkColorScheme(
 
 @Composable
 fun FGAListItemColors() = ListItemDefaults.colors(
-    containerColor = MaterialTheme.colorScheme.surfaceVariant
+    containerColor = MaterialTheme.colorScheme.surfaceVariant,
 )
 
 @Composable
 fun FGATheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     background: Color = Color.Unspecified,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colors = if (darkTheme) {
         DarkColors
@@ -174,10 +173,10 @@ fun FGATheme(
 
     MaterialTheme(
         colorScheme = colors,
-        typography = typography
+        typography = typography,
     ) {
         Surface(
-            color = if (background == Color.Unspecified) MaterialTheme.colorScheme.background else background
+            color = if (background == Color.Unspecified) MaterialTheme.colorScheme.background else background,
         ) {
             PreventRtl {
                 content()
@@ -188,13 +187,13 @@ fun FGATheme(
 
 @Composable
 fun FgaScreen(
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit,
 ) {
     FGATheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .systemBarsPadding()
+                .systemBarsPadding(),
         ) {
             content()
         }

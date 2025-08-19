@@ -35,18 +35,18 @@ fun ScriptRunnerUI(
     updateState: (ScriptRunnerUIAction) -> Unit,
     onDrag: (Float, Float) -> Unit,
     enabled: Boolean,
-    isRecording: Boolean
+    isRecording: Boolean,
 ) {
     val hidePlayButton by prefsCore.hidePlayButton.remember()
     val script by prefsCore.scriptMode.remember()
 
     FGATheme(
         darkTheme = true,
-        background = Color.Transparent
+        background = Color.Transparent,
     ) {
         Row(
             modifier = Modifier
-                .padding(5.dp)
+                .padding(5.dp),
         ) {
             val dragModifier = Modifier
                 .pointerInput(Unit) {
@@ -60,7 +60,7 @@ fun ScriptRunnerUI(
                 color = when (state) {
                     ScriptRunnerUIState.Running ->
                         MaterialTheme.colorScheme.surface.copy(
-                            alpha = if (hidePlayButton && script == ScriptModeEnum.Battle) 0f else 0.5f
+                            alpha = if (hidePlayButton && script == ScriptModeEnum.Battle) 0f else 0.5f,
                         )
                     else -> MaterialTheme.colorScheme.surface
                 },
@@ -68,7 +68,7 @@ fun ScriptRunnerUI(
                     ScriptRunnerUIState.Running -> {
                         val color = if (isRecording) MaterialTheme.colorScheme.error else Color.White
                         color.copy(
-                            alpha = if (hidePlayButton && script == ScriptModeEnum.Battle) 0f else 0.5f
+                            alpha = if (hidePlayButton && script == ScriptModeEnum.Battle) 0f else 0.5f,
                         )
                     }
                     else -> Color.White
@@ -85,7 +85,7 @@ fun ScriptRunnerUI(
                     updateState(action)
                 },
                 enabled = enabled,
-                modifier = dragModifier
+                modifier = dragModifier,
             ) {
                 Icon(
                     painter = when (state) {
@@ -98,7 +98,7 @@ fun ScriptRunnerUI(
                         ScriptRunnerUIState.Running -> "pause"
                     },
                     modifier = Modifier
-                        .padding(18.dp, 10.dp)
+                        .padding(18.dp, 10.dp),
                 )
             }
 
@@ -108,7 +108,7 @@ fun ScriptRunnerUI(
                 exit = fadeOut() + slideOutHorizontally(),
                 modifier = Modifier
                     .offset(x = (-18).dp)
-                    .zIndex(-1f)
+                    .zIndex(-1f),
             ) {
                 Row {
                     val shape = RoundedCornerShape(0, 50, 50, 0)
@@ -118,14 +118,14 @@ fun ScriptRunnerUI(
                         contentColor = Color.White,
                         shape = shape,
                         onClick = { updateState(ScriptRunnerUIAction.Stop) },
-                        modifier = dragModifier
+                        modifier = dragModifier,
                     ) {
                         Icon(
                             painterResource(R.drawable.ic_stop),
                             contentDescription = "stop",
                             modifier = Modifier
                                 .padding(18.dp, 10.dp)
-                                .padding(start = 8.dp)
+                                .padding(start = 8.dp),
                         )
                     }
 
@@ -139,14 +139,14 @@ fun ScriptRunnerUI(
                                 onClick = { updateState(ScriptRunnerUIAction.Status(it.pausedStatus)) },
                                 modifier = dragModifier
                                     .offset(x = (-18).dp)
-                                    .zIndex(-2f)
+                                    .zIndex(-2f),
                             ) {
                                 Icon(
                                     painterResource(R.drawable.ic_info),
                                     contentDescription = "status",
                                     modifier = Modifier
                                         .padding(18.dp, 10.dp)
-                                        .padding(start = 8.dp)
+                                        .padding(start = 8.dp),
                                 )
                             }
                         }

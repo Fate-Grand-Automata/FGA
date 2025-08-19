@@ -51,7 +51,10 @@ subprojects {
             target("**/*.kt", "**/*.kts")
             targetExclude("**/build/**/*.kt")
             ktlint(libs.ktlint.core.get().version).editorConfigOverride(
-                mapOf("ktlint_standard_annotation" to "disabled"),
+                mapOf(
+                    "ktlint_standard_annotation" to "disabled",
+                    "ktlint_standard_package-name" to "disabled"
+                ),
             )
             trimTrailingWhitespace()
             endWithNewline()

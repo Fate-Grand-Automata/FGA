@@ -20,31 +20,31 @@ import io.github.fate_grand_automata.ui.dialog.ChoiceListItem
 @Composable
 fun ceBombLauncher(
     prefs: IPreferences,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ): ScriptLauncherResponseBuilder {
     var target by remember { mutableStateOf(prefs.ceBombTargetRarity) }
 
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp)
-            .padding(top = 5.dp)
+            .padding(top = 5.dp),
     ) {
         Text(
             "Choose CE Bomb target",
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
         )
 
         HorizontalDivider(
             modifier = Modifier
                 .padding(5.dp)
-                .padding(bottom = 16.dp)
+                .padding(bottom = 16.dp),
         )
 
         LazyColumn {
             items((1..2).toList()) {
                 ChoiceListItem(
                     isSelected = target == it,
-                    onClick = { target = it }
+                    onClick = { target = it },
                 ) {
                     Text("$it\u2605 CEs")
                 }
@@ -56,8 +56,8 @@ fun ceBombLauncher(
         canBuild = { true },
         build = {
             ScriptLauncherResponse.CEBomb(
-                targetRarity = target
+                targetRarity = target,
             )
-        }
+        },
     )
 }

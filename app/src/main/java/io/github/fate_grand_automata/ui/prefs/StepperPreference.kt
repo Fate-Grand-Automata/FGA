@@ -16,7 +16,7 @@ fun Pref<Int>.StepperPreference(
     icon: VectorIcon? = null,
     valueRange: IntRange = 0..100,
     enabled: Boolean = true,
-    valueRepresentation: (Int) -> String = { it.toString() }
+    valueRepresentation: (Int) -> String = { it.toString() },
 ) {
     var state by remember()
 
@@ -27,11 +27,11 @@ fun Pref<Int>.StepperPreference(
                 value = state,
                 onValueChange = { state = it },
                 valueRange = valueRange,
-                valueRepresentation = valueRepresentation
+                valueRepresentation = valueRepresentation,
             )
         },
         icon = icon,
         enabled = enabled,
-        modifier = modifier
+        modifier = modifier,
     )
 }

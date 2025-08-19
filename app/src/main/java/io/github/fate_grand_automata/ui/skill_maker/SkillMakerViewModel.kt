@@ -19,7 +19,7 @@ import javax.inject.Inject
 class SkillMakerViewModel @Inject constructor(
     val prefs: IPreferences,
     val battleConfig: IBattleConfig,
-    val savedState: SavedStateHandle
+    val savedState: SavedStateHandle,
 ) : ViewModel() {
     val navigation = mutableStateOf<SkillMakerNav>(SkillMakerNav.Main)
 
@@ -55,20 +55,22 @@ class SkillMakerViewModel @Inject constructor(
             state.wave
         } else {
             model.skillCommand.count { it is SkillMakerEntry.Next.Wave } + 1
-        }
+        },
     )
     private val _turn = mutableIntStateOf(
-        if (state.skillString != null){
+        if (state.skillString != null) {
             state.turn
         } else {
             model.skillCommand.count { it is SkillMakerEntry.Next } + 1
-        }
+        },
     )
 
     private val _currentIndex = mutableStateOf(
         if (state.skillString != null) {
             state.currentIndex
-        } else model.skillCommand.lastIndex
+        } else {
+            model.skillCommand.lastIndex
+        },
     )
     val currentIndex: State<Int> = _currentIndex
 
@@ -81,7 +83,7 @@ class SkillMakerViewModel @Inject constructor(
             wave = wave.value,
             turn = turn.value,
             currentSkill = currentSkill,
-            currentIndex = currentIndex.value
+            currentIndex = currentIndex.value,
         )
 
         savedState[::savedState.name] = saveState
@@ -139,8 +141,8 @@ class SkillMakerViewModel @Inject constructor(
 
         val targetCmd = SkillMakerEntry.Action(
             AutoSkillAction.TargetEnemy(
-                EnemyTarget.list[target - 1]
-            )
+                EnemyTarget.list[target - 1],
+            ),
         )
 
         val l = last
@@ -191,8 +193,8 @@ class SkillMakerViewModel @Inject constructor(
                 when (skill) {
                     is Skill.Servant -> AutoSkillAction.ServantSkill(skill, targets)
                     is Skill.Master -> AutoSkillAction.MasterSkill(skill, targets.firstOrNull())
-                }
-            )
+                },
+            ),
         )
 
         back()
@@ -230,7 +232,7 @@ class SkillMakerViewModel @Inject constructor(
 
     fun commitOrderChange(
         starting: OrderChangeMember.Starting,
-        sub: OrderChangeMember.Sub
+        sub: OrderChangeMember.Sub,
     ) {
         // some users first click on l and then on order change
         // removes the last action if it was l
@@ -248,9 +250,9 @@ class SkillMakerViewModel @Inject constructor(
             SkillMakerEntry.Action(
                 AutoSkillAction.OrderChange(
                     starting,
-                    sub
-                )
-            )
+                    sub,
+                ),
+            ),
         )
 
         back()
@@ -287,7 +289,7 @@ class SkillMakerViewModel @Inject constructor(
             prevStage()
             prevTurn()
         }
-        if (last is SkillMakerEntry.Next.Turn){
+        if (last is SkillMakerEntry.Next.Turn) {
             prevTurn()
         }
 
@@ -318,7 +320,9 @@ class SkillMakerViewModel @Inject constructor(
                     if (last.action is AutoSkillAction.TargetEnemy) {
                         deleteSelected()
                         revertToPreviousEnemyTarget()
-                    } else deleteSelected()
+                    } else {
+                        deleteSelected()
+                    }
                 }
                 // Do nothing
                 is SkillMakerEntry.Start -> {

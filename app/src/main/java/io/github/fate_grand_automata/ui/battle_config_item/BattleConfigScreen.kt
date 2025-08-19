@@ -54,13 +54,14 @@ import io.github.fate_grand_automata.util.toSp
 @Composable
 fun BattleConfigScreen(
     vm: BattleConfigScreenViewModel = viewModel(),
-    navigate: (BattleConfigDestination) -> Unit
+    navigate: (BattleConfigDestination) -> Unit,
 ) {
     val context = LocalContext.current
 
-    val battleConfigExport = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
-        vm.export(context, uri)
-    }
+    val battleConfigExport =
+        rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
+            vm.export(context, uri)
+        }
 
     BattleConfigContent(
         config = vm.battleConfigCore,
@@ -73,7 +74,7 @@ fun BattleConfigScreen(
             vm.delete()
             navigate(BattleConfigDestination.Back)
         },
-        navigate = navigate
+        navigate = navigate,
     )
 }
 
@@ -93,15 +94,15 @@ private fun BattleConfigContent(
     onCopy: () -> Unit,
     onDelete: () -> Unit,
     navigate: (BattleConfigDestination) -> Unit,
-    vm: BattleConfigScreenViewModel = viewModel()
+    vm: BattleConfigScreenViewModel = viewModel(),
 ) {
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             val deleteConfirmDialog = FgaDialog()
             deleteConfirmDialog.build {
@@ -110,34 +111,34 @@ private fun BattleConfigContent(
 
                 buttons(
                     onSubmit = onDelete,
-                    okLabel = stringResource(R.string.battle_config_item_delete_confirm_ok)
+                    okLabel = stringResource(R.string.battle_config_item_delete_confirm_ok),
                 )
             }
 
             Heading(
-                stringResource(R.string.battle_config_edit)
+                stringResource(R.string.battle_config_edit),
             ) {
                 HeadingButton(
                     text = stringResource(R.string.battle_config_item_export),
-                    onClick = onExport
+                    onClick = onExport,
                 )
 
                 HeadingButton(
                     text = stringResource(R.string.battle_config_item_copy),
                     icon = icon(Icons.Default.ContentCopy),
-                    onClick = onCopy
+                    onClick = onCopy,
                 )
 
                 HeadingButton(
                     text = stringResource(R.string.battle_config_item_delete),
                     isDanger = true,
                     icon = icon(Icons.Default.Delete),
-                    onClick = { deleteConfirmDialog.show() }
+                    onClick = { deleteConfirmDialog.show() },
                 )
             }
 
             LazyColumn(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {
                 item {
                     Card(
@@ -145,20 +146,20 @@ private fun BattleConfigContent(
                             .padding(16.dp),
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        ),
                     ) {
                         Column {
                             config.name.EditTextPreference(
                                 title = stringResource(R.string.p_battle_config_name),
                                 validate = { it.isNotBlank() },
-                                singleLine = true
+                                singleLine = true,
                             )
 
                             HorizontalDivider()
 
                             config.notes.EditTextPreference(
-                                title = stringResource(R.string.p_battle_config_notes)
+                                title = stringResource(R.string.p_battle_config_notes),
                             )
                         }
                     }
@@ -171,13 +172,13 @@ private fun BattleConfigContent(
                             .padding(bottom = 16.dp),
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        ),
                     ) {
                         SkillCommandGroup(
                             config = config,
                             vm = vm,
-                            openSkillMaker = { navigate(BattleConfigDestination.SkillMaker) }
+                            openSkillMaker = { navigate(BattleConfigDestination.SkillMaker) },
                         )
                     }
                 }
@@ -189,18 +190,18 @@ private fun BattleConfigContent(
                             .padding(bottom = 5.dp),
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        ),
                     ) {
                         Column {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
-                                    .height(IntrinsicSize.Min)
+                                    .height(IntrinsicSize.Min),
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .weight(1f)
+                                        .weight(1f),
                                 ) {
                                     config.materials.Materials()
                                 }
@@ -211,13 +212,13 @@ private fun BattleConfigContent(
                                     modifier = Modifier
                                         .fillMaxHeight()
                                         .clickable(onClick = { navigate(BattleConfigDestination.Spam) }),
-                                    contentAlignment = Alignment.Center
+                                    contentAlignment = Alignment.Center,
                                 ) {
                                     Text(
                                         stringResource(R.string.p_spam_spam).uppercase(),
                                         style = MaterialTheme.typography.bodySmall,
                                         modifier = Modifier
-                                            .padding(16.dp, 5.dp)
+                                            .padding(16.dp, 5.dp),
                                     )
                                 }
 
@@ -238,7 +239,7 @@ private fun BattleConfigContent(
                                 Preference(
                                     title = { Text(stringResource(R.string.p_battle_config_card_priority)) },
                                     summary = { CardPrioritySummary(it) },
-                                    onClick = { navigate(BattleConfigDestination.CardPriority) }
+                                    onClick = { navigate(BattleConfigDestination.CardPriority) },
                                 )
                             }
                         }
@@ -251,7 +252,7 @@ private fun BattleConfigContent(
                     SupportGroup(
                         config = config.support,
                         goToPreferred = { navigate(BattleConfigDestination.PreferredSupport) },
-                        maxSkillText = maxSkillText
+                        maxSkillText = maxSkillText,
                     )
                 }
 
@@ -272,26 +273,26 @@ private val CardScore.color: Color
 private fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
     Column(
         modifier = Modifier
-            .padding(vertical = 5.dp)
+            .padding(vertical = 5.dp),
     ) {
         cardPriority.forEachIndexed { wave, priorities ->
             Row(
                 modifier = Modifier
                     .padding(vertical = 2.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     "W${wave + 1}: ",
                     modifier = Modifier
                         .padding(end = 16.dp),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
                 )
 
                 Card(
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    ),
                 ) {
                     val priorityString = buildAnnotatedString {
                         priorities.forEachIndexed { index, it ->
@@ -302,14 +303,14 @@ private fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
                                         fontWeight = MaterialTheme.typography.bodyMedium.fontWeight,
                                         fontSize = MaterialTheme.typography.bodyMedium.fontSize,
                                         letterSpacing = MaterialTheme.typography.bodyMedium.letterSpacing,
-                                    )
+                                    ),
                                 ) {
                                     append(",")
                                 }
                                 withStyle(
                                     style = SpanStyle(
-                                        letterSpacing = 4.dp.toSp()
-                                    )
+                                        letterSpacing = 4.dp.toSp(),
+                                    ),
                                 ) {
                                     append(" ")
                                 }
@@ -324,9 +325,9 @@ private fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
                                     shadow = Shadow(
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         offset = Offset(1f, 1f),
-                                        blurRadius = 0f
-                                    )
-                                )
+                                        blurRadius = 0f,
+                                    ),
+                                ),
                             ) {
                                 append(it.toString())
                             }
@@ -335,7 +336,7 @@ private fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
                     Text(
                         text = priorityString,
                         modifier = Modifier.padding(horizontal = 5.dp),
-                        textAlign = TextAlign.Justify
+                        textAlign = TextAlign.Justify,
                     )
                 }
             }

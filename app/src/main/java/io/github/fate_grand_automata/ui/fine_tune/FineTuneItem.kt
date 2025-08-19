@@ -11,7 +11,7 @@ class FineTuneItem(
     val valueRange: IntRange = 0..100,
     val valueRepresentation: (Int) -> String = { it.toString() },
     // TODO: Localize fine-tune hints
-    val hint: String = ""
+    val hint: String = "",
 ) {
     fun reset() {
         pref.resetToDefault()
@@ -20,5 +20,5 @@ class FineTuneItem(
 
 class FineTuneGroup(
     @StringRes val name: Int,
-    val items: List<FineTuneItem>
+    val items: List<FineTuneItem>,
 )

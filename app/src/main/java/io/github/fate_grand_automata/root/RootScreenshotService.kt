@@ -14,7 +14,7 @@ import java.io.DataInputStream
 
 class RootScreenshotService(
     private val superUser: SuperUser,
-    private val colorManager: ColorManager
+    private val colorManager: ColorManager,
 ) : ScreenshotService {
     private var reader: DataInputStream = superUser.inStream
     private var buffer: ByteArray? = null
@@ -42,7 +42,7 @@ class RootScreenshotService(
                 Timber.e("Unexpected raw image format: $format")
             }
 
-            Timber.d("${w}x${h} format=$format")
+            Timber.d("${w}x$h format=$format")
 
             buffer = ByteArray(w * h * 4)
             bufferMat = Mat(h, w, CvType.CV_8UC4)

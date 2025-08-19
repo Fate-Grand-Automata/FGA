@@ -21,7 +21,7 @@ import kotlin.time.Duration.Companion.milliseconds
 fun Modifier.holdRepeatClickable(
     onRepeat: () -> Unit,
     onEnd: () -> Unit,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) = composed {
     // rememberUpdatedState is needed on State objects accessed from the gesture callback,
     // otherwise the callback would only get the outdated values.
@@ -88,6 +88,6 @@ fun Modifier.holdRepeatClickable(
         }
         .indication(
             interactionSource = interactionSource,
-            indication = ripple()
+            indication = ripple(),
         )
 }

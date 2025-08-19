@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         setContent {
             FgaApp(
                 vm = vm,
-                supportVm = supportVm
+                supportVm = supportVm,
             )
         }
     }
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(
                 applicationContext,
                 msg,
-                Toast.LENGTH_LONG
+                Toast.LENGTH_LONG,
             ).show()
             lifecycleScope.launch {
                 delay(5.seconds)
@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
                     info,
                     this,
                     AppUpdateOptions.defaultOptions(updateType),
-                    updateRequestCode
+                    updateRequestCode,
                 )
             } else {
                 Timber.d("No update available")
@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity() {
                         info,
                         this,
                         AppUpdateOptions.defaultOptions(updateType),
-                        updateRequestCode
+                        updateRequestCode,
                     )
                 }
             }

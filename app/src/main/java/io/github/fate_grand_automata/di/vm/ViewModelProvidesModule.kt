@@ -21,13 +21,13 @@ class ViewModelProvidesModule {
     @Provides
     fun provideBattleConfig(
         prefs: IPreferences,
-        savedState: SavedStateHandle
+        savedState: SavedStateHandle,
     ) = prefs.forBattleConfig(savedState.configKey)
 
     @ViewModelScoped
     @Provides
     fun provideBattleConfigCore(
         prefs: PrefsCore,
-        savedState: SavedStateHandle
+        savedState: SavedStateHandle,
     ) = prefs.forBattleConfig(savedState.configKey)
 }

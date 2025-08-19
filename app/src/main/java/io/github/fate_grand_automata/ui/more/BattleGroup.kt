@@ -18,7 +18,7 @@ import io.github.fate_grand_automata.ui.prefs.SwitchPreference
 import io.github.fate_grand_automata.util.stringRes
 
 fun LazyListScope.battleGroup(
-    prefs: PrefsCore
+    prefs: PrefsCore,
 ) {
     item {
         prefs.gameServerRaw.ListPreference(
@@ -29,22 +29,22 @@ fun LazyListScope.battleGroup(
                 .plus(
                     GameServer.values.associate {
                         it.serialize() to stringResource(it.stringRes)
-                    }
-                )
+                    },
+                ),
         )
     }
 
     item {
         prefs.storySkip.SwitchPreference(
             title = stringResource(R.string.p_story_skip),
-            icon = icon(Icons.Default.FastForward)
+            icon = icon(Icons.Default.FastForward),
         )
     }
 
     item {
         prefs.withdrawEnabled.SwitchPreference(
             title = stringResource(R.string.p_enable_withdraw),
-            icon = icon(R.drawable.ic_exit_run)
+            icon = icon(R.drawable.ic_exit_run),
         )
     }
 
@@ -52,14 +52,14 @@ fun LazyListScope.battleGroup(
         prefs.stopOnCEGet.SwitchPreference(
             title = stringResource(R.string.p_stop_on_ce_get),
             summary = stringResource(R.string.p_stop_on_ce_get_summary),
-            icon = icon(R.drawable.ic_card)
+            icon = icon(R.drawable.ic_card),
         )
     }
 
     item {
         prefs.stopOnFirstClearRewards.SwitchPreference(
             title = stringResource(R.string.p_stop_on_first_clear_rewards),
-            icon = icon(R.drawable.ic_gift)
+            icon = icon(R.drawable.ic_gift),
         )
     }
 
@@ -67,7 +67,7 @@ fun LazyListScope.battleGroup(
         prefs.screenshotDrops.SwitchPreference(
             title = stringResource(R.string.p_screenshot_drops),
             summary = stringResource(R.string.p_screenshot_drops_summary),
-            icon = icon(R.drawable.ic_screenshot)
+            icon = icon(R.drawable.ic_screenshot),
         )
     }
 
@@ -75,14 +75,14 @@ fun LazyListScope.battleGroup(
         prefs.screenshotDropsUnmodified.SwitchPreference(
             title = stringResource(R.string.p_screenshot_drops_unmodified),
             summary = stringResource(R.string.p_screenshot_drops_unmodified_summary),
-            icon = icon(R.drawable.ic_screenshot)
+            icon = icon(R.drawable.ic_screenshot),
         )
     }
     item {
         prefs.screenshotBond.SwitchPreference(
             title = stringResource(R.string.p_screenshot_bond),
             summary = stringResource(R.string.p_screenshot_bond_summary),
-            icon = icon(R.drawable.ic_screenshot)
+            icon = icon(R.drawable.ic_screenshot),
         )
     }
 
@@ -90,7 +90,7 @@ fun LazyListScope.battleGroup(
         prefs.hideSQInAPResources.SwitchPreference(
             title = stringResource(R.string.p_hide_sq_in_resource),
             summary = stringResource(R.string.p_hide_sq_in_resource_summary),
-            icon = icon(R.drawable.ic_apple)
+            icon = icon(R.drawable.ic_apple),
         )
     }
 
@@ -98,7 +98,7 @@ fun LazyListScope.battleGroup(
         prefs.boostItemSelectionMode.SingleSelectChipPreference(
             title = stringResource(R.string.p_boost_item),
             icon = icon(Icons.Default.OfflineBolt),
-            entries = (-1..3).associateWith { it.boostItemString() }
+            entries = (-1..3).associateWith { it.boostItemString() },
         )
     }
 
@@ -106,7 +106,7 @@ fun LazyListScope.battleGroup(
         prefs.skipServantFaceCardCheck.SwitchPreference(
             title = stringResource(R.string.p_skip_servant_face_checks),
             summary = stringResource(R.string.p_skip_servant_face_checks_summary),
-            icon = icon(Icons.Default.NoAccounts)
+            icon = icon(Icons.Default.NoAccounts),
         )
     }
 
@@ -114,7 +114,7 @@ fun LazyListScope.battleGroup(
         prefs.treatSupportLikeOwnServant.SwitchPreference(
             title = stringResource(R.string.p_treat_support_like_own_servant),
             summary = stringResource(R.string.p_treat_support_like_own_servant_summary),
-            icon = icon(R.drawable.ic_biceps)
+            icon = icon(R.drawable.ic_biceps),
         )
     }
 }

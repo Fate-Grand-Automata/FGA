@@ -26,23 +26,23 @@ import io.github.fate_grand_automata.ui.Tabbed
 
 @Composable
 fun FineTuneScreen(
-    vm: FineTuneSettingsViewModel = viewModel()
+    vm: FineTuneSettingsViewModel = viewModel(),
 ) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         Heading(stringResource(R.string.p_fine_tune))
 
         Box(
             modifier = Modifier
-                .weight(1f)
+                .weight(1f),
         ) {
             Tabbed(
                 items = vm.groups,
                 heading = { Text(stringResource(it.name)) },
                 content = { group ->
                     LazyColumn(
-                        contentPadding = PaddingValues(top = 16.dp, bottom = 90.dp)
+                        contentPadding = PaddingValues(top = 16.dp, bottom = 90.dp),
                     ) {
                         items(group.items) {
                             Card(
@@ -51,21 +51,21 @@ fun FineTuneScreen(
                                     .padding(bottom = 16.dp),
                                 colors = CardDefaults.cardColors(
                                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
+                                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                ),
                             ) {
                                 it.FineTuneSetter()
                             }
                         }
                     }
-                }
+                },
             )
 
             ExtendedFloatingActionButton(
                 text = {
                     Text(
                         stringResource(R.string.fine_tune_menu_reset_to_defaults),
-                        color = MaterialTheme.colorScheme.onSecondary
+                        color = MaterialTheme.colorScheme.onSecondary,
                     )
                 },
                 onClick = { vm.resetAll() },
@@ -73,13 +73,13 @@ fun FineTuneScreen(
                     Icon(
                         painterResource(R.drawable.ic_refresh),
                         contentDescription = stringResource(R.string.fine_tune_menu_reset_to_defaults),
-                        tint = MaterialTheme.colorScheme.onSecondary
+                        tint = MaterialTheme.colorScheme.onSecondary,
                     )
                 },
                 containerColor = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(16.dp)
+                    .padding(16.dp),
             )
         }
     }

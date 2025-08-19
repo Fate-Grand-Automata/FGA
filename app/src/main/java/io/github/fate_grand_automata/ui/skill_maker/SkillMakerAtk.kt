@@ -42,14 +42,14 @@ private fun SelectNps(
     numberOfCardsSelected: Int,
     npSequence: String,
     onNpSequenceChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val numberOfNPs = (1..3).count { it.toString() in npSequence }
 
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
+        modifier = modifier,
     ) {
         (1..3).map { servantNumber ->
             val isSelected = servantNumber.toString() in npSequence
@@ -69,7 +69,7 @@ private fun SelectNps(
                     !canSelect -> MaterialTheme.colorScheme.surfaceVariant.copy(0.3f)
                     else -> MaterialTheme.colorScheme.surfaceVariant
                 },
-                label = "Add animation to the changing of color"
+                label = "Add animation to the changing of color",
             )
 
             Surface(
@@ -97,9 +97,7 @@ private fun SelectNps(
                         }
                     }
                     onNpSequenceChange(newNpSequence)
-
-
-                }
+                },
             ) {
                 Text(
                     stringResource(R.string.skill_maker_atk_servant_np, servantNumber),
@@ -109,7 +107,7 @@ private fun SelectNps(
                         isSelected -> Color.White
                         !canSelect -> Color.Unspecified.copy(alpha = 0.3f)
                         else -> Color.Unspecified
-                    }
+                    },
 
                 )
             }
@@ -122,10 +120,10 @@ private fun CardsBeforeNp(
     modifier: Modifier = Modifier,
     numberOfNpSelected: Int,
     cardsBeforeNp: Int,
-    onCardsBeforeNpChange: (Int) -> Unit
+    onCardsBeforeNpChange: (Int) -> Unit,
 ) {
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
         Text(stringResource(R.string.skill_maker_atk_cards_before_np))
 
@@ -141,7 +139,7 @@ private fun CardsBeforeNp(
                         !canSelect -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
                         else -> MaterialTheme.colorScheme.surfaceVariant
                     },
-                    label = "Add animation to the changing of color"
+                    label = "Add animation to the changing of color",
                 )
 
                 Surface(
@@ -155,7 +153,7 @@ private fun CardsBeforeNp(
                         if (canSelect) {
                             onCardsBeforeNpChange(cardNumber)
                         }
-                    }
+                    },
                 ) {
                     Text(
                         cardNumber.toString(),
@@ -166,7 +164,7 @@ private fun CardsBeforeNp(
                             isSelected -> Color.White
                             !canSelect -> Color.Unspecified.copy(alpha = 0.3f)
                             else -> Color.Unspecified
-                        }
+                        },
                     )
                 }
             }
@@ -179,26 +177,25 @@ fun SkillMakerAtk(
     wave: Int,
     turn: Int,
     onNextWave: (AutoSkillAction.Atk) -> Unit,
-    onNextTurn: (AutoSkillAction.Atk) -> Unit
+    onNextTurn: (AutoSkillAction.Atk) -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
-
         Box(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             FGATitle(
                 stringResource(R.string.skill_maker_atk_header),
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center),
             )
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.align(Alignment.CenterEnd)
+                modifier = Modifier.align(Alignment.CenterEnd),
             ) {
                 Text(stringResource(R.string.skill_maker_main_wave, wave))
 
@@ -220,44 +217,41 @@ fun SkillMakerAtk(
             },
             modifier = Modifier
                 .weight(1f)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         )
 
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(40.dp, 0.dp)
+                .padding(40.dp, 0.dp),
         ) {
-
-
             CardsBeforeNp(
                 modifier = Modifier.align(Alignment.CenterStart),
                 numberOfNpSelected = numberOfNPs,
                 cardsBeforeNp = cardsBeforeNp,
-                onCardsBeforeNpChange = { cardsBeforeNp = it }
+                onCardsBeforeNpChange = { cardsBeforeNp = it },
             )
-
 
             Row(
                 modifier = Modifier.align(Alignment.CenterEnd),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Button(
                     onClick = { onNextTurn(makeAtkAction(npSequence, cardsBeforeNp)) },
                     modifier = Modifier
-                        .padding(end = 16.dp)
+                        .padding(end = 16.dp),
                 ) {
                     Text(
                         stringResource(R.string.skill_maker_atk_next_turn),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                 }
 
                 ButtonWithIcon(
                     text = R.string.skill_maker_atk_next_wave,
                     icon = icon(Icons.Default.FastForward),
-                    onClick = { onNextWave(makeAtkAction(npSequence, cardsBeforeNp)) }
+                    onClick = { onNextWave(makeAtkAction(npSequence, cardsBeforeNp)) },
                 )
             }
         }
@@ -285,19 +279,19 @@ fun ButtonWithIcon(
     icon: VectorIcon,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     Button(
         enabled = enabled,
         onClick = onClick,
-        modifier = modifier
+        modifier = modifier,
     ) {
         Icon(
             icon.asPainter(),
             contentDescription = "button icon",
             modifier = Modifier
                 .padding(end = 16.dp)
-                .size(20.dp)
+                .size(20.dp),
         )
 
         Text(stringResource(text))

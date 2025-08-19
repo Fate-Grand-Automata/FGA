@@ -12,10 +12,9 @@ import java.io.FileOutputStream
 import java.io.IOException
 import javax.inject.Inject
 
-
 @ScriptScope
 class TesseractOcrService @Inject constructor(
-    @ApplicationContext val context: Context
+    @ApplicationContext val context: Context,
 ) : OcrService {
     private val tessApi = TessBaseAPI()
 
@@ -54,8 +53,9 @@ class TesseractOcrService @Inject constructor(
     }
 
     private fun copyFile(
-        am: AssetManager, assetName: String,
-        outFile: File
+        am: AssetManager,
+        assetName: String,
+        outFile: File,
     ) {
         try {
             am.open(assetName).use { `in` ->

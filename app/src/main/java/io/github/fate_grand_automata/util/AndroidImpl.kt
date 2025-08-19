@@ -22,7 +22,7 @@ class AndroidImpl @Inject constructor(
     private val preferences: IPreferences,
     private val cutoutManager: CutoutManager,
     private val highlightManager: HighlightManager,
-    @ServiceCoroutineScope private val scope: CoroutineScope
+    @ServiceCoroutineScope private val scope: CoroutineScope,
 ) : PlatformImpl {
     override val windowRegion get() = cutoutManager.getCutoutAppliedRegion()
 
