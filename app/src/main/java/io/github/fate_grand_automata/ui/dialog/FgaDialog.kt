@@ -56,8 +56,9 @@ class FgaDialog private constructor(initialVisibility: Boolean = false) {
             },
             restore = {
                 FgaDialog(it)
-            }
+            },
         )
+
         @Composable
         operator fun invoke(initialValue: Boolean = false) = rememberSaveable(saver = saver()) {
             FgaDialog(initialValue)
@@ -79,20 +80,20 @@ class FgaDialog private constructor(initialVisibility: Boolean = false) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(24.dp, 16.dp)
+                .padding(24.dp, 16.dp),
         ) {
             if (icon != null) {
                 DimmedIcon(
                     icon,
                     contentDescription = "heading icon",
                     modifier = Modifier
-                        .padding(end = 16.dp)
+                        .padding(end = 16.dp),
                 )
             }
 
             Text(
                 text,
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
             )
         }
     }
@@ -103,7 +104,7 @@ class FgaDialog private constructor(initialVisibility: Boolean = false) {
             text,
             modifier = Modifier
                 .padding(24.dp, 16.dp)
-                .padding(bottom = 12.dp)
+                .padding(bottom = 12.dp),
         )
     }
 
@@ -115,20 +116,20 @@ class FgaDialog private constructor(initialVisibility: Boolean = false) {
         showCancel: Boolean = true,
         okEnabled: Boolean = true,
         okLabel: String = stringResource(android.R.string.ok),
-        cancelLabel: String = stringResource(android.R.string.cancel)
+        cancelLabel: String = stringResource(android.R.string.cancel),
     ) {
         Row(
             horizontalArrangement = Arrangement.End,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp, 5.dp)
+                .padding(16.dp, 5.dp),
         ) {
             if (showCancel) {
                 TextButton(
                     onClick = {
                         hide()
                         onCancel()
-                    }
+                    },
                 ) {
                     Text(cancelLabel.uppercase())
                 }
@@ -140,7 +141,7 @@ class FgaDialog private constructor(initialVisibility: Boolean = false) {
                         onSubmit()
                         hide()
                     },
-                    enabled = okEnabled
+                    enabled = okEnabled,
                 ) {
                     Text(okLabel.uppercase())
                 }
@@ -161,7 +162,7 @@ class FgaDialog private constructor(initialVisibility: Boolean = false) {
                 onDismiss = {
                     hide()
                     onDismiss()
-                }
+                },
             ) {
                 Surface(
                     shape = shape,
@@ -170,12 +171,12 @@ class FgaDialog private constructor(initialVisibility: Boolean = false) {
                     modifier = Modifier
                         .padding(16.dp)
                         .widthIn(max = 450.dp)
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 8.dp)
+                            .padding(bottom = 8.dp),
                     ) {
                         this@FgaDialog.content()
                     }
@@ -186,7 +187,7 @@ class FgaDialog private constructor(initialVisibility: Boolean = false) {
 
     @Composable
     fun constrained(
-        content: @Composable FgaDialog.(Modifier) -> Unit
+        content: @Composable FgaDialog.(Modifier) -> Unit,
     ) {
         BoxWithConstraints {
             val modifier = Modifier
@@ -207,13 +208,13 @@ fun <T> FgaDialog.multiChoiceList(
     onSelectedChange: (Set<T>) -> Unit,
     template: @Composable RowScope.(T) -> Unit = {
         Text(it.toString())
-    }
+    },
 ) {
     constrained { modifier ->
         LazyColumn(
             contentPadding = PaddingValues(16.dp, 0.dp),
             modifier = modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             val rearrangeItems = when (prioritySelected) {
                 true -> items.sortedByDescending {
@@ -228,9 +229,9 @@ fun <T> FgaDialog.multiChoiceList(
                     onClick = { onSelectedChange(selected.toggle(it)) },
                     modifier = Modifier.animateItem(
                         spring(
-                            stiffness = Spring.StiffnessMedium
-                        )
-                    )
+                            stiffness = Spring.StiffnessMedium,
+                        ),
+                    ),
                 ) {
                     template(it)
                 }
@@ -244,29 +245,32 @@ fun ChoiceListItem(
     modifier: Modifier = Modifier,
     isSelected: Boolean,
     onClick: () -> Unit,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable RowScope.() -> Unit,
 ) {
     Card(
         shape = CircleShape,
         colors = CardDefaults.cardColors(
             containerColor =
-            if (isSelected) MaterialTheme.colorScheme.primaryContainer
-            else MaterialTheme.colorScheme.surfaceVariant
+                if (isSelected) {
+                    MaterialTheme.colorScheme.primaryContainer
+                } else {
+                    MaterialTheme.colorScheme.surfaceVariant
+                },
         ),
         modifier = Modifier
             .padding(bottom = 7.dp)
-            .then(modifier)
+            .then(modifier),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .clickable(onClick = onClick)
-                .padding(16.dp, 5.dp)
+                .padding(16.dp, 5.dp),
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(1f),
             ) {
                 content()
             }
@@ -274,7 +278,7 @@ fun ChoiceListItem(
             if (isSelected) {
                 Icon(
                     rememberVectorPainter(Icons.Default.Check),
-                    contentDescription = "check"
+                    contentDescription = "check",
                 )
             }
         }
@@ -289,18 +293,18 @@ fun <T> FgaDialog.singleChoiceList(
     onSelectedChange: (T) -> Unit,
     template: @Composable RowScope.(T) -> Unit = {
         Text(it.toString())
-    }
+    },
 ) {
     constrained { modifier ->
         LazyColumn(
             contentPadding = PaddingValues(16.dp, 0.dp),
             modifier = modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             items(items) {
                 ChoiceListItem(
                     isSelected = it == selected,
-                    onClick = { onSelectedChange(it) }
+                    onClick = { onSelectedChange(it) },
                 ) {
                     template(it)
                 }

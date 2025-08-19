@@ -30,10 +30,16 @@ fun ChipPreferenceItem(
     StatusWrapper(enabled) {
         Card(
             colors = cardColors(
-                containerColor = if (isSelected) MaterialTheme.colorScheme.secondary
-                else MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = if (isSelected) MaterialTheme.colorScheme.onSecondary
-                else MaterialTheme.colorScheme.onSurfaceVariant,
+                containerColor = if (isSelected) {
+                    MaterialTheme.colorScheme.secondary
+                } else {
+                    MaterialTheme.colorScheme.surfaceVariant
+                },
+                contentColor = if (isSelected) {
+                    MaterialTheme.colorScheme.onSecondary
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                },
             ),
             elevation = cardElevation(2.dp),
             modifier = Modifier

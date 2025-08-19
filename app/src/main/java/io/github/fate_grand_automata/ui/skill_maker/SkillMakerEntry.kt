@@ -12,7 +12,9 @@ sealed class SkillMakerEntry {
             null -> "${skill.autoSkillCode}"
             else -> {
                 if (target.specialTarget.isNotEmpty()) {
-                    "${skill.autoSkillCode}${target.autoSkillCode}${target.specialTarget}${SpecialCommand.EndSpecialTarget.autoSkillCode}"
+                    "${skill.autoSkillCode}${target.autoSkillCode}" +
+                        target.specialTarget +
+                        "${SpecialCommand.EndSpecialTarget.autoSkillCode}"
                 } else {
                     "${skill.autoSkillCode}${target.autoSkillCode}"
                 }
@@ -23,7 +25,9 @@ sealed class SkillMakerEntry {
             targets.isEmpty() -> "${skill.autoSkillCode}"
             targets.size == 1 -> {
                 if (targets[0].specialTarget.isNotEmpty()) {
-                    "${skill.autoSkillCode}${targets[0].autoSkillCode}${targets[0].specialTarget}${SpecialCommand.EndSpecialTarget.autoSkillCode}"
+                    "${skill.autoSkillCode}${targets[0].autoSkillCode}" +
+                        targets[0].specialTarget +
+                        "${SpecialCommand.EndSpecialTarget.autoSkillCode}"
                 } else {
                     "${skill.autoSkillCode}${targets[0].autoSkillCode}"
                 }
@@ -35,7 +39,9 @@ sealed class SkillMakerEntry {
 
                 val middle = targets.joinToString("") { target ->
                     if (target.specialTarget.isNotEmpty()) {
-                        "${target.autoSkillCode}${target.specialTarget}${SpecialCommand.EndSpecialTarget.autoSkillCode}"
+                        "${target.autoSkillCode}" +
+                            target.specialTarget +
+                            "${SpecialCommand.EndSpecialTarget.autoSkillCode}"
                     } else {
                         "${target.autoSkillCode}"
                     }
@@ -52,7 +58,9 @@ sealed class SkillMakerEntry {
                 } else {
                     val cardsBeforeNP = if (action.cardsBeforeNP > 0) {
                         "${SpecialCommand.CardsBeforeNP.autoSkillCode}${action.cardsBeforeNP}"
-                    } else ""
+                    } else {
+                        ""
+                    }
 
                     cardsBeforeNP + action.nps.joinToString("") {
                         it.autoSkillCode.toString()
@@ -62,8 +70,13 @@ sealed class SkillMakerEntry {
 
             is AutoSkillAction.ServantSkill -> toString(action.skill, action.targets)
             is AutoSkillAction.MasterSkill -> toString(action.skill, action.target)
-            is AutoSkillAction.TargetEnemy -> "${SpecialCommand.EnemyTarget.autoSkillCode}${action.enemy.autoSkillCode}"
-            is AutoSkillAction.OrderChange -> "${SpecialCommand.OrderChange.autoSkillCode}${action.starting.autoSkillCode}${action.sub.autoSkillCode}"
+            is AutoSkillAction.TargetEnemy ->
+                "${SpecialCommand.EnemyTarget.autoSkillCode}" +
+                    "${action.enemy.autoSkillCode}"
+
+            is AutoSkillAction.OrderChange ->
+                "${SpecialCommand.OrderChange.autoSkillCode}" +
+                    "${action.starting.autoSkillCode}${action.sub.autoSkillCode}"
         }
     }
 
@@ -72,8 +85,11 @@ sealed class SkillMakerEntry {
     }
 
     sealed class Next(val action: AutoSkillAction.Atk) : SkillMakerEntry() {
-        protected fun AutoSkillAction.Atk.str() = if (action == AutoSkillAction.Atk.noOp()) ""
-        else Action(this).toString()
+        protected fun AutoSkillAction.Atk.str() = if (action == AutoSkillAction.Atk.noOp()) {
+            ""
+        } else {
+            Action(this).toString()
+        }
 
         class Wave(action: AutoSkillAction.Atk) : Next(action) {
             override fun toString() = "${action.str()}${WaveTurn.Wave.code}"

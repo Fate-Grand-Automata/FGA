@@ -31,7 +31,7 @@ import io.github.fate_grand_automata.ui.spam.SpamScreen
 @Composable
 fun FgaApp(
     vm: MainScreenViewModel,
-    supportVm: SupportViewModel
+    supportVm: SupportViewModel,
 ) {
     val context = LocalContext.current
     val navController = rememberNavController()
@@ -47,7 +47,7 @@ fun FgaApp(
         ) {
             fun battleConfigComposable(
                 route: String,
-                content: @Composable (NavBackStackEntry, id: String) -> Unit
+                content: @Composable (NavBackStackEntry, id: String) -> Unit,
             ) {
                 composable(
                     route = "$route/{${NavConstants.BATTLE_CONFIG_ID_KEY}}",
@@ -82,7 +82,7 @@ fun FgaApp(
                             MainScreenDestinations.OverlaySettings -> {
                                 val intent = Intent(
                                     Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                    Uri.parse("package:${context.packageName}")
+                                    Uri.parse("package:${context.packageName}"),
                                 )
 
                                 context.startActivity(intent)
@@ -134,7 +134,7 @@ fun FgaApp(
             }
             composable(NavConstants.FINE_TUNE) {
                 FineTuneScreen(
-                    vm = hiltViewModel()
+                    vm = hiltViewModel(),
                 )
             }
             battleConfigComposable(NavConstants.BATTLE_CONFIG_ITEM) { _, id ->
@@ -166,18 +166,18 @@ fun FgaApp(
             }
             battleConfigComposable(NavConstants.CARD_PRIORITY) { _, _ ->
                 CardPriorityScreen(
-                    vm = hiltViewModel()
+                    vm = hiltViewModel(),
                 )
             }
             battleConfigComposable(NavConstants.PREFERRED_SUPPORT) { _, _ ->
                 PreferredSupportScreen(
                     vm = hiltViewModel(),
-                    supportVm = supportVm
+                    supportVm = supportVm,
                 )
             }
             battleConfigComposable(NavConstants.SPAM) { _, _ ->
                 SpamScreen(
-                    vm = hiltViewModel()
+                    vm = hiltViewModel(),
                 )
             }
         }
