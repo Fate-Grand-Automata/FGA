@@ -6,6 +6,7 @@ import android.media.MediaRecorder
 import android.media.projection.MediaProjection
 import io.github.fate_grand_automata.util.StorageProvider
 import io.github.lib_automata.Size
+import timber.log.Timber
 
 /**
  * This class is responsible for creating video recordings of the screen using [MediaProjection].
@@ -16,33 +17,60 @@ class MediaProjectionRecording(
     screenDensity: Int,
     storageProvider: StorageProvider
 ) : AutoCloseable {
-    private val mediaRecorder = MediaRecorder().apply {
-        setVideoSource(MediaRecorder.VideoSource.SURFACE)
-
-        // Copy properties not related to audio
-        val profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH)
-        setOutputFormat(profile.fileFormat)
-        setVideoEncoder(profile.videoCodec)
-        setVideoEncodingBitRate(profile.videoBitRate)
-        setVideoFrameRate(profile.videoFrameRate)
-        setVideoSize(imageSize.width, imageSize.height)
-
-        setOutputFile(storageProvider.recordingFileDescriptor.fileDescriptor)
-        prepare()
+    private val mediaRecorder by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            MediaRecorder(context)
+        } else {
+            @Suppress("DEPRECATION")
+            MediaRecorder()
+        }
     }
 
-    private val virtualDisplay: VirtualDisplay = mediaProjection.createVirtualDisplay(
-        "ScreenRecord",
-        imageSize.width, imageSize.height, screenDensity,
-        0, mediaRecorder.surface, null, null
-    )
+    private var virtualDisplay: VirtualDisplay? = null
+
+    private val mediaProjectionCallback = object : MediaProjection.Callback() {
+        override fun onStop() {
+            Timber.d("Projection stopped by the user")
+        }
+    }
 
     init {
+        mediaProjection.registerCallback(mediaProjectionCallback, null)
+
+        initializeRecorder()
         mediaRecorder.start()
+        virtualDisplay = createVirtualDisplay()
+    }
+
+    private fun initializeRecorder() {
+        with(mediaRecorder) {
+            setVideoSource(MediaRecorder.VideoSource.SURFACE)
+
+            // Copy properties not related to audio
+            val profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH)
+            setOutputFormat(profile.fileFormat)
+            setVideoEncoder(profile.videoCodec)
+            setVideoEncodingBitRate(profile.videoBitRate)
+            setVideoFrameRate(profile.videoFrameRate)
+            setVideoSize(imageSize.width, imageSize.height)
+
+            setOutputFile(storageProvider.recordingFileDescriptor.fileDescriptor)
+            prepare()
+        }
+    }
+
+    private fun createVirtualDisplay(): VirtualDisplay? {
+        return mediaProjection.createVirtualDisplay(
+            "ScreenRecord",
+            imageSize.width, imageSize.height, screenDensity,
+            0, mediaRecorder.surface, null, null
+        )
     }
 
     override fun close() {
+        mediaProjection.unregisterCallback(mediaProjectionCallback)
         mediaRecorder.stop()
-        virtualDisplay.release()
+        virtualDisplay?.release()
+        virtualDisplay = null
     }
 }
