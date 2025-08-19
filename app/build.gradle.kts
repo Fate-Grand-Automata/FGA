@@ -22,19 +22,6 @@ android {
         buildConfig = true
     }
 
-    kotlin {
-        compilerOptions {
-            optIn.add("androidx.compose.material.ExperimentalMaterialApi")
-            optIn.add("androidx.compose.material.ExperimentalMaterialApi")
-            optIn.add("androidx.compose.material3.ExperimentalMaterial3Api")
-            optIn.add("androidx.compose.foundation.ExperimentalFoundationApi")
-            optIn.add("androidx.compose.animation.ExperimentalAnimationApi")
-            optIn.add("androidx.compose.ui.ExperimentalComposeUiApi")
-            optIn.add("androidx.compose.foundation.layout.ExperimentalLayoutApi")
-            optIn.add("androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi")
-        }
-    }
-
     androidResources {
         generateLocaleConfig = true
     }
@@ -144,18 +131,18 @@ dependencies {
     implementation(libs.google.android.play.update.ktx)
     implementation(libs.coil)
     implementation(libs.coil.gif)
-
 }
 
 tasks {
     withType<KotlinCompile> {
         compilerOptions.freeCompilerArgs.addAll(
+            "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
             "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
             "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
             "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
             "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
-            "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
+            "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi"
         )
     }
 }
