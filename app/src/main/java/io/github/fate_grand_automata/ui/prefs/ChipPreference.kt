@@ -25,26 +25,28 @@ fun ChipPreferenceItem(
     text: String,
     isSelected: Boolean,
     onSelect: () -> Unit,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     StatusWrapper(enabled) {
         Card(
             colors = cardColors(
-                containerColor = if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = if (isSelected) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurfaceVariant
+                containerColor = if (isSelected) MaterialTheme.colorScheme.secondary
+                else MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = if (isSelected) MaterialTheme.colorScheme.onSecondary
+                else MaterialTheme.colorScheme.onSurfaceVariant,
             ),
             elevation = cardElevation(2.dp),
             modifier = Modifier
                 .defaultMinSize(minWidth = 30.dp),
             onClick = onSelect,
-            enabled = enabled
+            enabled = enabled,
         ) {
             Text(
                 text,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .padding(5.dp, 2.dp)
-                    .align(Alignment.CenterHorizontally)
+                    .align(Alignment.CenterHorizontally),
             )
         }
     }
@@ -58,7 +60,7 @@ fun <T> SingleSelectChip(
     modifier: Modifier = Modifier,
     icon: VectorIcon? = null,
     entries: Map<T, String> = emptyMap(),
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     Preference(
         title = { Text(title) },
@@ -66,21 +68,21 @@ fun <T> SingleSelectChip(
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(0.dp),
-                verticalArrangement = Arrangement.spacedBy(0.dp)
+                verticalArrangement = Arrangement.spacedBy(0.dp),
             ) {
                 entries.forEach { (key, value) ->
                     ChipPreferenceItem(
                         text = value,
                         isSelected = key == selected,
                         onSelect = { onSelectedChange(key) },
-                        enabled = enabled
+                        enabled = enabled,
                     )
                 }
             }
         },
         icon = icon,
         enabled = enabled,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -90,7 +92,7 @@ fun <T> Pref<T>.SingleSelectChipPreference(
     modifier: Modifier = Modifier,
     icon: VectorIcon? = null,
     entries: Map<T, String> = emptyMap(),
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     var selected by remember()
 
@@ -101,7 +103,7 @@ fun <T> Pref<T>.SingleSelectChipPreference(
         icon = icon,
         entries = entries,
         enabled = enabled,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -113,26 +115,26 @@ fun <T> MultiSelectChip(
     modifier: Modifier = Modifier,
     icon: VectorIcon? = null,
     entries: Map<T, String> = emptyMap(),
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     Preference(
         title = { Text(title) },
         summary = {
             FlowRow(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 entries.forEach { (key, value) ->
                     ChipPreferenceItem(
                         text = value,
                         isSelected = key in selected,
-                        onSelect = { onSelectedChange(selected.toggle(key)) }
+                        onSelect = { onSelectedChange(selected.toggle(key)) },
                     )
                 }
             }
         },
         icon = icon,
         enabled = enabled,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -142,7 +144,7 @@ fun <T> Pref<Set<T>>.MultiSelectChipPreference(
     modifier: Modifier = Modifier,
     icon: VectorIcon? = null,
     entries: Map<T, String> = emptyMap(),
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     var selected by remember()
 
@@ -153,6 +155,6 @@ fun <T> Pref<Set<T>>.MultiSelectChipPreference(
         icon = icon,
         entries = entries,
         enabled = enabled,
-        modifier = modifier
+        modifier = modifier,
     )
 }

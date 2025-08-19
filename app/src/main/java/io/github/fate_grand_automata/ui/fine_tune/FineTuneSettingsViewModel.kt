@@ -29,9 +29,11 @@ class FineTuneSettingsViewModel @Inject constructor(
                     name = R.string.p_fine_tune_support_max_updates,
                     icon = icon(R.drawable.ic_refresh),
                     valueRange = 0..50,
-                    hint = "Maximum number of times to refresh in support screen after which the configured fallback option is used."
-                )
-            )
+                    hint = "Maximum number of times to refresh in " +
+                        "support screen after which the configured " +
+                        "fallback option is used.",
+                ),
+            ),
         ),
         FineTuneGroup(
             name = R.string.p_fine_tune_similarity,
@@ -156,7 +158,7 @@ class FineTuneSettingsViewModel @Inject constructor(
                     hint = "This multiples to every wait/delay. So, you can make the overall script slower/faster by using this."
                 )
             )
-        )
+        ),
     )
 
     fun resetAll() =
