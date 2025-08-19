@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SpamScreen(
-    vm: SpamScreenViewModel = viewModel()
+    vm: SpamScreenViewModel = viewModel(),
 ) {
     DisposableEffect(vm) {
         onDispose {
@@ -53,7 +53,7 @@ fun SpamScreen(
         }
     }
 
-    val pagerState = rememberPagerState(pageCount = {vm.spamStates.size})
+    val pagerState = rememberPagerState(pageCount = { vm.spamStates.size })
     val scope = rememberCoroutineScope()
 
     LazyColumn {
@@ -64,7 +64,7 @@ fun SpamScreen(
         item {
             vm.battleConfigCore.autoChooseTarget.SwitchPreference(
                 title = stringResource(R.string.p_auto_choose_target),
-                summary = stringResource(R.string.p_spam_summary)
+                summary = stringResource(R.string.p_spam_summary),
             )
 
             HorizontalDivider()
@@ -73,11 +73,11 @@ fun SpamScreen(
         item {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(16.dp, 5.dp)
+                modifier = Modifier.padding(16.dp, 5.dp),
             ) {
                 Text(
                     "Servant:",
-                    modifier = Modifier.padding(end = 16.dp)
+                    modifier = Modifier.padding(end = 16.dp),
                 )
 
                 (1..vm.spamStates.size).map {
@@ -87,14 +87,18 @@ fun SpamScreen(
                         modifier = Modifier
                             .background(
                                 color = if (isSelected) MaterialTheme.colorScheme.secondary else Color.Transparent,
-                                shape = MaterialTheme.shapes.medium
+                                shape = MaterialTheme.shapes.medium,
                             )
                             .clickable { scope.launch { pagerState.animateScrollToPage(it - 1) } }
-                            .padding(14.dp, 5.dp)
+                            .padding(14.dp, 5.dp),
                     ) {
                         Text(
                             it.toString(),
-                            color = if (isSelected) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurfaceVariant
+                            color = if (isSelected) {
+                                MaterialTheme.colorScheme.onSecondary
+                            } else {
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            },
                         )
                     }
                 }
@@ -109,20 +113,20 @@ fun SpamScreen(
                 verticalAlignment = Alignment.Top,
             ) {
                 SpamView(
-                    selectedConfig = vm.spamStates[it]
+                    selectedConfig = vm.spamStates[it],
                 )
             }
         }
 
         item {
             HorizontalDivider(
-                modifier = Modifier.padding(vertical = 16.dp)
+                modifier = Modifier.padding(vertical = 16.dp),
             )
 
             Text(
                 "PRESETS",
                 modifier = Modifier
-                    .padding(16.dp, 5.dp)
+                    .padding(16.dp, 5.dp),
             )
         }
 
@@ -130,12 +134,12 @@ fun SpamScreen(
             LazyRow(
                 contentPadding = PaddingValues(10.dp, 5.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 items(vm.presets) { preset ->
                     HeadingButton(
                         text = preset.name,
-                        onClick = { preset.action(vm.spamStates) }
+                        onClick = { preset.action(vm.spamStates) },
                     )
                 }
             }
@@ -145,12 +149,12 @@ fun SpamScreen(
 
 @Composable
 private fun NpSpamView(
-    spamConfig: SpamScreenViewModel.NpSpamState
+    spamConfig: SpamScreenViewModel.NpSpamState,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .padding(start = 16.dp)
+            .padding(start = 16.dp),
     ) {
         Text(stringResource(R.string.spam_np))
 
@@ -160,14 +164,14 @@ private fun NpSpamView(
         SelectSpamMode(
             selected = selectedSpamMode,
             onSelectChange = { selectedSpamMode = it },
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         )
 
         if (selectedSpamMode != SpamEnum.None) {
             SelectWaves(
                 selected = selectedWaves,
                 onSelectChange = { selectedWaves = it },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
         }
     }
@@ -176,12 +180,12 @@ private fun NpSpamView(
 @Composable
 private fun SkillSpamView(
     index: Int,
-    skillConfig: SpamScreenViewModel.SkillSpamState
+    skillConfig: SpamScreenViewModel.SkillSpamState,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .padding(start = 16.dp)
+            .padding(start = 16.dp),
     ) {
         Text("S${index + 1}:")
 
@@ -192,20 +196,20 @@ private fun SkillSpamView(
         SelectSpamMode(
             selected = selectedSpamMode,
             onSelectChange = { selectedSpamMode = it },
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         )
 
         if (selectedSpamMode != SpamEnum.None) {
             SelectTarget(
                 selected = selectedTarget,
                 onSelectChange = { selectedTarget = it },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
 
             SelectWaves(
                 selected = selectedWaves,
                 onSelectChange = { selectedWaves = it },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
         }
     }
@@ -213,7 +217,7 @@ private fun SkillSpamView(
 
 @Composable
 private fun SpamView(
-    selectedConfig: SpamScreenViewModel.SpamState
+    selectedConfig: SpamScreenViewModel.SpamState,
 ) {
     Column {
         Card(
@@ -221,8 +225,8 @@ private fun SpamView(
                 .padding(16.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            ),
         ) {
             NpSpamView(spamConfig = selectedConfig.np)
         }
@@ -232,8 +236,8 @@ private fun SpamView(
                 .padding(horizontal = 16.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            ),
         ) {
             Column {
                 selectedConfig.skills.mapIndexed { index, skillConfig ->
@@ -243,7 +247,7 @@ private fun SpamView(
 
                     SkillSpamView(
                         index = index,
-                        skillConfig = skillConfig
+                        skillConfig = skillConfig,
                     )
                 }
             }
@@ -255,13 +259,13 @@ private fun SpamView(
 private fun SelectSpamMode(
     selected: SpamEnum,
     onSelectChange: (SpamEnum) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val dialog = listDialog(
         selected = selected,
         onSelectedChange = onSelectChange,
         entries = SpamEnum.entries.associateWith { stringResource(it.stringRes) },
-        title = stringResource(R.string.spam)
+        title = stringResource(R.string.spam),
     )
 
     ListItem(
@@ -269,7 +273,7 @@ private fun SelectSpamMode(
         supportingContent = { Text(stringResource(selected.stringRes)) },
         modifier = modifier
             .clickable { dialog.show() },
-        colors = FGAListItemColors()
+        colors = FGAListItemColors(),
     )
 }
 
@@ -277,13 +281,13 @@ private fun SelectSpamMode(
 private fun SelectTarget(
     selected: SkillSpamTarget,
     onSelectChange: (SkillSpamTarget) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val dialog = listDialog(
         selected = selected,
         onSelectedChange = onSelectChange,
         entries = SkillSpamTarget.entries.associateWith { it.toString() },
-        title = stringResource(R.string.spam_target)
+        title = stringResource(R.string.spam_target),
     )
 
     ListItem(
@@ -291,7 +295,7 @@ private fun SelectTarget(
         supportingContent = { Text(selected.toString()) },
         modifier = modifier
             .clickable { dialog.show() },
-        colors = FGAListItemColors()
+        colors = FGAListItemColors(),
     )
 }
 
@@ -299,13 +303,13 @@ private fun SelectTarget(
 private fun SelectWaves(
     selected: Set<Int>,
     onSelectChange: (Set<Int>) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     MultiSelectChip(
         title = "Waves",
         selected = selected,
         onSelectedChange = onSelectChange,
         entries = (1..3).associateWith { "$it" },
-        modifier = modifier
+        modifier = modifier,
     )
 }
