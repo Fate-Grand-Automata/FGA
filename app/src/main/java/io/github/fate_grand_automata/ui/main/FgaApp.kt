@@ -40,9 +40,9 @@ fun FgaApp(
         NavHost(
             navController = navController,
             startDestination = if (vm.prefs.isOnboardingRequired()) {
-                NavConstants.onboarding
+                NAV_CONSTANTS.onboarding
             } else {
-                NavConstants.home
+                NAV_CONSTANTS.home
             }
         ) {
             fun battleConfigComposable(
@@ -50,10 +50,10 @@ fun FgaApp(
                 content: @Composable (NavBackStackEntry, id: String) -> Unit
             ) {
                 composable(
-                    route = "$route/{${NavConstants.battleConfigIdKey}}",
-                    arguments = listOf(navArgument(NavConstants.battleConfigIdKey) { type = NavType.StringType })
+                    route = "$route/{${NAV_CONSTANTS.battleConfigIdKey}}",
+                    arguments = listOf(navArgument(NAV_CONSTANTS.battleConfigIdKey) { type = NavType.StringType })
                 ) {
-                    content(it, it.arguments?.getString(NavConstants.battleConfigIdKey) ?: "")
+                    content(it, it.arguments?.getString(NAV_CONSTANTS.battleConfigIdKey) ?: "")
                 }
             }
 
@@ -61,7 +61,7 @@ fun FgaApp(
                 navController.navigate("$route/$id", builder)
             }
 
-            composable(NavConstants.home) {
+            composable(NAV_CONSTANTS.home) {
                 MainScreen(
                     vm = vm,
                     navigate = {
@@ -72,11 +72,11 @@ fun FgaApp(
                             }
 
                             MainScreenDestinations.BattleConfigs -> {
-                                navController.navigate(NavConstants.battleConfigs)
+                                navController.navigate(NAV_CONSTANTS.battleConfigs)
                             }
 
                             MainScreenDestinations.MoreOptions -> {
-                                navController.navigate(NavConstants.moreOptions)
+                                navController.navigate(NAV_CONSTANTS.moreOptions)
                             }
 
                             MainScreenDestinations.OverlaySettings -> {
@@ -107,75 +107,75 @@ fun FgaApp(
                     }
                 )
             }
-            composable(NavConstants.onboarding) {
+            composable(NAV_CONSTANTS.onboarding) {
                 OnboardingScreen(
                     vm = hiltViewModel(),
                     navigateToHome = {
-                        navController.navigate(NavConstants.home) {
+                        navController.navigate(NAV_CONSTANTS.home) {
                             // disables going back to onboarding from home screen
-                            popUpTo(NavConstants.onboarding) {
+                            popUpTo(NAV_CONSTANTS.onboarding) {
                                 inclusive = true
                             }
                         }
                     }
                 )
             }
-            composable(NavConstants.battleConfigs) {
+            composable(NAV_CONSTANTS.battleConfigs) {
                 BattleConfigListScreen(
                     vm = hiltViewModel(),
-                    navigate = { navigate(NavConstants.battleConfigItem, it) }
+                    navigate = { navigate(NAV_CONSTANTS.battleConfigItem, it) }
                 )
             }
-            composable(NavConstants.moreOptions) {
+            composable(NAV_CONSTANTS.moreOptions) {
                 MoreOptionsScreen(
                     vm = hiltViewModel(),
-                    navigateToFineTune = { navController.navigate(NavConstants.fineTune) }
+                    navigateToFineTune = { navController.navigate(NAV_CONSTANTS.fineTune) }
                 )
             }
-            composable(NavConstants.fineTune) {
+            composable(NAV_CONSTANTS.fineTune) {
                 FineTuneScreen(
                     vm = hiltViewModel()
                 )
             }
-            battleConfigComposable(NavConstants.battleConfigItem) { _, id ->
+            battleConfigComposable(NAV_CONSTANTS.battleConfigItem) { _, id ->
                 BattleConfigScreen(
                     vm = hiltViewModel(),
                     navigate = {
                         when (it) {
                             BattleConfigDestination.Back -> navController.popBackStack()
-                            BattleConfigDestination.CardPriority -> navigate(NavConstants.cardPriority, id)
+                            BattleConfigDestination.CardPriority -> navigate(NAV_CONSTANTS.cardPriority, id)
                             is BattleConfigDestination.Other -> {
-                                navigate(NavConstants.battleConfigItem, it.id) {
-                                    popUpTo(NavConstants.battleConfigs)
+                                navigate(NAV_CONSTANTS.battleConfigItem, it.id) {
+                                    popUpTo(NAV_CONSTANTS.battleConfigs)
                                 }
                             }
 
-                            BattleConfigDestination.PreferredSupport -> navigate(NavConstants.preferredSupport, id)
+                            BattleConfigDestination.PreferredSupport -> navigate(NAV_CONSTANTS.preferredSupport, id)
                             BattleConfigDestination.SkillMaker -> {
                                 val intent = Intent(context, SkillMakerActivity::class.java).apply {
-                                    putExtra(NavConstants.battleConfigIdKey, id)
+                                    putExtra(NAV_CONSTANTS.battleConfigIdKey, id)
                                 }
 
                                 context.startActivity(intent)
                             }
 
-                            BattleConfigDestination.Spam -> navigate(NavConstants.spam, id)
+                            BattleConfigDestination.Spam -> navigate(NAV_CONSTANTS.spam, id)
                         }
                     }
                 )
             }
-            battleConfigComposable(NavConstants.cardPriority) { _, _ ->
+            battleConfigComposable(NAV_CONSTANTS.cardPriority) { _, _ ->
                 CardPriorityScreen(
                     vm = hiltViewModel()
                 )
             }
-            battleConfigComposable(NavConstants.preferredSupport) { _, _ ->
+            battleConfigComposable(NAV_CONSTANTS.preferredSupport) { _, _ ->
                 PreferredSupportScreen(
                     vm = hiltViewModel(),
                     supportVm = supportVm
                 )
             }
-            battleConfigComposable(NavConstants.spam) { _, _ ->
+            battleConfigComposable(NAV_CONSTANTS.spam) { _, _ ->
                 SpamScreen(
                     vm = hiltViewModel()
                 )
@@ -184,7 +184,7 @@ fun FgaApp(
     }
 }
 
-object NavConstants {
+object NAV_CONSTANTS {
     const val home = "home"
     const val battleConfigs = "configs"
     const val battleConfigItem = "configItem"
