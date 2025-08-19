@@ -14,14 +14,19 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.resume
-import kotlin.math.*
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.pow
+import kotlin.math.roundToInt
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 /**
  * Class to perform gestures using Android's [AccessibilityService].
  */
 class AccessibilityGestures @Inject constructor(
     private val gesturePrefs: IGesturesPreferences,
-    private val wait: Waiter
+    private val wait: Waiter,
 ) : GestureService {
     fun Path.moveTo(location: Location) = apply {
         moveTo(location.x.toFloat(), location.y.toFloat())
@@ -43,7 +48,7 @@ class AccessibilityGestures @Inject constructor(
         val swipeStroke = GestureDescription.StrokeDescription(
             swipePath,
             0,
-            gesturePrefs.swipeDuration.inWholeMilliseconds
+            gesturePrefs.swipeDuration.inWholeMilliseconds,
         )
         performGesture(swipeStroke)
 
@@ -77,7 +82,7 @@ class AccessibilityGestures @Inject constructor(
             mouseDownPath,
             0,
             200L,
-            true
+            true,
         ).also {
             performGesture(it)
         }
@@ -97,7 +102,7 @@ class AccessibilityGestures @Inject constructor(
                 swipePath,
                 swipeDelay,
                 swipeDuration,
-                true
+                true,
             ).also {
                 performGesture(it)
             }
@@ -112,7 +117,7 @@ class AccessibilityGestures @Inject constructor(
             mouseUpPath,
             1,
             400L,
-            false
+            false,
         ).also {
             performGesture(it)
         }
@@ -123,7 +128,9 @@ class AccessibilityGestures @Inject constructor(
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             swipe8(start, end)
-        } else swipe7(start, end)
+        } else {
+            swipe7(start, end)
+        }
     }
 
     override fun click(location: Location, times: Int) = runBlocking {
@@ -132,7 +139,7 @@ class AccessibilityGestures @Inject constructor(
         val stroke = GestureDescription.StrokeDescription(
             swipePath,
             gesturePrefs.clickDelay.inWholeMilliseconds,
-            gesturePrefs.clickDuration.inWholeMilliseconds
+            gesturePrefs.clickDuration.inWholeMilliseconds,
         )
 
         Timber.d("click $location x$times")
@@ -144,7 +151,9 @@ class AccessibilityGestures @Inject constructor(
         wait(gesturePrefs.clickWaitTime)
     }
 
-    private suspend fun performGesture(StrokeDesc: GestureDescription.StrokeDescription): Boolean = suspendCancellableCoroutine {
+    private suspend fun performGesture(
+        StrokeDesc: GestureDescription.StrokeDescription,
+    ): Boolean = suspendCancellableCoroutine {
         val gestureDesc = GestureDescription.Builder()
             .addStroke(StrokeDesc)
             .build()
