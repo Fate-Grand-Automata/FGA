@@ -1,9 +1,11 @@
 package io.github.fate_grand_automata.imaging
 
+import android.content.Context
 import android.hardware.display.VirtualDisplay
 import android.media.CamcorderProfile
 import android.media.MediaRecorder
 import android.media.projection.MediaProjection
+import android.os.Build
 import io.github.fate_grand_automata.util.StorageProvider
 import io.github.lib_automata.Size
 import timber.log.Timber
@@ -12,6 +14,7 @@ import timber.log.Timber
  * This class is responsible for creating video recordings of the screen using [MediaProjection].
  */
 class MediaProjectionRecording(
+    context: Context,
     mediaProjection: MediaProjection,
     imageSize: Size,
     screenDensity: Int,
