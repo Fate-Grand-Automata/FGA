@@ -1,9 +1,11 @@
 package io.github.fate_grand_automata.runner
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.media.projection.MediaProjectionManager
 import android.os.Build
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
 import io.github.fate_grand_automata.imaging.MediaProjectionScreenshotService
 import io.github.fate_grand_automata.root.RootScreenshotService
@@ -27,6 +29,7 @@ import kotlin.math.roundToInt
 
 @ServiceScoped
 class ScreenshotServiceHolder @Inject constructor(
+    @param:ApplicationContext private val context: Context,
     private val prefs: IPreferences,
     private val storageProvider: StorageProvider,
     private val display: DisplayHelper,
@@ -70,6 +73,7 @@ class ScreenshotServiceHolder @Inject constructor(
                 val scaledDensity = (landscapeMetrics.densityDpi / (scale ?: 1.0)).roundToInt()
 
                 MediaProjectionScreenshotService(
+                    context,
                     mediaProjection,
                     scaledSize,
                     scaledDensity,
