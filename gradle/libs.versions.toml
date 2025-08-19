@@ -40,6 +40,8 @@ compose_bom_version = "2025.08.00"
 coil_version = "3.3.0"
 junit_bom_version = "5.13.4"
 
+spotless = "7.2.1"
+ktlint-core = "1.7.1"
 
 [libraries]
 android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle_version" }
@@ -107,9 +109,13 @@ compose-material-icons-extended = { group = "androidx.compose.material", name = 
 coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil_version" }
 coil-gif = { module = "io.coil-kt.coil3:coil-gif", version.ref = "coil_version" }
 
+ktlint-core = { module = "com.pinterest.ktlint:ktlint-cli", version.ref = "ktlint-core" }
+
 [plugins]
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes_versions" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp_version" }
 
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin_version" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_version" }
+
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
