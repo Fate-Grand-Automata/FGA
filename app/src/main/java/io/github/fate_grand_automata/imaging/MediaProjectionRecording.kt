@@ -71,8 +71,8 @@ class MediaProjectionRecording(
     }
 
     override fun close() {
-        mediaProjection.unregisterCallback(mediaProjectionCallback)
         mediaRecorder.stop()
+        mediaProjection.unregisterCallback(mediaProjectionCallback)
         virtualDisplay?.release()
         virtualDisplay = null
     }
