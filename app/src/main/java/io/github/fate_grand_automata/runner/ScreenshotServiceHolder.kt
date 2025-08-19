@@ -55,6 +55,11 @@ class ScreenshotServiceHolder @Inject constructor(
 
                 val mediaProjection =
                     mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, token)
+                
+                if (mediaProjection == null) {
+                    Timber.e("MediaProjection is null, cannot prepare screenshot service")
+                    return
+                }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                     // not allowed to reuse tokens on Android 14
