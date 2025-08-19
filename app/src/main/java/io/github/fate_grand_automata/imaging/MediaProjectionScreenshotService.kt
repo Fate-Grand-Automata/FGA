@@ -19,7 +19,7 @@ import org.opencv.imgproc.Imgproc
  * This class is responsible for creating screenshots using [mediaProjection].
  */
 class MediaProjectionScreenshotService(
-    context: Context,
+    private val context: Context,
     private val mediaProjection: MediaProjection,
     private val imageSize: Size,
     private val screenDensity: Int,
