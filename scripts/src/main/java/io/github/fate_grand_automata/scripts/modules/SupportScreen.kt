@@ -25,12 +25,12 @@ interface SupportScreen {
 @ScriptScope
 class RealSupportScreen @Inject constructor(
     api: IFgoAutomataApi,
-    private val swipe: Swiper
+    private val swipe: Swiper,
 ) : IFgoAutomataApi by api, SupportScreen {
     override fun scrollDown() {
         swipe(
             locations.support.listSwipeStart,
-            locations.support.listSwipeEnd
+            locations.support.listSwipeEnd,
         )
     }
 
@@ -60,7 +60,7 @@ class RealSupportScreen @Inject constructor(
     override fun someSupportsPresent() =
         locations.support.confirmSetupButtonRegion.exists(
             images[Images.SupportConfirmSetupButton],
-            similarity = Support.supportRegionToolSimilarity
+            similarity = Support.SUPPORT_REGION_TOOL_SIMILARITY,
         ) || images[Images.Guest] in locations.support.friendRegion
 
     override fun isListLoaded() =

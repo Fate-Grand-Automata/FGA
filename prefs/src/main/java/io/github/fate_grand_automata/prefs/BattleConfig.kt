@@ -7,7 +7,7 @@ import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 
 internal class BattleConfig(
     override val id: String,
-    prefsCore: PrefsCore
+    prefsCore: PrefsCore,
 ) : IBattleConfig {
     val prefs = prefsCore.forBattleConfig(id)
 
@@ -39,7 +39,7 @@ internal class BattleConfig(
                 null -> BattleConfigCore.Server.NotSet
                 else -> BattleConfigCore.Server.Set(it)
             }
-        }
+        },
     )
 
     override var spam by prefs.spam

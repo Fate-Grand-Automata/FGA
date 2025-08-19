@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 @ScriptScope
 class AttackScreenLocations @Inject constructor(
-    scriptAreaTransforms: IScriptAreaTransforms
+    scriptAreaTransforms: IScriptAreaTransforms,
 ) : IScriptAreaTransforms by scriptAreaTransforms {
     private fun clickLocation(card: CommandCard.Face) = when (card) {
         CommandCard.Face.A -> -980
@@ -57,8 +57,12 @@ class AttackScreenLocations @Inject constructor(
         affinityRegion(card) + Location(-50, 100)
 
     val backClick =
-        (if (isWide)
-            Location(-325, 1310)
-        else Location(-160, 1370))
+        (
+            if (isWide) {
+                Location(-325, 1310)
+            } else {
+                Location(-160, 1370)
+            }
+            )
             .xFromRight()
 }

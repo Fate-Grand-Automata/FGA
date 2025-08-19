@@ -13,13 +13,13 @@ class ApplyBraveChains @Inject constructor() {
     private fun rearrange(
         cards: List<ParsedCard>,
         rearrange: Boolean,
-        npUsage: NPUsage
+        npUsage: NPUsage,
     ): List<ParsedCard> {
-        if (rearrange
+        if (rearrange &&
             // If there are cards before NP, at max there's only 1 card after NP
-            && npUsage.cardsBeforeNP == 0
+            npUsage.cardsBeforeNP == 0 &&
             // If there are more than 1 NPs, only 1 card after NPs at max
-            && npUsage.nps.size <= 1
+            npUsage.nps.size <= 1
         ) {
             val cardsToRearrange = List(cards.size) { index -> index }
                 .take((3 - npUsage.nps.size).coerceAtLeast(0))
@@ -40,13 +40,13 @@ class ApplyBraveChains @Inject constructor() {
     private fun withNp(
         cards: List<ParsedCard>,
         rearrange: Boolean,
-        npUsage: NPUsage
+        npUsage: NPUsage,
     ): List<ParsedCard> {
         val justRearranged by lazy {
             rearrange(
                 cards = cards.take(3),
                 rearrange = rearrange,
-                npUsage = npUsage
+                npUsage = npUsage,
             )
         }
 
@@ -62,8 +62,8 @@ class ApplyBraveChains @Inject constructor() {
           When rearrange is active and there is 1 NP and 1 Card before NP,
           we want the best or matching face-card after NP.
          */
-        if (rearrange
-            && listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
+        if (rearrange &&
+            listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
         ) {
             Collections.swap(combinedCards, 0, 1)
         }
@@ -71,13 +71,13 @@ class ApplyBraveChains @Inject constructor() {
         return rearrange(
             cards = combinedCards,
             rearrange = rearrange,
-            npUsage = npUsage
+            npUsage = npUsage,
         )
     }
 
     private fun avoid(
         cards: List<ParsedCard>,
-        rearrange: Boolean
+        rearrange: Boolean,
     ): List<ParsedCard> {
         val cardsGroupedByServant = cards.groupBy { it.servant }.values
 
@@ -103,7 +103,7 @@ class ApplyBraveChains @Inject constructor() {
                             return listOf(
                                 topGrouped[0][0],
                                 otherCard,
-                                topGrouped[0][1]
+                                topGrouped[0][1],
                             )
                         }
                     }
@@ -116,7 +116,7 @@ class ApplyBraveChains @Inject constructor() {
                         return listOf(
                             topSorted[0][0],
                             topSorted[1][0],
-                            topSorted[0][1]
+                            topSorted[0][1],
                         )
                     }
                     // Brave chain will already be avoided, but we can rearrange to optimize
@@ -124,11 +124,13 @@ class ApplyBraveChains @Inject constructor() {
                         return listOf(
                             topGrouped[0][0],
                             topGrouped[2][0],
-                            topGrouped[1][0]
+                            topGrouped[1][0],
                         )
                     }
                 }
-            } else return legacyAvoidBraveChains(cards, cardsGroupedByServant)
+            } else {
+                return legacyAvoidBraveChains(cards, cardsGroupedByServant)
+            }
         }
 
         return emptyList()
@@ -136,7 +138,7 @@ class ApplyBraveChains @Inject constructor() {
 
     private fun legacyAvoidBraveChains(
         cards: List<ParsedCard>,
-        cardsGroupedByServant: Collection<List<ParsedCard>>
+        cardsGroupedByServant: Collection<List<ParsedCard>>,
     ): List<ParsedCard> {
         val pickedCards = mutableListOf<ParsedCard>()
         val remainingCards = cards.toMutableList()
@@ -157,24 +159,24 @@ class ApplyBraveChains @Inject constructor() {
         cards: List<ParsedCard>,
         braveChains: BraveChainEnum,
         rearrange: Boolean = false,
-        npUsage: NPUsage = NPUsage.none
+        npUsage: NPUsage = NPUsage.none,
     ): List<ParsedCard> {
         val picked = when (braveChains) {
             BraveChainEnum.None -> rearrange(
                 cards = cards.take(3),
                 rearrange = rearrange,
-                npUsage = npUsage
+                npUsage = npUsage,
             )
 
             BraveChainEnum.WithNP -> withNp(
                 cards = cards,
                 rearrange = rearrange,
-                npUsage = npUsage
+                npUsage = npUsage,
             )
 
             BraveChainEnum.Avoid -> avoid(
                 cards = cards,
-                rearrange = rearrange
+                rearrange = rearrange,
             )
         }
 

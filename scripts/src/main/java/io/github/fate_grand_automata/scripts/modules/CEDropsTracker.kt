@@ -12,7 +12,7 @@ import javax.inject.Inject
 @ScriptScope
 class CEDropsTracker @Inject constructor(
     api: IFgoAutomataApi,
-    private val state: BattleState
+    private val state: BattleState,
 ) : IFgoAutomataApi by api {
     var count = 0
         private set
@@ -51,7 +51,9 @@ class CEDropsTracker @Inject constructor(
                 state.nextRun()
 
                 throw AutoBattle.BattleExitException(AutoBattle.ExitReason.LimitCEs(count))
-            } else messages.notify(ScriptNotify.CEDropped)
+            } else {
+                messages.notify(ScriptNotify.CEDropped)
+            }
         }
     }
 }

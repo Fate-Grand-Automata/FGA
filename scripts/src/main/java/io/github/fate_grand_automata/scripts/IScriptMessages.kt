@@ -9,8 +9,11 @@ sealed class ScriptNotify {
     data object CEGet : ScriptNotify()
     data object CEDropped : ScriptNotify()
     class WaitForAPRegen(val minutes: Int = 1) : ScriptNotify()
-    class FailedToDetermineCards(val cards: List<CommandCard.Face>,
-                                 val unknownCardTypes: Boolean, val unknownServants: Boolean) : ScriptNotify()
+    class FailedToDetermineCards(
+        val cards: List<CommandCard.Face>,
+        val unknownCardTypes: Boolean,
+        val unknownServants: Boolean,
+    ) : ScriptNotify()
     class SupportListUpdatingIn(val time: Duration) : ScriptNotify()
     class BetweenRuns(val refills: Int, val runs: Int, val ceDrops: Int) : ScriptNotify()
     data object BondLevelUp : ScriptNotify()
@@ -22,7 +25,7 @@ sealed class ScriptLog {
     class CurrentParty(val party: Int?) : ScriptLog()
     class MaxSkills(
         val needMaxedSkills: List<Boolean>,
-        val isSkillMaxed: List<Boolean>
+        val isSkillMaxed: List<Boolean>,
     ) : ScriptLog()
 
     class ClickingNPs(val nps: Iterable<CommandCard.NP>) : ScriptLog()
@@ -32,13 +35,13 @@ sealed class ScriptLog {
     class FaceCardGroups(val groups: List<List<CommandCard.Face>>) : ScriptLog()
     class ServantEnteredSlot(
         val servant: TeamSlot,
-        val slot: FieldSlot
+        val slot: FieldSlot,
     ) : ScriptLog()
 
     class CardsBelongToServant(
         val cards: Iterable<CommandCard.Face>,
         val servant: TeamSlot,
-        val isSupport: Boolean = false
+        val isSupport: Boolean = false,
     ) : ScriptLog()
 }
 

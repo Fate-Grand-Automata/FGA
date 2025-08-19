@@ -38,7 +38,7 @@ interface Transformer {
 
 class RealTransformer @Inject constructor(
     private val gameAreaManager: GameAreaManager,
-    private val scale: Scale
+    private val scale: Scale,
 ) : Transformer {
     override fun toScreen(location: Location): Location {
         val scaledPoint = location * scale.scriptToScreen

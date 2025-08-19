@@ -4,7 +4,7 @@ import io.github.fate_grand_automata.scripts.supportSelection.SupportSelectionPr
 import io.github.fate_grand_automata.scripts.supportSelection.SupportSelectionResult
 
 class FakeSupportSelectionProvider(
-    private val func: (Int) -> SupportSelectionResult
+    private val func: (Int) -> SupportSelectionResult,
 ) : SupportSelectionProvider {
     private var index = 0
 

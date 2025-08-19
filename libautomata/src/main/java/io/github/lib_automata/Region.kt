@@ -15,7 +15,7 @@ data class Region(val x: Int, val y: Int, val width: Int, val height: Int) : Com
         location.x,
         location.y,
         size.width,
-        size.height
+        size.height,
     )
 
     /**
@@ -27,7 +27,7 @@ data class Region(val x: Int, val y: Int, val width: Int, val height: Int) : Com
             (x * scale).roundToInt(),
             (y * scale).roundToInt(),
             (width * scale).roundToInt(),
-            (height * scale).roundToInt()
+            (height * scale).roundToInt(),
         )
     }
 
@@ -90,10 +90,10 @@ data class Region(val x: Int, val y: Int, val width: Int, val height: Int) : Com
      * Checks if the given [region] is fully contained in this [Region].
      */
     operator fun contains(region: Region): Boolean {
-        return x <= region.x
-                && y <= region.y
-                && right >= region.right
-                && bottom >= region.bottom
+        return x <= region.x &&
+            y <= region.y &&
+            right >= region.right &&
+            bottom >= region.bottom
     }
 
     override fun compareTo(other: Region) =

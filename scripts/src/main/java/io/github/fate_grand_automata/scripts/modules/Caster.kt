@@ -20,7 +20,7 @@ import kotlin.time.Duration.Companion.seconds
 class Caster @Inject constructor(
     api: IFgoAutomataApi,
     private val state: BattleState,
-    private val servantTracker: ServantTracker
+    private val servantTracker: ServantTracker,
 ) : IFgoAutomataApi by api {
     private var skillConfirmation: Boolean? = null
 
@@ -28,8 +28,8 @@ class Caster @Inject constructor(
     //  Once we add more spam modes, Skill spam and NP spam can have their own variants.
     fun canSpam(spam: SpamEnum): Boolean {
         val weCanSpam = spam == SpamEnum.Spam
-        val weAreInDanger = spam == SpamEnum.Danger
-                && state.chosenTarget != null
+        val weAreInDanger = spam == SpamEnum.Danger &&
+            state.chosenTarget != null
 
         return weCanSpam || weAreInDanger
     }

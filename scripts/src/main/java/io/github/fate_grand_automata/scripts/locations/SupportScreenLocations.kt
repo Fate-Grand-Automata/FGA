@@ -9,7 +9,7 @@ import kotlin.math.roundToInt
 
 @ScriptScope
 class SupportScreenLocations @Inject constructor(
-    scriptAreaTransforms: IScriptAreaTransforms
+    scriptAreaTransforms: IScriptAreaTransforms,
 ) : IScriptAreaTransforms by scriptAreaTransforms {
     private val headerOffset = Location(if (isWide) 171 else 0, 0)
 
@@ -35,12 +35,14 @@ class SupportScreenLocations @Inject constructor(
             val border = ((total - width) / 2.0).roundToInt()
 
             Location(305 + border, 0)
-        } else Location(94, 0)
+        } else {
+            Location(94, 0)
+        }
 
     val listRegion = Region(-24, 332, 378, 1091) + supportOffset
-    val grandCeListRegion = Region(335, 332,342, 1091) + supportOffset
+    val grandCeListRegion = Region(335, 332, 342, 1091) + supportOffset
     val bondCeRegion = Region(348, 192, 53, 55) + supportOffset
-    val grandCeLabelRegion = Region(335, 0,  60, 60) + supportOffset
+    val grandCeLabelRegion = Region(335, 0, 60, 60) + supportOffset
     val grandCeRegion1 = Region(346, 100, 320, 94) + supportOffset
     val grandCeRegion2 = Region(346, 192, 320, 94) + supportOffset
     val grandCeRegion3 = Region(346, 284, 320, 94) + supportOffset
@@ -50,7 +52,7 @@ class SupportScreenLocations @Inject constructor(
         2140,
         listRegion.y,
         120,
-        listRegion.height
+        listRegion.height,
     ) + supportOffset
 
     val friendsRegion = Region(354, 332, 1210, 1091) + supportOffset
@@ -80,12 +82,12 @@ class SupportScreenLocations @Inject constructor(
         SupportClass.Mix -> 1402
     }.let { x -> Location(x, 256) + headerOffset }
 
-    val topScrollbarRegion = when(isWide) {
+    val topScrollbarRegion = when (isWide) {
         true -> Region(-255, 325, 140, 55).xFromRight()
         false -> Region(1195, 325, 100, 55).xFromCenter()
     }
 
-    val bottomScrollbarRegion = when(isWide) {
+    val bottomScrollbarRegion = when (isWide) {
         true -> Region(-255, 1390, 140, 55).xFromRight()
         false -> Region(1195, 1390, 100, 55).xFromCenter()
     }

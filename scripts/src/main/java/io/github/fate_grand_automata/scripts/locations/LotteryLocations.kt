@@ -5,7 +5,7 @@ import io.github.lib_automata.Region
 import javax.inject.Inject
 
 class LotteryLocations @Inject constructor(
-    scriptAreaTransforms: IScriptAreaTransforms
+    scriptAreaTransforms: IScriptAreaTransforms,
 ) : IScriptAreaTransforms by scriptAreaTransforms {
     val finishedRegion = Region(-510, 700, 55, 100).xFromCenter()
     val checkRegion = Region(-1130, 700, 675, 330).xFromCenter()

@@ -5,7 +5,7 @@ import com.fredporciuncula.flow.preferences.FlowSharedPreferences
 import com.fredporciuncula.flow.preferences.Serializer
 
 class PrefMaker(
-    val prefs: SharedPreferences
+    val prefs: SharedPreferences,
 ) {
     val flowPrefs = FlowSharedPreferences(prefs)
 
@@ -32,7 +32,7 @@ class PrefMaker(
 
     inline fun <reified T : Enum<T>> enum(
         key: String,
-        default: T
+        default: T,
     ): Pref<T> {
         val serializer = object : Serializer<T> {
             override fun deserialize(serialized: String) =

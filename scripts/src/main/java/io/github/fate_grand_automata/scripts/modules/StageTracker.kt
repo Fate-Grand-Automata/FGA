@@ -8,7 +8,7 @@ import javax.inject.Inject
 @ScriptScope
 class StageTracker @Inject constructor(
     api: IFgoAutomataApi,
-    private val state: BattleState
+    private val state: BattleState,
 ) : IFgoAutomataApi by api {
     fun checkCurrentStage() {
         if (didStageChange()) {
@@ -43,7 +43,7 @@ class StageTracker @Inject constructor(
             // Compare last screenshot with current screen to determine if stage changed or not.
             locations.battle.master.stageCountRegion.exists(
                 snapshot,
-                similarity = prefs.stageCounterSimilarity
+                similarity = prefs.stageCounterSimilarity,
             )
         }
 

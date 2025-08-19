@@ -17,7 +17,7 @@ interface ImageMatcher {
         region: Region,
         image: Pattern,
         timeout: Duration = Duration.ZERO,
-        similarity: Double? = null
+        similarity: Double? = null,
     ): Boolean
 
     /**
@@ -31,7 +31,7 @@ interface ImageMatcher {
         region: Region,
         image: Pattern,
         timeout: Duration,
-        similarity: Double? = null
+        similarity: Double? = null,
     ): Boolean
 
     /**
@@ -45,7 +45,7 @@ interface ImageMatcher {
     fun findAll(
         region: Region,
         pattern: Pattern,
-        similarity: Double? = null
+        similarity: Double? = null,
     ): Sequence<Match>
 
     fun isWhite(region: Region): Boolean
@@ -63,7 +63,7 @@ interface ImageMatcher {
         items: Map<Pattern, Region>,
         timeout: Duration = Duration.ZERO,
         similarity: Double? = null,
-        requireAll: Boolean
+        requireAll: Boolean,
     ): Boolean
 }
 
@@ -73,7 +73,7 @@ class RealImageMatcher @Inject constructor(
     private val platformImpl: PlatformImpl,
     private val wait: Waiter,
     private val highlight: Highlighter,
-    private val transform: Transformer
+    private val transform: Transformer,
 ) : ImageMatcher {
     /**
      * Checks if the [Region] contains the provided image.
@@ -83,7 +83,7 @@ class RealImageMatcher @Inject constructor(
      */
     private fun Region.existsNow(
         image: Pattern,
-        similarity: Double?
+        similarity: Double?,
     ) = findAll(this, image, similarity).any()
 
     /**
@@ -97,9 +97,9 @@ class RealImageMatcher @Inject constructor(
      */
     private fun checkConditionLoop(
         condition: () -> Boolean,
-        timeout: Duration = Duration.ZERO
+        timeout: Duration = Duration.ZERO,
     ): Boolean {
-        //TODO throw exception if useSameSnapIn is active and timeout > 0
+        // TODO throw exception if useSameSnapIn is active and timeout > 0
 
         val endTimeMark = TimeSource.Monotonic.markNow() + timeout
 
@@ -132,7 +132,7 @@ class RealImageMatcher @Inject constructor(
         exitManager.checkExitRequested()
         return checkConditionLoop(
             { region.existsNow(image, similarity) },
-            timeout
+            timeout,
         )
     }
 
@@ -140,7 +140,7 @@ class RealImageMatcher @Inject constructor(
         exitManager.checkExitRequested()
         return checkConditionLoop(
             { !region.existsNow(image, similarity) },
-            timeout
+            timeout,
         )
     }
 
@@ -149,7 +149,7 @@ class RealImageMatcher @Inject constructor(
             .crop(transform.toImage(region))
             .findMatches(
                 pattern,
-                similarity ?: platformImpl.prefs.minSimilarity
+                similarity ?: platformImpl.prefs.minSimilarity,
             )
             .map {
                 exitManager.checkExitRequested()
@@ -160,12 +160,12 @@ class RealImageMatcher @Inject constructor(
                 Match(matchedRegion, it.score)
             }
             .toList() // Convert to list to avoid sequence consumption issues
-        
+
         highlight(
             region,
-            color = if (matches.isNotEmpty()) HighlightColor.Success else HighlightColor.Error
+            color = if (matches.isNotEmpty()) HighlightColor.Success else HighlightColor.Error,
         )
-        
+
         return matches.asSequence()
     }
 
@@ -176,7 +176,7 @@ class RealImageMatcher @Inject constructor(
             .also {
                 highlight(
                     region,
-                    color = if (it) HighlightColor.Success else HighlightColor.Error
+                    color = if (it) HighlightColor.Success else HighlightColor.Error,
                 )
             }
 
@@ -187,7 +187,7 @@ class RealImageMatcher @Inject constructor(
             .also {
                 highlight(
                     region,
-                    color = if (it) HighlightColor.Success else HighlightColor.Error
+                    color = if (it) HighlightColor.Success else HighlightColor.Error,
                 )
             }
 
@@ -195,7 +195,7 @@ class RealImageMatcher @Inject constructor(
         items: Map<Pattern, Region>,
         timeout: Duration,
         similarity: Double?,
-        requireAll: Boolean
+        requireAll: Boolean,
     ): Boolean {
         exitManager.checkExitRequested()
         val imageCheck = {
@@ -216,12 +216,11 @@ class RealImageMatcher @Inject constructor(
                     screenshotManager.useSameSnapIn {
                         imageCheck()
                     }
-                }
-                else {
+                } else {
                     imageCheck()
                 }
             },
-            timeout
+            timeout,
         )
     }
 }

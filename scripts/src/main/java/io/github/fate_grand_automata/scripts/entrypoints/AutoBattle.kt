@@ -36,8 +36,8 @@ fun IFgoAutomataApi.isInSupport(): Boolean {
 
 fun IFgoAutomataApi.isInventoryFull() =
     // We only have images for JP, NA and KR
-    (prefs.gameServer is GameServer.En || prefs.gameServer is GameServer.Jp || prefs.gameServer is GameServer.Kr)
-            && images[Images.InventoryFull] in locations.inventoryFullRegion
+    (prefs.gameServer is GameServer.En || prefs.gameServer is GameServer.Jp || prefs.gameServer is GameServer.Kr) &&
+        images[Images.InventoryFull] in locations.inventoryFullRegion
 
 /**
  * Script for starting quests, selecting the support and doing battles.
@@ -55,7 +55,7 @@ class AutoBattle @Inject constructor(
     private val connectionRetry: ConnectionRetry,
     private val refill: Refill,
     private val matTracker: MaterialsTracker,
-    private val ceDropsTracker: CEDropsTracker
+    private val ceDropsTracker: CEDropsTracker,
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason(val cause: Exception? = null) {
         data object Abort : ExitReason()
@@ -87,7 +87,6 @@ class AutoBattle @Inject constructor(
 
     // for tracking whether to check for servant death and wave transition animations
     private var isInBattle = false
-
 
     private var canScreenshotBondCE = false
 
@@ -151,13 +150,17 @@ class AutoBattle @Inject constructor(
         val averageTimePerRun: Duration,
         val minTurnsPerRun: Int,
         val maxTurnsPerRun: Int,
-        val averageTurnsPerRun: Double
+        val averageTurnsPerRun: Double,
     )
 
     private fun makeExitState(): ExitState {
         return ExitState(
             timesRan = state.runs,
-            runLimit = if (prefs.selectedServerConfigPref.shouldLimitRuns) prefs.selectedServerConfigPref.limitRuns else null,
+            runLimit = if (prefs.selectedServerConfigPref.shouldLimitRuns) {
+                prefs.selectedServerConfigPref.limitRuns
+            } else {
+                null
+            },
             timesRefilled = refill.timesRefilled,
             refillLimit = prefs.selectedServerConfigPref.currentAppleCount,
             ceDropCount = ceDropsTracker.count,
@@ -167,7 +170,7 @@ class AutoBattle @Inject constructor(
             averageTimePerRun = state.averageTimePerRun,
             minTurnsPerRun = state.minTurnsPerRun,
             maxTurnsPerRun = state.maxTurnsPerRun,
-            averageTurnsPerRun = state.averageTurnsPerRun
+            averageTurnsPerRun = state.averageTurnsPerRun,
         )
     }
 
@@ -229,7 +232,7 @@ class AutoBattle @Inject constructor(
         // In case the repeat loop breaks and we end up in menu (like withdrawing from quests)
         isContinuing = false
 
-        if (isQuestClose){
+        if (isQuestClose) {
             // Ordeal Call
             isQuestClose = false
             throw BattleExitException(ExitReason.LimitRuns(state.runs))
@@ -260,7 +263,7 @@ class AutoBattle @Inject constructor(
         val cases = sequenceOf(
             images[Images.Result] to locations.resultScreenRegion,
             images[Images.MasterLevelUp] to locations.resultMasterLvlUpRegion,
-            images[Images.MasterExp] to locations.resultMasterExpRegion
+            images[Images.MasterExp] to locations.resultMasterExpRegion,
         )
 
         return cases.any { (image, region) -> image in region }
@@ -268,10 +271,10 @@ class AutoBattle @Inject constructor(
 
     private fun isInBondScreen() = images[Images.Bond] in locations.resultBondRegion
 
-    private fun handleBondScreen(){
+    private fun handleBondScreen() {
         canScreenshotBondCE = true
 
-        if (prefs.screenshotBond){
+        if (prefs.screenshotBond) {
             screenshotDrops.screenshotBond()
             messages.notify(ScriptNotify.BondLevelUp)
             0.5.seconds.wait()
@@ -286,8 +289,8 @@ class AutoBattle @Inject constructor(
     /**
      * It seems like we need to click on CE (center of screen) to accept them
      */
-    private fun bond10CEReward(){
-        if (prefs.screenshotBond && canScreenshotBondCE){
+    private fun bond10CEReward() {
+        if (prefs.screenshotBond && canScreenshotBondCE) {
             screenshotDrops.screenshotBond()
             0.5.seconds.wait()
             canScreenshotBondCE = false
@@ -310,7 +313,9 @@ class AutoBattle @Inject constructor(
             state.nextRun()
 
             throw BattleExitException(ExitReason.CEGet)
-        } else messages.notify(ScriptNotify.CEGet)
+        } else {
+            messages.notify(ScriptNotify.CEGet)
+        }
 
         locations.resultCeRewardCloseClick.click()
     }
@@ -321,7 +326,7 @@ class AutoBattle @Inject constructor(
     private fun result() {
         isInBattle = false
         locations.resultClick.click(
-            times = if (prefs.screenshotBond) 5 else 15
+            times = if (prefs.screenshotBond) 5 else 15,
         )
         storySkipPossible = true
     }
@@ -382,12 +387,16 @@ class AutoBattle @Inject constructor(
             val boost = BoostItem.of(prefs.boostItemSelectionMode)
 
             boost is BoostItem.Enabled && boost != BoostItem.Enabled.Skip
-        } else false
+        } else {
+            false
+        }
 
         if (useBoost) {
             locations.continueBoostClick.click()
             useBoostItem()
-        } else continueButtonRegion.click()
+        } else {
+            continueButtonRegion.click()
+        }
 
         showRefillsAndRunsMessage()
 
@@ -448,7 +457,7 @@ class AutoBattle @Inject constructor(
      */
     private fun needsToStorySkip() =
         prefs.storySkip && storySkipPossible &&
-                locations.menuStorySkipRegion.exists(images[Images.StorySkip], similarity = 0.7)
+            locations.menuStorySkipRegion.exists(images[Images.StorySkip], similarity = 0.7)
 
     private fun skipStory() {
         locations.menuStorySkipClick.click()
@@ -485,9 +494,7 @@ class AutoBattle @Inject constructor(
      * 2. A boost item is selected if [IPreferences.boostItemSelectionMode] is set (needed in some events)
      * 3. The story is skipped if [IPreferences.storySkip] is activated
      */
-    private
-
-    fun startQuest() {
+    private fun startQuest() {
         partySelection.selectParty()
 
         locations.menuStartQuestClick.click()
@@ -504,13 +511,13 @@ class AutoBattle @Inject constructor(
      */
     private fun showRefillsAndRunsMessage() {
         if (state.runs < 1) return
-        
+
         messages.notify(
             ScriptNotify.BetweenRuns(
                 refills = refill.timesRefilled,
                 runs = state.runs,
-                ceDrops = ceDropsTracker.count
-            )
+                ceDrops = ceDropsTracker.count,
+            ),
         )
     }
 

@@ -11,7 +11,7 @@ class SupportSelectionLoop @Inject constructor(
     private val screen: SupportScreen,
     private val commonSupportPrefs: ISupportPreferencesCommon,
     private val refresher: SupportScreenRefresher,
-    private val supportClassPicker: SupportClassPicker
+    private val supportClassPicker: SupportClassPicker,
 ) {
     fun select(provider: SupportSelectionProvider): Boolean {
         var numberOfSwipes = 0
@@ -24,16 +24,19 @@ class SupportSelectionLoop @Inject constructor(
         while (true) {
             // the no support found message can only appear on the first search or after each refresh
             result = if (
-                (result == null || result == SupportSelectionResult.Refresh)
-                && screen.noSupportsPresent()
-            ) SupportSelectionResult.Refresh else provider.select()
+                (result == null || result == SupportSelectionResult.Refresh) &&
+                screen.noSupportsPresent()
+            ) {
+                SupportSelectionResult.Refresh
+            } else {
+                provider.select()
+            }
 
             when {
                 result is SupportSelectionResult.Done -> return true
                 // Scroll down as long as we don't exceed max swipes
-                result is SupportSelectionResult.ScrollDown
-                        && numberOfSwipes < commonSupportPrefs.swipesPerUpdate -> {
-
+                result is SupportSelectionResult.ScrollDown &&
+                    numberOfSwipes < commonSupportPrefs.swipesPerUpdate -> {
                     screen.scrollDown()
 
                     ++numberOfSwipes

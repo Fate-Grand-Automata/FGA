@@ -2,7 +2,7 @@ package io.github.fate_grand_automata.scripts.models
 
 sealed class ServantTarget(
     val autoSkillCode: Char,
-    val specialTarget: String = ""
+    val specialTarget: String = "",
 ) {
     data object A : ServantTarget('1')
     data object B : ServantTarget('2')
@@ -14,6 +14,7 @@ sealed class ServantTarget(
 
     @Deprecated("Use SpecialTarget instead", replaceWith = ReplaceWith("ServantTarget.SpecialTarget.Choice2OptionA"))
     data object Option1 : ServantTarget('K')
+
     @Deprecated("Use SpecialTarget instead", replaceWith = ReplaceWith("ServantTarget.SpecialTarget.Choice2OptionB"))
     data object Option2 : ServantTarget('U')
 
@@ -21,7 +22,7 @@ sealed class ServantTarget(
     data object Transform : ServantTarget('M')
 
     sealed class SpecialTarget(
-        targetCode: String
+        targetCode: String,
     ) : ServantTarget(autoSkillCode = SpecialCommand.StartSpecialTarget.autoSkillCode, specialTarget = targetCode) {
 
         companion object {
@@ -31,8 +32,7 @@ sealed class ServantTarget(
                 for (existingCode in codes) {
                     require(!(targetCode.startsWith(existingCode) || existingCode.startsWith(targetCode))) {
                         "Special target code " +
-                                "$targetCode conflicts with existing code $existingCode"
-
+                            "$targetCode conflicts with existing code $existingCode"
                     }
                 }
                 codes.add(targetCode)
@@ -64,7 +64,7 @@ sealed class ServantTarget(
                 SpecialTarget.Choice2OptionB,
                 SpecialTarget.Choice3OptionA,
                 SpecialTarget.Choice3OptionB,
-                SpecialTarget.Choice3OptionC
+                SpecialTarget.Choice3OptionC,
             )
         }
     }

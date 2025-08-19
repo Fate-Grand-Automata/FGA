@@ -14,14 +14,14 @@ class SupportScreenRefresher @Inject constructor(
     private val screen: SupportScreen,
     private val messages: IScriptMessages,
     private val connectionRetry: ConnectionRetry,
-    private val supportClassPicker: SupportClassPicker
+    private val supportClassPicker: SupportClassPicker,
 ) {
     private var lastSupportRefreshTimestamp: TimeMark? = null
     private val supportRefreshThreshold = 10.seconds
 
     fun refreshSupportList() {
         val refreshAvailable = screen.refreshAvailable()
-        if (refreshAvailable){
+        if (refreshAvailable) {
             screen.refresh()
         } else {
             performRefresh()

@@ -251,11 +251,11 @@ fun ChoiceListItem(
         shape = CircleShape,
         colors = CardDefaults.cardColors(
             containerColor =
-                if (isSelected) {
-                    MaterialTheme.colorScheme.primaryContainer
-                } else {
-                    MaterialTheme.colorScheme.surfaceVariant
-                },
+            if (isSelected) {
+                MaterialTheme.colorScheme.primaryContainer
+            } else {
+                MaterialTheme.colorScheme.surfaceVariant
+            },
         ),
         modifier = Modifier
             .padding(bottom = 7.dp)

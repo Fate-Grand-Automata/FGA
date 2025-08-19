@@ -8,14 +8,14 @@ class CardPriority private constructor(scores: List<CardScore>) : List<CardScore
     override fun toString() = joinToString()
 
     companion object {
-        private const val dummyNormalAffinityChar = 'X'
-        private const val cardPriorityErrorString = "Battle_CardPriority Error at '"
+        private const val DUMMY_NORMAL_AFFINITY_CHAR = 'X'
+        private const val CARD_PRIORITY_ERROR_MSG = "Battle_CardPriority Error at '"
 
         fun from(scores: List<CardScore>) = CardPriority(scores)
 
         private fun raiseParseError(msg: String): Nothing {
             throw AutoBattle.BattleExitException(
-                AutoBattle.ExitReason.CardPriorityParseError(msg)
+                AutoBattle.ExitReason.CardPriorityParseError(msg),
             )
         }
 
@@ -25,9 +25,9 @@ class CardPriority private constructor(scores: List<CardScore>) : List<CardScore
                 .map { it.trim().uppercase() }
                 .map {
                     when (it.length) {
-                        1 -> "$dummyNormalAffinityChar$it"
+                        1 -> "$DUMMY_NORMAL_AFFINITY_CHAR$it"
                         2 -> it
-                        else -> raiseParseError("$cardPriorityErrorString${it}': Invalid card length.")
+                        else -> raiseParseError("$CARD_PRIORITY_ERROR_MSG$it': Invalid card length.")
                     }
                 }
                 .map {
@@ -35,25 +35,29 @@ class CardPriority private constructor(scores: List<CardScore>) : List<CardScore
                         'B' -> CardTypeEnum.Buster
                         'A' -> CardTypeEnum.Arts
                         'Q' -> CardTypeEnum.Quick
-                        else -> raiseParseError("$cardPriorityErrorString${it[1]}': Only 'B', 'A' and 'Q' are valid card types.")
+                        else -> raiseParseError(
+                            "$CARD_PRIORITY_ERROR_MSG${it[1]}': Only 'B', 'A' and 'Q' are valid card types.",
+                        )
                     }
 
                     val cardAffinity = when (it[0]) {
                         'W' -> CardAffinityEnum.Weak
                         'R' -> CardAffinityEnum.Resist
-                        dummyNormalAffinityChar -> CardAffinityEnum.Normal
-                        else -> raiseParseError("$cardPriorityErrorString${it[0]}': Only 'W', and 'R' are valid card affinities.")
+                        DUMMY_NORMAL_AFFINITY_CHAR -> CardAffinityEnum.Normal
+                        else -> raiseParseError(
+                            "$CARD_PRIORITY_ERROR_MSG${it[0]}': Only 'W', and 'R' are valid card affinities.",
+                        )
                     }
 
                     CardScore(
                         cardType,
-                        cardAffinity
+                        cardAffinity,
                     )
                 }
                 .toList()
 
             if (scores.size != 9) {
-                raiseParseError("$cardPriorityErrorString': Expected 9 cards, but ${scores.size} found.")
+                raiseParseError("$CARD_PRIORITY_ERROR_MSG': Expected 9 cards, but ${scores.size} found.")
             }
 
             return CardPriority(scores)

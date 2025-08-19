@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 @ScriptScope
 class SupportFriendChecker @Inject constructor(
-    api: IFgoAutomataApi
+    api: IFgoAutomataApi,
 ) : IFgoAutomataApi by api {
     fun isFriend(bounds: SupportBounds? = null): Boolean {
         val friendRegion = bounds?.region?.clip(locations.support.friendRegion)
@@ -16,7 +16,7 @@ class SupportFriendChecker @Inject constructor(
         return sequenceOf(
             images[Images.Friend],
             images[Images.Guest],
-            images[Images.Follow]
+            images[Images.Follow],
         ).any { it in friendRegion }
     }
 }

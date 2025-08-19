@@ -18,7 +18,7 @@ class SkillSpam @Inject constructor(
     private val servantTracker: ServantTracker,
     private val state: BattleState,
     private val spamConfig: SpamConfigPerTeamSlot,
-    private val caster: Caster
+    private val caster: Caster,
 ) : IFgoAutomataApi by api {
     companion object {
         val skillSpamDelay = 0.25.seconds

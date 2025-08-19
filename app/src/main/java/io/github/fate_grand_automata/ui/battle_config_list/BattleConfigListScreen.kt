@@ -213,8 +213,8 @@ private fun BattleConfigListContent(
                 } else {
                     Tabbed(
                         items =
-                            listOf<BattleConfigCore.Server>(BattleConfigCore.Server.NotSet) +
-                                servers.map { BattleConfigCore.Server.Set(it) },
+                        listOf<BattleConfigCore.Server>(BattleConfigCore.Server.NotSet) +
+                            servers.map { BattleConfigCore.Server.Set(it) },
                         heading = {
                             Text(
                                 when (it) {

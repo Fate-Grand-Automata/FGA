@@ -17,7 +17,7 @@ class RefillPrefsCore(maker: PrefMaker) {
                 }
                 .toSet()
         },
-        reverse = { it.map { m -> m.name }.toSet() }
+        reverse = { it.map { m -> m.name }.toSet() },
     )
 
     val shouldLimitRuns = maker.bool("should_limit_runs")

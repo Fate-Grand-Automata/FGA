@@ -6,10 +6,13 @@ import io.github.lib_automata.ExitManager
 import kotlin.time.Duration
 
 class FakeSupportScreen(
-    var onRefresh: (FakeSupportScreen) -> Unit = { it.state = State.Loading }
+    var onRefresh: (FakeSupportScreen) -> Unit = { it.state = State.Loading },
 ) : SupportScreen {
     enum class State {
-        Loading, ConnectionFailed, SomeSupports, NoSupports
+        Loading,
+        ConnectionFailed,
+        SomeSupports,
+        NoSupports,
     }
 
     val exitManager = ExitManager()
