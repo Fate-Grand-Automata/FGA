@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.imaging
 
+import android.content.Context
 import android.annotation.SuppressLint
 import android.graphics.PixelFormat
 import android.hardware.display.VirtualDisplay
@@ -18,6 +19,7 @@ import org.opencv.imgproc.Imgproc
  * This class is responsible for creating screenshots using [mediaProjection].
  */
 class MediaProjectionScreenshotService(
+    context: Context,
     private val mediaProjection: MediaProjection,
     private val imageSize: Size,
     private val screenDensity: Int,
@@ -91,5 +93,5 @@ class MediaProjectionScreenshotService(
     }
 
     override fun startRecording() =
-        MediaProjectionRecording(mediaProjection, imageSize, screenDensity, storageProvider)
+        MediaProjectionRecording(context, mediaProjection, imageSize, screenDensity, storageProvider)
 }
