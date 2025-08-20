@@ -1,5 +1,8 @@
 *.iml
 .gradle
+.kotlin
+build
+
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -10,7 +13,6 @@
 /.idea/jarRepositories.xml
 /.idea/misc.xml
 .DS_Store
-/build
 /captures
 .externalNativeBuild
 .cxx
