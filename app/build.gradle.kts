@@ -1,8 +1,8 @@
 plugins {
-    id("com.android.application")
+    alias(libs.plugins.android.application)
     id("kotlin-parcelize")
-    id("dagger.hilt.android.plugin")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
 }

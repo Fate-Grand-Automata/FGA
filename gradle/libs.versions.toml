@@ -113,9 +113,14 @@ coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil_version" 
 coil-gif = { module = "io.coil-kt.coil3:coil-gif", version.ref = "coil_version" }
 
 [plugins]
+android-application = { id = "com.android.application", version.ref = "gradle_version" }
+android-library = { id = "com.android.library", version.ref = "gradle_version" }
+
 ben-manes-versions = { id = "io.github.ben-manes.versions", version.ref = "ben-manes_versions" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp_version" }
 
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin_version" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin_version" }
-org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_version" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_version" }
+
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt_version" }
