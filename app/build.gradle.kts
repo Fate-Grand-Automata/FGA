@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
-    id("dagger.hilt.android.plugin")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
 }
 

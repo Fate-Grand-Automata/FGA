@@ -108,8 +108,15 @@ coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-gif = { module = "io.coil-kt.coil3:coil-gif", version.ref = "coil" }
 
 [plugins]
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben_manes" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
