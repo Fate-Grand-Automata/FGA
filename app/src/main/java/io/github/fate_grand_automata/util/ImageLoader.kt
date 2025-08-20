@@ -20,7 +20,7 @@ import javax.inject.Inject
 class ImageLoader @Inject constructor(
     val storageProvider: IStorageProvider,
     val prefs: IPreferences,
-    @ApplicationContext val context: Context,
+    @param:ApplicationContext val context: Context,
     private val colorManager: ColorManager
 ) : IImageLoader {
     private fun createPattern(gameServer: GameServer, FileName: String): Pattern {
