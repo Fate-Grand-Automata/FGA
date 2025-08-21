@@ -15,8 +15,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
 import java.io.OutputStream
-import java.util.UUID
 import javax.inject.Inject
+import kotlin.uuid.Uuid
 
 @HiltViewModel
 class BattleConfigScreenViewModel @Inject constructor(
@@ -78,7 +78,7 @@ class BattleConfigScreenViewModel @Inject constructor(
     }
 
     fun createCopyAndReturnId(context: Context): String {
-        val guid = UUID.randomUUID().toString()
+        val guid = Uuid.random().toString()
         prefs.addBattleConfig(guid)
         val newConfig = prefs.forBattleConfig(guid)
 
