@@ -16,7 +16,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -39,11 +38,6 @@ fun ScriptRunnerUI(
     enabled: Boolean,
     isRecording: Boolean
 ) {
-    val onUpdate = remember(manager) {
-        { action: ScriptRunnerUIAction ->
-            manager.act(action)
-        }
-    }
     val hidePlayButton by prefsCore.hidePlayButton.remember()
     val script by prefsCore.scriptMode.remember()
 
@@ -91,7 +85,7 @@ fun ScriptRunnerUI(
                         ScriptRunnerUIState.Running -> ScriptRunnerUIAction.Pause
                     }
 
-                    onUpdate(action)
+                    manager.act(action)
                 },
                 enabled = enabled,
                 modifier = dragModifier
@@ -126,7 +120,9 @@ fun ScriptRunnerUI(
                         color = Color(0xFFCF6679),
                         contentColor = Color.White,
                         shape = shape,
-                        onClick = { onUpdate(ScriptRunnerUIAction.Stop) },
+                        onClick = {
+                            manager.act(ScriptRunnerUIAction.Stop)
+                        },
                         modifier = dragModifier
                     ) {
                         Icon(
@@ -145,7 +141,9 @@ fun ScriptRunnerUI(
                                 contentColor = MaterialTheme.colorScheme.onSecondary,
                                 tonalElevation = 5.dp,
                                 shape = shape,
-                                onClick = { onUpdate(ScriptRunnerUIAction.Status(it.pausedStatus)) },
+                                onClick = {
+                                    manager.act(ScriptRunnerUIAction.Status(it.pausedStatus))
+                                },
                                 modifier = dragModifier
                                     .offset(x = (-18).dp)
                                     .zIndex(-2f)
