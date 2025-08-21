@@ -22,8 +22,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.util.UUID
 import javax.inject.Inject
+import kotlin.uuid.Uuid
 
 @HiltViewModel
 class BattleConfigListViewModel @Inject constructor(
@@ -77,7 +77,7 @@ class BattleConfigListViewModel @Inject constructor(
         } else prefs.battleConfigs
 
     fun newConfig(): IBattleConfig {
-        val guid = UUID.randomUUID().toString()
+        val guid = Uuid.random().toString()
 
         return prefs.addBattleConfig(guid)
     }
