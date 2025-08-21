@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fullscreen
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardDefaults.cardElevation
@@ -75,6 +76,13 @@ fun LazyListScope.advancedGroup(
 
     item {
         RootForScreenshots(prefs.useRootForScreenshots)
+    }
+
+    item {
+        prefs.ignorePlayButtonDetectionWarning.SwitchPreference(
+            title = stringResource(R.string.p_ignore_play_button_detection_warning),
+            icon = icon(Icons.Default.Warning)
+        )
     }
 
     item {
