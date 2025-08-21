@@ -88,7 +88,14 @@ class FineTuneSettingsViewModel @Inject constructor(
                     valueRange = 0..50,
                     valueRepresentation = { "${it}ms" },
                     hint = "Delay between individual taps/clicks when doing so repeatedly like at the end of battles, friend point summon and lottery script."
-                )
+                ),
+                FineTuneItem(
+                    pref = prefs.lottoSpin,
+                    name = R.string.p_fine_tune_lotto_clicks,
+                    icon = icon(R.drawable.ic_click),
+                    valueRange = 10..20,
+                    hint = "The number of clicks for lotto spin. Decrease this if your device is lagging."
+                ),
             )
         ),
         FineTuneGroup(
