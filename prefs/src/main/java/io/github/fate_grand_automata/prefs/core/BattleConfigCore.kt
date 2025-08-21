@@ -17,11 +17,11 @@ import io.github.fate_grand_automata.scripts.models.ServantSpamConfig
 
 class BattleConfigCore(
     val id: String,
-    val context: Context
+    val context: Context,
 ) {
     val sharedPrefs: SharedPreferences = context.getSharedPreferences(
         id,
-        Context.MODE_PRIVATE
+        Context.MODE_PRIVATE,
     )
 
     private val maker = PrefMaker(sharedPrefs)
@@ -46,7 +46,7 @@ class BattleConfigCore(
             override fun serialize(value: CardPriorityPerWave) =
                 value.toString()
         },
-        default = CardPriorityPerWave.default
+        default = CardPriorityPerWave.default,
     )
 
     val rearrangeCards = maker.serialized(
@@ -65,7 +65,7 @@ class BattleConfigCore(
                 value
                     .joinToString(separator) { m -> if (m) Yes else No }
         },
-        default = emptyList()
+        default = emptyList(),
     )
 
     var braveChains = maker.serialized(
@@ -88,7 +88,7 @@ class BattleConfigCore(
                 value
                     .joinToString(separator) { m -> m.toString() }
         },
-        default = emptyList()
+        default = emptyList(),
     )
 
     val shuffleCards = maker.enum("shuffle_cards", ShuffleCardsEnum.None)
@@ -108,7 +108,7 @@ class BattleConfigCore(
             override fun serialize(value: ServantPriorityPerWave) =
                 value.toString()
         },
-        default = ServantPriorityPerWave.default
+        default = ServantPriorityPerWave.default,
     )
 
     private val gson = Gson()
@@ -129,7 +129,7 @@ class BattleConfigCore(
             override fun serialize(value: List<ServantSpamConfig>) =
                 gson.toJson(value)
         },
-        defaultSpamConfig
+        defaultSpamConfig,
     )
 
     val party = maker.stringAsInt("autoskill_party", -1)
@@ -150,7 +150,7 @@ class BattleConfigCore(
             it
                 .map { m -> m.name }
                 .toSet()
-        }
+        },
     )
 
     sealed class Server {
@@ -179,7 +179,7 @@ class BattleConfigCore(
                     is Server.Set -> value.server.serialize()
                 }
         },
-        default = Server.NotSet
+        default = Server.NotSet,
     )
 
     val support = SupportPrefsCore(maker)

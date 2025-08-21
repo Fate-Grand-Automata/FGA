@@ -12,7 +12,7 @@ import javax.inject.Singleton
 @Singleton
 class PrefsCore @Inject constructor(
     maker: PrefMaker,
-    @ApplicationContext val context: Context
+    @ApplicationContext val context: Context,
 ) {
     companion object {
         const val GAME_SERVER_AUTO_DETECT = "auto_detect"
@@ -27,7 +27,7 @@ class PrefsCore @Inject constructor(
 
     val gameServerRaw = maker.string(
         "game_server",
-        GAME_SERVER_AUTO_DETECT
+        GAME_SERVER_AUTO_DETECT,
     )
 
     val battleConfigList = maker.stringSet("autoskill_list")
@@ -100,7 +100,7 @@ class PrefsCore @Inject constructor(
             override fun serialize(value: Location) =
                 "${value.x},${value.y}"
         },
-        default = Location()
+        default = Location(),
     )
 
     val gameAreaMode = maker.enum("game_area_mode", GameAreaMode.Default)
@@ -122,8 +122,7 @@ class PrefsCore @Inject constructor(
             }
 
             override fun serialize(value: List<GameServer>): String = value.joinToString(separator)
-
-        }
+        },
     )
 
     private val battleConfigMap = mutableMapOf<String, BattleConfigCore>()
@@ -132,7 +131,7 @@ class PrefsCore @Inject constructor(
         battleConfigMap.getOrPut(id) {
             BattleConfigCore(
                 id,
-                context
+                context,
             )
         }
 
@@ -144,10 +143,9 @@ class PrefsCore @Inject constructor(
         perServerConfigPrefsMap.getOrPut(gameServer.simple) {
             PerServerConfigPrefsCore(
                 gameServer,
-                context
+                context,
             )
         }
 
     val servantEnhancement = ServantEnhancementPrefsCore(maker)
-
 }

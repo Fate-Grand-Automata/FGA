@@ -10,7 +10,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
 class Refill @Inject constructor(
-    api: IFgoAutomataApi
+    api: IFgoAutomataApi,
 ) : IFgoAutomataApi by api {
     var timesRefilled = 0
         private set
@@ -22,10 +22,10 @@ class Refill @Inject constructor(
     private fun refillOnce() {
         val perServerConfigPref = prefs.selectedServerConfigPref
 
-        if (perServerConfigPref.resources.isNotEmpty()
-            && timesRefilled < perServerConfigPref.currentAppleCount
+        if (perServerConfigPref.resources.isNotEmpty() &&
+            timesRefilled < perServerConfigPref.currentAppleCount
         ) {
-            //TODO check for OK image between each resource
+            // TODO check for OK image between each resource
             perServerConfigPref.resources
                 .flatMap { locations.locate(it) }
                 .forEach { it.click() }
@@ -41,7 +41,9 @@ class Refill @Inject constructor(
             messages.notify(ScriptNotify.WaitForAPRegen())
 
             60.seconds.wait()
-        } else throw AutoBattle.BattleExitException(AutoBattle.ExitReason.APRanOut)
+        } else {
+            throw AutoBattle.BattleExitException(AutoBattle.ExitReason.APRanOut)
+        }
     }
 
     fun refill() {
@@ -54,6 +56,5 @@ class Refill @Inject constructor(
         val perServerConfigPref = prefs.selectedServerConfigPref
         // Auto-decrement apples
         perServerConfigPref.currentAppleCount -= timesRefilled
-
     }
 }

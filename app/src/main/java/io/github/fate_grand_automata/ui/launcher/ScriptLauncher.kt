@@ -22,12 +22,12 @@ fun ScriptLauncher(
     scriptMode: ScriptModeEnum,
     onResponse: (ScriptLauncherResponse) -> Unit,
     prefs: IPreferences,
-    prefsCore: PrefsCore
+    prefsCore: PrefsCore,
 ) {
     FgaScreen {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             val modifier = Modifier.weight(1f)
 
@@ -46,7 +46,7 @@ fun ScriptLauncher(
 
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Row {
                     if (scriptMode == ScriptModeEnum.SupportImageMaker) {
@@ -63,7 +63,7 @@ fun ScriptLauncher(
 
                     TextButton(
                         onClick = { onResponse(responseBuilder.build()) },
-                        enabled = responseBuilder.canBuild()
+                        enabled = responseBuilder.canBuild(),
                     ) {
                         Text(stringResource(android.R.string.ok))
                     }

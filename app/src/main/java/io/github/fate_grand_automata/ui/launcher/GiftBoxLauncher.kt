@@ -27,41 +27,41 @@ fun ColumnScope.GiftBoxLauncherContent(
     maxGoldEmberStackSize: Int,
     changeMaxGoldEmberStackSize: (Int) -> Unit,
     maxGoldEmberTotalCount: Int,
-    changeMaxGoldEmberTotalCount: (Int) -> Unit
+    changeMaxGoldEmberTotalCount: (Int) -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             stringResource(R.string.p_max_gold_ember_set_size),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.secondary
+            color = MaterialTheme.colorScheme.secondary,
         )
 
         Stepper(
             value = maxGoldEmberStackSize,
             onValueChange = changeMaxGoldEmberStackSize,
-            valueRange = 0..100
+            valueRange = 0..100,
         )
     }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             stringResource(R.string.p_max_gold_ember_total_count),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.secondary
+            color = MaterialTheme.colorScheme.secondary,
         )
 
         Stepper(
             value = maxGoldEmberTotalCount,
             onValueChange = changeMaxGoldEmberTotalCount,
-            valueRange = 1..600
+            valueRange = 1..600,
         )
     }
 }
@@ -69,7 +69,7 @@ fun ColumnScope.GiftBoxLauncherContent(
 @Composable
 fun giftBoxLauncher(
     prefs: IPreferences,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ): ScriptLauncherResponseBuilder {
     var maxGoldEmberStackSize by remember { mutableStateOf(prefs.maxGoldEmberStackSize) }
     var maxGoldEmberTotalCount by remember { mutableStateOf(prefs.maxGoldEmberTotalCount) }
@@ -77,29 +77,29 @@ fun giftBoxLauncher(
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp)
-            .padding(top = 5.dp)
+            .padding(top = 5.dp),
     ) {
         Text(
             stringResource(R.string.p_script_mode_gift_box),
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
         )
 
         HorizontalDivider(
             modifier = Modifier
                 .padding(5.dp)
-                .padding(bottom = 16.dp)
+                .padding(bottom = 16.dp),
         )
 
         GiftBoxLauncherContent(
             maxGoldEmberStackSize = maxGoldEmberStackSize,
             changeMaxGoldEmberStackSize = { maxGoldEmberStackSize = it },
             maxGoldEmberTotalCount = maxGoldEmberTotalCount,
-            changeMaxGoldEmberTotalCount = { maxGoldEmberTotalCount = it }
+            changeMaxGoldEmberTotalCount = { maxGoldEmberTotalCount = it },
         )
     }
 
     return ScriptLauncherResponseBuilder(
         canBuild = { true },
-        build = { ScriptLauncherResponse.GiftBox(maxGoldEmberStackSize, maxGoldEmberTotalCount) }
+        build = { ScriptLauncherResponse.GiftBox(maxGoldEmberStackSize, maxGoldEmberTotalCount) },
     )
 }

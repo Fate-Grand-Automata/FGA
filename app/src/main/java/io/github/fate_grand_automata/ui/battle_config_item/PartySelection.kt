@@ -53,7 +53,7 @@ fun PartySelection(config: BattleConfigCore) {
     val dialog = FgaDialog()
 
     dialog.build(
-        color = MaterialTheme.colorScheme.background
+        color = MaterialTheme.colorScheme.background,
     ) {
         title(stringResource(R.string.p_battle_config_party))
 
@@ -63,14 +63,14 @@ fun PartySelection(config: BattleConfigCore) {
             onSelectedChange = {
                 party = it
                 dialog.hide()
-            }
+            },
         )
 
         buttons(
             showCancel = false,
             // TODO: Localize
             okLabel = "CLEAR",
-            onSubmit = { party = -1 }
+            onSubmit = { party = -1 },
         )
     }
 
@@ -80,16 +80,16 @@ fun PartySelection(config: BattleConfigCore) {
             .clickable(onClick = { dialog.show() })
             .padding(16.dp, 5.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Text(
             stringResource(R.string.p_battle_config_party).uppercase(),
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
         )
 
         Text(
             if (party == -1) "--" else (party + 1).toString(),
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
         )
     }
 }
@@ -98,26 +98,34 @@ fun PartySelection(config: BattleConfigCore) {
 private fun PartySelectionItem(
     text: String,
     isSelected: Boolean,
-    onSelectedChange: () -> Unit
+    onSelectedChange: () -> Unit,
 ) {
-    val background = if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surfaceVariant
-    val foreground = if (isSelected) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurfaceVariant
+    val background = if (isSelected) {
+        MaterialTheme.colorScheme.secondary
+    } else {
+        MaterialTheme.colorScheme.surfaceVariant
+    }
+    val foreground = if (isSelected) {
+        MaterialTheme.colorScheme.onSecondary
+    } else {
+        MaterialTheme.colorScheme.onSurfaceVariant
+    }
 
     Card(
         elevation = cardElevation(10.dp),
         shape = CircleShape,
         colors = cardColors(
             containerColor = background,
-            contentColor = foreground
+            contentColor = foreground,
         ),
         modifier = Modifier
-            .padding(5.dp)
+            .padding(5.dp),
     ) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .size(40.dp)
-                .clickable(onClick = onSelectedChange)
+                .clickable(onClick = onSelectedChange),
         ) {
             Text(text)
         }
@@ -128,7 +136,7 @@ private fun PartySelectionItem(
 fun PartySelectionDialogContent(
     isSelectionExtended: Boolean = false,
     selected: Int,
-    onSelectedChange: (Int) -> Unit
+    onSelectedChange: (Int) -> Unit,
 ) {
     Column {
         val partyRange = if (isSelectionExtended) 0..14 else 0..9
@@ -139,13 +147,13 @@ fun PartySelectionDialogContent(
                 Row(
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
                 ) {
                     chunk.forEach {
                         PartySelectionItem(
                             text = "${it + 1}",
                             isSelected = selected == it,
-                            onSelectedChange = { onSelectedChange(it) }
+                            onSelectedChange = { onSelectedChange(it) },
                         )
                     }
                 }

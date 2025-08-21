@@ -9,8 +9,8 @@ interface Waiter {
 
 class RealWaiter @Inject constructor(
     private val platformImpl: PlatformImpl,
-    private val exitManager: ExitManager
-): Waiter {
+    private val exitManager: ExitManager,
+) : Waiter {
     override fun invoke(duration: Duration, applyMultiplier: Boolean) {
         val multiplier = if (applyMultiplier) platformImpl.prefs.waitMultiplier else 1.0
         exitManager.wait(duration * multiplier)

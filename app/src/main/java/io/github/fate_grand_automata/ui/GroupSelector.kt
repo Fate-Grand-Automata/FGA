@@ -14,7 +14,7 @@ fun GroupSelectorItem(
     item: String,
     isSelected: Boolean,
     onSelect: () -> Unit,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     Surface(
         color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
@@ -22,12 +22,12 @@ fun GroupSelectorItem(
         modifier = Modifier
             .padding(end = 5.dp),
         onClick = onSelect,
-        enabled = enabled
+        enabled = enabled,
     ) {
         Text(
             item,
             color = if (isSelected) MaterialTheme.colorScheme.onPrimary else Color.Unspecified,
-            modifier = Modifier.padding(5.dp, 2.dp)
+            modifier = Modifier.padding(5.dp, 2.dp),
         )
     }
 }

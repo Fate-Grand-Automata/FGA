@@ -32,7 +32,7 @@ class ScreenshotServiceHolder @Inject constructor(
     private val display: DisplayHelper,
     private val colorManager: ColorManager,
     private val mediaProjectionManager: MediaProjectionManager,
-    private val platformImpl: PlatformImpl
+    private val platformImpl: PlatformImpl,
 ) : AutoCloseable {
     var screenshotService: ScreenshotService? = null
         private set
@@ -43,8 +43,8 @@ class ScreenshotServiceHolder @Inject constructor(
         val scale = RealScale(
             gameAreaManager = FgoGameAreaManager(
                 size,
-                offset = { Location() }
-            )
+                offset = { Location() },
+            ),
         ).screenToImage
 
         screenshotService = try {
@@ -69,21 +69,23 @@ class ScreenshotServiceHolder @Inject constructor(
                     scaledSize,
                     scaledDensity,
                     storageProvider,
-                    colorManager
+                    colorManager,
                 )
             } else {
                 val rootSS = RootScreenshotService(
                     SuperUser(),
-                    colorManager
+                    colorManager,
                 )
 
                 if (scale != null) {
                     ResizedScreenshotProvider(
                         rootSS,
                         scale,
-                        platformImpl
+                        platformImpl,
                     )
-                } else rootSS
+                } else {
+                    rootSS
+                }
             }
         } catch (e: Exception) {
             Timber.e(e, "Error preparing screenshot service")

@@ -8,7 +8,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
 class ConnectionRetry @Inject constructor(
-    api: IFgoAutomataApi
+    api: IFgoAutomataApi,
 ) : IFgoAutomataApi by api {
     fun needsToRetry() =
         images[Images.Retry] in locations.retryRegion

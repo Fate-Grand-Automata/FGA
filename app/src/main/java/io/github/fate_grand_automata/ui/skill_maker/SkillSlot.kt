@@ -18,12 +18,14 @@ enum class SkillSlot {
     Second,
     Third,
 
-    ANY;
+    ANY,
+
+    ;
 
     fun matches(slot: SkillSlot): Boolean = this == ANY || this == slot
 }
 
-fun Skill.slot() = when(this) {
+fun Skill.slot() = when (this) {
     in Skill.Servant.skill1 -> First
     in Skill.Servant.skill2 -> Second
     in Skill.Servant.skill3 -> Third

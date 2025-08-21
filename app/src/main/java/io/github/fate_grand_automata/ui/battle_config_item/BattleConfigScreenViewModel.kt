@@ -22,7 +22,7 @@ import javax.inject.Inject
 class BattleConfigScreenViewModel @Inject constructor(
     val prefs: IPreferences,
     val battleConfig: IBattleConfig,
-    val battleConfigCore: BattleConfigCore
+    val battleConfigCore: BattleConfigCore,
 ) : ViewModel() {
 
     val cardPriority =
@@ -46,7 +46,7 @@ class BattleConfigScreenViewModel @Inject constructor(
         combine(
             battleConfigCore.support.skill1Max.asFlow(),
             battleConfigCore.support.skill2Max.asFlow(),
-            battleConfigCore.support.skill3Max.asFlow()
+            battleConfigCore.support.skill3Max.asFlow(),
         ) { s1, s2, s3 -> listOf(s1, s2, s3) }
             .map { skills ->
                 skills.joinToString("/") {

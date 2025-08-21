@@ -11,7 +11,7 @@ class StandardAutomataApi @Inject constructor(
     private val transform: Transformer,
     private val colorManager: ColorManager,
     private val wait: Waiter,
-    private val ocrService: OcrService
+    private val ocrService: OcrService,
 ) : AutomataApi {
 
     override fun Region.getPattern(tag: String): Pattern =
@@ -36,18 +36,18 @@ class StandardAutomataApi @Inject constructor(
     override fun Region.exists(
         image: Pattern,
         timeout: Duration,
-        similarity: Double?
+        similarity: Double?,
     ) = imageMatcher.exists(this, image, timeout, similarity)
 
     override fun Region.waitVanish(
         image: Pattern,
         timeout: Duration,
-        similarity: Double?
+        similarity: Double?,
     ) = imageMatcher.waitVanish(this, image, timeout, similarity)
 
     override fun Region.findAll(
         pattern: Pattern,
-        similarity: Double?
+        similarity: Double?,
     ) = imageMatcher.findAll(this, pattern, similarity)
 
     override fun Region.isWhite() = imageMatcher.isWhite(this)
@@ -63,7 +63,9 @@ class StandardAutomataApi @Inject constructor(
                     it.use {
                         it.fillText()
                     }
-                } else it
+                } else {
+                    it
+                }
             }
             .also { highlight(this, HighlightColor.Info) }
             .use {
@@ -72,12 +74,13 @@ class StandardAutomataApi @Inject constructor(
     }
 
     override fun Map<Pattern, Region>.exists(
-        timeout: Duration, similarity: Double?, requireAll: Boolean,
+        timeout: Duration,
+        similarity: Double?,
+        requireAll: Boolean,
     ) = imageMatcher.exists(
         items = this,
         timeout = timeout,
         similarity = similarity,
-        requireAll = requireAll
+        requireAll = requireAll,
     )
 }
-

@@ -24,7 +24,7 @@ fun Pref<Int>.SeekBarPreference(
     icon: VectorIcon? = null,
     valueRange: IntRange = 0..100,
     enabled: Boolean = true,
-    valueRepresentation: (Int) -> String = { it.toString() }
+    valueRepresentation: (Int) -> String = { it.toString() },
 ) {
     Preference(
         title = {
@@ -32,11 +32,11 @@ fun Pref<Int>.SeekBarPreference(
                 Text(
                     text = title,
                     maxLines = if (singleLineTitle) 1 else Int.MAX_VALUE,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 )
 
                 Text(
-                    text = valueRepresentation(state.value.roundToInt())
+                    text = valueRepresentation(state.value.roundToInt()),
                 )
             }
         },
@@ -45,12 +45,12 @@ fun Pref<Int>.SeekBarPreference(
                 summary,
                 valueRange,
                 enabled,
-                state
+                state,
             )
         },
         icon = icon,
         enabled = enabled,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -59,7 +59,7 @@ private fun Pref<Int>.PreferenceSummary(
     summary: String,
     valueRange: IntRange,
     enabled: Boolean,
-    state: MutableState<Float>
+    state: MutableState<Float>,
 ) {
     Column {
         Text(text = summary)
@@ -68,7 +68,7 @@ private fun Pref<Int>.PreferenceSummary(
                 value = state.value,
                 onValueChange = { if (enabled) state.value = it },
                 onValueChangeFinished = { set(state.value.roundToInt()) },
-                valueRange = valueRange.first.toFloat()..valueRange.last.toFloat()
+                valueRange = valueRange.first.toFloat()..valueRange.last.toFloat(),
             )
         }
     }

@@ -39,14 +39,14 @@ import io.github.fate_grand_automata.ui.FGATitle
 @Composable
 fun SkillMakerChangeNpType2(
     onTargetLeft: () -> Unit,
-    onTargetRight: () -> Unit
+    onTargetRight: () -> Unit,
 ) {
     var changeNp2Type by remember { mutableStateOf(ChangeNp2Type.Generic) }
 
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         FGATitle(
             stringResource(changeNp2Type.stringRes),
@@ -57,37 +57,37 @@ fun SkillMakerChangeNpType2(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .weight(1f)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             TargetButton(
                 onClick = onTargetLeft,
                 color = colorResource(R.color.colorArtsResist),
-                text = stringResource(changeNp2Type.targetAStringRes)
+                text = stringResource(changeNp2Type.targetAStringRes),
             )
 
             TargetButton(
                 onClick = onTargetRight,
                 color = colorResource(R.color.colorBuster),
-                text = stringResource(changeNp2Type.targetBStringRes)
+                text = stringResource(changeNp2Type.targetBStringRes),
             )
         }
 
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Text(
                 stringResource(R.string.skill_maker_update_button_labels).uppercase(),
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
-                textDecoration = TextDecoration.Underline
+                textDecoration = TextDecoration.Underline,
             )
         }
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             ChangeNp2Type.entries.filterNot {
                 it == ChangeNp2Type.Generic
@@ -99,7 +99,7 @@ fun SkillMakerChangeNpType2(
                     } else {
                         MaterialTheme.colorScheme.primary
                     },
-                    label = "Container Color, if ${entry.name} is selected"
+                    label = "Container Color, if ${entry.name} is selected",
                 )
                 val contentColor by animateColorAsState(
                     targetValue = if (changeNp2Type == entry) {
@@ -107,7 +107,7 @@ fun SkillMakerChangeNpType2(
                     } else {
                         MaterialTheme.colorScheme.onPrimary
                     },
-                    label = "Container Color, if ${entry.name} is selected"
+                    label = "Container Color, if ${entry.name} is selected",
                 )
                 Button(
                     onClick = {
@@ -122,11 +122,13 @@ fun SkillMakerChangeNpType2(
                             width = Dp.Hairline,
                             color = MaterialTheme.colorScheme.primary,
                         )
-                    } else null,
+                    } else {
+                        null
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = containerColor,
-                        contentColor = contentColor
-                    )
+                        contentColor = contentColor,
+                    ),
                 ) {
                     Text(stringResource(entry.stringRes))
                 }
@@ -139,19 +141,19 @@ fun SkillMakerChangeNpType2(
 fun TargetButton(
     onClick: () -> Unit,
     color: Color,
-    text: String
+    text: String,
 ) {
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(containerColor = color),
-        modifier = Modifier.height(75.dp).width(120.dp)
+        modifier = Modifier.height(75.dp).width(120.dp),
     ) {
         Text(
             text,
             color = Color.White,
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Clip,
-            fontSize = 17.sp
+            fontSize = 17.sp,
         )
     }
 }
@@ -168,7 +170,7 @@ fun TestChangeNpType2() {
 private enum class ChangeNp2Type {
     Generic,
     Emiya,
-    BBDubai
+    BBDubai,
 }
 
 private val ChangeNp2Type.stringRes

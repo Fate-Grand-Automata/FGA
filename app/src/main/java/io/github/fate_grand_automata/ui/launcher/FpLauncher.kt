@@ -27,7 +27,7 @@ import io.github.fate_grand_automata.ui.Stepper
 @Composable
 fun fpLauncher(
     prefs: IPreferences,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ): ScriptLauncherResponseBuilder {
     var shouldLimit by remember { mutableStateOf(prefs.shouldLimitFP) }
     var rollLimit by remember { mutableStateOf(prefs.limitFP) }
@@ -35,17 +35,17 @@ fun fpLauncher(
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp)
-            .padding(top = 5.dp)
+            .padding(top = 5.dp),
     ) {
         Text(
             stringResource(R.string.p_script_mode_fp),
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
         )
 
         HorizontalDivider(
             modifier = Modifier
                 .padding(5.dp)
-                .padding(bottom = 16.dp)
+                .padding(bottom = 16.dp),
         )
 
         Row(
@@ -53,28 +53,28 @@ fun fpLauncher(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { shouldLimit = !shouldLimit }
+                .clickable { shouldLimit = !shouldLimit },
         ) {
             Text(
                 stringResource(R.string.p_roll_limit),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.secondary,
             )
 
             Switch(
                 checked = shouldLimit,
-                onCheckedChange = { shouldLimit = it }
+                onCheckedChange = { shouldLimit = it },
             )
         }
 
         Box(
-            modifier = Modifier.align(Alignment.End)
+            modifier = Modifier.align(Alignment.End),
         ) {
             Stepper(
                 value = rollLimit,
                 onValueChange = { rollLimit = it },
                 valueRange = 1..999,
-                enabled = shouldLimit
+                enabled = shouldLimit,
             )
         }
     }
@@ -83,8 +83,8 @@ fun fpLauncher(
         canBuild = { true },
         build = {
             ScriptLauncherResponse.FP(
-                if (shouldLimit) rollLimit else null
+                if (shouldLimit) rollLimit else null,
             )
-        }
+        },
     )
 }

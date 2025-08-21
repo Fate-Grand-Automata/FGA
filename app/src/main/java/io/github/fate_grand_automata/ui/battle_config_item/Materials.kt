@@ -52,7 +52,7 @@ fun Pref<Set<MaterialEnum>>.Materials() {
             Box(
                 modifier = Modifier
                     .weight(1f)
-                    .alignByBaseline()
+                    .alignByBaseline(),
             ) {
                 title(stringResource(R.string.p_mats))
             }
@@ -62,7 +62,7 @@ fun Pref<Set<MaterialEnum>>.Materials() {
                 modifier = Modifier
                     .padding(16.dp, 5.dp)
                     .alignByBaseline(),
-                enabled = current.isNotEmpty()
+                enabled = current.isNotEmpty(),
             ) {
                 // TODO: Localize
                 Text("CLEAR")
@@ -73,19 +73,19 @@ fun Pref<Set<MaterialEnum>>.Materials() {
             selected = current,
             onSelectedChange = { current = it },
             prioritySelected = true,
-            items = MaterialEnum.entries.toList()
+            items = MaterialEnum.entries.toList(),
         ) { mat ->
             Material(mat)
 
             Text(
                 stringResource(mat.stringRes),
                 modifier = Modifier
-                    .padding(start = 16.dp)
+                    .padding(start = 16.dp),
             )
         }
 
         buttons(
-            onSubmit = { selected = current }
+            onSubmit = { selected = current },
         )
     }
 
@@ -94,12 +94,12 @@ fun Pref<Set<MaterialEnum>>.Materials() {
             .fillMaxWidth()
             .clickable { dialog.show() }
             .heightIn(min = 55.dp)
-            .padding(vertical = 5.dp)
+            .padding(vertical = 5.dp),
     ) {
         Text(
             stringResource(R.string.p_mats).uppercase(),
             style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(start = 16.dp)
+            modifier = Modifier.padding(start = 16.dp),
         )
 
         MaterialsSummary(materials = selected.toList())
@@ -117,7 +117,7 @@ fun Material(mat: MaterialEnum) {
             .size(20.dp)
             .clip(CircleShape)
             .border(0.5.dp, MaterialTheme.colorScheme.onSurfaceVariant, CircleShape)
-            .alpha(0.8f)
+            .alpha(0.8f),
     )
 }
 
@@ -126,7 +126,7 @@ fun MaterialsSummary(materials: List<MaterialEnum>) {
     if (materials.isNotEmpty()) {
         LazyRow(
             contentPadding = PaddingValues(start = 16.dp, top = 5.dp, bottom = 5.dp),
-            modifier = Modifier.height(40.dp)
+            modifier = Modifier.height(40.dp),
         ) {
             items(materials) { mat ->
                 Material(mat)
@@ -135,7 +135,7 @@ fun MaterialsSummary(materials: List<MaterialEnum>) {
     } else {
         Text(
             "--",
-            modifier = Modifier.padding(16.dp, 5.dp)
+            modifier = Modifier.padding(16.dp, 5.dp),
         )
     }
 }

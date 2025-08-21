@@ -8,11 +8,11 @@ import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 
 class PerServerConfigPrefsCore(
     val server: GameServer,
-    val context: Context
+    val context: Context,
 ) {
     val sharedPrefs: SharedPreferences = context.getSharedPreferences(
         server.simple,
-        Context.MODE_PRIVATE
+        Context.MODE_PRIVATE,
     )
 
     private val maker = PrefMaker(sharedPrefs)
@@ -27,7 +27,6 @@ class PerServerConfigPrefsCore(
 
     val waitAPRegen = maker.bool("wait_for_ap_regeneration")
 
-
     val selectedApple = maker.serialized(
         "selected_apple",
         serializer = object : Serializer<RefillResourceEnum> {
@@ -38,11 +37,9 @@ class PerServerConfigPrefsCore(
             }
 
             override fun serialize(value: RefillResourceEnum): String = value.toString()
-
         },
-        default = RefillResourceEnum.Copper
+        default = RefillResourceEnum.Copper,
     )
-
 
     val refill = RefillPrefsCore(maker)
 }

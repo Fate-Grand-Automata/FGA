@@ -11,7 +11,7 @@ import javax.inject.Inject
 class ScreenshotManager @Inject constructor(
     private val gameAreaManager: GameAreaManager,
     private val screenshotService: ScreenshotService,
-    private val scale: Scale
+    private val scale: Scale,
 ) : AutoCloseable {
     var usePreviousSnap = false
 

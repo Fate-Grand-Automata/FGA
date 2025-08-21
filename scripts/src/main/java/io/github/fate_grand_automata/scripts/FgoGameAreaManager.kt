@@ -19,7 +19,7 @@ private sealed class ScaleBy(val rate: Double) : Comparable<ScaleBy> {
 private fun decideScaleMethod(originalSize: Size, desiredSize: Size) =
     minOf(
         ScaleBy.Width(desiredSize.width / originalSize.width.toDouble()),
-        ScaleBy.Height(desiredSize.height / originalSize.height.toDouble())
+        ScaleBy.Height(desiredSize.height / originalSize.height.toDouble()),
     )
 
 private fun calculateBorderThickness(outer: Int, inner: Int) =
@@ -28,21 +28,21 @@ private fun calculateBorderThickness(outer: Int, inner: Int) =
 private fun calculateGameAreaWithoutBorders(
     scriptSize: Size,
     screenSize: Size,
-    scaleRate: Double
+    scaleRate: Double,
 ): Region {
     val scaledScriptSize = scriptSize * scaleRate
 
     return Region(
         calculateBorderThickness(
             screenSize.width,
-            scaledScriptSize.width
+            scaledScriptSize.width,
         ), // Offset(X)
         calculateBorderThickness(
             screenSize.height,
-            scaledScriptSize.height
+            scaledScriptSize.height,
         ), // Offset(Y)
         scaledScriptSize.width, // Game Width (without borders)
-        scaledScriptSize.height // Game Height (without borders)
+        scaledScriptSize.height, // Game Height (without borders)
     )
 }
 
@@ -59,7 +59,7 @@ fun Size.isWide() =
 
 class FgoGameAreaManager(
     private val gameSizeWithBorders: Size,
-    private val offset: () -> Location
+    private val offset: () -> Location,
 ) : GameAreaManager {
     companion object {
         private val imageSize = Size(1280, 720)
@@ -68,7 +68,7 @@ class FgoGameAreaManager(
 
     private val scaleBy = decideScaleMethod(
         scriptSize,
-        gameSizeWithBorders
+        gameSizeWithBorders,
     )
 
     override val scriptDimension = when (scaleBy) {
@@ -90,13 +90,13 @@ class FgoGameAreaManager(
             isUltraWide -> calculateGameAreaWithoutBorders(
                 Size(3360, 1440),
                 gameSizeWithBorders,
-                scaleBy.rate
+                scaleBy.rate,
             )
             isWide -> Region(Location(), gameSizeWithBorders)
             else -> calculateGameAreaWithoutBorders(
                 scriptSize,
                 gameSizeWithBorders,
-                scaleBy.rate
+                scaleBy.rate,
             )
         }
     }

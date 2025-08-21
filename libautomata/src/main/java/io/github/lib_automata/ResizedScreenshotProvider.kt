@@ -3,8 +3,8 @@ package io.github.lib_automata
 class ResizedScreenshotProvider(
     private val original: ScreenshotService,
     private val scale: Double,
-    platformImpl: PlatformImpl
-): ScreenshotService {
+    platformImpl: PlatformImpl,
+) : ScreenshotService {
     private val resizeTarget = platformImpl.getResizableBlankPattern()
 
     override fun takeScreenshot(): Pattern {

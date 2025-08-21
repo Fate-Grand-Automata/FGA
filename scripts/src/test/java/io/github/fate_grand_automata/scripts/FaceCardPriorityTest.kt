@@ -20,34 +20,34 @@ class FaceCardPriorityTest {
             servant = TeamSlot.B,
             fieldSlot = FieldSlot.B,
             type = CardTypeEnum.Buster,
-            affinity = CardAffinityEnum.Weak
+            affinity = CardAffinityEnum.Weak,
         )
         val kama2Q = ParsedCard(
             card = CommandCard.Face.B,
             servant = TeamSlot.A,
             fieldSlot = FieldSlot.A,
-            type = CardTypeEnum.Quick
+            type = CardTypeEnum.Quick,
         )
         val nero3RA = ParsedCard(
             card = CommandCard.Face.C,
             servant = TeamSlot.C,
             fieldSlot = FieldSlot.C,
             type = CardTypeEnum.Arts,
-            affinity = CardAffinityEnum.Resist
+            affinity = CardAffinityEnum.Resist,
         )
         val nero4RA = ParsedCard(
             card = CommandCard.Face.D,
             servant = TeamSlot.C,
             fieldSlot = FieldSlot.C,
             type = CardTypeEnum.Arts,
-            affinity = CardAffinityEnum.Resist
+            affinity = CardAffinityEnum.Resist,
         )
         val scathach5WQ = ParsedCard(
             card = CommandCard.Face.E,
             servant = TeamSlot.B,
             fieldSlot = FieldSlot.B,
             type = CardTypeEnum.Quick,
-            affinity = CardAffinityEnum.Weak
+            affinity = CardAffinityEnum.Weak,
         )
 
         /**
@@ -65,7 +65,15 @@ class FaceCardPriorityTest {
 
         val sorted = priority.sort(lineup1, 0).map { it.card }
 
-        assertThat(sorted).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D)
+        assertThat(
+            sorted,
+        ).containsExactly(
+            CommandCard.Face.A,
+            CommandCard.Face.E,
+            CommandCard.Face.B,
+            CommandCard.Face.C,
+            CommandCard.Face.D,
+        )
     }
 
     @Test
@@ -74,6 +82,14 @@ class FaceCardPriorityTest {
 
         val sorted = priority.sort(lineup1, 0).map { it.card }
 
-        assertThat(sorted).containsExactly(CommandCard.Face.B, CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D)
+        assertThat(
+            sorted,
+        ).containsExactly(
+            CommandCard.Face.B,
+            CommandCard.Face.A,
+            CommandCard.Face.E,
+            CommandCard.Face.C,
+            CommandCard.Face.D,
+        )
     }
 }

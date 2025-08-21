@@ -15,15 +15,16 @@ import io.github.fate_grand_automata.util.IItemTouchHelperViewHolder
 
 class DragSortAdapter<T>(
     private val items: MutableList<T>,
-    private val viewConfigGrabber: (T) -> ItemViewConfig
+    private val viewConfigGrabber: (T) -> ItemViewConfig,
 ) : RecyclerView.Adapter<DragSortAdapter.ViewHolder>(), IItemTouchHelperAdapter {
     class ItemViewConfig(
         @ColorInt val foregroundColor: Int,
         @ColorInt val backgroundColor: Int,
-        val text: String
+        val text: String,
     )
 
-    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView),
+    class ViewHolder(ItemView: View) :
+        RecyclerView.ViewHolder(ItemView),
         IItemTouchHelperViewHolder {
         val textView: TextView = ItemView.findViewById(R.id.drag_sort_text)
 

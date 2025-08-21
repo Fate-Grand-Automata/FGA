@@ -64,7 +64,7 @@ class AppProvidesModule {
         PrefMaker(
             context.getSharedPreferences(
                 "${context.packageName}_preferences",
-                Context.MODE_PRIVATE
-            )
+                Context.MODE_PRIVATE,
+            ),
         )
 }

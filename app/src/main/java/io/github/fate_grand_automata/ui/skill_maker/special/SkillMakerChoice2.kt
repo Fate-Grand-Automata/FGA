@@ -40,7 +40,7 @@ fun SkillMakerChoice2(
     onOption1: () -> Unit,
     onOption2: () -> Unit,
     goToTarget: Boolean,
-    onTarget: (firstTarget: ServantTarget) -> Unit
+    onTarget: (firstTarget: ServantTarget) -> Unit,
 ) {
     val entries by remember {
         derivedStateOf {
@@ -54,10 +54,10 @@ fun SkillMakerChoice2(
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         FGATitle(
-            stringResource(choice2Type.stringRes)
+            stringResource(choice2Type.stringRes),
         )
 
         Row(
@@ -65,41 +65,49 @@ fun SkillMakerChoice2(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .weight(1f)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             TargetButton(
-                onClick = if (goToTarget) (
+                onClick = if (goToTarget) {
+                    (
                         { onTarget(ServantTarget.SpecialTarget.Choice2OptionA) }
-                        ) else onOption1,
+                        )
+                } else {
+                    onOption1
+                },
                 color = MaterialTheme.colorScheme.primary,
-                text = stringResource(choice2Type.targetAStringRes)
+                text = stringResource(choice2Type.targetAStringRes),
             )
 
             TargetButton(
-                onClick = if (goToTarget) (
+                onClick = if (goToTarget) {
+                    (
                         { onTarget(ServantTarget.SpecialTarget.Choice2OptionB) }
-                        ) else onOption2,
+                        )
+                } else {
+                    onOption2
+                },
                 color = MaterialTheme.colorScheme.tertiary,
-                text = stringResource(choice2Type.targetBStringRes)
+                text = stringResource(choice2Type.targetBStringRes),
             )
         }
 
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Text(
                 stringResource(R.string.skill_maker_update_button_labels).uppercase(),
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
-                textDecoration = TextDecoration.Underline
+                textDecoration = TextDecoration.Underline,
             )
         }
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             entries.filterNot {
                 it == Choice2Type.Generic
@@ -110,7 +118,7 @@ fun SkillMakerChoice2(
                     } else {
                         MaterialTheme.colorScheme.primary
                     },
-                    label = "Container Color, if ${entry.name} is selected"
+                    label = "Container Color, if ${entry.name} is selected",
                 )
                 val contentColor by animateColorAsState(
                     targetValue = if (choice2Type == entry) {
@@ -118,7 +126,7 @@ fun SkillMakerChoice2(
                     } else {
                         MaterialTheme.colorScheme.onPrimary
                     },
-                    label = "Container Color, if ${entry.name} is selected"
+                    label = "Container Color, if ${entry.name} is selected",
                 )
                 Button(
                     onClick = {
@@ -133,11 +141,13 @@ fun SkillMakerChoice2(
                             width = Dp.Hairline,
                             color = MaterialTheme.colorScheme.primary,
                         )
-                    } else null,
+                    } else {
+                        null
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = containerColor,
-                        contentColor = contentColor
-                    )
+                        contentColor = contentColor,
+                    ),
                 ) {
                     Text(stringResource(entry.stringRes))
                 }
@@ -153,10 +163,10 @@ fun SkillMakerChoice2Target(
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         FGATitle(
-            stringResource(R.string.skill_maker_target_header)
+            stringResource(R.string.skill_maker_target_header),
         )
 
         Row(
@@ -164,24 +174,24 @@ fun SkillMakerChoice2Target(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .weight(1f)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             TargetButton(
                 onClick = { onSkillTarget(ServantTarget.A) },
                 color = colorResource(R.color.colorServant1),
-                text = stringResource(R.string.skill_maker_target_servant, 1)
+                text = stringResource(R.string.skill_maker_target_servant, 1),
             )
 
             TargetButton(
                 onClick = { onSkillTarget(ServantTarget.B) },
                 color = colorResource(R.color.colorServant2),
-                text = stringResource(R.string.skill_maker_target_servant, 2)
+                text = stringResource(R.string.skill_maker_target_servant, 2),
             )
 
             TargetButton(
                 onClick = { onSkillTarget(ServantTarget.C) },
                 color = colorResource(R.color.colorServant3),
-                text = stringResource(R.string.skill_maker_target_servant, 3)
+                text = stringResource(R.string.skill_maker_target_servant, 3),
             )
         }
     }
@@ -217,7 +227,7 @@ fun TestChoice2Target() {
 private enum class Choice2Type(val slot: SkillSlot) {
     Generic(SkillSlot.ANY),
     Kukulkan(SkillSlot.ANY),
-    UDKBarghest(SkillSlot.Third)
+    UDKBarghest(SkillSlot.Third),
 }
 
 private val Choice2Type.stringRes

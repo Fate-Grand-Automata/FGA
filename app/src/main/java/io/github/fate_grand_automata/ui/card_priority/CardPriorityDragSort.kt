@@ -12,7 +12,7 @@ import io.github.fate_grand_automata.ui.drag_sort.DragSortAdapter
 
 @Composable
 fun CardPriorityDragSort(
-    scores: MutableList<CardScore>
+    scores: MutableList<CardScore>,
 ) {
     val context = LocalContext.current
 
@@ -22,9 +22,9 @@ fun CardPriorityDragSort(
             DragSortAdapter.ItemViewConfig(
                 foregroundColor = Color.WHITE,
                 backgroundColor = context.getColor(it.getColorRes()),
-                text = it.toString()
+                text = it.toString(),
             )
-        }
+        },
     )
 }
 

@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MoreOptionsViewModel @Inject constructor(
     val storageProvider: StorageProvider,
-    val prefsCore: PrefsCore
+    val prefsCore: PrefsCore,
 ) : ViewModel() {
     val storageSummary: MutableState<String?> = mutableStateOf(null)
     val extractSummary: MutableState<String> = mutableStateOf("")

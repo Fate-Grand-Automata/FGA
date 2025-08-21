@@ -6,11 +6,25 @@ import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -19,12 +33,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.runtime.*
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -34,12 +54,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
-import io.github.fate_grand_automata.ui.*
+import io.github.fate_grand_automata.ui.Heading
+import io.github.fate_grand_automata.ui.HeadingButton
+import io.github.fate_grand_automata.ui.Tabbed
 import io.github.fate_grand_automata.ui.battle_config_item.Material
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
+import io.github.fate_grand_automata.ui.icon
 import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.util.simpleStringRes
 import io.github.fate_grand_automata.util.stringRes
@@ -47,26 +71,26 @@ import io.github.fate_grand_automata.util.stringRes
 @Composable
 fun BattleConfigListScreen(
     vm: BattleConfigListViewModel = viewModel(),
-    navigate: (String) -> Unit
+    navigate: (String) -> Unit,
 ) {
-    val selectionMode by vm.selectionMode.collectAsState()
-    val selectedConfigs by vm.selectedConfigs.collectAsState()
+    val selectionMode by vm.selectionMode.collectAsStateWithLifecycle()
+    val selectedConfigs by vm.selectedConfigs.collectAsStateWithLifecycle()
 
     BackHandler(
         enabled = selectionMode,
-        onBack = { vm.endSelection() }
+        onBack = { vm.endSelection() },
     )
 
     val context = LocalContext.current
 
     val battleConfigsExport = rememberLauncherForActivityResult(
-        ActivityResultContracts.OpenDocumentTree()
+        ActivityResultContracts.OpenDocumentTree(),
     ) { dirUri ->
         vm.exportBattleConfigs(context, dirUri)
     }
 
     val battleConfigImport = rememberLauncherForActivityResult(
-        ActivityResultContracts.OpenMultipleDocuments()
+        ActivityResultContracts.OpenMultipleDocuments(),
     ) { uris ->
         vm.importBattleConfigs(context, uris)
     }
@@ -77,11 +101,11 @@ fun BattleConfigListScreen(
         message(stringResource(R.string.battle_config_list_delete_confirm_message, selectedConfigs.size))
 
         buttons(
-            onSubmit = { vm.deleteSelected() }
+            onSubmit = { vm.deleteSelected() },
         )
     }
 
-    val configs by vm.battleConfigItems.collectAsState(emptyList())
+    val configs by vm.battleConfigItems.collectAsStateWithLifecycle(emptyList())
 
     BattleConfigListContent(
         configs = configs,
@@ -100,14 +124,14 @@ fun BattleConfigListScreen(
 
                 BattleConfigListAction.Export -> battleConfigsExport.launch(Uri.EMPTY)
                 BattleConfigListAction.Import -> battleConfigImport.launch(
-                    //octet-stream as backup in case Android doesn't detect json
-                    arrayOf("application/json", "application/octet-stream")
+                    // octet-stream as backup in case Android doesn't detect json
+                    arrayOf("application/json", "application/octet-stream"),
                 )
 
                 is BattleConfigListAction.ToggleSelected -> vm.toggleSelected(it.id)
                 is BattleConfigListAction.StartSelection -> vm.startSelection(it.id)
             }
-        }
+        },
     )
 }
 
@@ -127,29 +151,31 @@ private fun BattleConfigListContent(
     configs: List<BattleConfigCore>,
     selectionMode: Boolean,
     selectedConfigs: Set<String>,
-    action: (BattleConfigListAction) -> Unit
+    action: (BattleConfigListAction) -> Unit,
 ) {
     val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     Box {
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
             ) {
                 Heading(
-                    stringResource(R.string.p_battle_config)
+                    stringResource(R.string.p_battle_config),
                 ) {
                     HeadingButton(
                         text = stringResource(
-                            if (selectionMode)
+                            if (selectionMode) {
                                 R.string.battle_config_item_export
-                            else R.string.battle_config_list_export_all
+                            } else {
+                                R.string.battle_config_list_export_all
+                            },
                         ),
-                        onClick = { action(BattleConfigListAction.Export) }
+                        onClick = { action(BattleConfigListAction.Export) },
                     )
 
                     Crossfade(selectionMode) {
@@ -158,12 +184,12 @@ private fun BattleConfigListContent(
                                 text = stringResource(R.string.battle_config_list_delete),
                                 onClick = { action(BattleConfigListAction.Delete) },
                                 isDanger = true,
-                                icon = icon(Icons.Default.Delete)
+                                icon = icon(Icons.Default.Delete),
                             )
                         } else {
                             HeadingButton(
                                 text = stringResource(R.string.battle_config_list_import),
-                                onClick = { action(BattleConfigListAction.Import) }
+                                onClick = { action(BattleConfigListAction.Import) },
                             )
                         }
                     }
@@ -182,17 +208,20 @@ private fun BattleConfigListContent(
                         action = action,
                         selectedConfigs = selectedConfigs,
                         modifier = Modifier
-                            .weight(1f)
+                            .weight(1f),
                     )
                 } else {
                     Tabbed(
-                        items = listOf<BattleConfigCore.Server>(BattleConfigCore.Server.NotSet) + servers.map { BattleConfigCore.Server.Set(it) },
+                        items =
+                        listOf<BattleConfigCore.Server>(BattleConfigCore.Server.NotSet) +
+                            servers.map { BattleConfigCore.Server.Set(it) },
                         heading = {
                             Text(
                                 when (it) {
                                     BattleConfigCore.Server.NotSet -> "ALL"
-                                    is BattleConfigCore.Server.Set -> stringResource(it.server.stringRes)
-                                }
+                                    is BattleConfigCore.Server.Set ->
+                                        stringResource(it.server.stringRes)
+                                },
                             )
                         },
                         content = { current ->
@@ -201,8 +230,8 @@ private fun BattleConfigListContent(
                                     .filter {
                                         val server = it.server.get().asGameServer()
 
-                                        current is BattleConfigCore.Server.NotSet
-                                                || server == current.asGameServer()
+                                        current is BattleConfigCore.Server.NotSet ||
+                                            server == current.asGameServer()
                                     }
                             }
 
@@ -210,11 +239,11 @@ private fun BattleConfigListContent(
                                 configs = filteredConfigs,
                                 selectionMode = selectionMode,
                                 action = action,
-                                selectedConfigs = selectedConfigs
+                                selectedConfigs = selectedConfigs,
                             )
                         },
                         modifier = Modifier
-                            .weight(1f)
+                            .weight(1f),
                     )
                 }
             }
@@ -223,20 +252,24 @@ private fun BattleConfigListContent(
         Box(
             modifier = Modifier
                 .align(if (isLandscape) Alignment.TopEnd else Alignment.BottomEnd)
-                .padding(16.dp)
+                .padding(16.dp),
         ) {
-            val enterAnimation = if (isLandscape)
+            val enterAnimation = if (isLandscape) {
                 slideInHorizontally(initialOffsetX = { it / 2 })
-            else slideInVertically(initialOffsetY = { it / 2 })
+            } else {
+                slideInVertically(initialOffsetY = { it / 2 })
+            }
 
-            val exitAnimation = if (isLandscape)
+            val exitAnimation = if (isLandscape) {
                 slideOutHorizontally(targetOffsetX = { it * 2 })
-            else slideOutVertically(targetOffsetY = { it * 2 })
+            } else {
+                slideOutVertically(targetOffsetY = { it * 2 })
+            }
 
             AnimatedVisibility(
                 !selectionMode,
                 enter = enterAnimation,
-                exit = exitAnimation
+                exit = exitAnimation,
             ) {
                 FloatingActionButton(
                     onClick = { action(BattleConfigListAction.AddNew) },
@@ -248,7 +281,7 @@ private fun BattleConfigListContent(
                         contentDescription = "Create new config",
                         modifier = Modifier
                             .size(40.dp)
-                            .padding(7.dp)
+                            .padding(7.dp),
                     )
                 }
             }
@@ -262,17 +295,17 @@ private fun ConfigList(
     selectionMode: Boolean,
     action: (BattleConfigListAction) -> Unit,
     selectedConfigs: Set<String>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(top = 16.dp)
+        contentPadding = PaddingValues(top = 16.dp),
     ) {
         if (configs.isEmpty()) {
             item {
                 Text(
                     stringResource(R.string.battle_config_list_no_items),
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
                 )
             }
         } else {
@@ -291,7 +324,7 @@ private fun ConfigList(
                                 modifier = Modifier.fillMaxWidth(),
                                 style = MaterialTheme.typography.titleLarge,
                                 textAlign = TextAlign.Left,
-                                color = MaterialTheme.colorScheme.onSecondary
+                                color = MaterialTheme.colorScheme.onSecondary,
                             )
                         }
                     }
@@ -299,7 +332,7 @@ private fun ConfigList(
 
                 items(
                     entry.value,
-                    key = { it.id }
+                    key = { it.id },
                 ) {
                     BattleConfigListItem(
                         it,
@@ -316,18 +349,16 @@ private fun ConfigList(
                             }
                         },
                         isSelectionMode = selectionMode,
-                        isSelected = selectionMode && it.id in selectedConfigs
+                        isSelected = selectionMode && it.id in selectedConfigs,
                     )
                 }
 
                 item {
                     Spacer(
-                        modifier = Modifier.height(10.dp)
+                        modifier = Modifier.height(10.dp),
                     )
                 }
             }
-
-
         }
     }
 }
@@ -335,7 +366,7 @@ private fun ConfigList(
 @Composable
 private fun BattleConfigItemSelected(
     isSelectionMode: Boolean,
-    isSelected: Boolean
+    isSelected: Boolean,
 ) {
     AnimatedVisibility(isSelectionMode) {
         Box(
@@ -344,14 +375,20 @@ private fun BattleConfigItemSelected(
                 .padding(end = 16.dp)
                 .border(
                     1.dp,
-                    if (isSelected) Color.Transparent else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f),
-                    CircleShape
+                    if (isSelected) {
+                        Color.Transparent
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                            alpha = 0.38f,
+                        )
+                    },
+                    CircleShape,
                 )
                 .background(
                     shape = CircleShape,
-                    color = if (isSelected) MaterialTheme.colorScheme.secondary else Color.Transparent
+                    color = if (isSelected) MaterialTheme.colorScheme.secondary else Color.Transparent,
                 )
-                .size(15.dp)
+                .size(15.dp),
         ) {
             AnimatedVisibility(isSelected) {
                 Icon(
@@ -359,7 +396,7 @@ private fun BattleConfigItemSelected(
                     contentDescription = "Select",
                     tint = MaterialTheme.colorScheme.onSecondary,
                     modifier = Modifier
-                        .size(10.dp)
+                        .size(10.dp),
                 )
             }
         }
@@ -372,7 +409,7 @@ private fun BattleConfigListItem(
     isSelectionMode: Boolean,
     isSelected: Boolean,
     onClick: () -> Unit,
-    onLongClick: () -> Unit
+    onLongClick: () -> Unit,
 ) {
     val name by it.name.remember()
     val materialsSet by it.materials.remember()
@@ -388,21 +425,21 @@ private fun BattleConfigListItem(
             .padding(5.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        ),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .combinedClickable(
                     onClick = onClick,
-                    onLongClick = { longClickState.value.invoke() }
+                    onLongClick = { longClickState.value.invoke() },
                 )
-                .padding(16.dp, 5.dp)
+                .padding(16.dp, 5.dp),
         ) {
             BattleConfigItemSelected(
                 isSelectionMode = isSelectionMode,
-                isSelected = isSelected
+                isSelected = isSelected,
             )
 
             Text(
@@ -410,7 +447,7 @@ private fun BattleConfigListItem(
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.weight(1f),
                 maxLines = 3,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
 
             mats.forEach {

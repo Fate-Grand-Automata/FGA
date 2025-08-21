@@ -47,9 +47,13 @@ import kotlin.time.Duration.Companion.seconds
 private val Duration.stringify: String
     get() =
         toComponents { hours, minutes, seconds, _ ->
-            (if (hours > 0)
-                listOf(hours, minutes, seconds)
-            else listOf(minutes, seconds))
+            (
+                if (hours > 0) {
+                    listOf(hours, minutes, seconds)
+                } else {
+                    listOf(minutes, seconds)
+                }
+                )
                 .joinToString(":") { "%02d".format(it) }
         }
 
@@ -58,8 +62,11 @@ private fun AutoBattle.ExitReason.text(): String = when (this) {
     AutoBattle.ExitReason.Abort -> stringResource(R.string.stopped_by_user)
     is AutoBattle.ExitReason.Unexpected -> {
         cause.let {
-            if (it is KnownException) it.reason.msg
-            else "${stringResource(R.string.unexpected_error)}: ${cause?.message}"
+            if (it is KnownException) {
+                it.reason.msg
+            } else {
+                "${stringResource(R.string.unexpected_error)}: ${cause?.message}"
+            }
         }
     }
 
@@ -71,7 +78,9 @@ private fun AutoBattle.ExitReason.text(): String = when (this) {
     AutoBattle.ExitReason.InventoryFull -> stringResource(R.string.inventory_full)
     is AutoBattle.ExitReason.LimitRuns -> stringResource(R.string.times_ran, count)
     AutoBattle.ExitReason.SupportSelectionManual -> stringResource(R.string.support_selection_manual)
-    AutoBattle.ExitReason.SupportSelectionPreferredNotSet -> stringResource(R.string.support_selection_preferred_not_set)
+    AutoBattle.ExitReason.SupportSelectionPreferredNotSet -> stringResource(
+        R.string.support_selection_preferred_not_set,
+    )
     is AutoBattle.ExitReason.SkillCommandParseError -> "AutoSkill Parse error:\n\n${cause?.message}"
     is AutoBattle.ExitReason.CardPriorityParseError -> msg
     AutoBattle.ExitReason.FirstClearRewards -> stringResource(R.string.first_clear_rewards)
@@ -82,12 +91,12 @@ private fun AutoBattle.ExitReason.text(): String = when (this) {
 @Composable
 private fun Refill(
     limit: Int,
-    timesRefilled: Int
+    timesRefilled: Int,
 ) {
     if (limit > 0) {
         SmallChip(
             text = "$timesRefilled / $limit",
-            icon = icon(R.drawable.ic_apple)
+            icon = icon(R.drawable.ic_apple),
         )
     }
 }
@@ -95,7 +104,7 @@ private fun Refill(
 private fun LazyListScope.battleExitContent(
     reason: AutoBattle.ExitReason,
     state: AutoBattle.ExitState,
-    refillEnabled: Boolean
+    refillEnabled: Boolean,
 ) {
     item {
         Text(
@@ -103,7 +112,7 @@ private fun LazyListScope.battleExitContent(
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .padding(bottom = 16.dp, top = 5.dp)
+                .padding(bottom = 16.dp, top = 5.dp),
         )
     }
 
@@ -111,23 +120,23 @@ private fun LazyListScope.battleExitContent(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(16.dp, 5.dp)
+                .padding(16.dp, 5.dp),
         ) {
             if (refillEnabled) {
                 Refill(
                     limit = state.refillLimit,
-                    timesRefilled = state.timesRefilled
+                    timesRefilled = state.timesRefilled,
                 )
             }
 
             SmallChip(
                 text = state.totalTime.stringify,
-                icon = icon(R.drawable.ic_time)
+                icon = icon(R.drawable.ic_time),
             )
 
             Runs(
                 runLimit = state.runLimit,
-                timesRan = state.timesRan
+                timesRan = state.timesRan,
             )
         }
     }
@@ -138,7 +147,7 @@ private fun LazyListScope.battleExitContent(
                 stringResource(R.string.ces_dropped, state.ceDropCount),
                 color = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier
-                    .padding(16.dp, 5.dp)
+                    .padding(16.dp, 5.dp),
             )
         }
     }
@@ -148,10 +157,10 @@ private fun LazyListScope.battleExitContent(
             Text(
                 stringResource(
                     R.string.avg_time_per_run,
-                    state.averageTimePerRun.stringify
+                    state.averageTimePerRun.stringify,
                 ),
                 modifier = Modifier
-                    .padding(16.dp, 5.dp)
+                    .padding(16.dp, 5.dp),
             )
         }
 
@@ -161,10 +170,10 @@ private fun LazyListScope.battleExitContent(
                     R.string.turns_stats,
                     state.minTurnsPerRun,
                     state.averageTurnsPerRun,
-                    state.maxTurnsPerRun
+                    state.maxTurnsPerRun,
                 ),
                 modifier = Modifier
-                    .padding(16.dp, 5.dp)
+                    .padding(16.dp, 5.dp),
             )
         }
     } else if (state.timesRan == 1) {
@@ -172,7 +181,7 @@ private fun LazyListScope.battleExitContent(
             Text(
                 stringResource(R.string.turns_count, state.minTurnsPerRun),
                 modifier = Modifier
-                    .padding(16.dp, 5.dp)
+                    .padding(16.dp, 5.dp),
             )
         }
     }
@@ -180,7 +189,7 @@ private fun LazyListScope.battleExitContent(
     if (state.materials.isNotEmpty()) {
         item {
             MaterialSummary(
-                materials = state.materials
+                materials = state.materials,
             )
         }
     }
@@ -191,7 +200,7 @@ private fun LazyListScope.battleExitContent(
                 stringResource(R.string.times_withdrew, state.withdrawCount),
                 color = MaterialTheme.colorScheme.error,
                 modifier = Modifier
-                    .padding(16.dp, 5.dp)
+                    .padding(16.dp, 5.dp),
             )
         }
     }
@@ -200,7 +209,7 @@ private fun LazyListScope.battleExitContent(
 @Composable
 private fun Runs(
     runLimit: Int?,
-    timesRan: Int
+    timesRan: Int,
 ) {
     val runs = when {
         runLimit != null && runLimit > 0 -> "$timesRan / $runLimit"
@@ -210,7 +219,7 @@ private fun Runs(
 
     if (runs.isNotBlank()) {
         SmallChip(
-            text = "${stringResource(R.string.p_runs)}: $runs"
+            text = "${stringResource(R.string.p_runs)}: $runs",
         )
     }
 }
@@ -218,34 +227,34 @@ private fun Runs(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun MaterialSummary(
-    materials: Map<MaterialEnum, Int>
+    materials: Map<MaterialEnum, Int>,
 ) {
     FlowRow(
         maxItemsInEachRow = 3,
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(16.dp),
     ) {
         for ((mat, count) in materials.toList()) {
             Card(
                 shape = CircleShape,
                 modifier = Modifier
-                    .padding(end = 5.dp, top = 5.dp, bottom = 5.dp)
+                    .padding(end = 5.dp, top = 5.dp, bottom = 5.dp),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .padding(16.dp, 5.dp)
+                        .padding(16.dp, 5.dp),
                 ) {
                     Material(mat = mat)
 
                     Text(
                         stringResource(mat.stringRes),
                         modifier = Modifier
-                            .padding(horizontal = 5.dp)
+                            .padding(horizontal = 5.dp),
                     )
 
                     Text(
                         "x$count",
-                        color = MaterialTheme.colorScheme.secondary
+                        color = MaterialTheme.colorScheme.secondary,
                     )
                 }
             }
@@ -256,17 +265,17 @@ private fun MaterialSummary(
 @Composable
 private fun SmallChip(
     text: String,
-    icon: VectorIcon? = null
+    icon: VectorIcon? = null,
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
-            .padding(end = 7.dp)
+            .padding(end = 7.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(5.dp, 3.dp)
+                .padding(5.dp, 3.dp),
         ) {
             if (icon != null) {
                 DimmedIcon(
@@ -274,13 +283,13 @@ private fun SmallChip(
                     contentDescription = "icon",
                     modifier = Modifier
                         .padding(end = 5.dp)
-                        .size(16.dp)
+                        .size(16.dp),
                 )
             }
 
             Text(
                 text,
-                style = MaterialTheme.typography.titleSmall
+                style = MaterialTheme.typography.titleSmall,
             )
         }
     }
@@ -292,21 +301,21 @@ fun BattleExit(
     prefs: IPreferences,
     prefsCore: PrefsCore,
     onClose: () -> Unit,
-    onCopy: () -> Unit
+    onCopy: () -> Unit,
 ) {
     FgaScreen {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             LazyColumn(
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(1f),
             ) {
                 battleExitContent(
                     reason = exception.reason,
                     state = exception.state,
-                    refillEnabled = prefs.selectedServerConfigPref.resources.isNotEmpty()
+                    refillEnabled = prefs.selectedServerConfigPref.resources.isNotEmpty(),
                 )
             }
 
@@ -318,19 +327,19 @@ fun BattleExit(
                         .fillMaxWidth()
                         .padding(16.dp, 5.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         stringResource(R.string.stop_after_this_run),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.secondary
+                        color = MaterialTheme.colorScheme.secondary,
                     )
 
                     var stopAfterThisRun by prefsCore.stopAfterThisRun.remember()
 
                     Switch(
                         checked = stopAfterThisRun,
-                        onCheckedChange = { stopAfterThisRun = it }
+                        onCheckedChange = { stopAfterThisRun = it },
                     )
                 }
             }
@@ -339,7 +348,7 @@ fun BattleExit(
 
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Row {
                     val allowCopy = exception.reason.let { reason ->
@@ -355,7 +364,7 @@ fun BattleExit(
 
                 Row {
                     TextButton(
-                        onClick = onClose
+                        onClick = onClose,
                     ) {
                         Text(stringResource(android.R.string.ok))
                     }
@@ -391,9 +400,9 @@ fun PreviewBattleExitContent() {
                     averageTimePerRun = 75.seconds,
                     minTurnsPerRun = 3,
                     maxTurnsPerRun = 4,
-                    averageTurnsPerRun = 3.45678
+                    averageTurnsPerRun = 3.45678,
                 ),
-                refillEnabled = true
+                refillEnabled = true,
             )
         }
     }

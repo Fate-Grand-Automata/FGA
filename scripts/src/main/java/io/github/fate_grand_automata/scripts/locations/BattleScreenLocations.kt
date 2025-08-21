@@ -16,7 +16,7 @@ import javax.inject.Inject
 @ScriptScope
 class BattleScreenLocations @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms,
-    val master: MasterLocations
+    val master: MasterLocations,
 ) : IScriptAreaTransforms by scriptAreaTransforms {
     fun locate(orderChangeMember: OrderChangeMember) = when (orderChangeMember) {
         OrderChangeMember.Starting.A -> -1000
@@ -66,9 +66,13 @@ class BattleScreenLocations @Inject constructor(
     } + Location(if (isWide) 150 else 0, 0)
 
     val screenCheckRegion =
-        (if (isWide)
-            Region(-660, -210, 400, 175)
-        else Region(-455, -181, 336, 116))
+        (
+            if (isWide) {
+                Region(-660, -210, 400, 175)
+            } else {
+                Region(-455, -181, 336, 116)
+            }
+            )
             .xFromRight()
             .yFromBottom()
 
@@ -80,14 +84,18 @@ class BattleScreenLocations @Inject constructor(
                 skill3Location.x + 35,
                 skill3Location.y + 67,
                 120,
-                120
+                120,
             )
         }
 
     val attackClick =
-        (if (isWide)
-            Location(-460, -230)
-        else Location(-260, -240))
+        (
+            if (isWide) {
+                Location(-460, -230)
+            } else {
+                Location(-260, -240)
+            }
+            )
             .xFromRight()
             .yFromBottom()
 
@@ -117,7 +125,7 @@ class BattleScreenLocations @Inject constructor(
         Region(22, 28, 30, 30) + locate(skill)
 
     val servantDetailsInfoClick = Location(-660, 110).xFromCenter()
-    
+
     val servantDetailsFaceCardRegion = when (gameServer) {
         // FGO JP 2024-04-12 updated the UI resulting in the bricking of the face card detection
         is GameServer.Jp, GameServer.Cn -> Region(-685, 410, 110, 60).xFromCenter()

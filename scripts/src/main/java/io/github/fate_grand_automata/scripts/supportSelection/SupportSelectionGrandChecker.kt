@@ -7,8 +7,8 @@ import javax.inject.Inject
 
 @ScriptScope
 class SupportSelectionGrandChecker @Inject constructor(
-    api: IFgoAutomataApi
-): IFgoAutomataApi by api {
+    api: IFgoAutomataApi,
+) : IFgoAutomataApi by api {
     fun isGrandPresent(region: Region): Boolean {
         return region.exists(images[Images.GrandCeLabel])
     }

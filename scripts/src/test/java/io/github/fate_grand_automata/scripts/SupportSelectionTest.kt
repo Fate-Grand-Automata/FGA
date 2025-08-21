@@ -51,7 +51,7 @@ class SupportSelectionTest {
             screen,
             commonPrefs,
             SupportScreenRefresher(screen, messages, connectionRetry, classPicker),
-            classPicker
+            classPicker,
         )
 
         val provider = FakeSupportSelectionProvider {
@@ -77,8 +77,8 @@ class SupportSelectionTest {
                 verify = {
                     assertThat(it.refreshCount).isEqualTo(3)
                 },
-                supportProvider = { SupportSelectionResult.Refresh }
-            )
+                supportProvider = { SupportSelectionResult.Refresh },
+            ),
         )
     }
 
@@ -91,8 +91,8 @@ class SupportSelectionTest {
                     assertThat(it.scrollOffset).isEqualTo(0)
                     assertThat(it.refreshCount).isEqualTo(0)
                 },
-                supportProvider = { SupportSelectionResult.Done }
-            )
+                supportProvider = { SupportSelectionResult.Done },
+            ),
         )
     }
 }

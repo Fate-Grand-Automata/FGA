@@ -5,7 +5,7 @@ import io.github.fate_grand_automata.scripts.enums.SupportClass
 import io.github.fate_grand_automata.scripts.enums.SupportSelectionModeEnum
 
 class SupportPrefsCore(
-    maker: PrefMaker
+    maker: PrefMaker,
 ) {
     val friendNames = maker.stringSet("support_friend_names_list")
     val preferredServants = maker.stringSet("support_pref_servant_list")
@@ -15,17 +15,17 @@ class SupportPrefsCore(
 
     val selectionMode = maker.enum(
         "support_mode",
-        SupportSelectionModeEnum.Preferred
+        SupportSelectionModeEnum.Preferred,
     )
 
     val fallbackTo = maker.enum(
         "support_fallback",
-        SupportSelectionModeEnum.Manual
+        SupportSelectionModeEnum.Manual,
     )
 
     val supportClass = maker.enum(
         "autoskill_support_class",
-        SupportClass.None
+        SupportClass.None,
     )
 
     val alsoCheckAll = maker.bool("also_check_all")
@@ -39,7 +39,7 @@ class SupportPrefsCore(
     val grandServant = maker.bool("support_grand_servant")
     val bondCEEffect = maker.enum(
         "support_bond_ce_effect",
-        BondCEEffectEnum.Ignore
+        BondCEEffectEnum.Ignore,
     )
     val requireBothNormalAndRewardMatch = maker.bool("support_require_both_normal_and_reward_match")
 }
