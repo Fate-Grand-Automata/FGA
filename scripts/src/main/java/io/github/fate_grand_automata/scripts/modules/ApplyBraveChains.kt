@@ -96,7 +96,7 @@ class ApplyBraveChains @Inject constructor() {
         val firstCard = cards.firstOrNull() ?: return justRearranged
         val firstCardType = firstCard.type
 
-        val cardsWithDifferentTypesFromFirst = cards
+        val cardsWithDifferentTypesFromFirst = justRearranged
             .filter { it.type != firstCardType }
             .toMutableList()
 
@@ -109,10 +109,11 @@ class ApplyBraveChains @Inject constructor() {
             .toMutableList()
 
         val thirdCard = cardsWithDifferentTypesFromSecond.firstOrNull()
-        val remainder = cards - firstCard - secondCard - thirdCard
+        val newSet = listOf(firstCard, secondCard, thirdCard)
+        val remainder = cards - newSet
 
         // Return the result
-        val newList = listOf(firstCard, secondCard) + thirdCard + remainder
+        val newList = newSet + remainder
         return newList.filterNotNull()
     }
 
