@@ -75,6 +75,47 @@ class ApplyBraveChains @Inject constructor() {
         )
     }
 
+    private fun withNpMighty(
+        cards: List<ParsedCard>,
+        rearrange: Boolean,
+        npUsage: NPUsage
+    ): List<ParsedCard> {
+        // Get default NP sort, because we are using the default priority as our baseline
+        val justRearranged by lazy {
+            withNpMighty(
+                cards = cards.take(3),
+                rearrange = rearrange,
+                npUsage = npUsage
+            )
+        }
+
+        // If 2 or 3 are NP, ignore. Because FGA cannot detect NP types at the moment
+        if (npUsage.nps.size >= 2) return justRearranged
+
+        // if cannot get first card, return default
+        val firstCard = cards.firstOrNull() ?: return justRearranged
+        val firstCardType = firstCard.type
+
+        val cardsWithDifferentTypesFromFirst = cards
+            .filter { it.type != firstCardType }
+            .toMutableList()
+
+        // If all are the same, just return default
+        val secondCard = cardsWithDifferentTypesFromFirst.firstOrNull() ?: return justRearranged
+        val secondCardType = secondCard.type
+
+        val cardsWithDifferentTypesFromSecond = cardsWithDifferentTypesFromFirst
+            .filter { it.type != secondCardType }
+            .toMutableList()
+
+        val thirdCard = cardsWithDifferentTypesFromSecond.firstOrNull()
+        val remainder = cards - firstCard - secondCard - thirdCard
+
+        // Return the result
+        val newList = listOf(firstCard, secondCard) + thirdCard + remainder
+        return newList.filterNotNull()
+    }
+
     private fun avoid(
         cards: List<ParsedCard>,
         rearrange: Boolean
@@ -167,6 +208,12 @@ class ApplyBraveChains @Inject constructor() {
             )
 
             BraveChainEnum.WithNP -> withNp(
+                cards = cards,
+                rearrange = rearrange,
+                npUsage = npUsage
+            )
+
+            BraveChainEnum.WithNPMighty -> withNpMighty(
                 cards = cards,
                 rearrange = rearrange,
                 npUsage = npUsage

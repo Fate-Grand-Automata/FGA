@@ -188,6 +188,7 @@
     <string name="p_refill_type_sq">"聖晶石"</string>
     <string name="p_brave_chains_don_t_care">"考慮しない"</string>
     <string name="p_brave_chains_with_np">"宝具と同時に"</string>
+    <string name="p_brave_chains_with_np_mighty">"宝具と同時に（マイティ）"</string>
     <string name="p_brave_chains_avoid">"使用しない"</string>
     <string name="p_boost_item_disabled">"使用確認OFF"</string>
     <string name="p_boost_item_skip">"使用しない"</string>

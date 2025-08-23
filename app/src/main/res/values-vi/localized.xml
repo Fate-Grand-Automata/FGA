@@ -184,6 +184,7 @@ Sao chép hoặc đổi tên nó nếu bạn muốn giữ nó."</string>
     <string name="p_refill_type_sq">"SQ"</string>
     <string name="p_brave_chains_don_t_care">"không quan tâm"</string>
     <string name="p_brave_chains_with_np">"Với NP"</string>
+    <string name="p_brave_chains_with_np_mighty">"Với NP (Mighty)"</string>
     <string name="p_brave_chains_avoid">"Tránh"</string>
     <string name="p_boost_item_disabled">"Tắt"</string>
     <string name="p_boost_item_skip">"Bỏ qua"</string>
