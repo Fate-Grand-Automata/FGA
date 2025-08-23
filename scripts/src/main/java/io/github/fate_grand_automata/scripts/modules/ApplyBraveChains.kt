@@ -109,12 +109,11 @@ class ApplyBraveChains @Inject constructor() {
             .toMutableList()
 
         val thirdCard = cardsWithDifferentTypesFromSecond.firstOrNull()
-        val newSet = listOf(firstCard, secondCard, thirdCard)
-        val remainder = cards - newSet
+        val newSet = listOfNotNull(firstCard, secondCard, thirdCard)
+        val remainder = justRearranged - newSet
 
         // Return the result
-        val newList = newSet + remainder
-        return newList.filterNotNull()
+        return newSet + remainder
     }
 
     private fun avoid(
