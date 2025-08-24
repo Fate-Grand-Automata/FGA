@@ -34,6 +34,7 @@ import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.FGATitle
 import io.github.fate_grand_automata.ui.skill_maker.SkillSlot
 import io.github.fate_grand_automata.ui.skill_maker.utils.Choice3Type
+import io.github.fate_grand_automata.ui.skill_maker.utils.TargetButton
 import io.github.fate_grand_automata.ui.skill_maker.utils.choice1StringRes
 import io.github.fate_grand_automata.ui.skill_maker.utils.choice2StringRes
 import io.github.fate_grand_automata.ui.skill_maker.utils.choice3StringRes
