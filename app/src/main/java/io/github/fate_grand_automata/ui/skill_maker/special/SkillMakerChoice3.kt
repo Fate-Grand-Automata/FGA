@@ -33,7 +33,11 @@ import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.FGATitle
 import io.github.fate_grand_automata.ui.skill_maker.SkillSlot
-
+import io.github.fate_grand_automata.ui.skill_maker.utils.Choice3Type
+import io.github.fate_grand_automata.ui.skill_maker.utils.choice1StringRes
+import io.github.fate_grand_automata.ui.skill_maker.utils.choice2StringRes
+import io.github.fate_grand_automata.ui.skill_maker.utils.choice3StringRes
+import io.github.fate_grand_automata.ui.skill_maker.utils.stringRes
 
 @Composable
 fun SkillMakerChoice3(
@@ -167,47 +171,3 @@ fun TestChoice3Slot3() {
         )
     }
 }
-
-
-private enum class Choice3Type(val slot: SkillSlot) {
-    Generic(SkillSlot.ANY),
-    // First slot
-    VanGogh(SkillSlot.First),
-    // Third slot
-    Hakuno(SkillSlot.Third),
-    Soujuurou(SkillSlot.Third),
-    Charlotte(SkillSlot.Third),
-}
-
-private val Choice3Type.stringRes
-    get() = when (this) {
-        Choice3Type.Generic -> R.string.skill_maker_choices_3
-        Choice3Type.Hakuno -> R.string.skill_maker_hakuno
-        Choice3Type.Soujuurou -> R.string.skill_maker_soujuurou
-        Choice3Type.Charlotte -> R.string.skill_maker_charlotte
-        Choice3Type.VanGogh -> R.string.skill_maker_van_gogh
-    }
-
-private val Choice3Type.choice1StringRes
-    get() = when (this) {
-        Choice3Type.Generic -> R.string.skill_maker_option_1
-        Choice3Type.Hakuno -> R.string.skill_maker_hakuno_choice_1
-        Choice3Type.Soujuurou, Choice3Type.VanGogh -> R.string.skill_maker_quick
-        Choice3Type.Charlotte -> R.string.skill_maker_arts
-    }
-
-private val Choice3Type.choice2StringRes
-    get() = when (this) {
-        Choice3Type.Generic -> R.string.skill_maker_option_2
-        Choice3Type.Hakuno -> R.string.skill_maker_hakuno_choice_2
-        Choice3Type.Soujuurou, Choice3Type.VanGogh -> R.string.skill_maker_arts
-        Choice3Type.Charlotte -> R.string.skill_maker_charlotte_choice_2
-    }
-
-private val Choice3Type.choice3StringRes
-    get() = when (this) {
-        Choice3Type.Generic -> R.string.skill_maker_option_3
-        Choice3Type.Hakuno -> R.string.skill_maker_hakuno_choice_3
-        Choice3Type.Soujuurou, Choice3Type.VanGogh -> R.string.skill_maker_buster
-        Choice3Type.Charlotte -> R.string.skill_maker_charlotte_choice_3
-    }
