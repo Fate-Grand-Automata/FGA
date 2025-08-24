@@ -396,39 +396,16 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="update_download_success">"Download successful. Restarting app in 5 seconds."</string>
     <string name="skill_maker_soujuurou">"Soujuurou"</string>
     <string name="skill_maker_choices_3">"Choices (3)"</string>
-    <string-array name="skill_maker_choices_3_array_slot_1">
-        <item>"Van Gogh (Miner)"</item>
-    </string-array>
-    <string-array name="skill_maker_choices_3_array_slot_3">
-        <item>"Soujuurou"</item>
-        <item>"Charlotte"</item>
-        <item>"Hakuno"</item>
-    </string-array>
-    <string-array name="skill_maker_choices_2_array_slot_1and2">
-        <item>"Kukulkan"</item>
-    </string-array>
-    <string-array name="skill_maker_choices_2_array_slot_3">
-        <item>"Kukulkan"</item>
-        <item>"UDK-Barghest"</item>
-    </string-array>
     <string name="skill_maker_kukulkan_choice_1">"Don't use stars"</string>
     <string name="skill_maker_kukulkan_choice_2">"Use stars"</string>
     <string name="skill_maker_udk_barghest_choice_1">"AoE"</string>
     <string name="skill_maker_udk_barghest_choice_2">"Single Target"</string>
     <string name="skill_maker_change_np_type_2">"NP Type (2)"</string>
-    <string-array name="skill_maker_change_np_type_2_array">
-        <item>"Emiya"</item>
-        <item>"BB Dubai"</item>
-    </string-array>
     <string name="skill_maker_change_np_type_3">"NP Type (3)"</string>
-    <string-array name="skill_maker_change_np_type_3_array">
-        <item>"Space Ishtar"</item>
-    </string-array>
     <string name="skill_maker_transform">"Transform"</string>
-    <string-array name="skill_maker_transform_array">
-        <item>"Mélusine"</item>
-        <item>"Ptolemy"</item>
-    </string-array>
+    <string name="skill_maker_melusine">"Mélusine"</string>
+    <string name="skill_maker_ptolemy">"Ptolemy"</string>
+    <string name="skill_maker_select_button_labels">"Select which servant mode to Proceed"</string>
     <string name="skill_maker_update_button_labels">"Update Button Labels"</string>
     <string name="skill_maker_special_targets_warning">Servants with special skills</string>
     <string name="skill_maker_van_gogh">Van Gogh (Miner)</string>
@@ -480,4 +457,12 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
     <string name="servant_enhancement_aborted">Enhancement was aborted</string>
     <string name="note">"Note:"</string>
+
+    <string name="skill_maker_summer_shiki">"Summer Shiki"</string>
+    <string name="skill_maker_summer_shiki_choice_1">"Moonlight (AOE)"</string>
+    <string name="skill_maker_summer_shiki_choice_2">Sun (ST)</string>
+
+    <string name="skill_maker_dante_alighieri">"Dante Alighieri"</string>
+    <string name="skill_maker_dante_alighieri_choice_1">"Paradise (Arts Up)"</string>
+    <string name="skill_maker_dante_alighieri_choice_2">Inferno (Buster Up)</string>
 </resources>

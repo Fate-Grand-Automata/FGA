@@ -31,6 +31,11 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.FGATitle
+import io.github.fate_grand_automata.ui.skill_maker.utils.ChangeNp3Type
+import io.github.fate_grand_automata.ui.skill_maker.utils.stringRes
+import io.github.fate_grand_automata.ui.skill_maker.utils.targetAStringRes
+import io.github.fate_grand_automata.ui.skill_maker.utils.targetBStringRes
+import io.github.fate_grand_automata.ui.skill_maker.utils.targetCStringRes
 
 @Composable
 fun SkillMakerChangeNpType3(
@@ -144,33 +149,3 @@ fun TestChangeNpType3() {
         SkillMakerChangeNpType3(onSkillTarget = { })
     }
 }
-
-
-private enum class ChangeNp3Type {
-    Generic,
-    SpaceIshtar,
-}
-
-private val ChangeNp3Type.stringRes
-    get() = when (this) {
-        ChangeNp3Type.Generic -> R.string.skill_maker_change_np_type_3
-        ChangeNp3Type.SpaceIshtar -> R.string.skill_maker_space_ishtar
-    }
-
-private val ChangeNp3Type.targetAStringRes
-    get() = when (this) {
-        ChangeNp3Type.Generic -> R.string.skill_maker_option_1
-        ChangeNp3Type.SpaceIshtar -> R.string.skill_maker_quick
-    }
-
-private val ChangeNp3Type.targetBStringRes
-    get() = when (this) {
-        ChangeNp3Type.Generic -> R.string.skill_maker_option_2
-        ChangeNp3Type.SpaceIshtar -> R.string.skill_maker_arts
-    }
-
-private val ChangeNp3Type.targetCStringRes
-    get() = when (this) {
-        ChangeNp3Type.Generic -> R.string.skill_maker_option_2
-        ChangeNp3Type.SpaceIshtar -> R.string.skill_maker_buster
-    }

@@ -35,6 +35,10 @@ import androidx.compose.ui.unit.sp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.FGATitle
+import io.github.fate_grand_automata.ui.skill_maker.utils.ChangeNp2Type
+import io.github.fate_grand_automata.ui.skill_maker.utils.stringRes
+import io.github.fate_grand_automata.ui.skill_maker.utils.targetAStringRes
+import io.github.fate_grand_automata.ui.skill_maker.utils.targetBStringRes
 
 @Composable
 fun SkillMakerChangeNpType2(
@@ -139,12 +143,16 @@ fun SkillMakerChangeNpType2(
 fun TargetButton(
     onClick: () -> Unit,
     color: Color,
+    enabled: Boolean = true,
     text: String
 ) {
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(containerColor = color),
-        modifier = Modifier.height(75.dp).width(120.dp)
+        modifier = Modifier
+            .height(75.dp)
+            .width(120.dp),
+        enabled = enabled
     ) {
         Text(
             text,
@@ -165,29 +173,5 @@ fun TestChangeNpType2() {
     }
 }
 
-private enum class ChangeNp2Type {
-    Generic,
-    Emiya,
-    BBDubai
-}
 
-private val ChangeNp2Type.stringRes
-    get() = when (this) {
-        ChangeNp2Type.Generic -> R.string.skill_maker_change_np_type_2
-        ChangeNp2Type.Emiya -> R.string.skill_maker_emiya
-        ChangeNp2Type.BBDubai -> R.string.skill_maker_bb_dubai
-    }
 
-private val ChangeNp2Type.targetAStringRes
-    get() = when (this) {
-        ChangeNp2Type.Generic -> R.string.skill_maker_option_1
-        ChangeNp2Type.Emiya -> R.string.skill_maker_arts
-        ChangeNp2Type.BBDubai -> R.string.skill_maker_bb_dubai_target_1
-    }
-
-private val ChangeNp2Type.targetBStringRes
-    get() = when (this) {
-        ChangeNp2Type.Generic -> R.string.skill_maker_option_2
-        ChangeNp2Type.Emiya -> R.string.skill_maker_buster
-        ChangeNp2Type.BBDubai -> R.string.skill_maker_bb_dubai_target_2
-    }
