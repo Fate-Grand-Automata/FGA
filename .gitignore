@@ -1,14 +1,11 @@
 *.iml
 .gradle
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-/.idea/jarRepositories.xml
-/.idea/misc.xml
+
+# Ignore all files in the .idea directory except for icon.png
+.idea/*
+!.idea/icon.png
+
 .DS_Store
 /build
 /captures
