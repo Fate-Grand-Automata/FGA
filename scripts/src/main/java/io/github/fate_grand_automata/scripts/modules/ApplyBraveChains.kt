@@ -82,8 +82,8 @@ class ApplyBraveChains @Inject constructor() {
     ): List<ParsedCard> {
         // Get default NP sort, because we are using the default priority as our baseline
         val justRearranged by lazy {
-            withNpMighty(
-                cards = cards.take(3),
+            withNp(
+                cards = cards,
                 rearrange = rearrange,
                 npUsage = npUsage
             )
@@ -92,15 +92,24 @@ class ApplyBraveChains @Inject constructor() {
         // If 2 or 3 are NP, ignore. Because FGA cannot detect NP types at the moment
         if (npUsage.nps.size >= 2) return justRearranged
 
+        // Get np if there is one
+        val firstNp = npUsage.nps.firstOrNull()
+        val firstFieldSlot = firstNp?.toFieldSlot()
+
         // if cannot get first card, return default
         val firstCard = cards.firstOrNull() ?: return justRearranged
         val firstCardType = firstCard.type
 
-        val cardsWithDifferentTypesFromFirst = justRearranged
-            .filter { it.type != firstCardType }
+        val cardsWithDifferentTypesFromFirst = cards
+            .filter {
+                // Different card
+                it.type != firstCardType
+                // and either match with np or there is no np
+                && (firstFieldSlot == null || it.fieldSlot == firstFieldSlot)
+            }
             .toMutableList()
 
-        // If all are the same, just return default
+        // If all are the same (or none matching the NP), just return default
         val secondCard = cardsWithDifferentTypesFromFirst.firstOrNull() ?: return justRearranged
         val secondCardType = secondCard.type
 
@@ -110,7 +119,7 @@ class ApplyBraveChains @Inject constructor() {
 
         val thirdCard = cardsWithDifferentTypesFromSecond.firstOrNull()
         val newSet = listOfNotNull(firstCard, secondCard, thirdCard)
-        val remainder = justRearranged - newSet
+        val remainder = cards - newSet
 
         // Return the result
         return newSet + remainder
