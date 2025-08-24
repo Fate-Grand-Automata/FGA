@@ -39,7 +39,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -52,6 +51,14 @@ import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.FGATitle
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.skill_maker.special.TargetButton
+import io.github.fate_grand_automata.ui.skill_maker.utils.changeNp2TypeSlot3Text
+import io.github.fate_grand_automata.ui.skill_maker.utils.changeNp3TypeSlot2Text
+import io.github.fate_grand_automata.ui.skill_maker.utils.choice2Slot1Text
+import io.github.fate_grand_automata.ui.skill_maker.utils.choice2Slot2Text
+import io.github.fate_grand_automata.ui.skill_maker.utils.choice2Slot3Text
+import io.github.fate_grand_automata.ui.skill_maker.utils.choice3Slot1Text
+import io.github.fate_grand_automata.ui.skill_maker.utils.choice3Slot3Text
+import io.github.fate_grand_automata.ui.skill_maker.utils.transformSlot3Text
 import kotlinx.coroutines.launch
 
 @Composable
@@ -178,7 +185,7 @@ fun SkillMakerTarget(
                                     text = stringResource(R.string.skill_maker_change_np_type_2),
                                     hint = stringResource(R.string.skill_maker_change_np_type_2_hint),
                                     image = R.drawable.skill_maker_np_type_2,
-                                    servants = stringArrayResource(R.array.skill_maker_change_np_type_2_array).joinToString("\n")
+                                    servants = changeNp2TypeSlot3Text()
                                 )
                             }
                         }
@@ -190,7 +197,7 @@ fun SkillMakerTarget(
                                     text = stringResource(R.string.skill_maker_change_np_type_3),
                                     hint = stringResource(R.string.skill_maker_change_np_type_3_hint),
                                     image = R.drawable.skill_maker_np_type_3,
-                                    servants = stringArrayResource(R.array.skill_maker_change_np_type_3_array).joinToString("\n")
+                                    servants = changeNp3TypeSlot2Text()
                                 )
                             }
                         }
@@ -203,10 +210,11 @@ fun SkillMakerTarget(
                                 text = stringResource(R.string.skill_maker_choices_2),
                                 hint = stringResource(R.string.skill_maker_choices_2_hint),
                                 image = R.drawable.skill_maker_choices_2,
-                                servants = stringArrayResource(when(slot) {
-                                    SkillSlot.Third -> R.array.skill_maker_choices_2_array_slot_3
-                                    else -> R.array.skill_maker_choices_2_array_slot_1and2
-                                }).joinToString("\n")
+                                servants = when (slot) {
+                                    SkillSlot.First -> choice2Slot1Text()
+                                    SkillSlot.Second -> choice2Slot2Text()
+                                    else -> choice2Slot3Text()
+                                }
                             )
                         }
 
@@ -219,10 +227,10 @@ fun SkillMakerTarget(
                                     text = stringResource(R.string.skill_maker_choices_3),
                                     hint = stringResource(R.string.skill_maker_choices_3_hint),
                                     image = R.drawable.skill_maker_choices_3,
-                                    servants = stringArrayResource(when(slot) {
-                                        SkillSlot.First -> R.array.skill_maker_choices_3_array_slot_1
-                                        else -> R.array.skill_maker_choices_3_array_slot_3
-                                    }).joinToString("\n")
+                                    servants = when (slot) {
+                                        SkillSlot.First -> choice3Slot1Text()
+                                        else -> choice3Slot3Text()
+                                    }
                                 )
                             }
                         }
@@ -233,7 +241,7 @@ fun SkillMakerTarget(
                                     text = stringResource(R.string.skill_maker_transform),
                                     hint = stringResource(R.string.skill_maker_transform_hint),
                                     image = R.drawable.skill_maker_transform,
-                                    servants = stringArrayResource(R.array.skill_maker_transform_array).joinToString("\n")
+                                    servants = transformSlot3Text()
                                 )
                             }
                         }
