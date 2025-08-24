@@ -50,7 +50,7 @@ import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.FGATitle
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
-import io.github.fate_grand_automata.ui.skill_maker.special.TargetButton
+import io.github.fate_grand_automata.ui.skill_maker.utils.TargetButton
 import io.github.fate_grand_automata.ui.skill_maker.utils.changeNp2TypeSlot3Text
 import io.github.fate_grand_automata.ui.skill_maker.utils.changeNp3TypeSlot2Text
 import io.github.fate_grand_automata.ui.skill_maker.utils.choice2Slot1Text
