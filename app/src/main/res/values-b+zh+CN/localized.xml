@@ -186,6 +186,7 @@ Order Change"</string>
     <string name="p_refill_type_sq">"圣晶石"</string>
     <string name="p_brave_chains_don_t_care">"无偏好"</string>
     <string name="p_brave_chains_with_np">"宝具施放后"</string>
+    <string name="p_brave_chains_with_np_mighty">"宝具施放后(Mighty)"</string>
     <string name="p_brave_chains_avoid">"避免追击连携"</string>
     <string name="p_boost_item_disabled">"关闭"</string>
     <string name="p_boost_item_skip">"跳过"</string>

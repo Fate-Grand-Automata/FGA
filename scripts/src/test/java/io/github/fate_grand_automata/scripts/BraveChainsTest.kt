@@ -157,4 +157,114 @@ class BraveChainsTest {
 
         assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D)
     }
+
+    @Test
+    fun mightyChain_lineup1() {
+        val braveChains = ApplyBraveChains()
+
+        val cards = FaceCardPriorityTest.lineup1
+        val picked = braveChains.pick(
+            cards = cards,
+            braveChains = BraveChainEnum.WithNPMighty
+        ).map { it.card }
+
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
+    }
+
+    @Test
+    fun mightyChain_lineup2() {
+        val braveChains = ApplyBraveChains()
+
+        val cards = FaceCardPriorityTest.lineup2
+        val picked = braveChains.pick(
+            cards = cards,
+            braveChains = BraveChainEnum.WithNPMighty
+        ).map { it.card }
+
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D)
+    }
+
+    @Test
+    fun mightyChain_lineup1_withNp_fieldSlotA() {
+        val braveChains = ApplyBraveChains()
+
+        val cards = FaceCardPriorityTest.lineup1
+        val picked = braveChains.pick(
+            cards = cards,
+            braveChains = BraveChainEnum.WithNPMighty,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0)
+        ).map { it.card }
+
+        // Unable to Brave Chain. Will ignore and return result of withNp
+        assertThat(picked).containsExactly(CommandCard.Face.B, CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
+    }
+
+    @Test
+    fun mightyChain_lineup1_withNp_fieldSlotB() {
+        val braveChains = ApplyBraveChains()
+
+        val cards = FaceCardPriorityTest.lineup1
+        val picked = braveChains.pick(
+            cards = cards,
+            braveChains = BraveChainEnum.WithNPMighty,
+            npUsage = NPUsage(setOf(CommandCard.NP.B), 0)
+        ).map { it.card }
+
+        // Attempt to Brave chain with Scathach cards
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D)
+    }
+
+    @Test
+    fun mightyChain_lineup1_withNp_fieldSlotC() {
+        val braveChains = ApplyBraveChains()
+
+        val cards = FaceCardPriorityTest.lineup1
+        val picked = braveChains.pick(
+            cards = cards,
+            braveChains = BraveChainEnum.WithNPMighty,
+            npUsage = NPUsage(setOf(CommandCard.NP.C), 0)
+        ).map { it.card }
+
+        // Unable to Mighty Chain. Will ignore and return result of withNp
+        assertThat(picked).containsExactly(CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E)
+    }
+
+    @Test
+    fun mightyChain_fullCards_lineup1() {
+        val braveChains = ApplyBraveChains()
+
+        val cards = MightyChainTest.lineup1
+        val picked = braveChains.pick(
+            cards = cards,
+            braveChains = BraveChainEnum.WithNPMighty
+        ).map { it.card }
+
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
+    }
+
+    @Test
+    fun mightyChain_fullCards_lineup2() {
+        val braveChains = ApplyBraveChains()
+
+        val cards = MightyChainTest.lineup2
+        val picked = braveChains.pick(
+            cards = cards,
+            braveChains = BraveChainEnum.WithNPMighty
+        ).map { it.card }
+
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.B)
+    }
+
+    @Test
+    fun mightyChain_fullCards_lineup3() {
+        val braveChains = ApplyBraveChains()
+
+        val cards = MightyChainTest.lineup3
+        val picked = braveChains.pick(
+            cards = cards,
+            braveChains = BraveChainEnum.WithNPMighty
+        ).map { it.card }
+
+        assertThat(picked).containsExactly(CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.D)
+    }
 }

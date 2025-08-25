@@ -186,6 +186,7 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_refill_type_sq">"SQ"</string>
     <string name="p_brave_chains_don_t_care">"Don't care"</string>
     <string name="p_brave_chains_with_np">"With NP"</string>
+    <string name="p_brave_chains_with_np_mighty">"With NP (Mighty)"</string>
     <string name="p_brave_chains_avoid">"Avoid"</string>
     <string name="p_boost_item_disabled">"Disabled"</string>
     <string name="p_boost_item_skip">"Skip"</string>
