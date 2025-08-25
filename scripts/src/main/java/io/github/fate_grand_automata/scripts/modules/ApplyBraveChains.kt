@@ -97,15 +97,18 @@ class ApplyBraveChains @Inject constructor() {
         val firstFieldSlot = firstNp?.toFieldSlot()
 
         // if cannot get first card, return default
-        val firstCard = cards.firstOrNull() ?: return justRearranged
+        val filteredCards = cards
+            .filter {
+                // and either match with np or there is no np
+                firstFieldSlot == null || it.fieldSlot == firstFieldSlot
+            }
+        val firstCard = filteredCards.firstOrNull() ?: return justRearranged
         val firstCardType = firstCard.type
 
-        val cardsWithDifferentTypesFromFirst = cards
+        val cardsWithDifferentTypesFromFirst = filteredCards
             .filter {
                 // Different card
                 it.type != firstCardType
-                // and either match with np or there is no np
-                && (firstFieldSlot == null || it.fieldSlot == firstFieldSlot)
             }
             .toMutableList()
 
