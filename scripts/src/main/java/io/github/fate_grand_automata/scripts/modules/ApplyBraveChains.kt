@@ -58,13 +58,13 @@ class ApplyBraveChains @Inject constructor() {
             .toMutableList()
         val nonMatchingCards = cards - matchingCards
         val combinedCards = matchingCards + nonMatchingCards
+
         /*
           When rearrange is active and there is 1 NP and 1 Card before NP,
           we want the best or matching face-card after NP.
          */
-        if (rearrange
-            && listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
-        ) {
+        val shouldSwapForNpUsageScenario = listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
+        if (rearrange && shouldSwapForNpUsageScenario) {
             Collections.swap(combinedCards, 0, 1)
         }
 
@@ -128,9 +128,12 @@ class ApplyBraveChains @Inject constructor() {
         val remainder = cards - newSet
         val combinedCards = newSet + remainder
 
-        if (rearrange
-            && listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
-        ) {
+        /*
+          When rearrange is active and there is 1 NP and 1 Card before NP,
+          we want the best or matching face-card after NP.
+         */
+        val shouldSwapForNpUsageScenario = listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
+        if (rearrange && shouldSwapForNpUsageScenario) {
             Collections.swap(combinedCards, 0, 1)
         }
 
