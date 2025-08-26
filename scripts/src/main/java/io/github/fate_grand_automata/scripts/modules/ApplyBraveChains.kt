@@ -123,9 +123,20 @@ class ApplyBraveChains @Inject constructor() {
         val thirdCard = cardsWithDifferentTypesFromSecond.firstOrNull()
         val newSet = listOfNotNull(firstCard, secondCard, thirdCard)
         val remainder = cards - newSet
+        val combinedCards = newSet + remainder
+
+        if (rearrange
+            && listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
+        ) {
+            Collections.swap(combinedCards, 0, 1)
+        }
 
         // Return the result
-        return newSet + remainder
+        return rearrange(
+            cards = combinedCards,
+            rearrange = rearrange,
+            npUsage = npUsage
+        )
     }
 
     private fun avoid(
