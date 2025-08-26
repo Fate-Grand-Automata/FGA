@@ -71,7 +71,7 @@ class MightyChainTest {
     }
 
     @Test
-    fun mightyChain_lineup1() {
+    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
         val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup1
@@ -80,11 +80,12 @@ class MightyChainTest {
             braveChains = BraveChainEnum.WithNPMighty
         ).map { it.card }
 
+        // Expect SB,KQ,NA,NA,SQ - 12345 - ABCDE
         assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
-    fun mightyChain_lineup1_rearrange() {
+    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ), rearrange=true`() {
         val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup1
@@ -94,11 +95,12 @@ class MightyChainTest {
             rearrange = true
         ).map { it.card }
 
+        // Same as above but swap position 2 and 3)
         assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
-    fun mightyChain_lineup2() {
+    fun `Mixed cards - lineup2 (1SB,5SQ,2SQ,3NA,4NA)`() {
         val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup2
@@ -107,11 +109,12 @@ class MightyChainTest {
             braveChains = BraveChainEnum.WithNPMighty
         ).map { it.card }
 
+        // Expect 1SB,2KQ,3NA,5SQ,4NA - 15324 - AECBD
         assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D)
     }
 
     @Test
-    fun mightyChain_lineup2_rearrange() {
+    fun `Mixed cards - lineup2 (1SB,5SQ,2SQ,3NA,4NA), rearrange=true`() {
         val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup2
@@ -121,11 +124,12 @@ class MightyChainTest {
             rearrange = true
         ).map { it.card }
 
+        // Same as above but swap position 2 and 3)
         assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.D)
     }
 
     @Test
-    fun mightyChain_lineup1_withNp_fieldSlotA() {
+    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP`() {
         val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup1
@@ -135,12 +139,13 @@ class MightyChainTest {
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0)
         ).map { it.card }
 
-        // Unable to Brave Chain. Will ignore and return result of withNp
+        // Unable to Brave Chain with Kama. Will ignore and return result of withNp
+        // Expect 2KQ,1SB,3NA,4NA,5SQ - 21345 - BACDE
         assertThat(picked).containsExactly(CommandCard.Face.B, CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
-    fun mightyChain_lineup1_withNp_fieldSlotA_rearrange() {
+    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP, rearrange=true`() {
         val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup1
@@ -151,12 +156,12 @@ class MightyChainTest {
             rearrange = true
         ).map { it.card }
 
-        // Unable to Brave Chain. Will ignore and return result of withNp
+        // Same as above but swap position 2 and 3)
         assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
-    fun mightyChain_lineup1_withNp_fieldSlotB() {
+    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP`() {
         val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup1
@@ -166,12 +171,13 @@ class MightyChainTest {
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0)
         ).map { it.card }
 
-        // Attempt to Brave chain with Scathach cards
+        // Attempt to Brave chain with Scathach NP
+        // Expect 1SB,5SQ,2KQ,3NA,4NA - 15234 - AEBCD
         assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D)
     }
 
     @Test
-    fun mightyChain_lineup1_withNp_fieldSlotB_rearrange() {
+    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, rearrange=true`() {
         val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup1
@@ -182,12 +188,12 @@ class MightyChainTest {
             rearrange = true
         ).map { it.card }
 
-        // Attempt to Brave chain with Scathach cards
+        // Same as above but swap position 2 and 3)
         assertThat(picked).containsExactly(CommandCard.Face.E, CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D)
     }
 
     @Test
-    fun mightyChain_lineup1_withNp_fieldSlotC() {
+    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP`() {
         val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup1
@@ -197,12 +203,13 @@ class MightyChainTest {
             npUsage = NPUsage(setOf(CommandCard.NP.C), 0)
         ).map { it.card }
 
-        // Unable to Mighty Chain. Will ignore and return result of withNp
+        // Attempt to Brave chain with Nero NP
+        // Expect 3NA,4NA,1SB,2KQ,5SQ - 34125 - CDABE
         assertThat(picked).containsExactly(CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E)
     }
 
     @Test
-    fun mightyChain_lineup1_withNp_fieldSlotC_rearrange() {
+    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, rearranged=true`() {
         val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup1
@@ -213,12 +220,12 @@ class MightyChainTest {
             rearrange = true
         ).map { it.card }
 
-        // Unable to Mighty Chain. Will ignore and return result of withNp
+        // Same as above but swap position 2 and 3)
         assertThat(picked).containsExactly(CommandCard.Face.D, CommandCard.Face.C, CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E)
     }
 
     @Test
-    fun mightyChain_fullCards_lineup1() {
+    fun `Full cards - lineup1 (BQABQ)`() {
         val braveChains = ApplyBraveChains()
 
         val cards = lineup1
@@ -227,11 +234,13 @@ class MightyChainTest {
             braveChains = BraveChainEnum.WithNPMighty
         ).map { it.card }
 
+        // Expect same result as input
+        // Expect BQABQ / 12345 / ABCDE
         assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
-    fun mightyChain_fullCards_lineup1_rearrange() {
+    fun `Full cards - lineup1 (BQABQ), rearranged=true`() {
         val braveChains = ApplyBraveChains()
 
         val cards = lineup1
@@ -241,11 +250,12 @@ class MightyChainTest {
             rearrange = true
         ).map { it.card }
 
+        // Same as above but swap position 2 and 3)
         assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
-    fun mightyChain_fullCards_lineup2() {
+    fun `Full cards - lineup2 (BBQQA)`() {
         val braveChains = ApplyBraveChains()
 
         val cards = lineup2
@@ -254,11 +264,12 @@ class MightyChainTest {
             braveChains = BraveChainEnum.WithNPMighty
         ).map { it.card }
 
+        // Expect 1SB,5SQ,3NA,4NA,2KQ / 15342 / AECDB
         assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.B)
     }
 
     @Test
-    fun mightyChain_fullCards_lineup2_rearrange() {
+    fun `Full cards - lineup2 (BBQQA), rearranged=true`() {
         val braveChains = ApplyBraveChains()
 
         val cards = lineup2
@@ -268,11 +279,12 @@ class MightyChainTest {
             rearrange = true
         ).map { it.card }
 
+        // Same as above but swap position 2 and 3)
         assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.E, CommandCard.Face.D, CommandCard.Face.B)
     }
 
     @Test
-    fun mightyChain_fullCards_lineup3() {
+    fun `Full cards - lineup3 (QQABB)`() {
         val braveChains = ApplyBraveChains()
 
         val cards = lineup3
@@ -281,11 +293,12 @@ class MightyChainTest {
             braveChains = BraveChainEnum.WithNPMighty
         ).map { it.card }
 
+        // Expect QABQB / 53124 / ECABD
         assertThat(picked).containsExactly(CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.D)
     }
 
     @Test
-    fun mightyChain_fullCards_lineup3_rearrange() {
+    fun `Full cards - lineup3 (QQABB), rearranged=true`() {
         val braveChains = ApplyBraveChains()
 
         val cards = lineup3
@@ -295,12 +308,13 @@ class MightyChainTest {
             rearrange = true
         ).map { it.card }
 
+        // Same as above but swap position 2 and 3)
         assertThat(picked).containsExactly(CommandCard.Face.E, CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D)
     }
 
     // Scenario for when 2 card types are found but not the 3rd
     @Test
-    fun mightyChain_fullCards_lineup4() {
+    fun `Full cards - lineup4 (BQQBQ) - No mighty chain`() {
         val braveChains = ApplyBraveChains()
 
         val cards = lineup4
@@ -309,12 +323,14 @@ class MightyChainTest {
             braveChains = BraveChainEnum.WithNPMighty
         ).map { it.card }
 
+        // Expect same result as input
+        // Expect BQQBQ / 12345 / ABCDE
         assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     // Scenario for when 2 card types are found but not the 3rd
     @Test
-    fun mightyChain_fullCards_lineup5() {
+    fun `Full cards - lineup5 (QQQBB) - No mighty chain`() {
         val braveChains = ApplyBraveChains()
 
         val cards = lineup5
@@ -323,6 +339,8 @@ class MightyChainTest {
             braveChains = BraveChainEnum.WithNPMighty
         ).map { it.card }
 
+        // Expect same result as input
+        // Expect QQQBB / 52314 / EBCAD
         assertThat(picked).containsExactly(CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.A, CommandCard.Face.D)
     }
 }
