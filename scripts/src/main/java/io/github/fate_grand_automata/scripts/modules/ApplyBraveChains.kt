@@ -96,12 +96,12 @@ class ApplyBraveChains @Inject constructor() {
         val firstNp = npUsage.nps.firstOrNull()
         val firstFieldSlot = firstNp?.toFieldSlot()
 
-        // if cannot get first card, return default
         val filteredCards = cards
             .filter {
                 // and either match with np or there is no np
                 firstFieldSlot == null || it.fieldSlot == firstFieldSlot
             }
+        // if cannot get first card, return default
         val firstCard = filteredCards.firstOrNull() ?: return justRearranged
         val firstCardType = firstCard.type
 
@@ -121,6 +121,9 @@ class ApplyBraveChains @Inject constructor() {
             .toMutableList()
 
         val thirdCard = cardsWithDifferentTypesFromSecond.firstOrNull()
+        // Return default if we do not have a mighty chain
+        if (thirdCard == null && npUsage.nps.isEmpty()) return justRearranged
+
         val newSet = listOfNotNull(firstCard, secondCard, thirdCard)
         val remainder = cards - newSet
         val combinedCards = newSet + remainder

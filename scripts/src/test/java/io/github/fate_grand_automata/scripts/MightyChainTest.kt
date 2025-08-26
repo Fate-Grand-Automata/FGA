@@ -36,6 +36,13 @@ class MightyChainTest {
             type = CardTypeEnum.Arts,
             affinity = CardAffinityEnum.Weak
         )
+        val scathach3WAltQ = ParsedCard(
+            card = CommandCard.Face.C,
+            servant = TeamSlot.B,
+            fieldSlot = FieldSlot.B,
+            type = CardTypeEnum.Quick,
+            affinity = CardAffinityEnum.Weak
+        )
         val scathach4WB = ParsedCard(
             card = CommandCard.Face.D,
             servant = TeamSlot.B,
@@ -56,6 +63,11 @@ class MightyChainTest {
         val lineup2 = listOf(scathach1WB, scathach4WB, scathach5WQ, scathach2WQ, scathach3WA)
 
         val lineup3 = listOf(scathach5WQ, scathach2WQ, scathach3WA, scathach1WB, scathach4WB)
+
+        // 3 Quick, 2 Buster; Buster starting card
+        val lineup4 = listOf(scathach1WB, scathach2WQ, scathach3WAltQ, scathach4WB, scathach5WQ)
+        // 3 Quick, 2 Buster; Quick starting card
+        val lineup5 = listOf(scathach5WQ, scathach2WQ, scathach3WAltQ, scathach1WB, scathach4WB)
     }
 
     @Test
@@ -284,5 +296,33 @@ class MightyChainTest {
         ).map { it.card }
 
         assertThat(picked).containsExactly(CommandCard.Face.E, CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D)
+    }
+
+    // Scenario for when 2 card types are found but not the 3rd
+    @Test
+    fun mightyChain_fullCards_lineup4() {
+        val braveChains = ApplyBraveChains()
+
+        val cards = lineup4
+        val picked = braveChains.pick(
+            cards = cards,
+            braveChains = BraveChainEnum.WithNPMighty
+        ).map { it.card }
+
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
+    }
+
+    // Scenario for when 2 card types are found but not the 3rd
+    @Test
+    fun mightyChain_fullCards_lineup5() {
+        val braveChains = ApplyBraveChains()
+
+        val cards = lineup5
+        val picked = braveChains.pick(
+            cards = cards,
+            braveChains = BraveChainEnum.WithNPMighty
+        ).map { it.card }
+
+        assertThat(picked).containsExactly(CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.A, CommandCard.Face.D)
     }
 }
