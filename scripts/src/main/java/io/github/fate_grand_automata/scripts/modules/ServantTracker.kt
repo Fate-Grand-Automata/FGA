@@ -125,7 +125,7 @@ class ServantTracker @Inject constructor(
             val scores = npSplashImages
                 .mapValues {
                     (_, image) -> patternList?.maxOf {
-                        pattern -> pattern.find(image)?.score ?: 0.0
+                        pattern -> pattern.find(image, 0.5)?.score ?: 0.0
                     } ?: 0.0
                 }
             // Get type by comparing the patterns we have with the splash arts
