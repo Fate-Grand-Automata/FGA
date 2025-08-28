@@ -12,6 +12,8 @@ import javax.inject.Inject
 
 @ScriptScope
 class ApplyBraveChains @Inject constructor() {
+    private val applyMightyChains = ApplyMightyChains()
+
     private fun rearrange(
         cards: List<ParsedCard>,
         rearrange: Boolean,
@@ -83,7 +85,7 @@ class ApplyBraveChains @Inject constructor() {
         npUsage: NPUsage,
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap()
     ): List<ParsedCard> {
-        // Get default NP sort, because we are using the default priority as our baseline
+        // Get default NP sort, because using the default priority as the baseline
         val justRearranged by lazy {
             withNp(
                 cards = cards,
@@ -92,47 +94,13 @@ class ApplyBraveChains @Inject constructor() {
             )
         }
 
-        // If 2 or 3 are NP, ignore. Because FGA cannot detect NP types at the moment
-        if (npUsage.nps.size >= 2) return justRearranged
-
-        // Get np if there is one
-        val firstNp = npUsage.nps.firstOrNull()
-        val firstFieldSlot = firstNp?.toFieldSlot()
-        val firstNpType = firstFieldSlot
-            ?.let { npTypes.getOrElse(firstFieldSlot) { CardTypeEnum.Unknown } }
-            ?: CardTypeEnum.Unknown
-
-        val filteredCards = cards
-            .filter {
-                // and either match with np or there is no np
-                firstFieldSlot == null || it.fieldSlot == firstFieldSlot
-            }
-        // if cannot get first card, return default
-        val firstCard = filteredCards.firstOrNull() ?: return justRearranged
-        val firstCardType = firstCard.type
-
-        val cardsWithDifferentTypesFromFirst = filteredCards
-            .filter {
-                // Different card
-                it.type != firstCardType
-            }
-            .toMutableList()
-
-        // If all are the same (or none matching the NP), just return default
-        val secondCard = cardsWithDifferentTypesFromFirst.firstOrNull() ?: return justRearranged
-        val secondCardType = secondCard.type
-
-        val cardsWithDifferentTypesFromSecond = cardsWithDifferentTypesFromFirst
-            .filter { it.type != secondCardType }
-            .toMutableList()
-
-        val thirdCard = cardsWithDifferentTypesFromSecond.firstOrNull()
-        // Return default if we do not have a mighty chain
-        if (thirdCard == null && npUsage.nps.isEmpty()) return justRearranged
-
-        val newSet = listOfNotNull(firstCard, secondCard, thirdCard)
-        val remainder = cards - newSet
-        val combinedCards = newSet + remainder
+        // Returns empty if there are no valid targets. If empty, return the default
+        val mightyChainList = applyMightyChains.getMightyChain(
+            cards,
+            npUsage,
+            npTypes
+        )?.toMutableList()
+        if (mightyChainList == null || mightyChainList.isEmpty()) return justRearranged
 
         /*
           When rearrange is active and there is 1 NP and 1 Card before NP,
@@ -140,12 +108,12 @@ class ApplyBraveChains @Inject constructor() {
          */
         val shouldSwapForNpUsageScenario = listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
         if (rearrange && shouldSwapForNpUsageScenario) {
-            Collections.swap(combinedCards, 0, 1)
+            Collections.swap(mightyChainList, 0, 1)
         }
 
         // Return the result
         return rearrange(
-            cards = combinedCards,
+            cards = mightyChainList,
             rearrange = rearrange,
             npUsage = npUsage
         )
