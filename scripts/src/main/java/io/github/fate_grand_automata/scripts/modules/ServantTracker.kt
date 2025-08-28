@@ -66,9 +66,9 @@ class ServantTracker @Inject constructor(
      */
     private val npCardImages = mutableMapOf<TeamSlot, MutableList<Pattern>>()
     private val npSplashImages = mapOf(
-        CardTypeEnum.Buster to images[Images.SplashBuster],
-        CardTypeEnum.Arts to images[Images.SplashArts],
-        CardTypeEnum.Quick to images[Images.SplashQuick],
+        CardTypeEnum.Buster to images[Images.NpBuster],
+        CardTypeEnum.Arts to images[Images.NpArts],
+        CardTypeEnum.Quick to images[Images.NpQuick],
     )
     val npCardTypes = mutableMapOf<TeamSlot, CardTypeEnum>()
 
@@ -122,16 +122,18 @@ class ServantTracker @Inject constructor(
         // After initFaceCard, we need to check npType for servant here
         if (npCardImages.contains(teamSlot)) {
             val patternList = npCardImages[teamSlot]
-            // Get type by comparing the patterns we have with the splash arts
-            val type = npSplashImages
+            val scores = npSplashImages
                 .mapValues {
-                    (_, image) -> patternList?.maxOf { pattern ->
-                        pattern.find(image)?.score ?: 0.0
+                    (_, image) -> patternList?.maxOf {
+                        pattern -> pattern.find(image)?.score ?: 0.0
                     } ?: 0.0
                 }
+            // Get type by comparing the patterns we have with the splash arts
+            val type = scores
                 .filterValues { it > 0.0 }
                 .maxByOrNull { it.value }
                 ?.key
+
             if (type != null) {
                 npCardTypes.put(teamSlot, type)
             }
@@ -149,7 +151,6 @@ class ServantTracker @Inject constructor(
         250.milliseconds.wait()
 
         val image = locations.battle.servantDetailsFaceCardRegion.getPattern("Face $teamSlot")
-
         val npImage = locations.battle.servantNpCardTypeRegion.getPattern("NP type $teamSlot")
 
         // Close dialog
