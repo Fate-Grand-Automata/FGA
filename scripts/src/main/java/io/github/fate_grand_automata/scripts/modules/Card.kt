@@ -3,12 +3,15 @@ package io.github.fate_grand_automata.scripts.modules
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.ScriptLog
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.SpamConfigPerTeamSlot
+import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.scripts.models.battle.BattleState
+import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
@@ -56,12 +59,14 @@ class Card @Inject constructor(
 
         val braveChainsPerWave = battleConfig.braveChains
         val rearrangeCardsPerWave = battleConfig.rearrangeCards
+        val npTypes = npUsage.nps.associate { it.toFieldSlot() to it.type() }
 
         return braveChains.pick(
             cards = cardsOrderedByPriority,
             npUsage = npUsage,
             braveChains = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
-            rearrange = rearrangeCardsPerWave.inCurrentWave(false)
+            rearrange = rearrangeCardsPerWave.inCurrentWave(false),
+            npTypes = npTypes
         ).map { it.card }
     }
 
@@ -91,5 +96,12 @@ class Card @Inject constructor(
             .drop(npUsage.cardsBeforeNP)
             .also { messages.log(ScriptLog.ClickingCards(it)) }
             .forEach { caster.use(it) }
+    }
+
+    fun CommandCard.NP.type(): CardTypeEnum {
+        val fieldSlot = this.toFieldSlot()
+        val teamSlot = servantTracker.deployed[fieldSlot] ?: return CardTypeEnum.Unknown
+        if (teamSlot is TeamSlot.Unknown) return CardTypeEnum.Unknown
+        return servantTracker.getNpCardType(teamSlot)
     }
 }

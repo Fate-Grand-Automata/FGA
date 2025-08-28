@@ -1,6 +1,8 @@
 package io.github.fate_grand_automata.scripts.modules
 
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
+import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
@@ -78,7 +80,8 @@ class ApplyBraveChains @Inject constructor() {
     private fun withNpMighty(
         cards: List<ParsedCard>,
         rearrange: Boolean,
-        npUsage: NPUsage
+        npUsage: NPUsage,
+        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap()
     ): List<ParsedCard> {
         // Get default NP sort, because we are using the default priority as our baseline
         val justRearranged by lazy {
@@ -95,6 +98,9 @@ class ApplyBraveChains @Inject constructor() {
         // Get np if there is one
         val firstNp = npUsage.nps.firstOrNull()
         val firstFieldSlot = firstNp?.toFieldSlot()
+        val firstNpType = firstFieldSlot
+            ?.let { npTypes.getOrElse(firstFieldSlot) { CardTypeEnum.Unknown } }
+            ?: CardTypeEnum.Unknown
 
         val filteredCards = cards
             .filter {
@@ -227,7 +233,8 @@ class ApplyBraveChains @Inject constructor() {
         cards: List<ParsedCard>,
         braveChains: BraveChainEnum,
         rearrange: Boolean = false,
-        npUsage: NPUsage = NPUsage.none
+        npUsage: NPUsage = NPUsage.none,
+        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap()
     ): List<ParsedCard> {
         val picked = when (braveChains) {
             BraveChainEnum.None -> rearrange(
@@ -245,7 +252,8 @@ class ApplyBraveChains @Inject constructor() {
             BraveChainEnum.WithNPMighty -> withNpMighty(
                 cards = cards,
                 rearrange = rearrange,
-                npUsage = npUsage
+                npUsage = npUsage,
+                npTypes
             )
 
             BraveChainEnum.Avoid -> avoid(
