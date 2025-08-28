@@ -6,15 +6,10 @@ import io.github.fate_grand_automata.scripts.ScriptNotify
 import io.github.fate_grand_automata.scripts.enums.CardAffinityEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
-import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.TeamSlot
-import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.mapValues
 
 @ScriptScope
 class CardParser @Inject constructor(
