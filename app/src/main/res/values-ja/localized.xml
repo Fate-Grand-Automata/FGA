@@ -413,5 +413,6 @@
     <string name="skill_maker_kukulkan_choice_2">"10個消費する"</string>
 
     <string name="p_battle_config_use_servant_priority">"サーヴァントの優先順位を設定する"</string>
+    <string name="p_battle_config_use_chain_priority">"チェインの優先順位を設定する"</string>
 
 </resources>

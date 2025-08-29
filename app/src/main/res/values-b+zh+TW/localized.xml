@@ -397,4 +397,5 @@ Order Change"</string>
     <string name="p_max_gold_ember_total_count">"金種火最大領取數（總枚數）"</string>
     <string name="update_download_success">"更新已下載完成，於 5 秒鐘後重啟"</string>
     <string name="p_battle_config_use_servant_priority">"偏好從者"</string>
+    <string name="p_battle_config_use_chain_priority">"偏好Chain"</string>
                                                                                                                 </resources>

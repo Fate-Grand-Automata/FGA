@@ -23,6 +23,7 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.ui.FGAListItemColors
+import io.github.fate_grand_automata.ui.FGAListItemColorsDisabled
 import io.github.fate_grand_automata.ui.drag_sort.DragSort
 import io.github.fate_grand_automata.ui.drag_sort.DragSortAdapter
 import io.github.fate_grand_automata.ui.prefs.listDialog
@@ -30,7 +31,8 @@ import io.github.fate_grand_automata.util.stringRes
 
 @Composable
 fun CardPriorityListItem.Render(
-    useServantPriority: Boolean
+    useServantPriority: Boolean,
+    useChainPriority: Boolean
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -58,13 +60,17 @@ fun CardPriorityListItem.Render(
                     title = stringResource(R.string.p_brave_chains)
                 )
 
+                val braveChainListItemColor = if (useChainPriority) FGAListItemColorsDisabled() else FGAListItemColors()
                 ListItem(
                     modifier = Modifier
                         .weight(1f)
-                        .clickable { braveChainDialog.show() },
+                        .clickable {
+                            if (!useChainPriority)
+                                braveChainDialog.show()
+                        },
                     headlineContent = { Text(stringResource(R.string.p_brave_chains)) },
                     supportingContent = { Text(stringResource(braveChains.stringRes)) },
-                    colors = FGAListItemColors()
+                    colors = braveChainListItemColor
                 )
 
                 var rearrange by rearrangeCards

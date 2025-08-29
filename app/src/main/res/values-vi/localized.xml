@@ -395,4 +395,5 @@ Sau khi nhấn nút, hãy chuyển bộ lọc ứng dụng từ \"Không đượ
     <string name="p_max_gold_ember_total_count">"Tổng số lượng than hồng vàng tối đa"</string>
     <string name="update_download_success">"Tải xuống thành công. Khởi động lại ứng dụng sau 5 giây."</string>
     <string name="p_battle_config_use_servant_priority">"Sử dụng ưu tiên Servant"</string>
+    <string name="p_battle_config_use_chain_priority">"Sử dụng ưu tiên Chain"</string>
                                                                                                                         </resources>
