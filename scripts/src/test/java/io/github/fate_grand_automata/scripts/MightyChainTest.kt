@@ -1,17 +1,13 @@
 package io.github.fate_grand_automata.scripts
 
 import assertk.assertThat
-import assertk.assertions.contains
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
-import io.github.fate_grand_automata.scripts.enums.CardAffinityEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
-import io.github.fate_grand_automata.scripts.models.ParsedCard
-import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.scripts.modules.ApplyBraveChains
 import kotlin.collections.mapOf
 import kotlin.test.Test
@@ -19,10 +15,10 @@ import kotlin.test.Test
 class MightyChainTest {
 
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty
@@ -33,10 +29,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ), with rearrange`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ), with rearrange`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -48,10 +44,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup2 (1SB,5SQ,2SQ,3NA,4NA)`() {
+    fun `Standard - lineup2 (1SB,5SQ,2SQ,3NA,4NA)`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup2
+        val cards = AttackLineUps.Standard.lineup2
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty
@@ -62,10 +58,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup2 (1SB,5SQ,2SQ,3NA,4NA), with rearrange`() {
+    fun `Standard - lineup2 (1SB,5SQ,2SQ,3NA,4NA), with rearrange`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup2
+        val cards = AttackLineUps.Standard.lineup2
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -77,10 +73,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -97,10 +93,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP, with rearrange`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP, with rearrange`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -119,10 +115,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP, with npTypes`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP, with npTypes`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -137,10 +133,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP, with rearrange & npTypes`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP, with rearrange & npTypes`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -156,10 +152,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -176,10 +172,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with rearrange`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with rearrange`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -192,10 +188,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -210,10 +206,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -226,10 +222,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, rearranged=true`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, rearranged=true`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -242,10 +238,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, with npTypes`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, with npTypes`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -260,10 +256,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, with rearrange & npTypes`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, with rearrange & npTypes`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -279,10 +275,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `ScenarioFullCards - lineup1 (BQABQ)`() {
+    fun `SingleServantOnly - lineup1 (BQABQ)`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = AttackLineUps.ScenarioFullCards.lineup1
+        val cards = AttackLineUps.SingleServantOnly.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty
@@ -294,10 +290,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `ScenarioFullCards - lineup1 (BQABQ), rearranged=true`() {
+    fun `SingleServantOnly - lineup1 (BQABQ), rearranged=true`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = AttackLineUps.ScenarioFullCards.lineup1
+        val cards = AttackLineUps.SingleServantOnly.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -309,10 +305,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `ScenarioFullCards - lineup2 (BBQQA)`() {
+    fun `SingleServantOnly - lineup2 (BBQQA)`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = AttackLineUps.ScenarioFullCards.lineup2
+        val cards = AttackLineUps.SingleServantOnly.lineup2
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty
@@ -323,10 +319,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `ScenarioFullCards - lineup2 (BBQQA), rearranged=true`() {
+    fun `SingleServantOnly - lineup2 (BBQQA), rearranged=true`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = AttackLineUps.ScenarioFullCards.lineup2
+        val cards = AttackLineUps.SingleServantOnly.lineup2
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -338,10 +334,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `ScenarioFullCards - lineup3 (QQABB)`() {
+    fun `SingleServantOnly - lineup3 (QQABB)`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = AttackLineUps.ScenarioFullCards.lineup3
+        val cards = AttackLineUps.SingleServantOnly.lineup3
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty
@@ -352,10 +348,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `ScenarioFullCards - lineup3 (QQABB), rearranged=true`() {
+    fun `SingleServantOnly - lineup3 (QQABB), rearranged=true`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = AttackLineUps.ScenarioFullCards.lineup3
+        val cards = AttackLineUps.SingleServantOnly.lineup3
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -368,10 +364,10 @@ class MightyChainTest {
 
     // Scenario for when 2 card types are found but not the 3rd
     @Test
-    fun `ScenarioFullCards - lineup4 (BQQBQ) - No mighty chain`() {
+    fun `SingleServantOnly - lineup4 (BQQBQ) - No mighty chain`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = AttackLineUps.ScenarioFullCards.lineup4
+        val cards = AttackLineUps.SingleServantOnly.lineup4
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty
@@ -384,10 +380,10 @@ class MightyChainTest {
 
     // Scenario for when 2 card types are found but not the 3rd
     @Test
-    fun `ScenarioFullCards - lineup5 (QQQBB) - No mighty chain`() {
+    fun `SingleServantOnly - lineup5 (QQQBB) - No mighty chain`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = AttackLineUps.ScenarioFullCards.lineup5
+        val cards = AttackLineUps.SingleServantOnly.lineup5
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty
@@ -402,10 +398,10 @@ class MightyChainTest {
      * Two NP scenario
      */
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (2Kama, 3Nero)`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (2Kama, 3Nero)`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -422,10 +418,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 3Nero), with npTypes`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 3Nero), with npTypes`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -441,10 +437,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 2Scathach)`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 2Scathach)`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -461,10 +457,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 2Scathach), with npTypes`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 2Scathach), with npTypes`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
@@ -485,10 +481,10 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Mixed cards - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3 NP, with npTypes`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3 NP, with npTypes`() {
         val braveChains = ApplyBraveChains()
 
-        val cards = FaceCardPriorityTest.lineup1
+        val cards = AttackLineUps.Standard.lineup1
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
