@@ -4,6 +4,7 @@ import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.ScriptLog
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
+import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
@@ -11,7 +12,9 @@ import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.SpamConfigPerTeamSlot
 import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.scripts.models.battle.BattleState
+import io.github.fate_grand_automata.scripts.models.battle.ChainPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
+import io.github.fate_grand_automata.scripts.modules.attack.ChainPrioritySelector
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
@@ -26,6 +29,7 @@ class Card @Inject constructor(
     private val parser: CardParser,
     private val priority: FaceCardPriority,
     private val braveChains: ApplyBraveChains,
+    private val chainPrioritySelector: ChainPrioritySelector,
     private val battleConfig: IBattleConfig
 ) : IFgoAutomataApi by api {
 
@@ -60,6 +64,18 @@ class Card @Inject constructor(
         val braveChainsPerWave = battleConfig.braveChains
         val rearrangeCardsPerWave = battleConfig.rearrangeCards
         val npTypes = npUsage.nps.associate { it.toFieldSlot() to it.type() }
+
+        val useChainPriority = battleConfig.useChainPriority
+        if (useChainPriority) {
+            val chainPriority = battleConfig.chainPriority.atWave(state.stage)
+            chainPrioritySelector.pick(
+                cards = cardsOrderedByPriority,
+                npUsage = npUsage,
+                chainPriority = chainPriority,
+                rearrange = rearrangeCardsPerWave.inCurrentWave(false),
+                npTypes = npTypes
+            ).map { it.card }
+        }
 
         return braveChains.pick(
             cards = cardsOrderedByPriority,
