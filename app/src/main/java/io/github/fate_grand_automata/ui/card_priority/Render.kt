@@ -61,7 +61,16 @@ fun CardPriorityListItem.Render(
                     title = stringResource(R.string.p_brave_chains)
                 )
 
-                val braveChainListItemColor = if (useChainPriority) FGAListItemColorsDisabled() else FGAListItemColors()
+                val braveChainListItemColor =
+                    if (useChainPriority)
+                        FGAListItemColorsDisabled()
+                    else
+                        FGAListItemColors()
+                val supportingHeader =
+                    if (useChainPriority)
+                        R.string.p_chain_priority
+                    else
+                        braveChains.stringRes
                 ListItem(
                     modifier = Modifier
                         .weight(1f)
@@ -70,7 +79,7 @@ fun CardPriorityListItem.Render(
                                 braveChainDialog.show()
                         },
                     headlineContent = { Text(stringResource(R.string.p_brave_chains)) },
-                    supportingContent = { Text(stringResource(braveChains.stringRes)) },
+                    supportingContent = { Text(stringResource(supportingHeader)) },
                     colors = braveChainListItemColor
                 )
 
