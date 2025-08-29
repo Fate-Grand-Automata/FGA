@@ -125,6 +125,8 @@
     <string name="p_screenshot_drops_unmodified">"스크린샷을 수정하지 않고 저장"</string>
     <string name="p_screenshot_drops_unmodified_summary">"스크린샷을 저장할때 배율조정과 잘라내기가 적용되지 않은 전체화면 스크린샷을 사용"</string>
     <string name="p_boost_item">"부스트 아이템"</string>
+    <string name="p_servant_priority">"서번트 우선순위"</string>
+    <string name="p_chain_priority">"체인 우선순위"</string>
     <string name="p_brave_chains">"브레이브 체인"</string>
     <string name="p_rearrange_cards">"카드 재배열"</string>
     <string name="p_skip_servant_face_checks">"서번트 카드 아이콘 확인 생략"</string>

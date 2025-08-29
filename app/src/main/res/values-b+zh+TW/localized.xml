@@ -125,6 +125,8 @@ Order Change"</string>
     <string name="p_screenshot_drops_unmodified">"儲存原始截圖"</string>
     <string name="p_screenshot_drops_unmodified_summary">"儲存截圖時，保留原始截圖大小而不進行影像縮放"</string>
     <string name="p_boost_item">"加速道具"</string>
+    <string name="p_servant_priority">"偏好從者"</string>
+    <string name="p_chain_priority">"偏好Chain"</string>
     <string name="p_brave_chains">"Brave Chain"</string>
     <string name="p_rearrange_cards">"調換順序
 （優先性高的卡後出）"</string>

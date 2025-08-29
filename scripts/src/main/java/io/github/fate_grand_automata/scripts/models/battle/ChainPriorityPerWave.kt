@@ -1,7 +1,6 @@
 package io.github.fate_grand_automata.scripts.models.battle
 
 import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
-import io.github.fate_grand_automata.scripts.models.TeamSlot
 
 class ChainPriorityPerWave private constructor(
     private val chainsPerWave: List<List<ChainTypeEnum>>
@@ -10,7 +9,10 @@ class ChainPriorityPerWave private constructor(
         chainsPerWave[wave.coerceIn(chainsPerWave.indices)]
 
     override fun toString() =
-        chainsPerWave.joinToString(STAGE_SEPARATOR)
+        chainsPerWave
+            .joinToString(STAGE_SEPARATOR) {
+                it.joinToString(SEPARATOR) { c -> c.name }
+            }
 
     companion object {
         val default = from(listOf(ChainTypeEnum.entries))

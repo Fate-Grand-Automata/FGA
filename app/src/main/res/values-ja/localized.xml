@@ -128,6 +128,8 @@
     <string name="p_screenshot_drops_unmodified">"未編集のスクリーンショットを保存"</string>
     <string name="p_screenshot_drops_unmodified_summary">"トリミングや拡縮されたスクリーンショットの代わりに、未編集でフルサイズのスクリーンショットを保存します"</string>
     <string name="p_boost_item">"ブーストアイテム"</string>
+    <string name="p_servant_priority">"サーヴァントの優先順位"</string>
+    <string name="p_chain_priority">"チェインの優先順位"</string>
     <string name="p_brave_chains">"Brave Chains"</string>
     <string name="p_rearrange_cards">"優先順位を逆転する"</string>
     <string name="p_skip_servant_face_checks">"サーヴァント画像チェックをスキップ"</string>

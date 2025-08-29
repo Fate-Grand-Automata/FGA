@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.ui.FGAListItemColors
 import io.github.fate_grand_automata.ui.FGAListItemColorsDisabled
@@ -91,6 +92,12 @@ fun CardPriorityListItem.Render(
             }
         }
 
+        if (useChainPriority) {
+            ChainPriority(
+                priorities = chainPriority
+            )
+        }
+
         if (useServantPriority) {
             ServantPriority(
                 priorities = servantPriority
@@ -104,7 +111,7 @@ private fun ServantPriority(
     priorities: MutableList<TeamSlot>
 ) {
     Text(
-        "Servant Priority".uppercase(),
+        stringResource(R.string.p_servant_priority).uppercase(),
         modifier = Modifier
             .padding(bottom = 5.dp, top = 16.dp)
     )
@@ -125,6 +132,37 @@ private fun ServantPriority(
                     else -> R.color.colorBusterResist
                 }.let { res -> context.getColor(res) },
                 text = "  ${it.position}  "
+            )
+        }
+    )
+}
+
+@Composable
+private fun ChainPriority(
+    priorities: MutableList<ChainTypeEnum>
+) {
+    Text(
+        stringResource(R.string.p_chain_priority).uppercase(),
+        modifier = Modifier
+            .padding(bottom = 10.dp, top = 10.dp)
+    )
+
+    val context = LocalContext.current
+
+    DragSort(
+        items = priorities,
+        viewConfigGrabber = {
+            DragSortAdapter.ItemViewConfig(
+                foregroundColor = Color.WHITE,
+                backgroundColor = when (it) {
+                    ChainTypeEnum.Arts -> R.color.colorArts
+                    ChainTypeEnum.Quick -> R.color.colorQuick
+                    ChainTypeEnum.Buster -> R.color.colorBuster
+                    ChainTypeEnum.Brave -> R.color.colorQuickResist
+                    ChainTypeEnum.Mighty -> R.color.colorArtsResist
+                    ChainTypeEnum.Avoid -> R.color.colorBusterResist
+                }.let { res -> context.getColor(res) },
+                text = it.name
             )
         }
     )

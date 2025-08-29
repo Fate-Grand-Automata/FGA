@@ -124,6 +124,8 @@ Master"</string>
     <string name="p_screenshot_drops_unmodified">"Lưu ảnh chụp màn hình chưa sửa đổi"</string>
     <string name="p_screenshot_drops_unmodified_summary">"Lưu ảnh chụp màn hình toàn màn hình chưa sửa đổi thay vì ảnh chụp màn hình bị cắt và thay đổi kích thước"</string>
     <string name="p_boost_item">"Vật phẩm tăng cường"</string>
+    <string name="p_servant_priority">"Ưu tiên Servant"</string>
+    <string name="p_chain_priority">"Ưu tiên Chain"</string>
     <string name="p_brave_chains">"Brave Chains"</string>
     <string name="p_rearrange_cards">"Sắp xếp lại thẻ"</string>
     <string name="p_skip_servant_face_checks">"Bỏ qua việc kiểm tra thẻ Servant"</string>
