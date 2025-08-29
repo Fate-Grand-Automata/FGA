@@ -6,6 +6,7 @@ import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
+import io.github.fate_grand_automata.scripts.modules.attack.ApplyMightyChains
 import io.github.lib_automata.dagger.ScriptScope
 import java.util.Collections
 import javax.inject.Inject

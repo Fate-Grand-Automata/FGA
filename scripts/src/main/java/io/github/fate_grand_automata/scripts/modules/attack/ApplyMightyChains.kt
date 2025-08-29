@@ -1,4 +1,4 @@
-package io.github.fate_grand_automata.scripts.modules
+package io.github.fate_grand_automata.scripts.modules.attack
 
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
