@@ -1,15 +1,15 @@
-package io.github.fate_grand_automata.scripts
+package io.github.fate_grand_automata.scripts.attack
 
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
+import io.github.fate_grand_automata.scripts.attack.AttackLineUps
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.modules.ApplyBraveChains
-import kotlin.collections.mapOf
 import kotlin.test.Test
 
 class MightyChainTest {

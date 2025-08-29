@@ -1,4 +1,4 @@
-package io.github.fate_grand_automata.scripts
+package io.github.fate_grand_automata.scripts.attack
 
 import io.github.fate_grand_automata.scripts.enums.CardAffinityEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
