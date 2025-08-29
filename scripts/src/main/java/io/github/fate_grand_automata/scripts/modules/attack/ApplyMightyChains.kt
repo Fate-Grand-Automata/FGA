@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.scripts.modules.attack
 
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
+import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
@@ -16,7 +17,8 @@ class ApplyMightyChains @Inject constructor() {
     fun getMightyChain (
         cards: List<ParsedCard>,
         npUsage: NPUsage,
-        npTypes: Map<FieldSlot, CardTypeEnum>
+        npTypes: Map<FieldSlot, CardTypeEnum>,
+        chainPriority: List<ChainTypeEnum>? = null
     ): List<ParsedCard>? {
         val uniqueCardTypesFromNp = npTypes.values.toSet()
         if (!isMightyChainAllowed(npUsage, uniqueCardTypesFromNp, npTypes)) return null
@@ -28,7 +30,8 @@ class ApplyMightyChains @Inject constructor() {
         return tryToGetMightyChain(
             cards,
             uniqueCardTypesFromNp,
-            firstFieldSlot
+            firstFieldSlot,
+            chainPriority
         )
     }
 
@@ -39,7 +42,8 @@ class ApplyMightyChains @Inject constructor() {
         // e.g. usually based on npSize
         uniqueCardTypesAlreadyFilled: Set<CardTypeEnum>,
         // In case of a single NP, we want to know what slot it is
-        singleNpFieldSlot: FieldSlot?
+        singleNpFieldSlot: FieldSlot? = null,
+        chainPriority: List<ChainTypeEnum>? = null
     ): List<ParsedCard>? {
         val cardsToFind = totalUniqueCardTypesPermitted
         val uniqueCardTypes = uniqueCardTypesAlreadyFilled.toMutableSet()
