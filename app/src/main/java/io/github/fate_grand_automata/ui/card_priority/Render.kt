@@ -61,26 +61,15 @@ fun CardPriorityListItem.Render(
                     title = stringResource(R.string.p_brave_chains)
                 )
 
-                val braveChainListItemColor =
-                    if (useChainPriority)
-                        FGAListItemColorsDisabled()
-                    else
-                        FGAListItemColors()
-                val supportingHeader =
-                    if (useChainPriority)
-                        R.string.p_chain_priority
-                    else
-                        braveChains.stringRes
                 ListItem(
                     modifier = Modifier
                         .weight(1f)
                         .clickable {
-                            if (!useChainPriority)
-                                braveChainDialog.show()
+                            braveChainDialog.show()
                         },
                     headlineContent = { Text(stringResource(R.string.p_brave_chains)) },
-                    supportingContent = { Text(stringResource(supportingHeader)) },
-                    colors = braveChainListItemColor
+                    supportingContent = { Text(stringResource(braveChains.stringRes)) },
+                    colors = FGAListItemColors()
                 )
 
                 var rearrange by rearrangeCards
@@ -167,9 +156,7 @@ private fun ChainPriority(
                     ChainTypeEnum.Arts -> R.color.colorArts
                     ChainTypeEnum.Quick -> R.color.colorQuick
                     ChainTypeEnum.Buster -> R.color.colorBuster
-                    ChainTypeEnum.Brave -> R.color.colorQuickResist
-                    ChainTypeEnum.Mighty -> R.color.colorArtsResist
-                    ChainTypeEnum.Avoid -> R.color.colorBusterResist
+                    ChainTypeEnum.Mighty -> R.color.colorMasterSkill
                 }.let { res -> context.getColor(res) },
                 text = it.name
             )
