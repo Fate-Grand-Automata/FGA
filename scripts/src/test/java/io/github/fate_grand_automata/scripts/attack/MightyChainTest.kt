@@ -167,7 +167,7 @@ class MightyChainTest {
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0)
         ).map { it.card }
 
-        // Unable to Brave Chain with Scathach. Will ignore and return result of withNp
+        // Unable to Mighty Chain with Scathach. Will ignore and return result of withNp
         assertThat(picked).isEqualTo(pickedDefault)
     }
 
@@ -245,7 +245,7 @@ class MightyChainTest {
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
-            npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+            npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
             npTypes = mapOf(
                 FieldSlot.C to CardTypeEnum.Arts
             )
@@ -263,7 +263,7 @@ class MightyChainTest {
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
-            npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+            npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
             npTypes = mapOf(
                 FieldSlot.C to CardTypeEnum.Arts
             ),
@@ -425,7 +425,7 @@ class MightyChainTest {
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNPMighty,
-            npUsage = NPUsage(setOf(CommandCard.NP.B, CommandCard.NP.C), 0),
+            npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.C), 0),
             npTypes = mapOf(
                 FieldSlot.A to CardTypeEnum.Quick,
                 FieldSlot.C to CardTypeEnum.Arts
