@@ -20,9 +20,22 @@ class ApplyBraveChains @Inject constructor() {
         rearrange: Boolean,
         npUsage: NPUsage
     ): List<ParsedCard> {
-        if (rearrange
+        // Get this out of the way asap
+        if (!rearrange) return cards
+
+        /*
+          If there is 1 NP and 1 Card before NP,
+          we want the best or matching face-card after NP immediately
+         */
+        if (listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }) {
+            return cards.toMutableList().also {
+                Collections.swap(it, 0, 1)
+            }
+        }
+
+        if (
             // If there are cards before NP, at max there's only 1 card after NP
-            && npUsage.cardsBeforeNP == 0
+            npUsage.cardsBeforeNP == 0
             // If there are more than 1 NPs, only 1 card after NPs at max
             && npUsage.nps.size <= 1
         ) {
@@ -64,15 +77,6 @@ class ApplyBraveChains @Inject constructor() {
         val nonMatchingCards = cards - matchingCards
         val combinedCards = matchingCards + nonMatchingCards
 
-        /*
-          When rearrange is active and there is 1 NP and 1 Card before NP,
-          we want the best or matching face-card after NP.
-         */
-        val shouldSwapForNpUsageScenario = listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
-        if (rearrange && shouldSwapForNpUsageScenario) {
-            Collections.swap(combinedCards, 0, 1)
-        }
-
         return rearrange(
             cards = combinedCards,
             rearrange = rearrange,
@@ -102,15 +106,6 @@ class ApplyBraveChains @Inject constructor() {
             npTypes
         )?.toMutableList()
         if (mightyChainList == null || mightyChainList.isEmpty()) return justRearranged
-
-        /*
-          When rearrange is active and there is 1 NP and 1 Card before NP,
-          we want the best or matching face-card after NP.
-         */
-        val shouldSwapForNpUsageScenario = listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
-        if (rearrange && shouldSwapForNpUsageScenario) {
-            Collections.swap(mightyChainList, 0, 1)
-        }
 
         // Return the result
         return rearrange(
