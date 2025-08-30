@@ -5,4 +5,5 @@ enum class ChainTypeEnum {
     Buster,
     Arts,
     Quick,
+    Avoid,
 }

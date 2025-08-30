@@ -12,6 +12,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -20,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
+import io.github.fate_grand_automata.prefs.core.Pref
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.TeamSlot
@@ -147,19 +149,33 @@ private fun ChainPriority(
 
     val context = LocalContext.current
 
+    val getBackgroundColor = fun (enum: ChainTypeEnum): Int {
+        return (if (priorities.isAfterAvoid(enum)) R.color.colorDisabled
+            else when (enum) {
+                ChainTypeEnum.Arts -> R.color.colorArts
+                ChainTypeEnum.Quick -> R.color.colorQuick
+                ChainTypeEnum.Buster -> R.color.colorBuster
+                ChainTypeEnum.Mighty -> R.color.colorPrimaryDark
+                ChainTypeEnum.Avoid -> R.color.colorAvoid
+            }
+        ).let { res -> context.getColor(res) }
+    }
     DragSort(
         items = priorities,
         viewConfigGrabber = {
             DragSortAdapter.ItemViewConfig(
                 foregroundColor = Color.WHITE,
-                backgroundColor = when (it) {
-                    ChainTypeEnum.Arts -> R.color.colorArts
-                    ChainTypeEnum.Quick -> R.color.colorQuick
-                    ChainTypeEnum.Buster -> R.color.colorBuster
-                    ChainTypeEnum.Mighty -> R.color.colorMasterSkill
-                }.let { res -> context.getColor(res) },
-                text = it.name
+                backgroundColor = getBackgroundColor(it),
+                text = it.name,
             )
-        }
+        },
+        updateBackgroundColorOnMove = true
     )
+}
+
+fun MutableList<ChainTypeEnum>.isAfterAvoid(chainTypeEnum: ChainTypeEnum, indexOfAvoid: Int? = null): Boolean {
+    val avoidIndex = indexOfAvoid ?: this.indexOf(ChainTypeEnum.Avoid)
+    val enumIndex = this.indexOf(chainTypeEnum)
+    if (avoidIndex < 0) return false
+    return enumIndex > avoidIndex
 }
