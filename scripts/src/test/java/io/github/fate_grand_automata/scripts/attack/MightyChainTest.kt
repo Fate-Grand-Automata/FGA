@@ -2,506 +2,245 @@ package io.github.fate_grand_automata.scripts.attack
 
 import assertk.assertThat
 import assertk.assertions.containsExactly
-import assertk.assertions.isEqualTo
-import io.github.fate_grand_automata.scripts.attack.AttackLineUps
-import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import assertk.assertions.isNull
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
-import io.github.fate_grand_automata.scripts.modules.ApplyBraveChains
+import io.github.fate_grand_automata.scripts.modules.attack.ApplyMightyChains
 import kotlin.test.Test
 
 class MightyChainTest {
+    val mightyChain = ApplyMightyChains()
 
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
-        val braveChains = ApplyBraveChains()
-
         val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty
-        ).map { it.card }
+        val picked = mightyChain.getMightyChain(
+            cards = cards
+        )?.map { it.card }
 
         // Expect SB,KQ,NA,NA,SQ - 12345 - ABCDE
-        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
-    }
-
-    @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ), with rearrange`() {
-        val braveChains = ApplyBraveChains()
-
-        val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
-            rearrange = true
-        ).map { it.card }
-
-        // Same as above but swap position 2 and 3)
-        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D, CommandCard.Face.E)
+        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
     fun `Standard - lineup2 (1SB,5SQ,2SQ,3NA,4NA)`() {
-        val braveChains = ApplyBraveChains()
-
         val cards = AttackLineUps.Standard.lineup2
-        val picked = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty
-        ).map { it.card }
+        val picked = mightyChain.getMightyChain(
+            cards = cards
+        )?.map { it.card }
 
         // Expect 1SB,2KQ,3NA,5SQ,4NA - 15324 - AECBD
-        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D)
-    }
-
-    @Test
-    fun `Standard - lineup2 (1SB,5SQ,2SQ,3NA,4NA), with rearrange`() {
-        val braveChains = ApplyBraveChains()
-
-        val cards = AttackLineUps.Standard.lineup2
-        val picked = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
-            rearrange = true
-        ).map { it.card }
-
-        // Same as above but swap position 2 and 3)
-        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.D)
+        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D)
     }
 
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP`() {
-        val braveChains = ApplyBraveChains()
-
         val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
+        val picked = mightyChain.getMightyChain(
             cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0)
-        ).map { it.card }
-        val pickedDefault = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNP,
-            npUsage = NPUsage(setOf(CommandCard.NP.A), 0)
-        ).map { it.card }
+        )?.map { it.card }
 
         // Unable to Brave Chain with Kama. Will ignore and return result of withNp
-        assertThat(picked).isEqualTo(pickedDefault)
-    }
-
-    @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP, with rearrange`() {
-        val braveChains = ApplyBraveChains()
-
-        val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
-            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
-            rearrange = true
-        ).map { it.card }
-        val pickedDefault = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNP,
-            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
-            rearrange = true
-        ).map { it.card }
-
-        // Same as above but swap position 2 and 3)
-        assertThat(picked).isEqualTo(pickedDefault)
+        assertThat(picked).isNull()
     }
 
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP, with npTypes`() {
-        val braveChains = ApplyBraveChains()
-
         val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
+        val picked = mightyChain.getMightyChain(
             cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
             npTypes = mapOf(
                 FieldSlot.A to CardTypeEnum.Quick
             )
-        ).map { it.card }
+        )?.map { it.card }
 
         // Expect 1SB,3NA,2KQ,4NA,5SQ - 13245 - ACBDE
-        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D, CommandCard.Face.E)
+        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP, with rearrange & npTypes`() {
-        val braveChains = ApplyBraveChains()
-
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
+        val picked = mightyChain.getMightyChain(
             cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
-            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
-            npTypes = mapOf(
-                FieldSlot.A to CardTypeEnum.Quick
-            ),
-            rearrange = true
-        ).map { it.card }
-
-        // Same as above but swap position 1 and 2) // because NP
-        assertThat(picked).containsExactly(CommandCard.Face.C, CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.D, CommandCard.Face.E)
-    }
-
-    @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP`() {
-        val braveChains = ApplyBraveChains()
-
-        val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0)
-        ).map { it.card }
-        val pickedDefault = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNP,
-            npUsage = NPUsage(setOf(CommandCard.NP.B), 0)
-        ).map { it.card }
+        )?.map { it.card }
 
-        // Unable to Mighty Chain with Scathach. Will ignore and return result of withNp
-        assertThat(picked).isEqualTo(pickedDefault)
-    }
-
-    @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with rearrange`() {
-        val braveChains = ApplyBraveChains()
-
-        val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
-            npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
-            rearrange = true
-        ).map { it.card }
-
-        // Same as above but swap position 2 and 3)
-        assertThat(picked).containsExactly(CommandCard.Face.E, CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D)
+        // Unable to Mighty Chain with Scathach NP since type is unknown.
+        assertThat(picked).isNull()
     }
 
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes`() {
-        val braveChains = ApplyBraveChains()
-
         val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
+        val picked = mightyChain.getMightyChain(
             cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
             npTypes = mapOf(
                 FieldSlot.B to CardTypeEnum.Quick
             )
-        ).map { it.card }
+        )?.map { it.card }
 
         // Expect 1SB,3NA,2KQ,4NA,5SQ - 13245 - ACBDE
-        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D, CommandCard.Face.E)
+        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP`() {
-        val braveChains = ApplyBraveChains()
-
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
+        val picked = mightyChain.getMightyChain(
             cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
             npUsage = NPUsage(setOf(CommandCard.NP.C), 0)
-        ).map { it.card }
+        )?.map { it.card }
 
-        // Attempt to Brave chain with Nero NP
-        // Expect 3NA,4NA,1SB,2KQ,5SQ - 34125 - CDABE
-        assertThat(picked).containsExactly(CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E)
-    }
-
-    @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, rearranged=true`() {
-        val braveChains = ApplyBraveChains()
-
-        val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
-            npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
-            rearrange = true
-        ).map { it.card }
-
-        // Same as above but swap position 2 and 3)
-        assertThat(picked).containsExactly(CommandCard.Face.D, CommandCard.Face.C, CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E)
+        // Unable to Mighty Chain with Nero NP since type is unknown.
+        assertThat(picked).isNull()
     }
 
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, with npTypes`() {
-        val braveChains = ApplyBraveChains()
-
         val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
+        val picked = mightyChain.getMightyChain(
             cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
             npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
             npTypes = mapOf(
                 FieldSlot.C to CardTypeEnum.Arts
             )
-        ).map { it.card }
+        )?.map { it.card }
 
         // Expect 1SB,2KQ,3NA,4NA,5SQ - 12345 - ABCDE
-        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
-    }
-
-    @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, with rearrange & npTypes`() {
-        val braveChains = ApplyBraveChains()
-
-        val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
-            npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
-            npTypes = mapOf(
-                FieldSlot.C to CardTypeEnum.Arts
-            ),
-            rearrange = true
-        ).map { it.card }
-
-        // Expect 2KQ,1SB,3NA,4NA,5SQ - 21345 - BACDE
-        assertThat(picked).containsExactly(CommandCard.Face.B, CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
+        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
     fun `SingleServantOnly - lineup1 (BQABQ)`() {
-        val braveChains = ApplyBraveChains()
-
         val cards = AttackLineUps.SingleServantOnly.lineup1
-        val picked = braveChains.pick(
+        val picked = mightyChain.getMightyChain(
             cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty
-        ).map { it.card }
+        )?.map { it.card }
 
         // Expect same result as input
         // Expect BQABQ / 12345 / ABCDE
-        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
-    }
-
-    @Test
-    fun `SingleServantOnly - lineup1 (BQABQ), rearranged=true`() {
-        val braveChains = ApplyBraveChains()
-
-        val cards = AttackLineUps.SingleServantOnly.lineup1
-        val picked = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
-            rearrange = true
-        ).map { it.card }
-
-        // Same as above but swap position 2 and 3)
-        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D, CommandCard.Face.E)
+        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
     fun `SingleServantOnly - lineup2 (BBQQA)`() {
-        val braveChains = ApplyBraveChains()
-
         val cards = AttackLineUps.SingleServantOnly.lineup2
-        val picked = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty
-        ).map { it.card }
+        val picked = mightyChain.getMightyChain(
+            cards = cards
+        )?.map { it.card }
 
         // Expect 1SB,5SQ,3NA,4NA,2KQ / 15342 / AECDB
-        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.B)
-    }
-
-    @Test
-    fun `SingleServantOnly - lineup2 (BBQQA), rearranged=true`() {
-        val braveChains = ApplyBraveChains()
-
-        val cards = AttackLineUps.SingleServantOnly.lineup2
-        val picked = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
-            rearrange = true
-        ).map { it.card }
-
-        // Same as above but swap position 2 and 3)
-        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.E, CommandCard.Face.D, CommandCard.Face.B)
+        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.B)
     }
 
     @Test
     fun `SingleServantOnly - lineup3 (QQABB)`() {
-        val braveChains = ApplyBraveChains()
-
         val cards = AttackLineUps.SingleServantOnly.lineup3
-        val picked = braveChains.pick(
+        val picked = mightyChain.getMightyChain(
             cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty
-        ).map { it.card }
+        )?.map { it.card }
 
         // Expect QABQB / 53124 / ECABD
-        assertThat(picked).containsExactly(CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.D)
-    }
-
-    @Test
-    fun `SingleServantOnly - lineup3 (QQABB), rearranged=true`() {
-        val braveChains = ApplyBraveChains()
-
-        val cards = AttackLineUps.SingleServantOnly.lineup3
-        val picked = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
-            rearrange = true
-        ).map { it.card }
-
-        // Same as above but swap position 2 and 3)
-        assertThat(picked).containsExactly(CommandCard.Face.E, CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D)
+        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.D)
     }
 
     // Scenario for when 2 card types are found but not the 3rd
     @Test
     fun `SingleServantOnly - lineup4 (BQQBQ) - No mighty chain`() {
-        val braveChains = ApplyBraveChains()
-
         val cards = AttackLineUps.SingleServantOnly.lineup4
-        val picked = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty
-        ).map { it.card }
+        val picked = mightyChain.getMightyChain(
+            cards = cards
+        )?.map { it.card }
 
-        // Expect same result as input
-        // Expect BQQBQ / 12345 / ABCDE
-        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
+        assertThat(picked).isNull()
     }
 
     // Scenario for when 2 card types are found but not the 3rd
     @Test
     fun `SingleServantOnly - lineup5 (QQQBB) - No mighty chain`() {
-        val braveChains = ApplyBraveChains()
-
         val cards = AttackLineUps.SingleServantOnly.lineup5
-        val picked = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty
-        ).map { it.card }
+        val picked = mightyChain.getMightyChain(
+            cards = cards
+        )?.map { it.card }
 
-        // Expect same result as input
-        // Expect QQQBB / 52314 / EBCAD
-        assertThat(picked).containsExactly(CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.A, CommandCard.Face.D)
+        assertThat(picked).isNull()
     }
 
     /**
      * Two NP scenario
      */
     @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (2Kama, 3Nero)`() {
-        val braveChains = ApplyBraveChains()
-
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (2Kama, 3Nero) - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
+        val picked = mightyChain.getMightyChain(
             cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
             npUsage = NPUsage(setOf(CommandCard.NP.B, CommandCard.NP.C), 0)
-        ).map { it.card }
-        val pickedDefault = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNP,
-            npUsage = NPUsage(setOf(CommandCard.NP.B, CommandCard.NP.C), 0)
-        ).map { it.card }
+        )?.map { it.card }
 
-        // Should fall back to default behaviour
-        assertThat(picked).isEqualTo(pickedDefault)
+        assertThat(picked).isNull()
     }
 
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 3Nero), with npTypes`() {
-        val braveChains = ApplyBraveChains()
-
         val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
+        val picked = mightyChain.getMightyChain(
             cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.C), 0),
             npTypes = mapOf(
                 FieldSlot.A to CardTypeEnum.Quick,
                 FieldSlot.C to CardTypeEnum.Arts
             )
-        ).map { it.card }
+        )?.map { it.card }
 
         // Expect SB,KQ,NA,NA,SQ - 12345 - ABCDE
-        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
+        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 2Scathach)`() {
-        val braveChains = ApplyBraveChains()
-
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 2Scathach) - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
+        val picked = mightyChain.getMightyChain(
             cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
-        ).map { it.card }
-        val pickedDefault = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNP,
-            npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0)
-        ).map { it.card }
+        )?.map { it.card }
 
-        // Should fall back to default behaviour
-        assertThat(picked).isEqualTo(pickedDefault)
+        assertThat(picked).isNull()
     }
 
     @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 2Scathach), with npTypes`() {
-        val braveChains = ApplyBraveChains()
-
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 2Scathach), with npTypes - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
+        val picked = mightyChain.getMightyChain(
             cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
             npTypes = mapOf(
                 FieldSlot.A to CardTypeEnum.Quick,
                 FieldSlot.B to CardTypeEnum.Quick
             )
-        ).map { it.card }
-        val pickedDefault = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNP,
-            npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0)
-        ).map { it.card }
+        )?.map { it.card }
 
-        // Should fall back to default behaviour
-        assertThat(picked).isEqualTo(pickedDefault)
+        assertThat(picked).isNull()
     }
 
     @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3 NP, with npTypes`() {
-        val braveChains = ApplyBraveChains()
-
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3 NP, with npTypes - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = braveChains.pick(
+        val picked = mightyChain.getMightyChain(
             cards = cards,
-            braveChains = BraveChainEnum.WithNPMighty,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B, CommandCard.NP.C), 0),
             npTypes = mapOf(
                 FieldSlot.A to CardTypeEnum.Quick,
                 FieldSlot.B to CardTypeEnum.Quick,
                 FieldSlot.C to CardTypeEnum.Arts,
             )
-        ).map { it.card }
-        val pickedDefault = braveChains.pick(
-            cards = cards,
-            braveChains = BraveChainEnum.WithNP,
-            npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B, CommandCard.NP.C), 0)
-        ).map { it.card }
+        )?.map { it.card }
 
-        // Should fall back to default behaviour
-        assertThat(picked).isEqualTo(pickedDefault)
+        assertThat(picked).isNull()
     }
 }

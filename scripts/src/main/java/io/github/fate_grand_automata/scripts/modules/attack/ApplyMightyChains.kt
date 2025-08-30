@@ -15,8 +15,8 @@ class ApplyMightyChains @Inject constructor() {
 
     fun getMightyChain (
         cards: List<ParsedCard>,
-        npUsage: NPUsage,
-        npTypes: Map<FieldSlot, CardTypeEnum>
+        npUsage: NPUsage = NPUsage.none,
+        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap()
     ): List<ParsedCard>? {
         val uniqueCardTypesFromNp = npTypes.values.toSet()
         if (!isMightyChainAllowed(npUsage, uniqueCardTypesFromNp, npTypes)) return null
