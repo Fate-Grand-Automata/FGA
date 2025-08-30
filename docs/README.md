@@ -7,6 +7,7 @@ This directory contains detailed technical documentation for the Fate/Grand Auto
 - [Key Points of the App](app-overview.md) - Core features and architecture overview
 - [Image Matching Implementation](image-matching.md) - How the app performs image recognition and matching
 - [Android Gesture Implementation](android-gestures.md) - How the app performs automated touches and swipes
+- [Improvements and Recommendations](improvements-and-recommendations.md) - Current issues, improvement areas, future roadmap, and performance optimization suggestions
 
 ## Quick Start
 
