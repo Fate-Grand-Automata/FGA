@@ -16,15 +16,15 @@ class ApplyMightyChains @Inject constructor() {
 
     fun getMightyChain (
         cards: List<ParsedCard>,
-        npUsage: NPUsage,
-        npTypes: Map<FieldSlot, CardTypeEnum>,
+        npUsage: NPUsage = NPUsage.none,
+        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
         chainPriority: List<ChainTypeEnum>? = null
     ): List<ParsedCard>? {
         val uniqueCardTypesFromNp = npTypes.values.toSet()
         if (!isMightyChainAllowed(npUsage, uniqueCardTypesFromNp, npTypes)) return null
 
         // Get np if there is only 1 (since we want to try for Brave Chain)
-        val firstNp = if (npUsage.nps.size > 1) npUsage.nps.firstOrNull() else null
+        val firstNp = if (npUsage.nps.size == 1) npUsage.nps.first() else null
         val firstFieldSlot = firstNp?.toFieldSlot()
 
         return tryToGetMightyChain(
@@ -49,9 +49,8 @@ class ApplyMightyChains @Inject constructor() {
         val uniqueCardTypes = uniqueCardTypesAlreadyFilled.toMutableSet()
 
         val newList = mutableListOf<ParsedCard>()
-        var filteredCards = cards
         while (uniqueCardTypes.size < cardsToFind) {
-            filteredCards = filteredCards.filter {
+            var filteredCards = cards.filter {
                 // Always look for a different card type
                 it.type !in uniqueCardTypes
             }
@@ -64,7 +63,7 @@ class ApplyMightyChains @Inject constructor() {
                 if (fieldSlotList.isNotEmpty()) filteredCards = fieldSlotList
             }
             val filteredCard = filteredCards.firstOrNull()
-            if (filteredCard == null) break; // If cannot find, we leave
+            if (filteredCard == null) break // If cannot find, we leave
             uniqueCardTypes.add(filteredCard.type)
             newList.add(filteredCard)
         }
