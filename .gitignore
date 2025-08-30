@@ -15,3 +15,6 @@
 .externalNativeBuild
 .cxx
 custom-game-area/image.jpg
+
+# MkDocs
+/site

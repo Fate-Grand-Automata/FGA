@@ -1,0 +1,131 @@
+site_name: Fate/Grand Automata Documentation
+site_description: Comprehensive documentation for Fate/Grand Automata (FGA) - an Android automation app for Fate/Grand Order
+site_author: FGA Contributors
+site_url: https://fate-grand-automata.github.io/FGA
+
+repo_name: Fate-Grand-Automata/FGA
+repo_url: https://github.com/Fate-Grand-Automata/FGA
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      type: date
+      enable_creation_date: true
+      fallback_to_build_date: true
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: fate-grand-automata
+      repo: fga
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+nav:
+  - Home: index.md
+  - User Guide:
+    - Getting Started: user-guide/getting-started.md
+    - Troubleshooting: user-guide/troubleshooting.md
+    - Running on Emulators: user-guide/emulators.md
+    - Game Area Detection: user-guide/game-area-detection.md
+    - Scripts:
+      - Overview: user-guide/scripts/index.md
+      - Battle Script: user-guide/scripts/battle.md
+      - Lottery Script: user-guide/scripts/lottery.md
+      - Support Image Maker: user-guide/scripts/support-image-maker.md
+    - Configuration:
+      - Fine-tuning: user-guide/fine-tune.md
+      - Gift Box: user-guide/gift-box.md
+      - Friend Point Summon: user-guide/friend-point-summon.md
+    - Other:
+      - Donations: user-guide/donations.md
+      - Privacy Policy: user-guide/privacy-policy.md
+  - Developer Documentation:
+    - Overview: developer/app-overview.md
+    - Architecture:
+      - Image Matching: developer/image-matching.md
+      - Android Gestures: developer/android-gestures.md
+    - Contributing:
+      - Improvements & Roadmap: developer/improvements-and-recommendations.md
+  - Contributing: contributing.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Fate-Grand-Automata/FGA
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/fate-grand-automata
+
+copyright: Copyright &copy; 2024 FGA Contributors
