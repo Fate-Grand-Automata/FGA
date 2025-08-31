@@ -1,49 +1,68 @@
 package io.github.fate_grand_automata.scripts.modules.attack
 
+import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
-import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
+import io.github.fate_grand_automata.scripts.interfaces.AttackChainInterface
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
 @ScriptScope
-class ApplyMightyChains @Inject constructor() {
+class ApplyMightyChains @Inject constructor(
+    private val braveChainHandler: BraveChainHandler
+): AttackChainInterface {
     // We want 3 unique types, the magic number
     val totalUniqueCardTypesPermitted = 3
 
-    fun getMightyChain (
+    // Returns null if uniqueCards cannot be found
+    override fun pick (
         cards: List<ParsedCard>,
-        npUsage: NPUsage = NPUsage.none,
-        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
-        chainPriority: List<ChainTypeEnum>? = null
+        npUsage: NPUsage,
+        npTypes: Map<FieldSlot, CardTypeEnum>,
+        braveChainEnum: BraveChainEnum,
+        hasServantPriority: Boolean,
+        forceBraveChain: Boolean,
     ): List<ParsedCard>? {
         val uniqueCardTypesFromNp = npTypes.values.toSet()
         if (!isMightyChainAllowed(npUsage, uniqueCardTypesFromNp, npTypes)) return null
 
-        // Get np if there is only 1 (since we want to try for Brave Chain)
-        val firstNp = if (npUsage.nps.size == 1) npUsage.nps.first() else null
-        val firstFieldSlot = firstNp?.toFieldSlot()
+        // Check for Brave Chain
+        val braveChainFieldSlot =
+            if (braveChainEnum == BraveChainEnum.Avoid) null
+            else if (npUsage.nps.size == 1) {
+                // Get np if there is only 1 (since we want to try for Brave Chain)
+                val firstNp = npUsage.nps.firstOrNull()
+                firstNp?.toFieldSlot()
+            } else {
+                val braveChainCapableFieldSlots = braveChainHandler.getFieldSlotsWithValidBraveChain(cards, npUsage)
+                val braveChainPriorityCard = cards.firstOrNull { braveChainCapableFieldSlots.contains(it.fieldSlot) }
+                // Return the first valid one, since it is already the highest priority
+                braveChainPriorityCard?.fieldSlot
+            }
 
-        return tryToGetMightyChain(
-            cards,
-            uniqueCardTypesFromNp,
-            firstFieldSlot,
-            chainPriority
+        return pick(
+            cards = cards,
+            uniqueCardTypesAlreadyFilled = uniqueCardTypesFromNp,
+            fieldSlotForBraveChain = braveChainFieldSlot,
+            braveChainEnum = braveChainEnum,
+            forceBraveChain = forceBraveChain,
         )
     }
 
     // Returns null if uniqueCards cannot be found
-    fun tryToGetMightyChain(
+    private fun pick(
         cards: List<ParsedCard>,
         // Decreases number of cards to get
         // e.g. usually based on npSize
         uniqueCardTypesAlreadyFilled: Set<CardTypeEnum>,
-        // In case of a single NP, we want to know what slot it is
-        singleNpFieldSlot: FieldSlot? = null,
-        chainPriority: List<ChainTypeEnum>? = null
+        // In case of a Brave chain, we want to know what slot it is
+        fieldSlotForBraveChain: FieldSlot? = null,
+        braveChainEnum: BraveChainEnum = BraveChainEnum.None,
+        hasServantPriority: Boolean = false,
+        forceBraveChain: Boolean = false,
     ): List<ParsedCard>? {
         val cardsToFind = totalUniqueCardTypesPermitted
         val uniqueCardTypes = uniqueCardTypesAlreadyFilled.toMutableSet()
@@ -55,12 +74,14 @@ class ApplyMightyChains @Inject constructor() {
                 it.type !in uniqueCardTypes
             }
             // If there is a single NP, we want to try for a Brave Mighty Chain
-            if (singleNpFieldSlot != null) {
+            if (fieldSlotForBraveChain != null) {
                 // Attempt to find one matching the fieldSlot
                 val fieldSlotList = filteredCards.filter {
-                    it.fieldSlot == singleNpFieldSlot
+                    it.fieldSlot == fieldSlotForBraveChain
                 }
-                if (fieldSlotList.isNotEmpty()) filteredCards = fieldSlotList
+                // Even if it is empty, if forceBraveChain is on,
+                // it only accepts Brave Mighty Chains and not normal Mighty Chains
+                if (fieldSlotList.isNotEmpty() || forceBraveChain) filteredCards = fieldSlotList
             }
             val filteredCard = filteredCards.firstOrNull()
             if (filteredCard == null) break // If cannot find, we leave
@@ -76,6 +97,18 @@ class ApplyMightyChains @Inject constructor() {
         val combinedCards = newList + remainder
 
         return combinedCards
+    }
+
+    override fun isAttackChainAllowed (
+        cards: List<ParsedCard>,
+        npUsage: NPUsage,
+        npTypes: Map<FieldSlot, CardTypeEnum>,
+        braveChainEnum: BraveChainEnum,
+        hasServantPriority: Boolean,
+        forceBraveChain: Boolean,
+    ): Boolean {
+        val uniqueCardTypesFromNp = npTypes.values.toSet()
+        return isMightyChainAllowed(npUsage, uniqueCardTypesFromNp, npTypes)
     }
 
     fun isMightyChainAllowed (

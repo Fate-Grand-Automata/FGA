@@ -6,15 +6,12 @@ import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
-import io.github.fate_grand_automata.scripts.modules.attack.ApplyMightyChains
 import io.github.lib_automata.dagger.ScriptScope
 import java.util.Collections
 import javax.inject.Inject
 
 @ScriptScope
 class ApplyBraveChains @Inject constructor() {
-    private val applyMightyChains = ApplyMightyChains()
-
     private fun rearrange(
         cards: List<ParsedCard>,
         rearrange: Boolean,
@@ -79,37 +76,6 @@ class ApplyBraveChains @Inject constructor() {
 
         return rearrange(
             cards = combinedCards,
-            rearrange = rearrange,
-            npUsage = npUsage
-        )
-    }
-
-    private fun withNpMighty(
-        cards: List<ParsedCard>,
-        rearrange: Boolean,
-        npUsage: NPUsage,
-        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap()
-    ): List<ParsedCard> {
-        // Get default NP sort, because using the default priority as the baseline
-        val justRearranged by lazy {
-            withNp(
-                cards = cards,
-                rearrange = rearrange,
-                npUsage = npUsage
-            )
-        }
-
-        // Returns empty if there are no valid targets. If empty, return the default
-        val mightyChainList = applyMightyChains.getMightyChain(
-            cards,
-            npUsage,
-            npTypes
-        )?.toMutableList()
-        if (mightyChainList == null || mightyChainList.isEmpty()) return justRearranged
-
-        // Return the result
-        return rearrange(
-            cards = mightyChainList,
             rearrange = rearrange,
             npUsage = npUsage
         )
@@ -213,14 +179,7 @@ class ApplyBraveChains @Inject constructor() {
                 npUsage = npUsage
             )
 
-            BraveChainEnum.WithNPMighty -> withNpMighty(
-                cards = cards,
-                rearrange = rearrange,
-                npUsage = npUsage,
-                npTypes
-            )
-
-            BraveChainEnum.Avoid -> avoid(
+            else -> avoid(
                 cards = cards,
                 rearrange = rearrange
             )

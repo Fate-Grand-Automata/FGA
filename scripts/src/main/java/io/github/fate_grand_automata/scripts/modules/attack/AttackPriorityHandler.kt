@@ -1,20 +1,22 @@
 package io.github.fate_grand_automata.scripts.modules.attack
 
+import io.github.fate_grand_automata.scripts.enums.AttackPriorityEnum
+import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
-import io.github.fate_grand_automata.scripts.modules.ApplyBraveChains
 import io.github.lib_automata.dagger.ScriptScope
 import java.util.Collections
 import javax.inject.Inject
 
 @ScriptScope
-class ChainPrioritySelector @Inject constructor(
-    private val applyMightyChains: ApplyMightyChains,
+class AttackPriorityHandler @Inject constructor(
+    private val cardChainPriorityHandler: CardChainPriorityHandler,
+    private val braveChainHandler: BraveChainHandler,
 ) {
-    private fun rearrange(
+    fun rearrange(
         cards: List<ParsedCard>,
         rearrange: Boolean,
         npUsage: NPUsage
@@ -54,22 +56,44 @@ class ChainPrioritySelector @Inject constructor(
 
     fun pick(
         cards: List<ParsedCard>,
-        chainPriority: List<ChainTypeEnum>,
-        rearrange: Boolean = false,
+        attackPriorityOrder: List<AttackPriorityEnum> = AttackPriorityEnum.defaultOrder,
+        chainPriority: List<ChainTypeEnum> = ChainTypeEnum.defaultOrder,
+        braveChainEnum: BraveChainEnum = BraveChainEnum.None,
         npUsage: NPUsage = NPUsage.none,
-        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap()
+        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
+        rearrange: Boolean = false,
+        hasServantPriority: Boolean = false,
     ): List<ParsedCard> {
         var newCardOrder: List<ParsedCard>? = null
-        for (chain in chainPriority) {
-            newCardOrder = when (chain) {
-                ChainTypeEnum.Mighty -> applyMightyChains.getMightyChain(cards, npUsage, npTypes)
-                else -> null
+        var braveChainFallback: List<ParsedCard>? = null
+        for (attackPriority in attackPriorityOrder) {
+            when (attackPriority) {
+                AttackPriorityEnum.BraveChainPriority -> {
+                    braveChainFallback = braveChainHandler.pick(
+                        cards = cards,
+                        braveChainEnum = braveChainEnum,
+                        npUsage = npUsage,
+                    )
+                }
+                AttackPriorityEnum.CardChainPriority -> {
+                    if (newCardOrder != null) continue
+                    newCardOrder = cardChainPriorityHandler.pick(
+                        cards = cards,
+                        chainPriority = chainPriority,
+                        braveChainEnum = braveChainEnum,
+                        npUsage = npUsage,
+                        npTypes = npTypes,
+                        hasServantPriority = hasServantPriority,
+                        // BraveChain is higher priority than color chain
+                        forceBraveChain = braveChainFallback != null
+                    )
+                }
+                else -> continue
             }
-            if (newCardOrder != null) break;
         }
 
         return rearrange(
-            cards = newCardOrder ?: cards,
+            cards = newCardOrder ?: braveChainFallback ?: cards,
             rearrange = rearrange,
             npUsage = npUsage
         )

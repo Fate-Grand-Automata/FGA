@@ -15,7 +15,7 @@ class ChainPriorityPerWave private constructor(
             }
 
     companion object {
-        val default = from(listOf(ChainTypeEnum.entries))
+        val default = from(listOf(ChainTypeEnum.defaultOrder))
         private const val STAGE_SEPARATOR = "\n"
         private const val SEPARATOR = ","
 
