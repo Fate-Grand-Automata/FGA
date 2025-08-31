@@ -179,7 +179,7 @@ class ApplyBraveChains @Inject constructor() {
                 npUsage = npUsage
             )
 
-            else -> avoid(
+            BraveChainEnum.Avoid -> avoid(
                 cards = cards,
                 rearrange = rearrange
             )
