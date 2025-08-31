@@ -190,6 +190,11 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_brave_chains_don_t_care">"Don't care"</string>
     <string name="p_brave_chains_with_np">"With NP"</string>
     <string name="p_brave_chains_avoid">"Avoid"</string>
+    <string name="p_chain_type_quick">"Quick"</string>
+    <string name="p_chain_type_arts">"Arts"</string>
+    <string name="p_chain_type_buster">"Buster"</string>
+    <string name="p_chain_type_mighty">"Mighty"</string>
+    <string name="p_chain_type_avoid">"Avoid"</string>
     <string name="p_boost_item_disabled">"Disabled"</string>
     <string name="p_boost_item_skip">"Skip"</string>
     <string name="spam">"Spam mode"</string>

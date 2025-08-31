@@ -186,6 +186,11 @@
     <string name="p_brave_chains_don_t_care">"상관 없음"</string>
     <string name="p_brave_chains_with_np">"보구랑 같이"</string>
     <string name="p_brave_chains_avoid">"자제"</string>
+    <string name="p_chain_type_quick">"Quick"</string>
+    <string name="p_chain_type_arts">"Arts"</string>
+    <string name="p_chain_type_buster">"Buster"</string>
+    <string name="p_chain_type_mighty">"Mighty"</string>
+    <string name="p_chain_type_avoid">"자제"</string>
     <string name="p_boost_item_disabled">"비활성화"</string>
     <string name="p_boost_item_skip">"스킵"</string>
     <string name="spam">"반복 모드"</string>

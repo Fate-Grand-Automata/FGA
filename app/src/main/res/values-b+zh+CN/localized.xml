@@ -189,6 +189,11 @@ Order Change"</string>
     <string name="p_brave_chains_don_t_care">"无偏好"</string>
     <string name="p_brave_chains_with_np">"宝具施放后"</string>
     <string name="p_brave_chains_avoid">"避免追击连携"</string>
+    <string name="p_chain_type_quick">"迅击"</string>
+    <string name="p_chain_type_arts">"技击"</string>
+    <string name="p_chain_type_buster">"力击"</string>
+    <string name="p_chain_type_mighty">"Mighty"</string>
+    <string name="p_chain_type_avoid">"避免"</string>
     <string name="p_boost_item_disabled">"关闭"</string>
     <string name="p_boost_item_skip">"跳过"</string>
     <string name="spam">"瞎打模式"</string>

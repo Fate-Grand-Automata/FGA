@@ -187,6 +187,11 @@ Sao chép hoặc đổi tên nó nếu bạn muốn giữ nó."</string>
     <string name="p_brave_chains_don_t_care">"không quan tâm"</string>
     <string name="p_brave_chains_with_np">"Với NP"</string>
     <string name="p_brave_chains_avoid">"Tránh"</string>
+    <string name="p_chain_type_quick">"Quick"</string>
+    <string name="p_chain_type_arts">"Arts"</string>
+    <string name="p_chain_type_buster">"Buster"</string>
+    <string name="p_chain_type_mighty">"Mighty"</string>
+    <string name="p_chain_type_avoid">"Tránh"</string>
     <string name="p_boost_item_disabled">"Tắt"</string>
     <string name="p_boost_item_skip">"Bỏ qua"</string>
     <string name="spam">"Chế độ spam"</string>

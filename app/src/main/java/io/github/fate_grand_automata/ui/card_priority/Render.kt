@@ -160,13 +160,17 @@ private fun ChainPriority(
             }
         ).let { res -> context.getColor(res) }
     }
+    val localizedStringMap: MutableMap<ChainTypeEnum, String> = mutableMapOf()
+    priorities.forEach {
+        localizedStringMap[it] = stringResource(it.stringRes)
+    }
     DragSort(
         items = priorities,
         viewConfigGrabber = {
             DragSortAdapter.ItemViewConfig(
                 foregroundColor = Color.WHITE,
                 backgroundColor = getBackgroundColor(it),
-                text = it.name,
+                text = localizedStringMap.getOrElse(it) { it.name },
             )
         },
         updateBackgroundColorOnMove = true
