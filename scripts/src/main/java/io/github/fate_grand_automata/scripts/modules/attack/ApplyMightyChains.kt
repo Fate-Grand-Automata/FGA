@@ -75,7 +75,7 @@ class ApplyMightyChains @Inject constructor(
         val cardsToFind = totalUniqueCardTypesPermitted
         val uniqueCardTypes = uniqueCardTypesAlreadyFilled.toMutableSet()
 
-        val newList = mutableListOf<ParsedCard>()
+        val selectedCards = mutableListOf<ParsedCard>()
         while (uniqueCardTypes.size < cardsToFind) {
             var filteredCards = cards.filter {
                 // Always look for a different card type
@@ -94,15 +94,15 @@ class ApplyMightyChains @Inject constructor(
             val filteredCard = filteredCards.firstOrNull()
             if (filteredCard == null) break // If cannot find, we leave
             uniqueCardTypes.add(filteredCard.type)
-            newList.add(filteredCard)
+            selectedCards.add(filteredCard)
         }
 
         // If there isn't a valid list of cards, we reject and have empty be returned
         if (uniqueCardTypes.size < cardsToFind) return null
 
         // Otherwise, we return the expected output
-        val remainder = cards - newList
-        val combinedCards = newList + remainder
+        val remainder = cards - selectedCards
+        val combinedCards = selectedCards + remainder
 
         return combinedCards
     }
