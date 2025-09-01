@@ -11,6 +11,7 @@ import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.modules.attack.ApplyMightyChains
 import io.github.fate_grand_automata.scripts.modules.attack.AttackPriorityHandler
+import io.github.fate_grand_automata.scripts.modules.attack.Utils
 import io.github.fate_grand_automata.scripts.modules.attack.BraveChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.CardChainPriorityHandler
 import kotlin.test.BeforeTest
@@ -22,14 +23,13 @@ class MightyChainIntegrationTest {
 
     @BeforeTest
     fun init() {
-        braveChainHandler = BraveChainHandler()
+        val utils = Utils()
+        braveChainHandler = BraveChainHandler(utils)
         attackPriorityHandler = AttackPriorityHandler(
+            braveChainHandler = braveChainHandler,
             cardChainPriorityHandler = CardChainPriorityHandler(
-                applyMightyChains = ApplyMightyChains(
-                    braveChainHandler = braveChainHandler
-                )
+                applyMightyChains = ApplyMightyChains(utils)
             ),
-            braveChainHandler = braveChainHandler
         )
     }
 
@@ -77,7 +77,7 @@ class MightyChainIntegrationTest {
     }
 
     @Test
-    fun `Standard - lineup2 (1SB,5SQ,2SQ,3NA,4NA)`() {
+    fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA)`() {
         val cards = AttackLineUps.Standard.lineup2
         val picked = attackPriorityHandler.pick(
             cards = cards,
@@ -89,7 +89,7 @@ class MightyChainIntegrationTest {
     }
 
     @Test
-    fun `Standard - lineup2 (1SB,5SQ,2SQ,3NA,4NA), with rearrange`() {
+    fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA), with rearrange`() {
         val cards = AttackLineUps.Standard.lineup2
         val picked = attackPriorityHandler.pick(
             cards = cards,

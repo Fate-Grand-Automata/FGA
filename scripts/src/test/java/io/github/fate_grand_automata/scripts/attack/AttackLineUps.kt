@@ -63,8 +63,8 @@ class AttackLineUps {
         )
         val kiyohime2B = ParsedCard(
             card = CommandCard.Face.A,
-            servant = TeamSlot.A,
-            fieldSlot = FieldSlot.A,
+            servant = TeamSlot.B,
+            fieldSlot = FieldSlot.B,
             type = CardTypeEnum.Buster,
             affinity = CardAffinityEnum.Weak
         )

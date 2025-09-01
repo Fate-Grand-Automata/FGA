@@ -3,14 +3,13 @@ package io.github.fate_grand_automata.scripts.attack
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
-import assertk.assertions.isNull
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.modules.attack.ApplyMightyChains
-import io.github.fate_grand_automata.scripts.modules.attack.BraveChainHandler
+import io.github.fate_grand_automata.scripts.modules.attack.Utils
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
@@ -20,7 +19,7 @@ class MightyChainTest {
     @BeforeTest
     fun init() {
         mightyChain = ApplyMightyChains(
-            braveChainHandler = BraveChainHandler()
+            utils = Utils()
         )
     }
 
@@ -37,7 +36,7 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Standard - lineup2 (1SB,5SQ,2SQ,3NA,4NA)`() {
+    fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA)`() {
         val cards = AttackLineUps.Standard.lineup2
         val picked = mightyChain.pick(
             cards = cards

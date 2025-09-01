@@ -14,7 +14,7 @@ interface AttackChainInterface {
      * @param npUsage NPs in use for this attack
      * @param npTypes Card Types of the NP in use for this attack
      * @param braveChainEnum Brave chain settings for this attack
-     * @param hasServantPriority Is Servant Priority in use for this attack
+     * @param forceServantPriority Is Servant Priority in use for this attack
      * @param forceBraveChain Allow only Brave Chains to succeed
      */
     fun isAttackChainAllowed(
@@ -22,7 +22,7 @@ interface AttackChainInterface {
         npUsage: NPUsage = NPUsage.Companion.none,
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
         braveChainEnum: BraveChainEnum = BraveChainEnum.None,
-        hasServantPriority: Boolean = false,
+        forceServantPriority: Boolean = false,
         forceBraveChain: Boolean = false,
     ): Boolean
 
@@ -34,7 +34,7 @@ interface AttackChainInterface {
      * @param npUsage NPs in use for this attack
      * @param npTypes Card Types of the NP in use for this attack
      * @param braveChainEnum Brave chain settings for this attack
-     * @param hasServantPriority Is Servant Priority in use for this attack
+     * @param forceServantPriority Is Servant Priority in use for this attack
      * @param forceBraveChain Allow only Brave Chains to succeed
      */
     fun pick(
@@ -42,7 +42,7 @@ interface AttackChainInterface {
         npUsage: NPUsage = NPUsage.Companion.none,
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
         braveChainEnum: BraveChainEnum = BraveChainEnum.None,
-        hasServantPriority: Boolean = false,
+        forceServantPriority: Boolean = false,
         forceBraveChain: Boolean = false,
     ): List<ParsedCard>?
 }

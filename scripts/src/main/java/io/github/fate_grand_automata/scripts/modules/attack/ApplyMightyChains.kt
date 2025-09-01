@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @ScriptScope
 class ApplyMightyChains @Inject constructor(
-    private val braveChainHandler: BraveChainHandler
+    private val utils: Utils
 ): AttackChainInterface {
     // We want 3 unique types, the magic number
     val totalUniqueCardTypesPermitted = 3
@@ -23,7 +23,7 @@ class ApplyMightyChains @Inject constructor(
         npUsage: NPUsage,
         npTypes: Map<FieldSlot, CardTypeEnum>,
         braveChainEnum: BraveChainEnum,
-        hasServantPriority: Boolean,
+        forceServantPriority: Boolean,
         forceBraveChain: Boolean,
     ): List<ParsedCard>? {
         val uniqueCardTypesFromNp = npTypes.values.toSet()
@@ -37,7 +37,14 @@ class ApplyMightyChains @Inject constructor(
                 val firstNp = npUsage.nps.firstOrNull()
                 firstNp?.toFieldSlot()
             } else {
-                val braveChainCapableFieldSlots = braveChainHandler.getFieldSlotsWithValidBraveChain(cards, npUsage)
+                val braveChainCapableFieldSlots = utils.getFieldSlotsWithValidBraveChain(cards, npUsage)
+                // If there is Servant Priority, the first card is most important.
+                // Meaning if first card cannot Brave Chain, we ignore Brave Chain
+                if (forceServantPriority) {
+                    val firstCardFieldSlot = cards.firstOrNull()?.fieldSlot
+                    if (braveChainCapableFieldSlots.contains(firstCardFieldSlot)) firstCardFieldSlot
+                    else null
+                }
                 val braveChainPriorityCard = cards.firstOrNull { braveChainCapableFieldSlots.contains(it.fieldSlot) }
                 // Return the first valid one, since it is already the highest priority
                 braveChainPriorityCard?.fieldSlot
@@ -48,6 +55,7 @@ class ApplyMightyChains @Inject constructor(
             uniqueCardTypesAlreadyFilled = uniqueCardTypesFromNp,
             fieldSlotForBraveChain = braveChainFieldSlot,
             braveChainEnum = braveChainEnum,
+            forceServantPriority = forceServantPriority,
             forceBraveChain = forceBraveChain,
         )
     }
@@ -61,7 +69,7 @@ class ApplyMightyChains @Inject constructor(
         // In case of a Brave chain, we want to know what slot it is
         fieldSlotForBraveChain: FieldSlot? = null,
         braveChainEnum: BraveChainEnum = BraveChainEnum.None,
-        hasServantPriority: Boolean = false,
+        forceServantPriority: Boolean = false,
         forceBraveChain: Boolean = false,
     ): List<ParsedCard>? {
         val cardsToFind = totalUniqueCardTypesPermitted
@@ -104,7 +112,7 @@ class ApplyMightyChains @Inject constructor(
         npUsage: NPUsage,
         npTypes: Map<FieldSlot, CardTypeEnum>,
         braveChainEnum: BraveChainEnum,
-        hasServantPriority: Boolean,
+        forceServantPriority: Boolean,
         forceBraveChain: Boolean,
     ): Boolean {
         val uniqueCardTypesFromNp = npTypes.values.toSet()
