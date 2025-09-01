@@ -64,13 +64,19 @@ class AttackPriorityHandler @Inject constructor(
         rearrange: Boolean = false,
         hasServantPriority: Boolean = false,
     ): List<ParsedCard> {
+        // All stunned cards are categorized as Unknown.
+        // Filter all of them since those cards are to be avoided if possible
+        // and the system does not deal with CardTypeEnum.Unknown
+        val filteredCards = cards.filter { it.type != CardTypeEnum.Unknown }
+        val finalFallback = filteredCards + (cards - filteredCards)
+
         var newCardOrder: List<ParsedCard>? = null
         var braveChainFallback: List<ParsedCard>? = null
         for (attackPriority in attackPriorityOrder) {
             when (attackPriority) {
                 AttackPriorityEnum.BraveChainPriority -> {
                     braveChainFallback = braveChainHandler.pick(
-                        cards = cards,
+                        cards = filteredCards,
                         braveChainEnum = braveChainEnum,
                         npUsage = npUsage,
                     )
@@ -78,7 +84,7 @@ class AttackPriorityHandler @Inject constructor(
                 AttackPriorityEnum.CardChainPriority -> {
                     if (newCardOrder != null) continue
                     newCardOrder = cardChainPriorityHandler.pick(
-                        cards = cards,
+                        cards = filteredCards,
                         chainPriority = chainPriority,
                         braveChainEnum = braveChainEnum,
                         npUsage = npUsage,
@@ -93,7 +99,7 @@ class AttackPriorityHandler @Inject constructor(
         }
 
         return rearrange(
-            cards = newCardOrder ?: braveChainFallback ?: cards,
+            cards = newCardOrder ?: braveChainFallback ?: finalFallback,
             rearrange = rearrange,
             npUsage = npUsage
         )
