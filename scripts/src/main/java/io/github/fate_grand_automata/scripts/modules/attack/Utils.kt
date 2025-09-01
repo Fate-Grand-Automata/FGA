@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.scripts.modules.attack
 
+import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
@@ -30,6 +31,24 @@ class Utils @Inject constructor() {
             cardsPerFieldSlotMap[fieldSlot] = currentValue + 1
         }
         return cardsPerFieldSlotMap.toMap()
+    }
+    fun getCardsPerCardTypeMap (
+        cards: List<ParsedCard>,
+        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
+    ): Map<CardTypeEnum, Int> {
+        // Card list check
+        val cardsPerCardTypeMap: MutableMap<CardTypeEnum, Int> = mutableMapOf()
+        for (card in cards) {
+            val cardType = card.type
+            val currentValue = cardsPerCardTypeMap.getOrElse(cardType) { 0 }
+            cardsPerCardTypeMap[cardType] = currentValue + 1
+        }
+        // NPs check
+        for (npType in npTypes.values) {
+            val currentValue = cardsPerCardTypeMap.getOrElse(npType) { 0 }
+            cardsPerCardTypeMap[npType] = currentValue + 1
+        }
+        return cardsPerCardTypeMap.toMap()
     }
 
     fun getFieldSlotsWithValidBraveChain (
