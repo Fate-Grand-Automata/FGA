@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.scripts.attack
 
 import assertk.assertThat
 import assertk.assertions.containsExactly
+import assertk.assertions.isEmpty
 import assertk.assertions.isNull
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
@@ -29,10 +30,10 @@ class MightyChainTest {
         val picked = mightyChain.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
         // Expect SB,KQ,NA,NA,SQ - 12345 - ABCDE
-        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
@@ -40,10 +41,10 @@ class MightyChainTest {
         val cards = AttackLineUps.Standard.lineup2
         val picked = mightyChain.pick(
             cards = cards
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
         // Expect 1SB,2KQ,3NA,5SQ,4NA - 15324 - AECBD
-        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D)
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D)
     }
 
     @Test
@@ -52,10 +53,10 @@ class MightyChainTest {
         val picked = mightyChain.pick(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0)
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
         // Unable to Brave Chain with Kama. Will ignore and return result of withNp
-        assertThat(picked).isNull()
+        assertThat(picked).isEmpty()
     }
 
     @Test
@@ -67,10 +68,10 @@ class MightyChainTest {
             npTypes = mapOf(
                 FieldSlot.A to CardTypeEnum.Quick
             )
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
         // Expect 1SB,3NA,2KQ,4NA,5SQ - 13245 - ACBDE
-        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D, CommandCard.Face.E)
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
@@ -79,10 +80,10 @@ class MightyChainTest {
         val picked = mightyChain.pick(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0)
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
         // Unable to Mighty Chain with Scathach NP since type is unknown.
-        assertThat(picked).isNull()
+        assertThat(picked).isEmpty()
     }
 
     @Test
@@ -94,10 +95,10 @@ class MightyChainTest {
             npTypes = mapOf(
                 FieldSlot.B to CardTypeEnum.Quick
             )
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
         // Expect 1SB,3NA,2KQ,4NA,5SQ - 13245 - ACBDE
-        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D, CommandCard.Face.E)
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
@@ -106,10 +107,10 @@ class MightyChainTest {
         val picked = mightyChain.pick(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.C), 0)
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
         // Unable to Mighty Chain with Nero NP since type is unknown.
-        assertThat(picked).isNull()
+        assertThat(picked).isEmpty()
     }
 
     @Test
@@ -121,10 +122,10 @@ class MightyChainTest {
             npTypes = mapOf(
                 FieldSlot.C to CardTypeEnum.Arts
             )
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
         // Expect 1SB,2KQ,3NA,4NA,5SQ - 12345 - ABCDE
-        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
@@ -132,11 +133,11 @@ class MightyChainTest {
         val cards = AttackLineUps.SingleServantOnly.lineup1
         val picked = mightyChain.pick(
             cards = cards,
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
         // Expect same result as input
         // Expect BQABQ / 12345 / ABCDE
-        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
@@ -144,10 +145,10 @@ class MightyChainTest {
         val cards = AttackLineUps.SingleServantOnly.lineup2
         val picked = mightyChain.pick(
             cards = cards
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
         // Expect 1SB,5SQ,3NA,4NA,2KQ / 15342 / AECDB
-        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.B)
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.B)
     }
 
     @Test
@@ -155,10 +156,10 @@ class MightyChainTest {
         val cards = AttackLineUps.SingleServantOnly.lineup3
         val picked = mightyChain.pick(
             cards = cards,
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
         // Expect QABQB / 53124 / ECABD
-        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.D)
+        assertThat(picked).containsExactly(CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.D)
     }
 
     // Scenario for when 2 card types are found but not the 3rd
@@ -167,9 +168,9 @@ class MightyChainTest {
         val cards = AttackLineUps.SingleServantOnly.lineup4
         val picked = mightyChain.pick(
             cards = cards
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
-        assertThat(picked).isNull()
+        assertThat(picked).isEmpty()
     }
 
     // Scenario for when 2 card types are found but not the 3rd
@@ -178,9 +179,9 @@ class MightyChainTest {
         val cards = AttackLineUps.SingleServantOnly.lineup5
         val picked = mightyChain.pick(
             cards = cards
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
-        assertThat(picked).isNull()
+        assertThat(picked).isEmpty()
     }
 
     /**
@@ -192,9 +193,9 @@ class MightyChainTest {
         val picked = mightyChain.pick(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.B, CommandCard.NP.C), 0)
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
-        assertThat(picked).isNull()
+        assertThat(picked).isEmpty()
     }
 
     @Test
@@ -207,10 +208,10 @@ class MightyChainTest {
                 FieldSlot.A to CardTypeEnum.Quick,
                 FieldSlot.C to CardTypeEnum.Arts
             )
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
         // Expect SB,KQ,NA,NA,SQ - 12345 - ABCDE
-        assertThat(picked ?: emptyList()).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
@@ -219,9 +220,9 @@ class MightyChainTest {
         val picked = mightyChain.pick(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
-        assertThat(picked).isNull()
+        assertThat(picked).isEmpty()
     }
 
     @Test
@@ -234,9 +235,9 @@ class MightyChainTest {
                 FieldSlot.A to CardTypeEnum.Quick,
                 FieldSlot.B to CardTypeEnum.Quick
             )
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
-        assertThat(picked).isNull()
+        assertThat(picked).isEmpty()
     }
 
     @Test
@@ -250,8 +251,8 @@ class MightyChainTest {
                 FieldSlot.B to CardTypeEnum.Quick,
                 FieldSlot.C to CardTypeEnum.Arts,
             )
-        )?.map { it.card }
+        )?.map { it.card } ?: emptyList()
 
-        assertThat(picked).isNull()
+        assertThat(picked).isEmpty()
     }
 }
