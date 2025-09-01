@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @ScriptScope
 class CardChainPriorityHandler @Inject constructor(
-    private val applyMightyChains: ApplyMightyChains,
+    private val mightyChainHandler: MightyChainHandler,
 ) {
     fun pick(
         cards: List<ParsedCard>,
@@ -26,7 +26,7 @@ class CardChainPriorityHandler @Inject constructor(
         for (chain in chainPriority) {
             if (newCardOrder != null) continue
             newCardOrder = when (chain) {
-                ChainTypeEnum.Mighty -> applyMightyChains.pick(
+                ChainTypeEnum.Mighty -> mightyChainHandler.pick(
                     cards = cards,
                     npUsage = npUsage,
                     npTypes = npTypes,

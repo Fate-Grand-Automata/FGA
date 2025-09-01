@@ -9,7 +9,7 @@ import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
-import io.github.fate_grand_automata.scripts.modules.attack.ApplyMightyChains
+import io.github.fate_grand_automata.scripts.modules.attack.MightyChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.AttackPriorityHandler
 import io.github.fate_grand_automata.scripts.modules.attack.Utils
 import io.github.fate_grand_automata.scripts.modules.attack.BraveChainHandler
@@ -28,7 +28,7 @@ class MightyChainIntegrationTest {
         attackPriorityHandler = AttackPriorityHandler(
             braveChainHandler = braveChainHandler,
             cardChainPriorityHandler = CardChainPriorityHandler(
-                applyMightyChains = ApplyMightyChains(utils)
+                mightyChainHandler = MightyChainHandler(utils)
             ),
         )
     }

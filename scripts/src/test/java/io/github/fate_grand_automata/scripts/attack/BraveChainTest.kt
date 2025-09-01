@@ -11,7 +11,7 @@ import io.github.fate_grand_automata.scripts.modules.attack.BraveChainHandler
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-class BraveChainHandlerTest {
+class BraveChainTest {
     lateinit var braveChainHandler: BraveChainHandler
 
     @BeforeTest

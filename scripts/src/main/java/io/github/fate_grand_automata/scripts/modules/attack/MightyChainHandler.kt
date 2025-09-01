@@ -11,7 +11,7 @@ import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
 @ScriptScope
-class ApplyMightyChains @Inject constructor(
+class MightyChainHandler @Inject constructor(
     private val utils: Utils
 ): AttackChainInterface {
     // We want 3 unique types, the magic number

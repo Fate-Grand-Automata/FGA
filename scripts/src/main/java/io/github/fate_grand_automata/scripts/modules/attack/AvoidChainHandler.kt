@@ -10,7 +10,7 @@ import javax.inject.Inject
 import kotlin.collections.set
 
 @ScriptScope
-class ApplyAvoidChain @Inject constructor(
+class AvoidChainHandler @Inject constructor(
     private val utils: Utils
 ) {
     fun pick(

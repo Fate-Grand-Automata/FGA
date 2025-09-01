@@ -8,17 +8,17 @@ import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
-import io.github.fate_grand_automata.scripts.modules.attack.ApplyMightyChains
+import io.github.fate_grand_automata.scripts.modules.attack.MightyChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.Utils
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class MightyChainTest {
-    lateinit var mightyChain: ApplyMightyChains
+    lateinit var mightyChainHandler: MightyChainHandler
 
     @BeforeTest
     fun init() {
-        mightyChain = ApplyMightyChains(
+        mightyChainHandler = MightyChainHandler(
             utils = Utils()
         )
     }
@@ -26,7 +26,7 @@ class MightyChainTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP
         )?.map { it.card } ?: emptyList()
@@ -38,7 +38,7 @@ class MightyChainTest {
     @Test
     fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA)`() {
         val cards = AttackLineUps.Standard.lineup2
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards
         )?.map { it.card } ?: emptyList()
 
@@ -49,7 +49,7 @@ class MightyChainTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0)
         )?.map { it.card } ?: emptyList()
@@ -61,7 +61,7 @@ class MightyChainTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP, with npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
             npTypes = mapOf(
@@ -76,7 +76,7 @@ class MightyChainTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0)
         )?.map { it.card } ?: emptyList()
@@ -88,7 +88,7 @@ class MightyChainTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
             npTypes = mapOf(
@@ -103,7 +103,7 @@ class MightyChainTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.C), 0)
         )?.map { it.card } ?: emptyList()
@@ -115,7 +115,7 @@ class MightyChainTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, with npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
             npTypes = mapOf(
@@ -130,7 +130,7 @@ class MightyChainTest {
     @Test
     fun `SingleServantOnly - lineup1 (BQABQ)`() {
         val cards = AttackLineUps.SingleServantOnly.lineup1
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards,
         )?.map { it.card } ?: emptyList()
 
@@ -142,7 +142,7 @@ class MightyChainTest {
     @Test
     fun `SingleServantOnly - lineup2 (BBQQA)`() {
         val cards = AttackLineUps.SingleServantOnly.lineup2
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards
         )?.map { it.card } ?: emptyList()
 
@@ -153,7 +153,7 @@ class MightyChainTest {
     @Test
     fun `SingleServantOnly - lineup3 (QQABB)`() {
         val cards = AttackLineUps.SingleServantOnly.lineup3
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards,
         )?.map { it.card } ?: emptyList()
 
@@ -165,7 +165,7 @@ class MightyChainTest {
     @Test
     fun `SingleServantOnly - lineup4 (BQQBQ) - No mighty chain`() {
         val cards = AttackLineUps.SingleServantOnly.lineup4
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards
         )?.map { it.card } ?: emptyList()
 
@@ -176,7 +176,7 @@ class MightyChainTest {
     @Test
     fun `SingleServantOnly - lineup5 (QQQBB) - No mighty chain`() {
         val cards = AttackLineUps.SingleServantOnly.lineup5
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards
         )?.map { it.card } ?: emptyList()
 
@@ -189,7 +189,7 @@ class MightyChainTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (2Kama, 3Nero) - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.B, CommandCard.NP.C), 0)
         )?.map { it.card } ?: emptyList()
@@ -200,7 +200,7 @@ class MightyChainTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 3Nero), with npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.C), 0),
             npTypes = mapOf(
@@ -216,7 +216,7 @@ class MightyChainTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 2Scathach) - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
         )?.map { it.card } ?: emptyList()
@@ -227,7 +227,7 @@ class MightyChainTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 2Scathach), with npTypes - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
             npTypes = mapOf(
@@ -242,7 +242,7 @@ class MightyChainTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3 NP, with npTypes - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = mightyChain.pick(
+        val picked = mightyChainHandler.pick(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B, CommandCard.NP.C), 0),
             npTypes = mapOf(

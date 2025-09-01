@@ -8,11 +8,11 @@ import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import kotlin.test.Test
-import io.github.fate_grand_automata.scripts.modules.attack.ApplyAvoidChain
+import io.github.fate_grand_automata.scripts.modules.attack.AvoidChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.Utils
 
 class AvoidChainTest {
-    val avoidChain = ApplyAvoidChain(utils = Utils())
+    val avoidChain = AvoidChainHandler(utils = Utils())
 
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
