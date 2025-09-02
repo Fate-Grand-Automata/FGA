@@ -5,6 +5,7 @@ import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
+import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
@@ -191,6 +192,35 @@ class CardChainPriorityIntegrationTest {
 
         // Expect SB,KQ,NA,NA,SQ - 12345 - ABCDE
         assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
+    }
+
+    @Test
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ), No Mighty in chainPriority allowed`() {
+        val cards = AttackLineUps.Standard.lineup1
+        val picked = attackPriorityHandler.pick(
+            cards = cards,
+            braveChainEnum = BraveChainEnum.WithNP,
+            chainPriority = ChainTypeEnum.defaultOrder.filter { it != ChainTypeEnum.Mighty },
+        ).map { it.card }
+        val pickedDefault = getDefaultAvoidChainResult(
+            cards = cards,
+            braveChainEnum = BraveChainEnum.WithNP,
+        ).map { it.card }
+
+        assertThat(picked).isEqualTo(pickedDefault)
+    }
+
+    @Test
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ),No Mighty in chainPriority allowed, raw`() {
+        val cards = AttackLineUps.Standard.lineup1
+        val picked = attackPriorityHandler.pick(
+            cards = cards,
+            braveChainEnum = BraveChainEnum.WithNP,
+            chainPriority = ChainTypeEnum.defaultOrder.filter { it != ChainTypeEnum.Mighty },
+        ).map { it.card }
+
+        // Expect avoid SB,KQ,SQ,NA,NA - 12534 - ABECD
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D)
     }
 
     @Test

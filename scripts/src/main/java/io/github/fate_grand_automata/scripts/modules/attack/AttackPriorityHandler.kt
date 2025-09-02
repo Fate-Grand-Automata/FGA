@@ -74,10 +74,6 @@ class AttackPriorityHandler @Inject constructor(
         val cardCountPerFieldSlotMap = utils.getCardsPerFieldSlotMap(cards, npUsage)
         val cardCountPerCardTypeMap = utils.getCardsPerCardTypeMap(cards, npTypes)
 
-        // Determine the type of chain priority
-        val indexOfAvoid = chainPriority.indexOf(ChainTypeEnum.Avoid)
-        val filteredChainPriority = if (indexOfAvoid == 0) listOf(ChainTypeEnum.Avoid) else chainPriority.subList(0, indexOfAvoid)
-
         // Start
         var newCardOrder: List<ParsedCard>? = null
         var braveChainFallback: List<ParsedCard>? = null
@@ -93,16 +89,24 @@ class AttackPriorityHandler @Inject constructor(
                 }
                 AttackPriorityEnum.CardChainPriority -> {
                     if (newCardOrder != null) continue
+
+                    // Determine the allowed chain priority
+                    val indexOfAvoid = chainPriority.indexOf(ChainTypeEnum.Avoid)
+                    // If braveChainFallback does not exist,
+                    // 'Avoid' is to be included, since it is treated as cardPriorityHandler's own fallback method
+                    val allowAvoid = if (braveChainFallback == null) 1 else 0
+                    val filteredChainPriority = if (indexOfAvoid == 0) listOf(ChainTypeEnum.Avoid) else chainPriority.subList(0, indexOfAvoid + allowAvoid)
+
                     newCardOrder = cardChainPriorityHandler.pick(
                         cards = filteredCards,
                         chainPriority = filteredChainPriority,
                         braveChainEnum = braveChainEnum,
                         npUsage = npUsage,
                         npTypes = npTypes,
-                        // BraveChain is higher priority than color chain
-                        forceBraveChain = braveChainFallback != null,
                         cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
                         cardCountPerCardTypeMap = cardCountPerCardTypeMap,
+                        // BraveChain is higher priority than color chain
+                        forceBraveChain = braveChainFallback != null
                     )
                 }
                 else -> continue

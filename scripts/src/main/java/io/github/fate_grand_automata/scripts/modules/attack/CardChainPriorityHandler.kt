@@ -22,9 +22,9 @@ class CardChainPriorityHandler @Inject constructor(
         braveChainEnum: BraveChainEnum = BraveChainEnum.None,
         npUsage: NPUsage = NPUsage.none,
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
-        forceBraveChain: Boolean = false,
         cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
         cardCountPerCardTypeMap: Map<CardTypeEnum, Int>? = null,
+        forceBraveChain: Boolean = false,
     ): List<ParsedCard>? {
         var newCardOrder: List<ParsedCard>? = null
         val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(cards, npUsage)
