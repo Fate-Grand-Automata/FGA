@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.scripts.modules
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
+import io.github.fate_grand_automata.scripts.enums.NpGaugeEnum
 import io.github.fate_grand_automata.scripts.enums.SpamEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.ServantTarget
@@ -28,6 +29,12 @@ class SkillSpam @Inject constructor(
 
         // Skill cooldown detection (brightness of the bottom edge of the skill frame)
         private const val SKILL_COOLDOWN_BRIGHTNESS_THRESH = 102
+
+        // --- HSV detection notes (summary) ---
+        // NP gauge detection uses both Saturation (S) and Value (V)
+        // to stay stable even with bright backgrounds or low-contrast cases.
+        private const val VALUE_THRESH = 60.0
+        private const val SATURATION_THRESH = 100.0
     }
 
     fun spamSkills() {
@@ -50,6 +57,7 @@ class SkillSpam @Inject constructor(
             val skill = entry.servantSlot.skills()[entry.skillIndex]
             val targets = entry.skillConfig.determineTargets(entry.servantSlot)
             val targetSlot = entry.skillConfig.determineActualTargetSlot(entry.servantSlot)
+            var npCharged = false
             var isUsable = false
 
             if (caster.canSpam(entry.skillConfig.spam) && (state.stage + 1) in entry.skillConfig.waves) {
@@ -67,6 +75,10 @@ class SkillSpam @Inject constructor(
                                 isUsable = false
                                 return@useSameSnapIn
                             }
+
+                            if (hasNpChargedRelevant(entry)) {
+                                npCharged = targetSlot.isNpCharged()
+                            }
                         }
                     }
 
@@ -74,7 +86,9 @@ class SkillSpam @Inject constructor(
                         break
                     }
 
-                    caster.castServantSkill(skill, targets)
+                    if (entry.skillConfig.canSpamFinal(npCharged)) {
+                        caster.castServantSkill(skill, targets)
+                    }
                     repeats++
                 }
             }
@@ -85,6 +99,13 @@ class SkillSpam @Inject constructor(
     private fun isSkillReady(skill: Skill.Servant): Boolean =
         locations.battle.skillCooldownCheckRegion(skill)
             .isBrightnessAbove(SKILL_COOLDOWN_BRIGHTNESS_THRESH.toDouble())
+
+    private fun hasNpChargedRelevant(entry: SkillEntry): Boolean {
+        return when (entry.skillConfig.np) {
+            NpGaugeEnum.Low, NpGaugeEnum.Ready -> true
+            else -> false
+        }
+    }
 
     // A simple container for a skill, used for sorting and tracking
     private data class SkillEntry(
@@ -149,4 +170,20 @@ class SkillSpam @Inject constructor(
             else -> tempTarget.targets
         }
     }
+
+    private fun SkillSpamConfig.canSpamFinal(npCharged: Boolean) : Boolean {
+        val npCond = when (np) {
+            NpGaugeEnum.Low -> !npCharged
+            NpGaugeEnum.Ready -> npCharged
+            else -> true
+        }
+
+        return npCond
+    }
+
+    private fun FieldSlot.isNpCharged() : Boolean = locations.battle.npGaugeEndRegion(this)
+            .isSaturationAndValueOver(
+                SATURATION_THRESH,
+                VALUE_THRESH
+            )
 }

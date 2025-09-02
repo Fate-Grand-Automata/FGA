@@ -84,6 +84,12 @@ class BattleScreenLocations @Inject constructor(
             )
         }
 
+    fun npGaugeEndRegion(slot: FieldSlot) = when (slot) {
+        FieldSlot.A -> Region(586, 1358, 2, 8)
+        FieldSlot.B -> Region(1220,1358,2,8)
+        FieldSlot.C -> Region(1856,1358, 2, 8)
+    } + Location(if (isWide) 100 else 0, if (isWide) -42 else 0)
+
     val attackClick =
         (if (isWide)
             Location(-460, -230)
