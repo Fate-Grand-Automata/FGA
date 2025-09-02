@@ -5,6 +5,7 @@ import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
+import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
@@ -19,12 +20,18 @@ class BraveChainHandler @Inject constructor(
         cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
     ): List<ParsedCard>? {
         val cardsPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(cards, npUsage)
-        if (!isBraveChainAllowed(braveChainEnum, cardsPerFieldSlotMap)) return null
+        if (!isBraveChainAllowed(braveChainEnum, npUsage, cardsPerFieldSlotMap)) return null
 
         val braveChainCapableFieldSlots = utils.getFieldSlotsWithValidBraveChain(cardsPerFieldSlotMap)
 
-        // Use the first valid one, since it is already the highest priority
-        val braveChainPriorityCard = cards.firstOrNull { braveChainCapableFieldSlots.contains(it.fieldSlot) }
+        val npFieldSlot = if (npUsage.nps.size == 1) npUsage.nps.firstOrNull()?.toFieldSlot() else null
+
+        val braveChainPriorityCard = cards.firstOrNull {
+            // Use the first valid one, since it is already the highest priority
+            braveChainCapableFieldSlots.contains(it.fieldSlot) &&
+            // And if there is an NP, it must match the NP
+            (npFieldSlot == null || npFieldSlot == it.fieldSlot)
+        }
         val priorityFieldSlot = braveChainPriorityCard?.fieldSlot
 
         // Safety check
@@ -38,12 +45,21 @@ class BraveChainHandler @Inject constructor(
 
     private fun isBraveChainAllowed (
         braveChainEnum: BraveChainEnum,
+        npUsage: NPUsage = NPUsage.none,
         cardsPerFieldSlotMap: Map<FieldSlot, Int>
     ): Boolean {
         if (
             braveChainEnum == BraveChainEnum.Avoid
             || cardsPerFieldSlotMap.values.isEmpty()
         ) return false
+
+        if (npUsage.nps.size == 1) {
+            // Permit brave chain with NP only
+            val npFieldSlot = npUsage.nps.firstOrNull()?.toFieldSlot()
+            if (npFieldSlot != null) {
+                return cardsPerFieldSlotMap.getOrElse(npFieldSlot) { 0 } >= 3
+            }
+        }
 
         // Sort by most number of cards
         val highestTotalCardCount = cardsPerFieldSlotMap.values.sorted().reversed().first()
