@@ -71,6 +71,19 @@ class StandardAutomataApi @Inject constructor(
             }
     }
 
+    override fun Region.detectNumberInBrackets(lower: Hsv, upper: Hsv, invert: Boolean
+    ): String = useColor {
+        screenshotManager.getScreenshot()
+            .crop(transform.toImage(this))
+            .normalizeByHsv(lower, upper, invert)
+            .cropWhiteRegion(2)
+            .let { normalized ->
+                ocrService.detectNumberInBrackets(normalized).also { result ->
+                    highlight(this, HighlightColor.Info, text = result.takeIf { it.isNotBlank() })
+                }
+            }
+    }
+
     override fun Map<Pattern, Region>.exists(
         timeout: Duration, similarity: Double?, requireAll: Boolean,
     ) = imageMatcher.exists(

@@ -269,6 +269,30 @@ class DroidCvPattern(
         return DroidCvPattern(normalized, tag = tag)
     }
 
+    override fun cropWhiteRegion(
+        pad: Int
+    ): Pattern = Mat().use { coords ->
+        Core.bitwise_not(mat, coords)
+
+        // If no non-zero pixels, return the full binary image
+        if (coords.empty()) {
+            return this
+        }
+
+        val rect = Imgproc.boundingRect(coords)
+
+        val xStart = maxOf(rect.x - pad, 0)
+        val yStart = maxOf(rect.y - pad, 0)
+        val xEnd = minOf(rect.x + rect.width + pad, mat.cols())
+        val yEnd = minOf(rect.y + rect.height + pad, mat.rows())
+
+        // Crop to ROI and return as DroidCvPattern
+        DroidCvPattern(
+            mat.submat(Rect(xStart, yStart, xEnd - xStart, yEnd - yStart)).clone(),
+            tag = tag
+        )
+    }
+
     /**
      * Flood fills the mat.
      */

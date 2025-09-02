@@ -62,6 +62,20 @@ interface AutomataApi {
 
     fun Region.detectText(outlinedText: Boolean = false): String
 
+    /**
+     * Extracts the numeric value inside the first pair of parentheses
+     * from text pixels within the specified HSV range in this Region.
+     *
+     * ⚠️ When calling this function inside `useSameSnapIn`, be aware that it may
+     * reuse a gray cached snapshot and return incorrect results.
+     *
+     * @param lower the lower bound of the HSV range
+     * @param upper the upper bound of the HSV range
+     * @param invert if true, the mask is inverted before OCR
+     * @return the numeric string inside the first matched parentheses, or an empty string if none found
+     */
+    fun Region.detectNumberInBrackets(lower: Hsv, upper: Hsv, invert: Boolean = false): String
+
     fun Map<Pattern, Region>.exists(
         timeout: Duration = Duration.ZERO,
         similarity: Double? = null,

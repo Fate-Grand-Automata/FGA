@@ -107,6 +107,12 @@ interface Pattern : AutoCloseable {
      */
     fun normalizeByHsv(lower: Hsv, upper: Hsv, invert: Boolean = false): Pattern
 
+    /**
+     * Crops the given binary image to the bounding rectangle of non-zero pixels.
+     * Returns the cropped image as a new Mat.
+     */
+    fun cropWhiteRegion(pad: Int = 2): Pattern
+
 }
 
 /**
