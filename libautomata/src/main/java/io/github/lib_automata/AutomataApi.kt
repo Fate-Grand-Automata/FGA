@@ -67,4 +67,29 @@ interface AutomataApi {
         similarity: Double? = null,
         requireAll: Boolean = false
     ): Boolean
+
+    /**
+     * Returns `true` if the average brightness of this [Region] is above [threshold].
+     *
+     * If the region is in color, it is converted to grayscale before computing
+     * the average brightness (0–255 scale).
+     *
+     * @param threshold Brightness threshold on the 0–255 scale.
+     * @return `true` when average brightness >= [threshold], otherwise `false`.
+     */
+    fun Region.isBrightnessAbove(threshold: Double): Boolean
+
+    /**
+     * Checks if the average Saturation (S) and Value (V) of this Region
+     * exceed the specified thresholds.
+     *
+     * ⚠️ When calling this function inside `useSameSnapIn`, be aware that it may
+     * reuse a gray cached snapshot and return incorrect results.
+     *
+     * @param sThresh Saturation threshold.
+     * @param vThresh Value (brightness) threshold.
+     * @return Boolean True if both average S and V exceed the thresholds.
+     */
+    fun Region.isSaturationAndValueOver(sThresh: Double, vThresh: Double): Boolean
+
 }

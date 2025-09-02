@@ -201,7 +201,73 @@ class DroidCvPattern(
         return DroidCvPattern(mask)
     }
 
+    override fun getAverageBrightness(): Double {
+        return if (mat.channels() == 3) {
+            Mat().use { gray ->
+                Imgproc.cvtColor(mat, gray, Imgproc.COLOR_BGR2GRAY)
+                Core.mean(gray).`val`[0]
+            }
+        } else {
+            Core.mean(mat).`val`[0]
+        }
+    }
+
+    override fun getMinMaxBrightness(): Pair<Double, Double> {
+        return if (mat.channels() == 3) {
+            Mat().use { gray ->
+                Imgproc.cvtColor(mat, gray, Imgproc.COLOR_BGR2GRAY)
+                val minMax = Core.minMaxLoc(gray)
+                Pair(minMax.minVal, minMax.maxVal)
+            }
+        } else {
+            val minMax = Core.minMaxLoc(mat)
+            Pair(minMax.minVal, minMax.maxVal)
+        }
+    }
+
+
+    override fun isSaturationAndValueOver(sThresh: Double, vThresh: Double): Boolean {
+        Mat().use { hsv ->
+            Imgproc.cvtColor(mat, hsv, Imgproc.COLOR_BGR2HSV)
+            val mean = Core.mean(hsv)
+            val meanS = mean.`val`[1]
+            val meanV = mean.`val`[2]
+            return meanS >= sThresh && meanV >= vThresh
+        }
+    }
     private fun Hsv.scalar() = Scalar(h, s, v)
+
+    override fun getHsvAverage(): Hsv =
+        Mat().use { hsv ->
+            Imgproc.cvtColor(mat, hsv, Imgproc.COLOR_BGR2HSV)
+            Core.mean(hsv).`val`.let { (h, s, v, _) ->
+                Hsv(h, s, v)
+            }
+        }
+
+    override fun normalizeByHsv(lower: Hsv, upper: Hsv, invert: Boolean): Pattern {
+        val normalized = Mat().also { resultMat ->
+            Mat().use { maskMat ->
+                Imgproc.cvtColor(mat, maskMat, Imgproc.COLOR_BGR2HSV)
+                Core.inRange(maskMat, lower.scalar(), upper.scalar(), maskMat)
+                Core.bitwise_and(mat, mat, resultMat, maskMat)
+            }
+
+            Imgproc.cvtColor(resultMat, resultMat, Imgproc.COLOR_BGR2GRAY)
+            Imgproc.threshold(
+                resultMat,
+                resultMat,
+                0.0,
+                255.0,
+                Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU)
+
+            if (invert) {
+                Core.bitwise_not(resultMat, resultMat)
+            }
+        }
+
+        return DroidCvPattern(normalized, tag = tag)
+    }
 
     /**
      * Flood fills the mat.

@@ -79,5 +79,41 @@ class StandardAutomataApi @Inject constructor(
         similarity = similarity,
         requireAll = requireAll
     )
+
+    override fun Region.isBrightnessAbove(threshold: Double): Boolean =
+        screenshotManager
+            .getScreenshot()
+            .crop(transform.toImage(this))
+            .getAverageBrightness()
+            .let { avg ->
+                (avg >= threshold).also { result ->
+                    highlight(
+                        this.let {
+                            Region(it.x - 6, it.y - 6, it.width + 12, it.height + 12)
+                        },
+                        if (result) HighlightColor.Success else HighlightColor.Error
+                    )
+                }
+            }
+
+    override fun Region.isSaturationAndValueOver(sThresh: Double, vThresh: Double
+    ): Boolean = useColor {
+        screenshotManager
+            .getScreenshot()
+            .crop(transform.toImage(this))
+            .getHsvAverage()
+            .let { hsv ->
+                hsv.s >= sThresh && hsv.v >= vThresh
+            }
+            .also { result ->
+                highlight(
+                    this.let {
+                        Region(it.x - 6, it.y - 6, it.width + 12, it.height + 12)
+                    },
+                    color = if (result) HighlightColor.Success else HighlightColor.Error
+                )
+            }
+    }
+
 }
 

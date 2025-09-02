@@ -61,6 +61,52 @@ interface Pattern : AutoCloseable {
     fun floodFill(x: Double, y: Double, maxDiff: Double, newValue: Double): Pattern
 
     fun fillText(): Pattern
+
+    /**
+     * Returns the average brightness of the pattern's image.
+     * @return average brightness (0.0 = dark, 255.0 = bright)
+     */
+    fun getAverageBrightness(): Double
+
+    /**
+     * Returns the minimum and maximum brightness of the pattern's image.
+     * @return Pair(minBrightness, maxBrightness) (0.0 = dark, 255.0 = bright)
+     */
+    fun getMinMaxBrightness(): Pair<Double, Double>
+
+    /**
+     * Checks if the average Saturation (S) and Value (V) of this Pattern
+     * exceed the specified thresholds.
+     *
+     * ⚠️ When calling this function inside `useSameSnapIn`, be aware that it may
+     * reuse a gray cached snapshot and return incorrect results.
+     *
+     * @param sThresh Saturation threshold.
+     * @param vThresh Value (brightness) threshold.
+     * @return Boolean True if both average S and V exceed the thresholds.
+     */
+    fun isSaturationAndValueOver(sThresh: Double, vThresh: Double): Boolean
+
+    /**
+     * Computes the average hue, saturation, and value (HSV) of this image region.
+     */
+    fun getHsvAverage(): Hsv
+
+    /**
+     * Normalizes the image by masking pixels within the specified HSV range
+     * and converting the result into a binary image.
+     *
+     * ⚠️ When calling this function inside `useSameSnapIn`, be aware that it may
+     * reuse a gray cached snapshot and return incorrect results.
+     *
+     * @param lower the lower bound of the HSV range
+     * @param upper the upper bound of the HSV range
+     * @param invert if true, the binary result is inverted.
+     * 　　　　　　　　 Set to true for white text
+     * @return a [Pattern] containing the normalized image
+     */
+    fun normalizeByHsv(lower: Hsv, upper: Hsv, invert: Boolean = false): Pattern
+
 }
 
 /**
