@@ -5,7 +5,6 @@ import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
-import io.github.fate_grand_automata.scripts.interfaces.AttackChainInterface
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
@@ -13,12 +12,12 @@ import javax.inject.Inject
 @ScriptScope
 class MightyChainHandler @Inject constructor(
     private val utils: Utils
-): AttackChainInterface {
+) {
     // We want 3 unique types, the magic number
     val totalUniqueCardTypesPermitted = 3
 
     // Returns null if uniqueCards cannot be found
-    override fun pick (
+    fun pick (
         cards: List<ParsedCard>,
         npUsage: NPUsage,
         npTypes: Map<FieldSlot, CardTypeEnum>,
@@ -36,18 +35,14 @@ class MightyChainHandler @Inject constructor(
                 // Get np if there is only 1 (since we want to try for Brave Chain)
                 val firstNp = npUsage.nps.firstOrNull()
                 firstNp?.toFieldSlot()
-            } else {
+            } else if (braveChainEnum == BraveChainEnum.Always) {
+                // Force brave chain only if it always wants a Brave Chain
                 val braveChainCapableFieldSlots = utils.getFieldSlotsWithValidBraveChain(cards, npUsage)
-                // If there is Servant Priority, the first card is most important.
-                // Meaning if first card cannot Brave Chain, we ignore Brave Chain
-                if (forceServantPriority) {
-                    val firstCardFieldSlot = cards.firstOrNull()?.fieldSlot
-                    if (braveChainCapableFieldSlots.contains(firstCardFieldSlot)) firstCardFieldSlot
-                    else null
-                }
                 val braveChainPriorityCard = cards.firstOrNull { braveChainCapableFieldSlots.contains(it.fieldSlot) }
                 // Return the first valid one, since it is already the highest priority
                 braveChainPriorityCard?.fieldSlot
+            } else {
+                null
             }
 
         return pick(
@@ -107,7 +102,7 @@ class MightyChainHandler @Inject constructor(
         return combinedCards
     }
 
-    override fun isAttackChainAllowed (
+    fun isMightyChainAllowed (
         cards: List<ParsedCard>,
         npUsage: NPUsage,
         npTypes: Map<FieldSlot, CardTypeEnum>,
