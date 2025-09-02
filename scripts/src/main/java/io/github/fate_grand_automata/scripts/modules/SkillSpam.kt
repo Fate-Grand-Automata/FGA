@@ -35,6 +35,26 @@ class SkillSpam @Inject constructor(
         // to stay stable even with bright backgrounds or low-contrast cases.
         private const val VALUE_THRESH = 60.0
         private const val SATURATION_THRESH = 100.0
+
+        /*
+         * --- Detailed testing notes ---
+         *
+         * NP gauge:
+         * - S only → misdetection (e.g., NP 99%: high S / low V)
+         * - V only → misdetection (e.g., bright background: high V / low S)
+         * - Brightness (gray) alone is unstable due to blinking/gradients
+         * → Best stability with S && V
+         *
+         * Strict boundaries (no margin):
+         * - NP charged   H: 11..22, S: 160..255, V: 74..238, gray: 46..170
+         * - NP low       H: 0..125, S: 20..255,  V: 2..40,   gray: 1..28
+         *
+         * Skill cooldown:
+         * - on cooldown  H: 13..16, S: 39..45, V: 72..85,   gray: 68..81
+         * - ready        H: 0..32,  S: 0..60,  V: 188..255, gray: 179..255
+         *
+         * Tested stages: Fuyuki, Summer Event Beach
+         */
     }
 
     fun spamSkills() {
