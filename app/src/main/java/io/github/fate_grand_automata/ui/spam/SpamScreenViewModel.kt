@@ -1,6 +1,8 @@
 package io.github.fate_grand_automata.ui.spam
 
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,7 +39,9 @@ class SpamScreenViewModel @Inject constructor(
         @Deprecated("Use act instead")
         val target: MutableState<SkillSpamTarget>,
         val waves: MutableState<Set<Int>>,
-        val act: MutableState<AutoSkillAction?>
+        val act: MutableState<AutoSkillAction?>,
+        val priority: MutableIntState,
+        val repeatLimit: MutableIntState
     )
 
     data class SpamState(
@@ -59,7 +63,9 @@ class SpamScreenViewModel @Inject constructor(
                         starCond = mutableStateOf(skill.star),
                         target = mutableStateOf(skill.target),
                         waves = mutableStateOf(skill.waves),
-                        act = mutableStateOf(AutoSkillCommand.parse(skill.act).stages.flatten().flatten().firstOrNull())
+                        act = mutableStateOf(AutoSkillCommand.parse(skill.act).stages.flatten().flatten().firstOrNull()),
+                        priority = mutableIntStateOf(skill.priority),
+                        repeatLimit = mutableIntStateOf(skill.maxRepeatCount.coerceIn(1, 99))
                     )
                 }
             )
@@ -69,6 +75,8 @@ class SpamScreenViewModel @Inject constructor(
 
     private fun applyPreset(state: List<SpamState>, spamMode: SpamEnum) {
         val allWaves = setOf(1, 2, 3)
+
+        var priority = 0
 
         state.forEach { servant ->
             servant.np.spamMode.value = spamMode
@@ -81,6 +89,8 @@ class SpamScreenViewModel @Inject constructor(
                 skill.target.value = SkillSpamTarget.Self
                 skill.waves.value = allWaves
                 skill.act.value = null
+                skill.priority.intValue = priority++
+                skill.repeatLimit.intValue = 1
             }
         }
     }
@@ -114,7 +124,9 @@ class SpamScreenViewModel @Inject constructor(
                         waves = skill.waves.value,
                         act = skill.act.value
                             ?.let { actValue -> SkillMakerEntry.Action(actValue).toString() }
-                            ?: ""
+                            ?: "",
+                        priority = skill.priority.intValue,
+                        maxRepeatCount = skill.repeatLimit.intValue.coerceIn(1, 99)
                     )
                 }
             )
