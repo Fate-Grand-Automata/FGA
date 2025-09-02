@@ -188,11 +188,34 @@ Order Change"</string>
     <string name="p_boost_item_disabled">"關閉"</string>
     <string name="p_boost_item_skip">"跳過"</string>
     <string name="spam">"自動模式"</string>
+    <string name="spam_short">自動</string>
     <string name="spam_target">"自動目標"</string>
+    <string name="spam_target_none">無</string>
+    <string name="spam_target_left">左</string>
+    <string name="spam_target_center">中</string>
+    <string name="spam_target_right">右</string>
+    <string name="spam_target_transform">变身</string>
+    <string name="spam_target_option_1">選項 1</string>
+    <string name="spam_target_option_2">選項 2</string>
+    <string name="spam_target_option_3">選項 3</string>
     <string name="spam_np">"自動寶具："</string>
     <string name="p_spam_none">"無"</string>
     <string name="p_spam_spam">"能放就放"</string>
-    <string name="p_spam_danger">"Danger 敵人時施放"</string>
+    <string name="p_spam_danger">"危險時"</string>
+    <string name="p_spam_mode">"自動模式"</string>
+    <string name="p_np_condition">"寶具狀態"</string>
+    <string name="p_np_gauge_none">"總是"</string>
+    <string name="p_np_gauge_low">"寶具不足時"</string>
+    <string name="p_np_gauge_ready">"寶具已充滿時"</string>
+    <string name="p_star_condition">星星狀態</string>
+    <string name="p_spam_star_none">總是</string>
+    <string name="p_spam_headline_none">未使用</string>
+    <string name="p_spam_headline_spam">Spam</string>
+    <string name="p_spam_headline_danger">Danger</string>
+    <string name="p_spam_supporting_none_hint">點擊設定</string>
+    <string name="p_spam_np_low">NP未滿</string>
+    <string name="p_spam_np_charged">NP已滿</string>
+    <string name="p_spam_repeat_until_used">重複直到使用</string>
     <string name="p_support_mode_first">"第一位支援"</string>
     <string name="p_support_mode_manual">"手動選擇"</string>
     <string name="p_support_mode_preferred">"偏好從者"</string>
@@ -396,4 +419,4 @@ Order Change"</string>
     <string name="p_max_gold_ember_total_count">"金種火最大領取數（總枚數）"</string>
     <string name="update_download_success">"更新已下載完成，於 5 秒鐘後重啟"</string>
     <string name="p_battle_config_use_servant_priority">"偏好從者"</string>
-                                                                                                                </resources>
+</resources>

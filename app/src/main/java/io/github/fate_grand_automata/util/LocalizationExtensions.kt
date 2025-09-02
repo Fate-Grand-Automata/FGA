@@ -6,9 +6,11 @@ import io.github.fate_grand_automata.scripts.enums.BondCEEffectEnum
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
+import io.github.fate_grand_automata.scripts.enums.NpGaugeEnum
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
 import io.github.fate_grand_automata.scripts.enums.SpamEnum
+import io.github.fate_grand_automata.scripts.enums.StarConditionEnum
 import io.github.fate_grand_automata.scripts.enums.SupportClass
 import io.github.fate_grand_automata.scripts.enums.SupportSelectionModeEnum
 
@@ -33,6 +35,25 @@ val SpamEnum.stringRes
         SpamEnum.None -> R.string.p_spam_none
         SpamEnum.Spam -> R.string.p_spam_spam
         SpamEnum.Danger -> R.string.p_spam_danger
+    }
+
+val NpGaugeEnum.stringRes
+    get() = when (this) {
+        NpGaugeEnum.None -> R.string.p_np_gauge_none
+        NpGaugeEnum.Low -> R.string.p_np_gauge_low
+        NpGaugeEnum.Ready -> R.string.p_np_gauge_ready
+        NpGaugeEnum.AtLeast10 -> R.string.p_np_gauge_at_least_10
+        NpGaugeEnum.AtLeast50 -> R.string.p_np_gauge_at_least_50
+    }
+
+val StarConditionEnum.stringRes
+    get() = when (this) {
+        StarConditionEnum.None -> R.string.p_spam_star_none
+        StarConditionEnum.BelowTen -> R.string.p_spam_star_below_ten
+        StarConditionEnum.BelowFifty -> R.string.p_spam_star_below_fifty
+        StarConditionEnum.AtLeastTen -> R.string.p_spam_star_10
+        StarConditionEnum.AtLeastFifty -> R.string.p_spam_star_50
+
     }
 
 val SupportClass.stringRes
