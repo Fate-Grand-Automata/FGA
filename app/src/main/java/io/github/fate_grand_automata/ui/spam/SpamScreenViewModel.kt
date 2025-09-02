@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
+import io.github.fate_grand_automata.scripts.enums.NpGaugeEnum
 import io.github.fate_grand_automata.scripts.enums.SpamEnum
 import io.github.fate_grand_automata.scripts.models.NpSpamConfig
 import io.github.fate_grand_automata.scripts.models.ServantSpamConfig
@@ -27,6 +28,7 @@ class SpamScreenViewModel @Inject constructor(
 
     data class SkillSpamState(
         val spamMode: MutableState<SpamEnum>,
+        val npMode: MutableState<NpGaugeEnum>,
         val target: MutableState<SkillSpamTarget>,
         val waves: MutableState<Set<Int>>
     )
@@ -46,6 +48,7 @@ class SpamScreenViewModel @Inject constructor(
                 skills = it.skills.map { skill ->
                     SkillSpamState(
                         spamMode = mutableStateOf(skill.spam),
+                        npMode = mutableStateOf(skill.np),
                         target = mutableStateOf(skill.target),
                         waves = mutableStateOf(skill.waves)
                     )
@@ -64,6 +67,7 @@ class SpamScreenViewModel @Inject constructor(
 
             servant.skills.forEach { skill ->
                 skill.spamMode.value = spamMode
+                skill.npMode.value = NpGaugeEnum.None
                 skill.target.value = SkillSpamTarget.Self
                 skill.waves.value = allWaves
             }
@@ -93,6 +97,7 @@ class SpamScreenViewModel @Inject constructor(
                 skills = it.skills.map { skill ->
                     SkillSpamConfig(
                         spam = skill.spamMode.value,
+                        np = skill.npMode.value,
                         target = skill.target.value,
                         waves = skill.waves.value
                     )
