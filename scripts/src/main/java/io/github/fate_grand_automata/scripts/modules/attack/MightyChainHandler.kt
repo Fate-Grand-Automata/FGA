@@ -5,7 +5,6 @@ import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
-import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.collections.Map
@@ -37,26 +36,17 @@ class MightyChainHandler @Inject constructor(
         )) return null
 
         // Check for Brave Chain
-        val braveChainFieldSlot =
-            if (braveChainEnum == BraveChainEnum.Avoid) null
-            else if (npUsage.nps.size == 1) {
-                // Get np if there is only 1 (since we want to try for Brave Chain)
-                val firstNp = npUsage.nps.firstOrNull()
-                firstNp?.toFieldSlot()
-            } else if (braveChainEnum == BraveChainEnum.Always) {
-                // Force brave chain only if it always wants a Brave Chain
-                val braveChainCapableFieldSlots = utils.getFieldSlotsWithValidBraveChain(cards, npUsage)
-                val braveChainPriorityCard = cards.firstOrNull { braveChainCapableFieldSlots.contains(it.fieldSlot) }
-                // Return the first valid one, since it is already the highest priority
-                braveChainPriorityCard?.fieldSlot
-            } else {
-                null
-            }
+        val braveChainFieldSlot = utils.getBraveChainFieldSlot(
+            cards = cards,
+            braveChainEnum = braveChainEnum,
+            npUsage = npUsage,
+            forceBraveChain = forceBraveChain,
+        )
 
         return pick(
             cards = cards,
             uniqueCardTypesAlreadyFilled = uniqueCardTypesFromNp,
-            fieldSlotForBraveChain = braveChainFieldSlot,
+            braveChainFieldSlot = braveChainFieldSlot,
             braveChainEnum = braveChainEnum,
             forceBraveChain = forceBraveChain,
         )
@@ -69,7 +59,7 @@ class MightyChainHandler @Inject constructor(
         // e.g. usually based on npSize
         uniqueCardTypesAlreadyFilled: Set<CardTypeEnum>,
         // In case of a Brave chain, we want to know what slot it is
-        fieldSlotForBraveChain: FieldSlot? = null,
+        braveChainFieldSlot: FieldSlot? = null,
         braveChainEnum: BraveChainEnum = BraveChainEnum.None,
         forceBraveChain: Boolean = false,
     ): List<ParsedCard>? {
@@ -83,10 +73,10 @@ class MightyChainHandler @Inject constructor(
                 it.type !in uniqueCardTypes
             }
             // If there is a single NP, we want to try for a Brave Mighty Chain
-            if (fieldSlotForBraveChain != null && braveChainEnum != BraveChainEnum.Avoid) {
+            if (braveChainFieldSlot != null && braveChainEnum != BraveChainEnum.Avoid) {
                 // Attempt to find one matching the fieldSlot
                 val fieldSlotList = filteredCards.filter {
-                    it.fieldSlot == fieldSlotForBraveChain
+                    it.fieldSlot == braveChainFieldSlot
                 }
                 // Even if it is empty, if forceBraveChain is on,
                 // it only accepts Brave Mighty Chains and not normal Mighty Chains

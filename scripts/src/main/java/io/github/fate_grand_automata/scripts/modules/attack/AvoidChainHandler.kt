@@ -19,6 +19,8 @@ class AvoidChainHandler @Inject constructor(
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
         avoidBraveChains: Boolean = true,
         avoidCardChains: Boolean = true,
+        cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
+        cardCountPerCardTypeMap: Map<CardTypeEnum, Int>? = null,
     ): List<ParsedCard>? {
         // If there are already 3 NPs, there is nothing to avoid
         if (npUsage.nps.size == 3) return null
@@ -47,8 +49,8 @@ class AvoidChainHandler @Inject constructor(
             }
         }
 
-        val cardsPerFieldSlotMap = utils.getCardsPerFieldSlotMap(cards, npUsage)
-        val cardsPerCardType = utils.getCardsPerCardTypeMap(cards, npTypes)
+        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(cards, npUsage)
+        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(cards, npTypes)
 
         // Otherwise, calculate
         val cardsNeeded = 3 - npUsage.nps.size
@@ -62,7 +64,7 @@ class AvoidChainHandler @Inject constructor(
                     // If there are already 2 selected cards with the same card slot
                     fieldSlotCount >= 2
                     // and there are still valid targets, skip
-                    && cardsPerFieldSlotMap.size > 1
+                    && cardCountPerFieldSlotMap.size > 1
                 )
             ) continue
 
@@ -70,7 +72,7 @@ class AvoidChainHandler @Inject constructor(
             val cardTypeCount = selectedCardTypes.getOrElse(cardType) { 0 }
             if (avoidCardChains
                 // There are at least 2 cards to choose from
-                && cardsPerCardType.size > 1
+                && cardCountPerCardTypeMap.size > 1
                 && (
                     cardTypeCount >= 2
                     // Or if it would make a Mighty Chain

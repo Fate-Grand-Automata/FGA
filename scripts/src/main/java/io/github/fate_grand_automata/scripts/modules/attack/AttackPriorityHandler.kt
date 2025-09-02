@@ -63,7 +63,6 @@ class AttackPriorityHandler @Inject constructor(
         npUsage: NPUsage = NPUsage.none,
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
         rearrange: Boolean = false,
-        hasServantPriority: Boolean = false,
     ): List<ParsedCard> {
         // All stunned cards are categorized as Unknown.
         // Filter all of them since those cards are to be avoided if possible
@@ -75,6 +74,11 @@ class AttackPriorityHandler @Inject constructor(
         val cardCountPerFieldSlotMap = utils.getCardsPerFieldSlotMap(cards, npUsage)
         val cardCountPerCardTypeMap = utils.getCardsPerCardTypeMap(cards, npTypes)
 
+        // Determine the type of chain priority
+        val indexOfAvoid = chainPriority.indexOf(ChainTypeEnum.Avoid)
+        val filteredChainPriority = if (indexOfAvoid == 0) listOf(ChainTypeEnum.Avoid) else chainPriority.subList(0, indexOfAvoid)
+
+        // Start
         var newCardOrder: List<ParsedCard>? = null
         var braveChainFallback: List<ParsedCard>? = null
         for (attackPriority in attackPriorityOrder) {
@@ -91,13 +95,14 @@ class AttackPriorityHandler @Inject constructor(
                     if (newCardOrder != null) continue
                     newCardOrder = cardChainPriorityHandler.pick(
                         cards = filteredCards,
-                        chainPriority = chainPriority,
+                        chainPriority = filteredChainPriority,
                         braveChainEnum = braveChainEnum,
                         npUsage = npUsage,
                         npTypes = npTypes,
-                        hasServantPriority = hasServantPriority,
                         // BraveChain is higher priority than color chain
-                        forceBraveChain = braveChainFallback != null
+                        forceBraveChain = braveChainFallback != null,
+                        cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
+                        cardCountPerCardTypeMap = cardCountPerCardTypeMap,
                     )
                 }
                 else -> continue

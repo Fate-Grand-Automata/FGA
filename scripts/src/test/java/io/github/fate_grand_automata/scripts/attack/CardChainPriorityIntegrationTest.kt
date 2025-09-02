@@ -11,25 +11,38 @@ import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.modules.attack.MightyChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.AttackPriorityHandler
+import io.github.fate_grand_automata.scripts.modules.attack.AvoidChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.Utils
 import io.github.fate_grand_automata.scripts.modules.attack.BraveChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.CardChainPriorityHandler
+import io.github.fate_grand_automata.scripts.modules.attack.ColorChainHandler
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-class MightyChainIntegrationTest {
-    lateinit var braveChainHandler: BraveChainHandler
+class CardChainPriorityIntegrationTest {
     lateinit var attackPriorityHandler: AttackPriorityHandler
+
+    lateinit var braveChainHandler: BraveChainHandler
+    lateinit var mightyChainHandler: MightyChainHandler
+    lateinit var colorChainHandler: ColorChainHandler
+    lateinit var avoidChainHandler: AvoidChainHandler
 
     @BeforeTest
     fun init() {
         val utils = Utils()
         braveChainHandler = BraveChainHandler(utils)
+        mightyChainHandler = MightyChainHandler(utils)
+        colorChainHandler = ColorChainHandler(utils)
+        avoidChainHandler = AvoidChainHandler(utils)
+
         attackPriorityHandler = AttackPriorityHandler(
             braveChainHandler = braveChainHandler,
             utils = utils,
             cardChainPriorityHandler = CardChainPriorityHandler(
-                mightyChainHandler = MightyChainHandler(utils)
+                mightyChainHandler = mightyChainHandler,
+                colorChainHandler = colorChainHandler,
+                avoidChainHandler = avoidChainHandler,
+                utils = utils,
             ),
         )
     }
@@ -40,13 +53,129 @@ class MightyChainIntegrationTest {
         rearrange: Boolean = false,
         npUsage: NPUsage = NPUsage.none,
     ): List<ParsedCard> {
-        val braveChainCards = braveChainHandler.pick(
+        val results = braveChainHandler.pick(
             cards = cards,
             braveChainEnum = braveChainEnum,
             npUsage = npUsage,
         ) ?: cards
         return attackPriorityHandler.rearrange(
-            cards = braveChainCards,
+            cards = results,
+            rearrange = rearrange,
+            npUsage = npUsage,
+        )
+    }
+
+    fun getDefaultMightyChainResult (
+        cards: List<ParsedCard>,
+        braveChainEnum: BraveChainEnum,
+        rearrange: Boolean = false,
+        npUsage: NPUsage = NPUsage.none,
+        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
+    ): List<ParsedCard> {
+        val results = mightyChainHandler.pick(
+            cards = cards,
+            npUsage = npUsage,
+            npTypes = npTypes,
+            braveChainEnum = braveChainEnum,
+            forceBraveChain = braveChainEnum == BraveChainEnum.Always,
+        ) ?: cards
+        return attackPriorityHandler.rearrange(
+            cards = results,
+            rearrange = rearrange,
+            npUsage = npUsage,
+        )
+    }
+
+    fun getDefaultColorChainResult (
+        cardType: CardTypeEnum,
+        cards: List<ParsedCard>,
+        braveChainEnum: BraveChainEnum,
+        rearrange: Boolean = false,
+        npUsage: NPUsage = NPUsage.none,
+        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
+    ): List<ParsedCard> {
+        val results = colorChainHandler.pick(
+            cardType = cardType,
+            cards = cards,
+            npUsage = npUsage,
+            npTypes = npTypes,
+            braveChainEnum = braveChainEnum,
+            forceBraveChain = braveChainEnum == BraveChainEnum.Always,
+        ) ?: cards
+        return attackPriorityHandler.rearrange(
+            cards = results,
+            rearrange = rearrange,
+            npUsage = npUsage,
+        )
+    }
+
+    fun getDefaultBusterChainResult (
+        cards: List<ParsedCard>,
+        braveChainEnum: BraveChainEnum,
+        rearrange: Boolean = false,
+        npUsage: NPUsage = NPUsage.none,
+        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
+    ): List<ParsedCard> {
+        return getDefaultColorChainResult(
+            cardType = CardTypeEnum.Buster,
+            cards = cards,
+            npUsage = npUsage,
+            npTypes = npTypes,
+            braveChainEnum = braveChainEnum,
+            rearrange = rearrange,
+        )
+    }
+
+    fun getDefaultArtsChainResult (
+        cards: List<ParsedCard>,
+        braveChainEnum: BraveChainEnum,
+        rearrange: Boolean = false,
+        npUsage: NPUsage = NPUsage.none,
+        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
+    ): List<ParsedCard> {
+        return getDefaultColorChainResult(
+            cardType = CardTypeEnum.Arts,
+            cards = cards,
+            npUsage = npUsage,
+            npTypes = npTypes,
+            braveChainEnum = braveChainEnum,
+            rearrange = rearrange,
+        )
+    }
+
+    fun getDefaultQuickChainResult (
+        cards: List<ParsedCard>,
+        braveChainEnum: BraveChainEnum,
+        rearrange: Boolean = false,
+        npUsage: NPUsage = NPUsage.none,
+        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
+    ): List<ParsedCard> {
+        return getDefaultColorChainResult(
+            cardType = CardTypeEnum.Quick,
+            cards = cards,
+            npUsage = npUsage,
+            npTypes = npTypes,
+            braveChainEnum = braveChainEnum,
+            rearrange = rearrange,
+        )
+    }
+
+    fun getDefaultAvoidChainResult (
+        cards: List<ParsedCard>,
+        braveChainEnum: BraveChainEnum,
+        rearrange: Boolean = false,
+        npUsage: NPUsage = NPUsage.none,
+        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
+    ): List<ParsedCard> {
+        val results = avoidChainHandler.pick(
+            cards = cards,
+            npUsage = npUsage,
+            npTypes = npTypes,
+            avoidBraveChains = braveChainEnum == BraveChainEnum.Avoid,
+            avoidCardChains = true,
+        ) ?: cards
+        return attackPriorityHandler.rearrange(
+            cards = results,
             rearrange = rearrange,
             npUsage = npUsage,
         )
@@ -211,7 +340,28 @@ class MightyChainIntegrationTest {
     }
 
     @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes - No Mighty chain`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes`() {
+        val cards = AttackLineUps.Standard.lineup1
+        val picked = attackPriorityHandler.pick(
+            cards = cards,
+            braveChainEnum = BraveChainEnum.WithNP,
+            npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+            npTypes = mapOf(
+                FieldSlot.B to CardTypeEnum.Quick
+            )
+        ).map { it.card }
+        val pickedDefault = getDefaultBraveChainResult(
+            cards = cards,
+            braveChainEnum = BraveChainEnum.WithNP,
+            npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+        ).map { it.card }
+
+        // No mighty chain. Expect NP Brave Chain output
+        assertThat(picked).isEqualTo(pickedDefault)
+    }
+
+    @Test
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes, raw`() {
         val cards = AttackLineUps.Standard.lineup1
         val picked = attackPriorityHandler.pick(
             cards = cards,
@@ -229,6 +379,29 @@ class MightyChainIntegrationTest {
 
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes & rearrange`() {
+        val cards = AttackLineUps.Standard.lineup1
+        val picked = attackPriorityHandler.pick(
+            cards = cards,
+            braveChainEnum = BraveChainEnum.WithNP,
+            npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+            npTypes = mapOf(
+                FieldSlot.B to CardTypeEnum.Quick
+            ),
+            rearrange = true
+        ).map { it.card }
+        val pickedDefault = getDefaultBraveChainResult(
+            cards = cards,
+            braveChainEnum = BraveChainEnum.WithNP,
+            npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+            rearrange = true
+        ).map { it.card }
+
+        // Same as above but swap position 2 and 3)
+        assertThat(picked).isEqualTo(pickedDefault)
+    }
+
+    @Test
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes & rearrange, raw`() {
         val cards = AttackLineUps.Standard.lineup1
         val picked = attackPriorityHandler.pick(
             cards = cards,
@@ -383,13 +556,13 @@ class MightyChainIntegrationTest {
 
     // Scenario for when 2 card types are found but not the 3rd
     @Test
-    fun `SingleServantOnly - lineup4 (BQQBQ) - No mighty chain`() {
+    fun `SingleServantOnly - lineup4 (1B,2Q,3Q,4B,5Q)`() {
         val cards = AttackLineUps.SingleServantOnly.lineup4
         val picked = attackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
         ).map { it.card }
-        val pickedDefault = getDefaultBraveChainResult(
+        val pickedDefault = getDefaultQuickChainResult(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
         ).map { it.card }
@@ -399,13 +572,13 @@ class MightyChainIntegrationTest {
 
     // Scenario for when 2 card types are found but not the 3rd
     @Test
-    fun `SingleServantOnly - lineup5 (QQQBB) - No mighty chain`() {
+    fun `SingleServantOnly - lineup5 (5Q,2Q,3Q,1B,4B)`() {
         val cards = AttackLineUps.SingleServantOnly.lineup5
         val picked = attackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
         ).map { it.card }
-        val pickedDefault = getDefaultBraveChainResult(
+        val pickedDefault = getDefaultQuickChainResult(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
         ).map { it.card }
@@ -481,10 +654,16 @@ class MightyChainIntegrationTest {
                 FieldSlot.B to CardTypeEnum.Quick
             )
         ).map { it.card }
-        val pickedDefault = getDefaultBraveChainResult(
+
+        // Fall back to Quick chain
+        val pickedDefault = getDefaultQuickChainResult(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
-            npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0)
+            npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Quick,
+                FieldSlot.B to CardTypeEnum.Quick
+            )
         ).map { it.card }
 
         // Should fall back to default behaviour

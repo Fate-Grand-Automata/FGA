@@ -12,6 +12,9 @@ import javax.inject.Inject
 @ScriptScope
 class CardChainPriorityHandler @Inject constructor(
     private val mightyChainHandler: MightyChainHandler,
+    private val colorChainHandler: ColorChainHandler,
+    private val avoidChainHandler: AvoidChainHandler,
+    private val utils: Utils
 ) {
     fun pick(
         cards: List<ParsedCard>,
@@ -19,12 +22,14 @@ class CardChainPriorityHandler @Inject constructor(
         braveChainEnum: BraveChainEnum = BraveChainEnum.None,
         npUsage: NPUsage = NPUsage.none,
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
-        hasServantPriority: Boolean = false,
         forceBraveChain: Boolean = false,
         cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
         cardCountPerCardTypeMap: Map<CardTypeEnum, Int>? = null,
     ): List<ParsedCard>? {
         var newCardOrder: List<ParsedCard>? = null
+        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(cards, npUsage)
+        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(cards, npTypes)
+
         for (chain in chainPriority) {
             if (newCardOrder != null) continue
             newCardOrder = when (chain) {
@@ -36,7 +41,31 @@ class CardChainPriorityHandler @Inject constructor(
                     forceBraveChain = forceBraveChain,
                     cardCountPerCardTypeMap = cardCountPerCardTypeMap,
                 )
-                else -> null
+                ChainTypeEnum.Arts,
+                ChainTypeEnum.Buster,
+                ChainTypeEnum.Quick -> colorChainHandler.pick(
+                    cardType = when (chain) {
+                        ChainTypeEnum.Buster -> CardTypeEnum.Buster
+                        ChainTypeEnum.Arts -> CardTypeEnum.Arts
+                        ChainTypeEnum.Quick -> CardTypeEnum.Quick
+                        else -> CardTypeEnum.Unknown
+                    },
+                    cards = cards,
+                    npUsage = npUsage,
+                    npTypes = npTypes,
+                    braveChainEnum = braveChainEnum,
+                    forceBraveChain = forceBraveChain,
+                    cardCountPerCardTypeMap = cardCountPerCardTypeMap,
+                )
+                ChainTypeEnum.Avoid -> avoidChainHandler.pick(
+                    cards = cards,
+                    npUsage = npUsage,
+                    npTypes = npTypes,
+                    avoidBraveChains = braveChainEnum == BraveChainEnum.Avoid,
+                    avoidCardChains = true,
+                    cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
+                    cardCountPerCardTypeMap = cardCountPerCardTypeMap,
+                )
             }
         }
 

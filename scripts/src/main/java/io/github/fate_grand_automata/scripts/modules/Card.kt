@@ -73,7 +73,6 @@ class Card @Inject constructor(
                 chainPriority = chainPriority,
                 rearrange = rearrangeCardsPerWave.inCurrentWave(false),
                 npTypes = npTypes,
-                hasServantPriority = battleConfig.useServantPriority
             ).map { it.card }
         }
 
