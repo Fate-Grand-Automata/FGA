@@ -66,7 +66,7 @@ class Card @Inject constructor(
         val useChainPriority = battleConfig.useChainPriority
         if (useChainPriority) {
             val chainPriority = battleConfig.chainPriority.atWave(state.stage)
-            attackPriorityHandler.pick(
+            return attackPriorityHandler.pick(
                 cards = cardsOrderedByPriority,
                 npUsage = npUsage,
                 braveChainEnum = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
