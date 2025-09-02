@@ -108,6 +108,12 @@ class SpamScreenViewModel @Inject constructor(
         }
     )
 
+    fun onSkillDragged(newList: List<SkillWithServantRef>) {
+        newList.forEachIndexed { index, skill ->
+            skill.state.priority.intValue = index
+        }
+    }
+
     fun save() {
         battleConfig.spam = spamStates.map {
             ServantSpamConfig(
