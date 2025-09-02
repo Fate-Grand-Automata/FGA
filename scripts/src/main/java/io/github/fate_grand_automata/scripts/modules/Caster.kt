@@ -9,7 +9,12 @@ import io.github.fate_grand_automata.scripts.models.EnemyTarget
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.scripts.models.Skill
+import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.scripts.models.battle.BattleState
+import io.github.fate_grand_automata.scripts.models.getFieldSlot
+import io.github.fate_grand_automata.scripts.models.getSkillIndex
+import io.github.lib_automata.HighlightColor
+import io.github.lib_automata.Highlighter
 import io.github.lib_automata.Location
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
@@ -20,9 +25,24 @@ import kotlin.time.Duration.Companion.seconds
 class Caster @Inject constructor(
     api: IFgoAutomataApi,
     private val state: BattleState,
-    private val servantTracker: ServantTracker
+    private val servantTracker: ServantTracker,
+    private val highlight: Highlighter
 ) : IFgoAutomataApi by api {
+
+    companion object {
+        // The OK button becomes dark when the skill is on cooldown [0=dark, 255=bright]
+        private const val SKILL_OKBUTTON_DARKNESS_THRESH = 130
+    }
+
     private var skillConfirmation: Boolean? = null
+    data class SkillId(val teamSlot: TeamSlot, val skillIndex: Int)
+
+    private val ignoreSkills = mutableSetOf<SkillId>()
+
+    fun nextRun() {
+        ignoreSkills.clear()
+    }
+
 
     // TODO: Shouldn't be here ideally.
     //  Once we add more spam modes, Skill spam and NP spam can have their own variants.
@@ -55,22 +75,37 @@ class Caster @Inject constructor(
 
     private fun castSkill(skill: Skill, targets: List<ServantTarget>) {
         when (skill) {
-            is Skill.Master -> locations.battle.master.locate(skill)
-            is Skill.Servant -> locations.battle.locate(skill)
-        }.click()
+            is Skill.Master -> {
+                locations.battle.master.locate(skill).click()
+                confirmSkillUse()
+                targets.forEach { target ->
+                    prefs.skillDelay.wait()
+                    selectSkillTarget(target)
+                }
+                locations.battle.extraInfoWindowCloseClick.click()
+            }
+            is Skill.Servant -> {
+                val fieldSlot = skill.getFieldSlot()
+                val teamSlot = servantTracker.deployed[fieldSlot] ?: return
+                val skillId = SkillId(teamSlot, skill.getSkillIndex())
 
-        confirmSkillUse()
+                if (ignoreSkills.contains(skillId)) return
 
-        targets.forEach { target ->
-            prefs.skillDelay.wait()
+                locations.battle.locate(skill).click()
+                confirmSkillUse()
 
-            selectSkillTarget(target)
+                targets.forEach { target ->
+                    prefs.skillDelay.wait()
+                    selectSkillTarget(target)
+                }
+                // Eternal Sleep cannot be detected as a cooldown, so add the skill to ignoreSkills
+                if (locations.battle.skillUseRegion.exists(images[Images.SkillUse])
+                    && isSkillConfirmDialogOkButtonDisabled()) {
+                    ignoreSkills.add(skillId)
+                }
+                locations.battle.extraInfoWindowCloseClick.click()
+            }
         }
-
-        // Close the window that opens up if skill is on cool-down
-        // Also triggers skill speedup for FGO servers with that feature
-        // If we wait for too long here, the vanishing Attack button will not be detected in waitForAnimationToFinish()
-        locations.battle.extraInfoWindowCloseClick.click()
 
         if (targets.contains(ServantTarget.Transform)) {
             // wait extra for Mélusine and then add her 3rd Ascension image
@@ -187,5 +222,19 @@ class Caster @Inject constructor(
 
     fun use(card: CommandCard.Face) {
         locations.attack.clickLocation(card).click()
+    }
+
+    fun isSkillIgnored(teamSlot: TeamSlot, skillIndex: Int): Boolean {
+        return SkillId(teamSlot, skillIndex) in ignoreSkills
+    }
+
+    private fun isSkillConfirmDialogOkButtonDisabled(): Boolean {
+        val brightness = locations.battle.skillUseOkRegion.getPattern().getAverageBrightness()
+        val result =  brightness < SKILL_OKBUTTON_DARKNESS_THRESH.toDouble()
+        highlight (
+            locations.battle.skillUseOkRegion,
+            color = if (!result) HighlightColor.Success else HighlightColor.Error
+        )
+        return result
     }
 }
