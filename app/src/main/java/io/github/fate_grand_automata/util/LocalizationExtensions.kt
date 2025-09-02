@@ -4,6 +4,7 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.GameAreaMode
 import io.github.fate_grand_automata.scripts.enums.BondCEEffectEnum
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
@@ -25,8 +26,17 @@ val BraveChainEnum.stringRes
     get() = when (this) {
         BraveChainEnum.None -> R.string.p_brave_chains_don_t_care
         BraveChainEnum.WithNP -> R.string.p_brave_chains_with_np
-        BraveChainEnum.WithNPMighty -> R.string.p_brave_chains_with_np_mighty
+        BraveChainEnum.Always -> R.string.p_brave_chains_don_t_care
         BraveChainEnum.Avoid -> R.string.p_brave_chains_avoid
+    }
+
+val ChainTypeEnum.stringRes
+    get() = when (this) {
+        ChainTypeEnum.Arts -> R.string.p_chain_type_arts
+        ChainTypeEnum.Quick -> R.string.p_chain_type_quick
+        ChainTypeEnum.Buster -> R.string.p_chain_type_buster
+        ChainTypeEnum.Mighty -> R.string.p_chain_type_mighty
+        ChainTypeEnum.Avoid -> R.string.p_chain_type_avoid
     }
 
 val SpamEnum.stringRes

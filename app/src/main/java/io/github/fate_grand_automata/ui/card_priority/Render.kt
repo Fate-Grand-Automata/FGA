@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.ui.FGAListItemColors
 import io.github.fate_grand_automata.ui.drag_sort.DragSort
@@ -30,7 +31,8 @@ import io.github.fate_grand_automata.util.stringRes
 
 @Composable
 fun CardPriorityListItem.Render(
-    useServantPriority: Boolean
+    useServantPriority: Boolean,
+    useChainPriority: Boolean
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -61,7 +63,9 @@ fun CardPriorityListItem.Render(
                 ListItem(
                     modifier = Modifier
                         .weight(1f)
-                        .clickable { braveChainDialog.show() },
+                        .clickable {
+                            braveChainDialog.show()
+                        },
                     headlineContent = { Text(stringResource(R.string.p_brave_chains)) },
                     supportingContent = { Text(stringResource(braveChains.stringRes)) },
                     colors = FGAListItemColors()
@@ -85,6 +89,12 @@ fun CardPriorityListItem.Render(
             }
         }
 
+        if (useChainPriority) {
+            ChainPriority(
+                priorities = chainPriority
+            )
+        }
+
         if (useServantPriority) {
             ServantPriority(
                 priorities = servantPriority
@@ -98,7 +108,7 @@ private fun ServantPriority(
     priorities: MutableList<TeamSlot>
 ) {
     Text(
-        "Servant Priority".uppercase(),
+        stringResource(R.string.p_servant_priority).uppercase(),
         modifier = Modifier
             .padding(bottom = 5.dp, top = 16.dp)
     )
@@ -122,4 +132,51 @@ private fun ServantPriority(
             )
         }
     )
+}
+
+@Composable
+private fun ChainPriority(
+    priorities: MutableList<ChainTypeEnum>
+) {
+    Text(
+        stringResource(R.string.p_chain_priority).uppercase(),
+        modifier = Modifier
+            .padding(bottom = 10.dp, top = 10.dp)
+    )
+
+    val context = LocalContext.current
+
+    val getBackgroundColor = fun (enum: ChainTypeEnum): Int {
+        return (if (priorities.isAfterAvoid(enum)) R.color.colorDisabled
+            else when (enum) {
+                ChainTypeEnum.Arts -> R.color.colorArts
+                ChainTypeEnum.Quick -> R.color.colorQuick
+                ChainTypeEnum.Buster -> R.color.colorBuster
+                ChainTypeEnum.Mighty -> R.color.colorPrimaryDark
+                ChainTypeEnum.Avoid -> R.color.colorAvoid
+            }
+        ).let { res -> context.getColor(res) }
+    }
+    val localizedStringMap: MutableMap<ChainTypeEnum, String> = mutableMapOf()
+    priorities.forEach {
+        localizedStringMap[it] = stringResource(it.stringRes)
+    }
+    DragSort(
+        items = priorities,
+        viewConfigGrabber = {
+            DragSortAdapter.ItemViewConfig(
+                foregroundColor = Color.WHITE,
+                backgroundColor = getBackgroundColor(it),
+                text = localizedStringMap.getOrElse(it) { it.name },
+            )
+        },
+        updateBackgroundColorOnMove = true
+    )
+}
+
+fun MutableList<ChainTypeEnum>.isAfterAvoid(chainTypeEnum: ChainTypeEnum, indexOfAvoid: Int? = null): Boolean {
+    val avoidIndex = indexOfAvoid ?: this.indexOf(ChainTypeEnum.Avoid)
+    val enumIndex = this.indexOf(chainTypeEnum)
+    if (avoidIndex < 0) return false
+    return enumIndex > avoidIndex
 }

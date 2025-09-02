@@ -128,6 +128,8 @@
     <string name="p_screenshot_drops_unmodified">"未編集のスクリーンショットを保存"</string>
     <string name="p_screenshot_drops_unmodified_summary">"トリミングや拡縮されたスクリーンショットの代わりに、未編集でフルサイズのスクリーンショットを保存します"</string>
     <string name="p_boost_item">"ブーストアイテム"</string>
+    <string name="p_servant_priority">"サーヴァントの優先順位"</string>
+    <string name="p_chain_priority">"チェインの優先順位"</string>
     <string name="p_brave_chains">"Brave Chains"</string>
     <string name="p_rearrange_cards">"優先順位を逆転する"</string>
     <string name="p_skip_servant_face_checks">"サーヴァント画像チェックをスキップ"</string>
@@ -188,8 +190,13 @@
     <string name="p_refill_type_sq">"聖晶石"</string>
     <string name="p_brave_chains_don_t_care">"考慮しない"</string>
     <string name="p_brave_chains_with_np">"宝具と同時に"</string>
-    <string name="p_brave_chains_with_np_mighty">"宝具と同時に（マイティ）"</string>
+    <string name="p_brave_chains_always">"いつも使用"</string>
     <string name="p_brave_chains_avoid">"使用しない"</string>
+    <string name="p_chain_type_quick">"Quick"</string>
+    <string name="p_chain_type_arts">"Arts"</string>
+    <string name="p_chain_type_buster">"Buster"</string>
+    <string name="p_chain_type_mighty">"マイティ"</string>
+    <string name="p_chain_type_avoid">"おわり"</string>
     <string name="p_boost_item_disabled">"使用確認OFF"</string>
     <string name="p_boost_item_skip">"使用しない"</string>
     <string name="spam">"リピートモード"</string>
@@ -413,5 +420,6 @@
     <string name="skill_maker_kukulkan_choice_2">"10個消費する"</string>
 
     <string name="p_battle_config_use_servant_priority">"サーヴァントの優先順位を設定する"</string>
+    <string name="p_battle_config_use_chain_priority">"チェインの優先順位を設定する"</string>
 
 </resources>

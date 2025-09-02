@@ -125,6 +125,8 @@ Order Change"</string>
     <string name="p_screenshot_drops_unmodified">"Save unmodified screenshots"</string>
     <string name="p_screenshot_drops_unmodified_summary">"Save unmodified full-screen screenshots instead of cropped and rescaled screenshots"</string>
     <string name="p_boost_item">"加速道具"</string>
+    <string name="p_servant_priority">"从者优先级"</string>
+    <string name="p_chain_priority">"追击连携先级"</string>
     <string name="p_brave_chains">"追击连携"</string>
     <string name="p_rearrange_cards">"调换顺序
 （优先级高的卡后出）"</string>
@@ -186,8 +188,13 @@ Order Change"</string>
     <string name="p_refill_type_sq">"圣晶石"</string>
     <string name="p_brave_chains_don_t_care">"无偏好"</string>
     <string name="p_brave_chains_with_np">"宝具施放后"</string>
-    <string name="p_brave_chains_with_np_mighty">"宝具施放后(Mighty)"</string>
+    <string name="p_brave_chains_always">"始终追求链接"</string>
     <string name="p_brave_chains_avoid">"避免追击连携"</string>
+    <string name="p_chain_type_quick">"迅击"</string>
+    <string name="p_chain_type_arts">"技击"</string>
+    <string name="p_chain_type_buster">"力击"</string>
+    <string name="p_chain_type_mighty">"Mighty"</string>
+    <string name="p_chain_type_avoid">"避免"</string>
     <string name="p_boost_item_disabled">"关闭"</string>
     <string name="p_boost_item_skip">"跳过"</string>
     <string name="spam">"瞎打模式"</string>
@@ -401,6 +408,7 @@ Order Change"</string>
     <string name="p_max_gold_ember_total_count">"金种火最大领取数（枚数）"</string>
     <string name="update_download_success">"下载成功。5秒后将重启APP。"</string>
     <string name="p_battle_config_use_servant_priority">"使用从者优先级"</string>
+    <string name="p_battle_config_use_chain_priority">"使用追击连携先级"</string>
     <string name="reset_all">"全部重置"</string>
     <string name="reset_to_default">"重置为默认值"</string>
     <string name="p_choose_app_language">"选择语言"</string>

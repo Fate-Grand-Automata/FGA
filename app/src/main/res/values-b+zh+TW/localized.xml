@@ -125,6 +125,8 @@ Order Change"</string>
     <string name="p_screenshot_drops_unmodified">"儲存原始截圖"</string>
     <string name="p_screenshot_drops_unmodified_summary">"儲存截圖時，保留原始截圖大小而不進行影像縮放"</string>
     <string name="p_boost_item">"加速道具"</string>
+    <string name="p_servant_priority">"偏好從者"</string>
+    <string name="p_chain_priority">"偏好Chain"</string>
     <string name="p_brave_chains">"Brave Chain"</string>
     <string name="p_rearrange_cards">"調換順序
 （優先性高的卡後出）"</string>
@@ -184,8 +186,13 @@ Order Change"</string>
     <string name="p_refill_type_sq">"聖晶石"</string>
     <string name="p_brave_chains_don_t_care">"無偏好"</string>
     <string name="p_brave_chains_with_np">"寶具施放後"</string>
-    <string name="p_brave_chains_with_np_mighty">"寶具施放後(Mighty)"</string>
+    <string name="p_brave_chains_always">"始终Brave Chain"</string>
     <string name="p_brave_chains_avoid">"避免Brave Chain"</string>
+    <string name="p_chain_type_quick">"Quick"</string>
+    <string name="p_chain_type_arts">"Arts"</string>
+    <string name="p_chain_type_buster">"Buster"</string>
+    <string name="p_chain_type_mighty">"Mighty"</string>
+    <string name="p_chain_type_avoid">"避免"</string>
     <string name="p_boost_item_disabled">"關閉"</string>
     <string name="p_boost_item_skip">"跳過"</string>
     <string name="spam">"自動模式"</string>
@@ -397,4 +404,5 @@ Order Change"</string>
     <string name="p_max_gold_ember_total_count">"金種火最大領取數（總枚數）"</string>
     <string name="update_download_success">"更新已下載完成，於 5 秒鐘後重啟"</string>
     <string name="p_battle_config_use_servant_priority">"偏好從者"</string>
+    <string name="p_battle_config_use_chain_priority">"偏好Chain"</string>
                                                                                                                 </resources>
