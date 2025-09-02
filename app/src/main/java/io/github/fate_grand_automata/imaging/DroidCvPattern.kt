@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.imaging
 
 import android.graphics.Bitmap
+import io.github.lib_automata.Hsv
 import io.github.lib_automata.Match
 import io.github.lib_automata.Pattern
 import io.github.lib_automata.Region
@@ -199,6 +200,8 @@ class DroidCvPattern(
         Core.bitwise_not(mask, mask)
         return DroidCvPattern(mask)
     }
+
+    private fun Hsv.scalar() = Scalar(h, s, v)
 
     /**
      * Flood fills the mat.
