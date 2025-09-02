@@ -19,7 +19,9 @@ data class SkillSpamConfig(
     val spam: SpamEnum = SpamEnum.None,
     val np: NpGaugeEnum = NpGaugeEnum.None,
     val star: StarConditionEnum = StarConditionEnum.None,
-    val target: SkillSpamTarget = SkillSpamTarget.None
+    @Deprecated("Use act instead")
+    val target: SkillSpamTarget = SkillSpamTarget.None,
+    val act: String = ""
 )
 
 data class NpSpamConfig(
