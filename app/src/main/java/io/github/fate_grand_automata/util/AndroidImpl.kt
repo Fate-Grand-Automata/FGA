@@ -34,10 +34,10 @@ class AndroidImpl @Inject constructor(
 
     override fun getResizableBlankPattern(): Pattern = DroidCvPattern()
 
-    override fun highlight(region: Region, duration: Duration, color: HighlightColor) {
+    override fun highlight(region: Region, duration: Duration, color: HighlightColor, text: String?) {
         scope.launch {
             try {
-                highlightManager.add(region, color)
+                highlightManager.add(region, color, text)
                 delay(duration.inWholeMilliseconds)
             } finally {
                 highlightManager.remove(region)

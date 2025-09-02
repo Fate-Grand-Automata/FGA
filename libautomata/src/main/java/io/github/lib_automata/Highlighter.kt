@@ -12,7 +12,8 @@ interface Highlighter {
     operator fun invoke(
         region: Region,
         color: HighlightColor,
-        duration: Duration = DEFAULT_DURATION
+        duration: Duration = DEFAULT_DURATION,
+        text: String? = null
     )
 }
 
@@ -21,10 +22,10 @@ class RealHighlighter @Inject constructor(
     private val platformImpl: PlatformImpl,
     private val transform: Transformer
 ) : Highlighter {
-    override fun invoke(region: Region, color: HighlightColor, duration: Duration) {
+    override fun invoke(region: Region, color: HighlightColor, duration: Duration, text: String?) {
         exitManager.checkExitRequested()
         if (platformImpl.prefs.debugMode) {
-            platformImpl.highlight(transform.toScreen(region), duration, color)
+            platformImpl.highlight(transform.toScreen(region), duration, color, text)
         }
     }
 }
