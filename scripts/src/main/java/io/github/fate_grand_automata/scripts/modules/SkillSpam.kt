@@ -14,6 +14,7 @@ import io.github.fate_grand_automata.scripts.models.SpamConfigPerTeamSlot
 import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.scripts.models.battle.BattleState
 import io.github.fate_grand_automata.scripts.models.skills
+import io.github.lib_automata.Hsv
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
@@ -29,6 +30,27 @@ class SkillSpam @Inject constructor(
 ) : IFgoAutomataApi by api {
     companion object {
         val skillSpamDelay = 0.25.seconds
+
+        // NP gauge full range (0-300) HSV bounds
+        private val npGaugeLower0to300 = Hsv(11.0, 160.0, 79.0)
+        private val npGaugeUpper0to300 = Hsv(60.0, 255.0, 255.0)
+
+        // 2nd gauge mask (experimental)
+        private val npGaugeLower100to300 = Hsv(20.0, 160.0, 79.0)
+        private val npGaugeUpper100to300 = Hsv(60.0, 255.0, 255.0)
+
+        // 3rd gauge mask (experimental)
+        private val npGaugeLower200to300 = Hsv(25.0, 160.0, 79.0)
+        private val npGaugeUpper200to300 = Hsv(60.0, 255.0, 255.0)
+
+        /**
+         * Fixed offset subtracted from the calculated NP value.
+         *
+         * Prevents skills from being incorrectly considered usable
+         * when NP is actually below the requirement.
+         * Slight underestimation is acceptable and safer.
+         */
+        private const val NP_OFFSET = 3
 
         // Skill cooldown detection (brightness of the bottom edge of the skill frame)
         private const val SKILL_COOLDOWN_BRIGHTNESS_THRESH = 102
@@ -80,7 +102,7 @@ class SkillSpam @Inject constructor(
             val skill = entry.servantSlot.skills()[entry.skillIndex]
             val targets = entry.skillConfig.determineTargets(entry.servantSlot)
             val targetSlot = entry.skillConfig.determineActualTargetSlot(entry.servantSlot)
-            var npCharged = false
+            var npValue = 0
             var starCount = 0
             var isUsable = false
 
@@ -101,7 +123,14 @@ class SkillSpam @Inject constructor(
                             }
 
                             if (hasNpChargedRelevant(entry)) {
-                                npCharged = targetSlot.isNpCharged()
+                                npValue = when (targetSlot.isNpCharged()) {
+                                    true -> 100
+                                    else -> 0
+                                }
+                            }
+
+                            if (hasNpValueRelevant(entry)) {
+                                npValue = targetSlot.getNp()
                             }
 
                             if (hasStarRelevant(entry)) {
@@ -115,7 +144,7 @@ class SkillSpam @Inject constructor(
                         break
                     }
 
-                    if (entry.skillConfig.canSpamFinal(npCharged, starCount)) {
+                    if (entry.skillConfig.canSpamFinal(npValue, starCount)) {
                         caster.castServantSkill(skill, targets)
                     }
                     repeats++
@@ -136,6 +165,13 @@ class SkillSpam @Inject constructor(
     private fun hasNpChargedRelevant(entry: SkillEntry): Boolean {
         return when (entry.skillConfig.np) {
             NpGaugeEnum.Low, NpGaugeEnum.Ready -> true
+            else -> false
+        }
+    }
+
+    private fun hasNpValueRelevant(entry: SkillEntry): Boolean {
+        return when (entry.skillConfig.np) {
+            NpGaugeEnum.AtLeast50, NpGaugeEnum.AtLeast10 -> true
             else -> false
         }
     }
@@ -204,10 +240,12 @@ class SkillSpam @Inject constructor(
         }
     }
 
-    private fun SkillSpamConfig.canSpamFinal(npCharged: Boolean, starCount: Int) : Boolean {
+    private fun SkillSpamConfig.canSpamFinal(npValue: Int, starCount: Int) : Boolean {
         val npCond = when (np) {
-            NpGaugeEnum.Low -> !npCharged
-            NpGaugeEnum.Ready -> npCharged
+            NpGaugeEnum.Low -> npValue < 100
+            NpGaugeEnum.Ready -> 100 <= npValue
+            NpGaugeEnum.AtLeast10 -> 10 <= npValue
+            NpGaugeEnum.AtLeast50 -> 50 <= npValue
             else -> true
         }
 
@@ -223,4 +261,23 @@ class SkillSpam @Inject constructor(
                 SATURATION_THRESH,
                 VALUE_THRESH
             )
+
+    /**
+     * Retrieves the servant's NP (Noble Phantasm) percentage (0-100%).
+     *
+     * Internally, the NP gauge value is an integer between 0 and 300,
+     * but any value above 100 is treated as 100 in this calculation.
+     *
+     * Note:
+     * - Subtracted by [NP_OFFSET] to prevent skills from being considered usable
+     *   when the actual NP value is below the required condition.
+     */
+    private fun FieldSlot.getNp(): Int {
+        val barRegion = locations.battle.npGaugeBarRegion(this)
+        val maxCount = barRegion.width
+        val count = barRegion.detectVisualBarLength(npGaugeLower0to300, npGaugeUpper0to300)
+
+        val np = (count * 100.0 / maxCount).toInt() - NP_OFFSET
+        return np.coerceAtLeast(0)
+    }
 }
