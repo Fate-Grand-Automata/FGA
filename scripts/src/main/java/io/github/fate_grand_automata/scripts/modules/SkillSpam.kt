@@ -3,6 +3,8 @@ package io.github.fate_grand_automata.scripts.modules
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.enums.NpGaugeEnum
 import io.github.fate_grand_automata.scripts.enums.SpamEnum
+import io.github.fate_grand_automata.scripts.enums.StarConditionEnum
+import io.github.fate_grand_automata.scripts.enums.contains
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.scripts.models.Skill
@@ -22,7 +24,8 @@ class SkillSpam @Inject constructor(
     private val servantTracker: ServantTracker,
     private val state: BattleState,
     private val spamConfig: SpamConfigPerTeamSlot,
-    private val caster: Caster
+    private val caster: Caster,
+    private val starTracker: CriticalStarTracker
 ) : IFgoAutomataApi by api {
     companion object {
         val skillSpamDelay = 0.25.seconds
@@ -78,6 +81,7 @@ class SkillSpam @Inject constructor(
             val targets = entry.skillConfig.determineTargets(entry.servantSlot)
             val targetSlot = entry.skillConfig.determineActualTargetSlot(entry.servantSlot)
             var npCharged = false
+            var starCount = 0
             var isUsable = false
 
             if (caster.canSpam(entry.skillConfig.spam) && (state.stage + 1) in entry.skillConfig.waves) {
@@ -99,6 +103,11 @@ class SkillSpam @Inject constructor(
                             if (hasNpChargedRelevant(entry)) {
                                 npCharged = targetSlot.isNpCharged()
                             }
+
+                            if (hasStarRelevant(entry)) {
+                                starTracker.updateStarCount()
+                                starCount = starTracker.starCount
+                            }
                         }
                     }
 
@@ -106,7 +115,7 @@ class SkillSpam @Inject constructor(
                         break
                     }
 
-                    if (entry.skillConfig.canSpamFinal(npCharged)) {
+                    if (entry.skillConfig.canSpamFinal(npCharged, starCount)) {
                         caster.castServantSkill(skill, targets)
                     }
                     repeats++
@@ -119,6 +128,10 @@ class SkillSpam @Inject constructor(
     private fun isSkillReady(skill: Skill.Servant): Boolean =
         locations.battle.skillCooldownCheckRegion(skill)
             .isBrightnessAbove(SKILL_COOLDOWN_BRIGHTNESS_THRESH.toDouble())
+
+    private fun hasStarRelevant(entry: SkillEntry) : Boolean {
+        return entry.skillConfig.star != StarConditionEnum.None
+    }
 
     private fun hasNpChargedRelevant(entry: SkillEntry): Boolean {
         return when (entry.skillConfig.np) {
@@ -191,14 +204,18 @@ class SkillSpam @Inject constructor(
         }
     }
 
-    private fun SkillSpamConfig.canSpamFinal(npCharged: Boolean) : Boolean {
+    private fun SkillSpamConfig.canSpamFinal(npCharged: Boolean, starCount: Int) : Boolean {
         val npCond = when (np) {
             NpGaugeEnum.Low -> !npCharged
             NpGaugeEnum.Ready -> npCharged
             else -> true
         }
 
-        return npCond
+        val starCond = when(star) {
+            StarConditionEnum.None -> true
+            else -> star.contains(starCount)
+        }
+        return npCond && starCond
     }
 
     private fun FieldSlot.isNpCharged() : Boolean = locations.battle.npGaugeEndRegion(this)

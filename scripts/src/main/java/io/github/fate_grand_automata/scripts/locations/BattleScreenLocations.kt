@@ -145,4 +145,11 @@ class BattleScreenLocations @Inject constructor(
     }
 
     val battleSafeMiddleOfScreenClick = Location(0, 550).xFromCenter()
+
+    val criticalStarRegion =
+        (if (isWide)
+            Region(-608, -126, 90, 44)
+        else Region(-436, -86, 88, 42))
+            .xFromRight()
+            .yFromBottom()
 }
