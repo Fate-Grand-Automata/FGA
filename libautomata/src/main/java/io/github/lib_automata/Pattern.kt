@@ -113,7 +113,19 @@ interface Pattern : AutoCloseable {
      */
     fun cropWhiteRegion(pad: Int = 2): Pattern
 
+    /**
+     * Counts the number of columns (HORIZONTAL) or rows (VERTICAL)
+     * that contain pixels within the specified HSV range.
+     *
+     * @param lower HSV lower bound for the target color.
+     * @param upper HSV upper bound for the target color.
+     * @param axis Direction to count: HORIZONTAL (columns) or VERTICAL (rows)
+     * @return The number of columns or rows containing pixels within the HSV range.
+     */
+    fun countPixelsInHsvRange(lower: Hsv, upper: Hsv, axis: Axis = Axis.HORIZONTAL): Int
 }
+
+enum class Axis { HORIZONTAL, VERTICAL }
 
 /**
  * Gets the width and height in the form of a [Size] object.

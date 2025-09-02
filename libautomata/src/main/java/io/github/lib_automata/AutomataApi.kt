@@ -106,4 +106,12 @@ interface AutomataApi {
      */
     fun Region.isSaturationAndValueOver(sThresh: Double, vThresh: Double): Boolean
 
+    /**
+     * Detects the horizontal width of pixels within the specified HSV range in this region.
+     *
+     * @param lower HSV lower bound for the target color.
+     * @param upper HSV upper bound for the target color.
+     * @return The width of pixels within the HSV range, in pixels.
+     */
+    fun Region.detectVisualBarLength(lower: Hsv, upper: Hsv): Int
 }

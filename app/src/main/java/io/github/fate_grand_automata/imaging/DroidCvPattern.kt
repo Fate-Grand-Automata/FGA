@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.imaging
 
 import android.graphics.Bitmap
+import io.github.lib_automata.Axis
 import io.github.lib_automata.Hsv
 import io.github.lib_automata.Match
 import io.github.lib_automata.Pattern
@@ -351,5 +352,52 @@ class DroidCvPattern(
 
         }
         return holePoints
+    }
+
+    override fun countPixelsInHsvRange(
+        lower: Hsv,
+        upper: Hsv,
+        axis: Axis
+    ): Int {
+        val gray = Mat()
+        val mask = Mat()
+        val hsvMat = Mat()
+        try {
+            Imgproc.cvtColor(mat, hsvMat, Imgproc.COLOR_BGR2HSV)
+            Core.inRange(hsvMat, lower.scalar(), upper.scalar(), mask)
+            Core.bitwise_and(mat, mat, gray, mask)
+
+            Imgproc.cvtColor(gray, gray, Imgproc.COLOR_BGR2GRAY)
+            Imgproc.threshold(
+                gray, gray,
+                0.0, 255.0,
+                Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU
+            )
+
+            return when (axis) {
+                Axis.HORIZONTAL -> {
+                    var count = 0
+                    for (x in 0 until gray.cols()) {
+                        val col = gray.col(x)
+                        if (Core.countNonZero(col) > 0) count++
+                        col.release()
+                    }
+                    count
+                }
+                Axis.VERTICAL -> {
+                    var count = 0
+                    for (y in 0 until gray.rows()) {
+                        val row = gray.row(y)
+                        if (Core.countNonZero(row) > 0) count++
+                        row.release()
+                    }
+                    count
+                }
+            }
+        } finally {
+            gray.release()
+            mask.release()
+            hsvMat.release()
+        }
     }
 }
