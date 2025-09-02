@@ -95,7 +95,11 @@ class AttackPriorityHandler @Inject constructor(
                     // If braveChainFallback does not exist,
                     // 'Avoid' is to be included, since it is treated as cardPriorityHandler's own fallback method
                     val allowAvoid = if (braveChainFallback == null) 1 else 0
-                    val filteredChainPriority = if (indexOfAvoid == 0) listOf(ChainTypeEnum.Avoid) else chainPriority.subList(0, indexOfAvoid + allowAvoid)
+                    val filteredChainPriority = when (indexOfAvoid) {
+                        -1 -> chainPriority
+                        0 -> listOf(ChainTypeEnum.Avoid)
+                        else -> chainPriority.subList(0, indexOfAvoid + allowAvoid)
+                    }
 
                     newCardOrder = cardChainPriorityHandler.pick(
                         cards = filteredCards,

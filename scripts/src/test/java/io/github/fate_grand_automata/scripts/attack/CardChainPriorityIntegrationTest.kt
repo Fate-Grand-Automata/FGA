@@ -195,7 +195,7 @@ class CardChainPriorityIntegrationTest {
     }
 
     @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ), No Mighty in chainPriority allowed`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ), No Mighty allowed`() {
         val cards = AttackLineUps.Standard.lineup1
         val picked = attackPriorityHandler.pick(
             cards = cards,
@@ -211,7 +211,7 @@ class CardChainPriorityIntegrationTest {
     }
 
     @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ),No Mighty in chainPriority allowed, raw`() {
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ), No Mighty allowed, raw`() {
         val cards = AttackLineUps.Standard.lineup1
         val picked = attackPriorityHandler.pick(
             cards = cards,
@@ -560,7 +560,7 @@ class CardChainPriorityIntegrationTest {
     }
 
     @Test
-    fun `SingleServantOnly - lineup3 (QQABB)`() {
+    fun `SingleServantOnly - lineup3 (5Q,2Q,3A,1B,4B)`() {
         val cards = AttackLineUps.SingleServantOnly.lineup3
         val picked = attackPriorityHandler.pick(
             cards = cards,
@@ -572,7 +572,29 @@ class CardChainPriorityIntegrationTest {
     }
 
     @Test
-    fun `SingleServantOnly - lineup3 (QQABB), with rearranged`() {
+    fun `SingleServantOnly - lineup3 (5Q,2Q,3A,1B,4B) - Buster priority`() {
+        val cards = AttackLineUps.SingleServantOnly.lineup3
+        val picked = attackPriorityHandler.pick(
+            cards = cards,
+            braveChainEnum = BraveChainEnum.WithNP,
+            chainPriority = listOf(ChainTypeEnum.Buster, ChainTypeEnum.Mighty),
+            npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+            npTypes = mapOf(
+                FieldSlot.B to CardTypeEnum.Buster
+            ),
+        ).map { it.card }
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.A,
+            CommandCard.Face.D,
+            CommandCard.Face.E,
+            CommandCard.Face.B,
+            CommandCard.Face.C,
+        )
+    }
+
+    @Test
+    fun `SingleServantOnly - lineup3 (5Q,2Q,3A,1B,4B), with rearranged`() {
         val cards = AttackLineUps.SingleServantOnly.lineup3
         val picked = attackPriorityHandler.pick(
             cards = cards,

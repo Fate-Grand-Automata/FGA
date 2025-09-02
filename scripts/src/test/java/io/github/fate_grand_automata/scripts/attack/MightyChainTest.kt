@@ -151,7 +151,7 @@ class MightyChainTest {
     }
 
     @Test
-    fun `SingleServantOnly - lineup3 (QQABB)`() {
+    fun `SingleServantOnly - lineup3 (5Q,2Q,3A,1B,4B)`() {
         val cards = AttackLineUps.SingleServantOnly.lineup3
         val picked = mightyChainHandler.pick(
             cards = cards,
