@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.scripts.models
 
 import io.github.fate_grand_automata.scripts.enums.NpGaugeEnum
 import io.github.fate_grand_automata.scripts.enums.SpamEnum
+import io.github.fate_grand_automata.scripts.enums.StarConditionEnum
 
 enum class SkillSpamTarget {
     None,
@@ -17,6 +18,7 @@ data class SkillSpamConfig(
     val waves: Set<Int> = (1..3).toSet(),
     val spam: SpamEnum = SpamEnum.None,
     val np: NpGaugeEnum = NpGaugeEnum.None,
+    val star: StarConditionEnum = StarConditionEnum.None,
     val target: SkillSpamTarget = SkillSpamTarget.None
 )
 
