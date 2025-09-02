@@ -98,6 +98,18 @@ class BattleScreenLocations @Inject constructor(
 
     val skillUseOkRegion = Region(120, 120, 4 ,4).xFromCenter()
 
+    fun skillCooldownCheckRegion(skill: Skill.Servant) = when (skill) {
+        Skill.Servant.A1 -> Region(105, 1221, 83, 1)
+        Skill.Servant.A2 -> Region(281, 1221, 83, 1)
+        Skill.Servant.A3 -> Region(457, 1221, 83, 1)
+        Skill.Servant.B1 -> Region(739, 1221, 83, 1)
+        Skill.Servant.B2 -> Region(915, 1221, 83, 1)
+        Skill.Servant.B3 -> Region(1091, 1221, 83, 1)
+        Skill.Servant.C1 -> Region(1373, 1221, 83, 1)
+        Skill.Servant.C2 -> Region(1549, 1221, 83, 1)
+        Skill.Servant.C3 -> Region(1725, 1221, 83, 1)
+    } + Location(if (isWide) 108 else 0, if (isWide) -42 else 0)
+
     fun servantOpenDetailsClick(slot: FieldSlot) =
         Location(locate(slot.skill2()).x, 810)
 

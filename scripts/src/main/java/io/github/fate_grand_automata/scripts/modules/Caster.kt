@@ -89,8 +89,6 @@ class Caster @Inject constructor(
                 val teamSlot = servantTracker.deployed[fieldSlot] ?: return
                 val skillId = SkillId(teamSlot, skill.getSkillIndex())
 
-                if (ignoreSkills.contains(skillId)) return
-
                 locations.battle.locate(skill).click()
                 confirmSkillUse()
 
