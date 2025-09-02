@@ -15,6 +15,7 @@ import javax.inject.Inject
 class AttackPriorityHandler @Inject constructor(
     private val cardChainPriorityHandler: CardChainPriorityHandler,
     private val braveChainHandler: BraveChainHandler,
+    private val utils: Utils,
 ) {
     fun rearrange(
         cards: List<ParsedCard>,
@@ -70,6 +71,10 @@ class AttackPriorityHandler @Inject constructor(
         val filteredCards = cards.filter { it.type != CardTypeEnum.Unknown }
         val finalFallback = filteredCards + (cards - filteredCards)
 
+        // Get all the supplementary data
+        val cardCountPerFieldSlotMap = utils.getCardsPerFieldSlotMap(cards, npUsage)
+        val cardCountPerCardTypeMap = utils.getCardsPerCardTypeMap(cards, npTypes)
+
         var newCardOrder: List<ParsedCard>? = null
         var braveChainFallback: List<ParsedCard>? = null
         for (attackPriority in attackPriorityOrder) {
@@ -79,6 +84,7 @@ class AttackPriorityHandler @Inject constructor(
                         cards = filteredCards,
                         braveChainEnum = braveChainEnum,
                         npUsage = npUsage,
+                        cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
                     )
                 }
                 AttackPriorityEnum.CardChainPriority -> {

@@ -21,6 +21,8 @@ class CardChainPriorityHandler @Inject constructor(
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
         hasServantPriority: Boolean = false,
         forceBraveChain: Boolean = false,
+        cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
+        cardCountPerCardTypeMap: Map<CardTypeEnum, Int>? = null,
     ): List<ParsedCard>? {
         var newCardOrder: List<ParsedCard>? = null
         for (chain in chainPriority) {
@@ -30,7 +32,9 @@ class CardChainPriorityHandler @Inject constructor(
                     cards = cards,
                     npUsage = npUsage,
                     npTypes = npTypes,
-                    forceBraveChain = forceBraveChain
+                    braveChainEnum = braveChainEnum,
+                    forceBraveChain = forceBraveChain,
+                    cardCountPerCardTypeMap = cardCountPerCardTypeMap,
                 )
                 else -> null
             }

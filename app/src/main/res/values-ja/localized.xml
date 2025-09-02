@@ -190,6 +190,7 @@
     <string name="p_refill_type_sq">"聖晶石"</string>
     <string name="p_brave_chains_don_t_care">"考慮しない"</string>
     <string name="p_brave_chains_with_np">"宝具と同時に"</string>
+    <string name="p_brave_chains_always">"いつも使用"</string>
     <string name="p_brave_chains_avoid">"使用しない"</string>
     <string name="p_chain_type_quick">"Quick"</string>
     <string name="p_chain_type_arts">"Arts"</string>

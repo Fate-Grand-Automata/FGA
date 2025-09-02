@@ -26,6 +26,7 @@ val BraveChainEnum.stringRes
     get() = when (this) {
         BraveChainEnum.None -> R.string.p_brave_chains_don_t_care
         BraveChainEnum.WithNP -> R.string.p_brave_chains_with_np
+        BraveChainEnum.Always -> R.string.p_brave_chains_don_t_care
         BraveChainEnum.Avoid -> R.string.p_brave_chains_avoid
     }
 

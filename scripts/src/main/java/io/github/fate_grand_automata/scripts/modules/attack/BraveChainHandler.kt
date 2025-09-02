@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.scripts.modules.attack
 
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
@@ -11,21 +12,13 @@ import javax.inject.Inject
 class BraveChainHandler @Inject constructor(
     private val utils: Utils
 ) {
-    fun isBraveChainAllowed (
-        braveChainEnum: BraveChainEnum,
-        cards: List<ParsedCard>,
-        npUsage: NPUsage
-    ): Boolean {
-        val cardsPerFieldSlotMap = utils.getCardsPerFieldSlotMap(cards, npUsage)
-        return isBraveChainAllowed(braveChainEnum, cardsPerFieldSlotMap)
-    }
-
     fun pick(
         cards: List<ParsedCard>,
         braveChainEnum: BraveChainEnum,
         npUsage: NPUsage = NPUsage.none,
+        cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
     ): List<ParsedCard>? {
-        val cardsPerFieldSlotMap = utils.getCardsPerFieldSlotMap(cards, npUsage)
+        val cardsPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(cards, npUsage)
         if (!isBraveChainAllowed(braveChainEnum, cardsPerFieldSlotMap)) return null
 
         val braveChainCapableFieldSlots = utils.getFieldSlotsWithValidBraveChain(cardsPerFieldSlotMap)

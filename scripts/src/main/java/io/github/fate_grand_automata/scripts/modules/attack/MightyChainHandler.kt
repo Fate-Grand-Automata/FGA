@@ -8,6 +8,7 @@ import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
+import kotlin.collections.Map
 
 @ScriptScope
 class MightyChainHandler @Inject constructor(
@@ -19,14 +20,21 @@ class MightyChainHandler @Inject constructor(
     // Returns null if uniqueCards cannot be found
     fun pick (
         cards: List<ParsedCard>,
-        npUsage: NPUsage,
-        npTypes: Map<FieldSlot, CardTypeEnum>,
-        braveChainEnum: BraveChainEnum,
-        forceServantPriority: Boolean,
-        forceBraveChain: Boolean,
+        npUsage: NPUsage = NPUsage.none,
+        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
+        braveChainEnum: BraveChainEnum = BraveChainEnum.None,
+        cardCountPerCardTypeMap: Map<CardTypeEnum, Int>? = null,
+        forceBraveChain: Boolean = false,
     ): List<ParsedCard>? {
         val uniqueCardTypesFromNp = npTypes.values.toSet()
-        if (!isMightyChainAllowed(npUsage, uniqueCardTypesFromNp, npTypes)) return null
+        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(cards, npTypes)
+        if (!isMightyChainAllowed(
+            cards = cards,
+            npUsage = npUsage,
+            uniqueCardTypesFromNp = uniqueCardTypesFromNp,
+            npTypes = npTypes,
+            cardCountPerCardTypeMap = cardCountPerCardTypeMap
+        )) return null
 
         // Check for Brave Chain
         val braveChainFieldSlot =
@@ -50,7 +58,6 @@ class MightyChainHandler @Inject constructor(
             uniqueCardTypesAlreadyFilled = uniqueCardTypesFromNp,
             fieldSlotForBraveChain = braveChainFieldSlot,
             braveChainEnum = braveChainEnum,
-            forceServantPriority = forceServantPriority,
             forceBraveChain = forceBraveChain,
         )
     }
@@ -64,7 +71,6 @@ class MightyChainHandler @Inject constructor(
         // In case of a Brave chain, we want to know what slot it is
         fieldSlotForBraveChain: FieldSlot? = null,
         braveChainEnum: BraveChainEnum = BraveChainEnum.None,
-        forceServantPriority: Boolean = false,
         forceBraveChain: Boolean = false,
     ): List<ParsedCard>? {
         val cardsToFind = totalUniqueCardTypesPermitted
@@ -77,7 +83,7 @@ class MightyChainHandler @Inject constructor(
                 it.type !in uniqueCardTypes
             }
             // If there is a single NP, we want to try for a Brave Mighty Chain
-            if (fieldSlotForBraveChain != null) {
+            if (fieldSlotForBraveChain != null && braveChainEnum != BraveChainEnum.Avoid) {
                 // Attempt to find one matching the fieldSlot
                 val fieldSlotList = filteredCards.filter {
                     it.fieldSlot == fieldSlotForBraveChain
@@ -105,27 +111,22 @@ class MightyChainHandler @Inject constructor(
     fun isMightyChainAllowed (
         cards: List<ParsedCard>,
         npUsage: NPUsage,
-        npTypes: Map<FieldSlot, CardTypeEnum>,
-        braveChainEnum: BraveChainEnum,
-        forceServantPriority: Boolean,
-        forceBraveChain: Boolean,
+        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
+        uniqueCardTypesFromNp: Set<CardTypeEnum>? = null,
+        cardCountPerCardTypeMap: Map<CardTypeEnum, Int>? = null,
     ): Boolean {
-        val uniqueCardTypesFromNp = npTypes.values.toSet()
-        return isMightyChainAllowed(npUsage, uniqueCardTypesFromNp, npTypes)
-    }
-
-    fun isMightyChainAllowed (
-        npUsage: NPUsage,
-        uniqueCardTypesFromNp: Set<CardTypeEnum>,
-        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap()
-    ): Boolean {
+        val uniqueCardTypesFromNp = uniqueCardTypesFromNp ?: npTypes.values.toSet()
+        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(cards, npTypes)
         val npUsageSize = npUsage.nps.size
 
         // if there are more than 1 NP and we don't know their types,
         // just do the default since we can't guarantee a mighty chain anyway
         if (npUsageSize > 0 && npTypes.size != npUsageSize) return false
 
-        // We stop if
+        // If we do not have 3 unique cards at least, it is impossible to Mighty Chain
+        if (cardCountPerCardTypeMap.size < 3) return false
+
+        // Success if
         return (
                 // number of nps is 1
                 npUsageSize == 1

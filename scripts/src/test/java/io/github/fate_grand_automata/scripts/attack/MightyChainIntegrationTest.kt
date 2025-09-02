@@ -27,6 +27,7 @@ class MightyChainIntegrationTest {
         braveChainHandler = BraveChainHandler(utils)
         attackPriorityHandler = AttackPriorityHandler(
             braveChainHandler = braveChainHandler,
+            utils = utils,
             cardChainPriorityHandler = CardChainPriorityHandler(
                 mightyChainHandler = MightyChainHandler(utils)
             ),
