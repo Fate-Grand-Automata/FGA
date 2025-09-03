@@ -127,10 +127,22 @@ class Utils @Inject constructor() {
                 )
             ) return null
 
+            val npFieldSlot = npFieldSlots.firstOrNull()
+
             // Otherwise, it is valid, but the correct cards must be selected
-            val filteredCards = cards.take(3).toMutableList()
+            val cardsNeeded = 3 - npUsage.nps.size
+            val filteredCards = cards.take(cardsNeeded).toMutableList()
             val firstFieldSlot =  filteredCards.first().fieldSlot
-            if (filteredCards.all { it.fieldSlot == firstFieldSlot }) {
+            if (
+                // If all cards are the same field slot
+                filteredCards.all { it.fieldSlot == firstFieldSlot }
+                && (
+                    // and it matches the NP
+                    npFieldSlot == firstFieldSlot
+                    // or the NP is null
+                        || npFieldSlot == null
+                )
+            ) {
                 val differentSlot = cards.firstOrNull() { it.fieldSlot != firstFieldSlot }
                 if (differentSlot == null) return null
                 // Just add new card to index 1, aka 2nd card
