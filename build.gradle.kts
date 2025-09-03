@@ -39,7 +39,10 @@ allprojects {
 subprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         compilerOptions {
-            freeCompilerArgs.add("-opt-in=kotlin.time.ExperimentalTime")
+            freeCompilerArgs.addAll(
+                "-opt-in=kotlin.time.ExperimentalTime",
+                "-opt-in=kotlin.uuid.ExperimentalUuidApi"
+            )
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
