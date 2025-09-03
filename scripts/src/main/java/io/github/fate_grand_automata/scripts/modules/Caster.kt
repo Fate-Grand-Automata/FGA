@@ -226,13 +226,8 @@ class Caster @Inject constructor(
         return SkillId(teamSlot, skillIndex) in ignoreSkills
     }
 
-    private fun isSkillConfirmDialogOkButtonDisabled(): Boolean {
-        val brightness = locations.battle.skillUseOkRegion.getPattern().getAverageBrightness()
-        val result =  brightness < SKILL_OKBUTTON_DARKNESS_THRESH.toDouble()
-        highlight (
-            locations.battle.skillUseOkRegion,
-            color = if (!result) HighlightColor.Success else HighlightColor.Error
+    private fun isSkillConfirmDialogOkButtonDisabled(): Boolean
+        = locations.battle.skillUseOkRegion.isBelowBrightness(
+            SKILL_OKBUTTON_DARKNESS_THRESH.toDouble()
         )
-        return result
-    }
 }

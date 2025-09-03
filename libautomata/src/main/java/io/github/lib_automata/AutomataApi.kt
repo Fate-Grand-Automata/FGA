@@ -114,4 +114,11 @@ interface AutomataApi {
      * @return The width of pixels within the HSV range, in pixels.
      */
     fun Region.detectVisualBarLength(lower: Hsv, upper: Hsv): Int
+
+    /**
+     * Returns true if the average brightness of this region is below the given threshold.
+     *
+     * @param threshold The brightness value to compare against.
+     */
+    fun Region.isBelowBrightness(threshold: Double): Boolean
 }

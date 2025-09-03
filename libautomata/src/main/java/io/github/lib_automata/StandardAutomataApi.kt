@@ -150,5 +150,19 @@ class StandardAutomataApi @Inject constructor(
                 )
             }
     }
+
+    override fun Region.isBelowBrightness(
+        threshold: Double
+    ): Boolean = screenshotManager
+        .getScreenshot()
+        .crop(transform.toImage(this))
+        .getAverageBrightness()
+        .let { brightness -> brightness < threshold }
+        .also { result ->
+            highlight(
+                this,
+                color = if (result) HighlightColor.Success else HighlightColor.Error
+            )
+        }
 }
 
