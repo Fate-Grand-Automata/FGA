@@ -39,8 +39,8 @@ class AvoidChainTest {
 
         assertThat(picked).containsExactly(
             CommandCard.Face.A,
-            CommandCard.Face.E,
             CommandCard.Face.B,
+            CommandCard.Face.E,
             CommandCard.Face.C,
             CommandCard.Face.D,
         )

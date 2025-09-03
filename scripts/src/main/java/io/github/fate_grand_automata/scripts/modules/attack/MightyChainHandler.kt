@@ -71,8 +71,9 @@ class MightyChainHandler @Inject constructor(
         var cachedFilteredCards: List<ParsedCard> = cards
         while (uniqueCardTypes.size < cardsToFind) {
             var filteredCards = cachedFilteredCards.filter {
+                it !in selectedCards
                 // Always look for a different card type
-                it.type !in uniqueCardTypes
+                && it.type !in uniqueCardTypes
             }
             cachedFilteredCards = filteredCards
 
@@ -90,7 +91,6 @@ class MightyChainHandler @Inject constructor(
             if (filteredCard == null) break // If cannot find, leave
             uniqueCardTypes.add(filteredCard.type)
             selectedCards.add(filteredCard)
-            cachedFilteredCards = cachedFilteredCards - filteredCard
         }
 
         // If there isn't a valid list of cards, reject and return null
