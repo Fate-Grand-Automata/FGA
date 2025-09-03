@@ -378,18 +378,19 @@ class DroidCvPattern(
                 Axis.HORIZONTAL -> {
                     var count = 0
                     for (x in 0 until gray.cols()) {
-                        val col = gray.col(x)
-                        if (Core.countNonZero(col) > 0) count++
-                        col.release()
+                        gray.col(x).use { col ->
+                            if (Core.countNonZero(col) > 0) count++
+                        }
                     }
                     count
                 }
                 Axis.VERTICAL -> {
                     var count = 0
                     for (y in 0 until gray.rows()) {
-                        val row = gray.row(y)
-                        if (Core.countNonZero(row) > 0) count++
-                        row.release()
+                        gray.row(y).use { row ->
+                            val row = gray.row(y)
+                            if (Core.countNonZero(row) > 0) count++
+                        }
                     }
                     count
                 }
