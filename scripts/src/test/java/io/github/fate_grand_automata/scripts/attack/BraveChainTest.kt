@@ -4,9 +4,7 @@ import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
-import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
-import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.modules.attack.Utils
 import io.github.fate_grand_automata.scripts.modules.attack.BraveChainHandler

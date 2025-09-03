@@ -2,6 +2,8 @@ package io.github.fate_grand_automata.scripts.attack
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
+import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
@@ -79,6 +81,20 @@ class UtilsTest {
     }
 
     @Test
+    fun `getCardsPerFieldSlotMap, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3-NeroNP`() {
+        val cards = AttackLineUps.Standard.lineup1
+        val result = utils.getCardsPerFieldSlotMap(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.C), 0)
+        )
+
+        assertThat(result.size, "Result.size").isEqualTo(3)
+        assertThat(result[FieldSlot.A], "FieldSlot.A").isEqualTo(1)
+        assertThat(result[FieldSlot.B], "FieldSlot.B").isEqualTo(2)
+        assertThat(result[FieldSlot.C], "FieldSlot.C").isEqualTo(3)
+    }
+
+    @Test
     fun `getFieldSlotsWithValidBraveChain, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
         val cards = AttackLineUps.Standard.lineup1
         val result = utils.getFieldSlotsWithValidBraveChain(
@@ -119,6 +135,18 @@ class UtilsTest {
 
         assertThat(result.size, "Result.size").isEqualTo(1)
         assertThat(result[0], "FieldSlotB").isEqualTo(FieldSlot.B)
+    }
+
+    @Test
+    fun `getFieldSlotsWithValidBraveChain, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3-NeroNP`() {
+        val cards = AttackLineUps.Standard.lineup1
+        val result = utils.getFieldSlotsWithValidBraveChain(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.C), 0)
+        )
+
+        assertThat(result.size, "Result.size").isEqualTo(1)
+        assertThat(result[0], "FieldSlotC").isEqualTo(FieldSlot.C)
     }
 
     @Test
@@ -223,5 +251,39 @@ class UtilsTest {
         assertThat(result[CardTypeEnum.Arts], "Arts").isEqualTo(2)
         assertThat(result[CardTypeEnum.Quick], "Quick").isEqualTo(null)
         assertThat(result[CardTypeEnum.Buster], "Buster").isEqualTo(3)
+    }
+
+    @Test
+    fun `getBraveChainFieldSlot, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
+        val cards = AttackLineUps.Standard.lineup1
+        val result = utils.getBraveChainFieldSlot(
+            cards = cards,
+            braveChainEnum = BraveChainEnum.Always,
+        )
+
+        assertThat(result).isNull()
+    }
+
+    @Test
+    fun `getBraveChainFieldSlot, Standard - lineup2 (1SB,5SQ,2SQ,3NA,4NA)`() {
+        val cards = AttackLineUps.Standard.lineup2
+        val result = utils.getBraveChainFieldSlot(
+            cards = cards,
+            braveChainEnum = BraveChainEnum.Always,
+        )
+
+        assertThat(result).isNull()
+    }
+
+    @Test
+    fun `getBraveChainFieldSlot, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1-KamaNP`() {
+        val cards = AttackLineUps.Standard.lineup2
+        val result = utils.getBraveChainFieldSlot(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+            braveChainEnum = BraveChainEnum.Always,
+        )
+
+        assertThat(result).isNull()
     }
 }

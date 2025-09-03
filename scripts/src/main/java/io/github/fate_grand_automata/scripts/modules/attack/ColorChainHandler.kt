@@ -31,10 +31,12 @@ open class ColorChainHandler @Inject constructor(
 
         // Check for Brave Chain
         val braveChainFieldSlot = utils.getBraveChainFieldSlot(
-            cards = cards,
             braveChainEnum = braveChainEnum,
+            cards = cards,
             npUsage = npUsage,
+            forceBraveChain = forceBraveChain,
         )
+        val braveChainEnum = if (forceBraveChain) BraveChainEnum.Always else braveChainEnum
 
         // if it passes the above, the actual implementation is very easy
         val cardsNeeded = 3 - npUsage.nps.size
@@ -49,7 +51,7 @@ open class ColorChainHandler @Inject constructor(
             if (newSelection == null) return null
             selectedCards = newSelection
         }
-        // If there is a single NP, try for a Brave Mighty Chain
+        // If there is a braveChainFieldSlot, try for a Brave Color Chain
         else if (braveChainFieldSlot != null) {
             // Attempt to find one matching the fieldSlot
             val fieldSlotList = selectedCards.filter {
@@ -58,7 +60,8 @@ open class ColorChainHandler @Inject constructor(
             // If there is a valid number of cards for the fieldSlot, attempt to Brave Chain
             // Even if it is not valid, if forceBraveChain is on,
             // it only accepts Brave Color Chains and not normal Color Chains
-            if (fieldSlotList.size >= cardsNeeded || forceBraveChain) selectedCards = fieldSlotList
+            if (fieldSlotList.size >= cardsNeeded || braveChainEnum == BraveChainEnum.Always)
+                selectedCards = fieldSlotList
         }
 
         if (selectedCards.size < cardsNeeded) return null

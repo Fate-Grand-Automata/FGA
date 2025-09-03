@@ -37,11 +37,12 @@ class MightyChainHandler @Inject constructor(
 
         // Check for Brave Chain
         val braveChainFieldSlot = utils.getBraveChainFieldSlot(
-            cards = cards,
             braveChainEnum = braveChainEnum,
+            cards = cards,
             npUsage = npUsage,
             forceBraveChain = forceBraveChain,
         )
+        val braveChainEnum = if (forceBraveChain) BraveChainEnum.Always else braveChainEnum
 
         return pick(
             cards = cards,
@@ -49,7 +50,6 @@ class MightyChainHandler @Inject constructor(
             uniqueCardTypesAlreadyFilled = uniqueCardTypesFromNp,
             braveChainFieldSlot = braveChainFieldSlot,
             braveChainEnum = braveChainEnum,
-            forceBraveChain = forceBraveChain,
         )
     }
 
@@ -63,7 +63,6 @@ class MightyChainHandler @Inject constructor(
         // In case of a Brave chain, we want to know what slot it is
         braveChainFieldSlot: FieldSlot? = null,
         braveChainEnum: BraveChainEnum = BraveChainEnum.None,
-        forceBraveChain: Boolean = false,
     ): List<ParsedCard>? {
         val cardsToFind = totalUniqueCardTypesPermitted
         val uniqueCardTypes = uniqueCardTypesAlreadyFilled.toMutableSet()
@@ -80,7 +79,7 @@ class MightyChainHandler @Inject constructor(
             }
             cachedFilteredCards = filteredCards
 
-            // If there is a single NP, we want to try for a Brave Mighty Chain
+            // If there is a braveChainFieldSlot, we want to try for a Brave Mighty Chain
             if (braveChainFieldSlot != null && braveChainEnum != BraveChainEnum.Avoid) {
                 // Attempt to find one matching the fieldSlot
                 val fieldSlotList = filteredCards.filter {
@@ -88,7 +87,7 @@ class MightyChainHandler @Inject constructor(
                 }
                 // Even if it is empty, if forceBraveChain is on,
                 // it only accepts Brave Mighty Chains and not normal Mighty Chains
-                if (fieldSlotList.isNotEmpty() || forceBraveChain) filteredCards = fieldSlotList
+                if (fieldSlotList.isNotEmpty() || braveChainEnum == BraveChainEnum.Always) filteredCards = fieldSlotList
             }
             val filteredCard = filteredCards.firstOrNull()
             if (filteredCard == null) break // If cannot find, leave

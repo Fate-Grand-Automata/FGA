@@ -112,7 +112,6 @@ class ColorChainTest {
                 npTypes = mapOf(
                     FieldSlot.A to CardTypeEnum.Quick
                 ),
-                braveChainEnum = BraveChainEnum.WithNP,
                 forceBraveChain = true
             )?.map { it.card } ?: emptyList()
         }
@@ -129,7 +128,13 @@ class ColorChainTest {
         assertThat(
             results.getOrElse(CardTypeEnum.Quick) { emptyList() },
             "Quick"
-        ).isEmpty()
+        ).containsExactly(
+            CommandCard.Face.B,
+            CommandCard.Face.E,
+            CommandCard.Face.A,
+            CommandCard.Face.C,
+            CommandCard.Face.D,
+        )
     }
 
     @Test
@@ -178,7 +183,6 @@ class ColorChainTest {
                 npTypes = mapOf(
                     FieldSlot.B to CardTypeEnum.Quick
                 ),
-                braveChainEnum = BraveChainEnum.WithNP,
                 forceBraveChain = true,
             )?.map { it.card } ?: emptyList()
         }

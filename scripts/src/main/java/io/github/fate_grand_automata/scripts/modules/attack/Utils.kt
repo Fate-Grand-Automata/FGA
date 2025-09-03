@@ -68,19 +68,35 @@ class Utils @Inject constructor() {
             .map { it }
     }
 
+    /**
+     * Returns a field slot for a BraveChain if there is one available
+     * @param braveChainEnum BraveChainEnum that determines the behavior of this function.
+     * BraveChainEnum.None -> Does not return a fieldSlot, since BraveChains are not forced.
+     * BraveChainEnum.Avoid -> Does not return a fieldSlot, since BraveChains are avoided.
+     * BraveChainEnum.WithNP -> Returns a field slot if there is 1 NP with a valid BraveChain.
+     * BraveChainEnum.Always -> Always returns a fieldSlot if there is a valid one.
+     * @param cards The list of cards available to choose from
+     * @param npUsage NPs that have been clicked
+     * @param forceBraveChain Treats braveChainEnum as BraveChainEnum.Always
+     * @returns A valid FieldSlot for a BraveChain or null if there is none
+     */
     fun getBraveChainFieldSlot (
-        cards: List<ParsedCard>,
         braveChainEnum: BraveChainEnum = BraveChainEnum.None,
+        cards: List<ParsedCard>,
         npUsage: NPUsage = NPUsage.none,
         forceBraveChain: Boolean = false,
     ): FieldSlot? {
+        val braveChainEnum = if (forceBraveChain) BraveChainEnum.Always else braveChainEnum
         return if (braveChainEnum == BraveChainEnum.Avoid) null
-        else if (braveChainEnum == BraveChainEnum.None && !forceBraveChain) return null
+        else if (braveChainEnum == BraveChainEnum.None) return null
         else if (npUsage.nps.size == 1) {
             // Get np if there is only 1 (since we want to try for Brave Chain)
             val firstNp = npUsage.nps.firstOrNull()
-            firstNp?.toFieldSlot()
-        } else if (braveChainEnum == BraveChainEnum.Always || forceBraveChain) {
+            val fieldSlot = firstNp?.toFieldSlot()
+            // Only return the field slot if it is valid for a Brave Chain
+            if (cards.filter { it.fieldSlot == fieldSlot }.size > 1) fieldSlot
+            else null
+        } else if (braveChainEnum == BraveChainEnum.Always) {
             // Force brave chain only if it always wants a Brave Chain
             val braveChainCapableFieldSlots = getFieldSlotsWithValidBraveChain(cards, npUsage)
             val braveChainPriorityCard = cards.firstOrNull { braveChainCapableFieldSlots.contains(it.fieldSlot) }
