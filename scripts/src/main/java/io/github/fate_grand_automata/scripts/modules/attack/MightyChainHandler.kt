@@ -67,11 +67,15 @@ class MightyChainHandler @Inject constructor(
         val uniqueCardTypes = uniqueCardTypesAlreadyFilled.toMutableSet()
 
         val selectedCards = mutableListOf<ParsedCard>()
+        // Cache the filteredList the first time, to make the next check faster
+        var cachedFilteredCards: List<ParsedCard> = cards
         while (uniqueCardTypes.size < cardsToFind) {
-            var filteredCards = cards.filter {
+            var filteredCards = cachedFilteredCards.filter {
                 // Always look for a different card type
                 it.type !in uniqueCardTypes
             }
+            cachedFilteredCards = filteredCards
+
             // If there is a single NP, we want to try for a Brave Mighty Chain
             if (braveChainFieldSlot != null && braveChainEnum != BraveChainEnum.Avoid) {
                 // Attempt to find one matching the fieldSlot
@@ -83,12 +87,13 @@ class MightyChainHandler @Inject constructor(
                 if (fieldSlotList.isNotEmpty() || forceBraveChain) filteredCards = fieldSlotList
             }
             val filteredCard = filteredCards.firstOrNull()
-            if (filteredCard == null) break // If cannot find, we leave
+            if (filteredCard == null) break // If cannot find, leave
             uniqueCardTypes.add(filteredCard.type)
             selectedCards.add(filteredCard)
+            cachedFilteredCards = cachedFilteredCards - filteredCard
         }
 
-        // If there isn't a valid list of cards, we reject and have empty be returned
+        // If there isn't a valid list of cards, reject and return null
         if (uniqueCardTypes.size < cardsToFind) return null
 
         // Otherwise, we return the expected output
