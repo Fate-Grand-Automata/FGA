@@ -87,24 +87,25 @@ class Utils @Inject constructor() {
         forceBraveChain: Boolean = false,
     ): FieldSlot? {
         val braveChainEnum = if (forceBraveChain) BraveChainEnum.Always else braveChainEnum
-        return if (braveChainEnum == BraveChainEnum.Avoid) null
-        else if (braveChainEnum == BraveChainEnum.None) return null
+        if (
+            braveChainEnum == BraveChainEnum.Avoid
+            || braveChainEnum == BraveChainEnum.None
+            // Since it is impossible to make a BraveChain
+            || npUsage.nps.size > 1) return null
         else if (npUsage.nps.size == 1) {
             // Get np if there is only 1 (since we want to try for Brave Chain)
             val firstNp = npUsage.nps.firstOrNull()
             val fieldSlot = firstNp?.toFieldSlot()
             // Only return the field slot if it is valid for a Brave Chain
-            if (cards.filter { it.fieldSlot == fieldSlot }.size > 1) fieldSlot
-            else null
+            if (cards.filter { it.fieldSlot == fieldSlot }.size > 1) return fieldSlot
         } else if (braveChainEnum == BraveChainEnum.Always) {
             // Force brave chain only if it always wants a Brave Chain
             val braveChainCapableFieldSlots = getFieldSlotsWithValidBraveChain(cards, npUsage)
             val braveChainPriorityCard = cards.firstOrNull { braveChainCapableFieldSlots.contains(it.fieldSlot) }
             // Return the first valid one, since it is already the highest priority
-            braveChainPriorityCard?.fieldSlot
-        } else {
-            null
+            return braveChainPriorityCard?.fieldSlot
         }
+        return null
     }
 
     fun getCardsForAvoidBraveChain (
