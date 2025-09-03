@@ -249,7 +249,7 @@ class SkillSpam @Inject constructor(
             else -> true
         }
 
-        val starCond = when(star) {
+        val starCond = when (star) {
             StarConditionEnum.None -> true
             else -> star.contains(starCount)
         }
