@@ -102,7 +102,7 @@ interface Pattern : AutoCloseable {
      * @param lower the lower bound of the HSV range
      * @param upper the upper bound of the HSV range
      * @param invert if true, the binary result is inverted.
-     * 　　　　　　　　 Set to true for white text
+     *               Set to true for white text
      * @return a [Pattern] containing the normalized image
      */
     fun normalizeByHsv(lower: Hsv, upper: Hsv, invert: Boolean = false): Pattern
