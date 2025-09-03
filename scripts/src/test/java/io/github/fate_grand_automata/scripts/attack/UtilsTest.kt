@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.scripts.attack
 
 import assertk.assertThat
+import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
@@ -394,6 +395,61 @@ class UtilsTest {
             when (braveChainEnum) {
                 BraveChainEnum.Always -> assertThat(result, braveChainEnum.toString())
                     .isEqualTo(FieldSlot.B)
+                else -> assertThat(result, braveChainEnum.toString()).isNull()
+            }
+        }
+    }
+
+    @Test
+    fun `getBraveChainFieldSlot, BusterFocus - lineup03 (1KB,2KB,3NA,4NA,5NB)`() {
+        for (braveChainEnum in BRAVE_CHAIN_ENUM_LIST) {
+            val cards = AttackLineUps.BusterFocus.lineup03
+            val result = utils.getBraveChainFieldSlot(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+            )
+
+            when (braveChainEnum) {
+                BraveChainEnum.Always -> assertThat(result, braveChainEnum.toString())
+                    .isEqualTo(FieldSlot.C)
+                else -> assertThat(result, braveChainEnum.toString()).isNull()
+            }
+        }
+    }
+
+    @Test
+    fun `getBraveChainFieldSlot, BusterFocus - lineup03 (1KB,2KB,3NA,4NA,5NB) - 2Kiyo-NP`() {
+        for (braveChainEnum in BRAVE_CHAIN_ENUM_LIST) {
+            val cards = AttackLineUps.BusterFocus.lineup03
+            val result = utils.getBraveChainFieldSlot(
+                cards = cards,
+                npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+                braveChainEnum = braveChainEnum,
+            )
+
+            when (braveChainEnum) {
+                BraveChainEnum.WithNP,
+                BraveChainEnum.Always, -> assertThat(result, braveChainEnum.toString())
+                    .isEqualTo(FieldSlot.B)
+                else -> assertThat(result, braveChainEnum.toString()).isNull()
+            }
+        }
+    }
+
+    @Test
+    fun `getBraveChainFieldSlot, BusterFocus - lineup03 (1KB,2KB,3NA,4NA,5NB) - 3Nero-NP`() {
+        for (braveChainEnum in BRAVE_CHAIN_ENUM_LIST) {
+            val cards = AttackLineUps.BusterFocus.lineup03
+            val result = utils.getBraveChainFieldSlot(
+                cards = cards,
+                npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
+                braveChainEnum = braveChainEnum,
+            )
+
+            when (braveChainEnum) {
+                BraveChainEnum.WithNP,
+                BraveChainEnum.Always, -> assertThat(result, braveChainEnum.toString())
+                    .isEqualTo(FieldSlot.C)
                 else -> assertThat(result, braveChainEnum.toString()).isNull()
             }
         }
