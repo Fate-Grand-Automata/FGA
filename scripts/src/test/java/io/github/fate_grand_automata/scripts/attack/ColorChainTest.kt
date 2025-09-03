@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.scripts.attack
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
+import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
@@ -111,6 +112,7 @@ class ColorChainTest {
                 npTypes = mapOf(
                     FieldSlot.A to CardTypeEnum.Quick
                 ),
+                braveChainEnum = BraveChainEnum.WithNP,
                 forceBraveChain = true
             )?.map { it.card } ?: emptyList()
         }
@@ -176,6 +178,7 @@ class ColorChainTest {
                 npTypes = mapOf(
                     FieldSlot.B to CardTypeEnum.Quick
                 ),
+                braveChainEnum = BraveChainEnum.WithNP,
                 forceBraveChain = true,
             )?.map { it.card } ?: emptyList()
         }

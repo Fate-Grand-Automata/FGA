@@ -111,6 +111,8 @@ class AttackPriorityHandler @Inject constructor(
                         cardCountPerCardTypeMap = cardCountPerCardTypeMap,
                         // BraveChain is higher priority than color chain
                         forceBraveChain = braveChainFallback != null
+                                && braveChainEnum != BraveChainEnum.Avoid
+                                && braveChainEnum != BraveChainEnum.None
                     )
                 }
                 else -> continue

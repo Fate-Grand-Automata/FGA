@@ -75,6 +75,7 @@ class Utils @Inject constructor() {
         forceBraveChain: Boolean = false,
     ): FieldSlot? {
         return if (braveChainEnum == BraveChainEnum.Avoid) null
+        else if (braveChainEnum == BraveChainEnum.None && !forceBraveChain) return null
         else if (npUsage.nps.size == 1) {
             // Get np if there is only 1 (since we want to try for Brave Chain)
             val firstNp = npUsage.nps.firstOrNull()
