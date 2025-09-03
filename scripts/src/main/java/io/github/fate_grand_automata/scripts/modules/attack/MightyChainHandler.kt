@@ -45,6 +45,7 @@ class MightyChainHandler @Inject constructor(
 
         return pick(
             cards = cards,
+            npUsage = npUsage,
             uniqueCardTypesAlreadyFilled = uniqueCardTypesFromNp,
             braveChainFieldSlot = braveChainFieldSlot,
             braveChainEnum = braveChainEnum,
@@ -55,6 +56,7 @@ class MightyChainHandler @Inject constructor(
     // Returns null if uniqueCards cannot be found
     private fun pick(
         cards: List<ParsedCard>,
+        npUsage: NPUsage = NPUsage.none,
         // Decreases number of cards to get
         // e.g. usually based on npSize
         uniqueCardTypesAlreadyFilled: Set<CardTypeEnum>,
@@ -66,14 +68,15 @@ class MightyChainHandler @Inject constructor(
         val cardsToFind = totalUniqueCardTypesPermitted
         val uniqueCardTypes = uniqueCardTypesAlreadyFilled.toMutableSet()
 
-        val selectedCards = mutableListOf<ParsedCard>()
+        var selectedCards = mutableListOf<ParsedCard>()
         // Cache the filteredList the first time, to make the next check faster
         var cachedFilteredCards: List<ParsedCard> = cards
         while (uniqueCardTypes.size < cardsToFind) {
             var filteredCards = cachedFilteredCards.filter {
-                it !in selectedCards
                 // Always look for a different card type
-                && it.type !in uniqueCardTypes
+                it.type !in uniqueCardTypes
+                // It should never reach here due to needing uniqueCardTypes, but just in case
+                && it !in selectedCards
             }
             cachedFilteredCards = filteredCards
 
@@ -95,6 +98,16 @@ class MightyChainHandler @Inject constructor(
 
         // If there isn't a valid list of cards, reject and return null
         if (uniqueCardTypes.size < cardsToFind) return null
+
+        // Do not have any BraveChains or it is invalid
+        if (braveChainEnum == BraveChainEnum.Avoid) {
+            val newSelection = utils.getCardsForAvoidBraveChain(
+                cards = selectedCards + cachedFilteredCards,
+                npUsage = npUsage,
+            )
+            if (newSelection == null) return null
+            selectedCards = newSelection.toMutableList()
+        }
 
         // Otherwise, we return the expected output
         val remainder = cards - selectedCards
