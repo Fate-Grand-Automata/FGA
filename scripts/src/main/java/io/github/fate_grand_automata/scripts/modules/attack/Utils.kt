@@ -2,7 +2,6 @@ package io.github.fate_grand_automata.scripts.modules.attack
 
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
-import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
@@ -91,10 +90,37 @@ class Utils @Inject constructor() {
         }
     }
 
-    fun List<ChainTypeEnum>.isAfterAvoid(chainTypeEnum: ChainTypeEnum, indexOfAvoid: Int? = null): Boolean {
-        val avoidIndex = indexOfAvoid ?: this.indexOf(ChainTypeEnum.Avoid)
-        val enumIndex = this.indexOf(chainTypeEnum)
-        if (avoidIndex < 0) return false
-        return enumIndex > avoidIndex
+    fun getCardsForAvoidBraveChain (
+        cards: List<ParsedCard>,
+        npUsage: NPUsage = NPUsage.none,
+    ): List<ParsedCard>? {
+        val npFieldSlots = npUsage.nps.map { it.toFieldSlot() }.toSet()
+        // If there is 2 or more NP, it will never be a BraveChain
+        if (npFieldSlots.size <= 1) {
+            val fieldSlotSet = cards.map { it.fieldSlot }.toSet()
+            if (
+            // If there is only 1 unique field slot in the list
+                fieldSlotSet.size == 1
+                && (
+                    // no NPs to cancel out
+                    npFieldSlots.isEmpty()
+                    // Or there is exactly 1 NP and it is the same
+                    || npFieldSlots.first() == fieldSlotSet.first()
+                )
+            ) return null
+
+            // Otherwise, it is valid, but the correct cards must be selected
+            val filteredCards = cards.take(3).toMutableList()
+            val firstFieldSlot =  filteredCards.first().fieldSlot
+            if (filteredCards.all { it.fieldSlot == firstFieldSlot }) {
+                val differentSlot = cards.firstOrNull() { it.fieldSlot != firstFieldSlot }
+                if (differentSlot == null) return null
+                // Just add new card to index 1, aka 2nd card
+                filteredCards.add(1, differentSlot)
+            }
+            return filteredCards + (cards - filteredCards)
+        }
+
+        return cards
     }
 }
