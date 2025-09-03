@@ -1,6 +1,5 @@
 package io.github.fate_grand_automata.ui.drag_sort
 
-import android.view.View
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.recyclerview.widget.ItemTouchHelper

@@ -163,8 +163,7 @@ class ApplyBraveChains @Inject constructor() {
         cards: List<ParsedCard>,
         braveChains: BraveChainEnum,
         rearrange: Boolean = false,
-        npUsage: NPUsage = NPUsage.none,
-        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap()
+        npUsage: NPUsage = NPUsage.none
     ): List<ParsedCard> {
         val picked = when (braveChains) {
             BraveChainEnum.None -> rearrange(
