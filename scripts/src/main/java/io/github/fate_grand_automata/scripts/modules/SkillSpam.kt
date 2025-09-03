@@ -210,9 +210,9 @@ class SkillSpam @Inject constructor(
                 2 -> {
                     if (actualSlot == FieldSlot.B) {
                         when (null) {
-                            deployed[FieldSlot.A] -> FieldSlot.A
-                            deployed[FieldSlot.C] -> FieldSlot.C
-                            else -> FieldSlot.A // Assume Left when Slot B is empty
+                            deployed[FieldSlot.A] -> FieldSlot.B
+                            deployed[FieldSlot.C] -> FieldSlot.A
+                            else -> FieldSlot.A // Assume Slot A when Slot B is empty
                         }
                     } else actualSlot
                 }
