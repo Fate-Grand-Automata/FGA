@@ -5,6 +5,7 @@ import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
+import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
@@ -39,8 +40,37 @@ open class ColorChainHandler @Inject constructor(
         val cardsNeeded = 3 - npUsage.nps.size
         var selectedCards = cards.filter { it.type == cardType }
 
-        // If there is a single NP, we want to try for a Brave Mighty Chain
-        if (braveChainFieldSlot != null && braveChainEnum != BraveChainEnum.Avoid) {
+
+        // Do not have any BraveChains or it is invalid
+        if (braveChainEnum == BraveChainEnum.Avoid) {
+            val npFieldSlots = npUsage.nps.map { it.toFieldSlot() }.toSet()
+            // If there is 2 or more NP, it will never be a BraveChain
+            if (npFieldSlots.size <= 1) {
+                val selectedCardFieldSlotSet = selectedCards.map { it.fieldSlot }.toSet()
+                if (
+                // If there is only 1 unique field slot in the selected list
+                    selectedCardFieldSlotSet.size == 1 && (
+                            // no NPs to cancel out
+                            npFieldSlots.isEmpty()
+                                    // Or there is exactly 1 NP and it is the same
+                                    || npFieldSlots.first() == selectedCardFieldSlotSet.first()
+                            )
+                ) return null
+
+                // Otherwise, it is valid, but the correct cards must be selected
+                val newSelection = selectedCards.take(3).toMutableList()
+                val newSelectFirstFieldSlot =  newSelection.first().fieldSlot
+                if (newSelection.all { it.fieldSlot == newSelectFirstFieldSlot }) {
+                    val differentSlot = selectedCards.firstOrNull() { it.fieldSlot != newSelectFirstFieldSlot }
+                    if (differentSlot == null) return null
+                    // Just add new card to index 1, aka 2nd card
+                    newSelection.add(1, differentSlot)
+                }
+                selectedCards = newSelection + (selectedCards - newSelection)
+            }
+        }
+        // If there is a single NP, try for a Brave Mighty Chain
+        else if (braveChainFieldSlot != null) {
             // Attempt to find one matching the fieldSlot
             val fieldSlotList = selectedCards.filter {
                 it.fieldSlot == braveChainFieldSlot
