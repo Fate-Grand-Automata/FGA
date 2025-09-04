@@ -7,6 +7,7 @@ import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.lib_automata.dagger.ScriptScope
+import javax.inject.Inject
 
 @ScriptScope
 class AttackUtils @Inject constructor() {
