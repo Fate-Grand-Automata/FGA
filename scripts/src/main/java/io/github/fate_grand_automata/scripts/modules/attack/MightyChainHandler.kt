@@ -11,7 +11,7 @@ import kotlin.collections.Map
 
 @ScriptScope
 class MightyChainHandler @Inject constructor(
-    private val utils: Utils
+    private val utils: AttackUtils
 ) {
     // We want 3 unique types, the magic number
     val totalUniqueCardTypesPermitted = 3

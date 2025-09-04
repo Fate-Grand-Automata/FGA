@@ -1,7 +1,6 @@
 package io.github.fate_grand_automata.scripts.modules.attack
 
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
-import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
@@ -11,7 +10,7 @@ import javax.inject.Inject
 
 @ScriptScope
 class BraveChainHandler @Inject constructor(
-    private val utils: Utils
+    private val utils: AttackUtils
 ) {
     fun pick(
         cards: List<ParsedCard>,

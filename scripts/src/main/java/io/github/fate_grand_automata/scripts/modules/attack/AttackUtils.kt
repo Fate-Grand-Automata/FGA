@@ -10,7 +10,7 @@ import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
 @ScriptScope
-class Utils @Inject constructor() {
+class AttackUtils @Inject constructor() {
     fun getCardsPerFieldSlotMap (
         cards: List<ParsedCard>,
         npUsage: NPUsage = NPUsage.none

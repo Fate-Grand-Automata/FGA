@@ -9,7 +9,7 @@ import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.modules.attack.MightyChainHandler
-import io.github.fate_grand_automata.scripts.modules.attack.Utils
+import io.github.fate_grand_automata.scripts.modules.attack.AttackUtils
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
@@ -19,7 +19,7 @@ class MightyChainTest {
     @BeforeTest
     fun init() {
         mightyChainHandler = MightyChainHandler(
-            utils = Utils()
+            utils = AttackUtils()
         )
     }
 

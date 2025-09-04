@@ -9,11 +9,11 @@ import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
-import io.github.fate_grand_automata.scripts.modules.attack.Utils
+import io.github.fate_grand_automata.scripts.modules.attack.AttackUtils
 import kotlin.test.Test
 
-class UtilsTest {
-    val utils = Utils()
+class AttackUtilsTest {
+    val utils = AttackUtils()
     val BRAVE_CHAIN_ENUM_LIST = BraveChainEnum.entries
 
     @Test

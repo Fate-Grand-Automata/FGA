@@ -11,7 +11,7 @@ import kotlin.collections.set
 
 @ScriptScope
 class AvoidChainHandler @Inject constructor(
-    private val utils: Utils
+    private val utils: AttackUtils
 ) {
     fun pick(
         cards: List<ParsedCard>,

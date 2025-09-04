@@ -5,13 +5,12 @@ import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
-import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
 @ScriptScope
 open class ColorChainHandler @Inject constructor(
-    private val utils: Utils
+    private val utils: AttackUtils
 ) {
     // Returns null if uniqueCards cannot be found
     fun pick (

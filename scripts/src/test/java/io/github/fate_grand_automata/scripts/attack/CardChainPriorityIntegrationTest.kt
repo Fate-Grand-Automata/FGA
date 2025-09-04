@@ -13,7 +13,7 @@ import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.modules.attack.MightyChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.AttackPriorityHandler
 import io.github.fate_grand_automata.scripts.modules.attack.AvoidChainHandler
-import io.github.fate_grand_automata.scripts.modules.attack.Utils
+import io.github.fate_grand_automata.scripts.modules.attack.AttackUtils
 import io.github.fate_grand_automata.scripts.modules.attack.BraveChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.CardChainPriorityHandler
 import io.github.fate_grand_automata.scripts.modules.attack.ColorChainHandler
@@ -30,7 +30,7 @@ class CardChainPriorityIntegrationTest {
 
     @BeforeTest
     fun init() {
-        val utils = Utils()
+        val utils = AttackUtils()
         braveChainHandler = BraveChainHandler(utils)
         mightyChainHandler = MightyChainHandler(utils)
         colorChainHandler = ColorChainHandler(utils)

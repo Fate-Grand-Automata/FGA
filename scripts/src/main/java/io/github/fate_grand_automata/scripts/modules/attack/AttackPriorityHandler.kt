@@ -15,7 +15,7 @@ import javax.inject.Inject
 class AttackPriorityHandler @Inject constructor(
     private val cardChainPriorityHandler: CardChainPriorityHandler,
     private val braveChainHandler: BraveChainHandler,
-    private val utils: Utils,
+    private val utils: AttackUtils,
 ) {
     fun rearrange(
         cards: List<ParsedCard>,

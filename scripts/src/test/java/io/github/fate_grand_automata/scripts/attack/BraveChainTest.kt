@@ -6,7 +6,7 @@ import assertk.assertions.isEmpty
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.NPUsage
-import io.github.fate_grand_automata.scripts.modules.attack.Utils
+import io.github.fate_grand_automata.scripts.modules.attack.AttackUtils
 import io.github.fate_grand_automata.scripts.modules.attack.BraveChainHandler
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -17,7 +17,7 @@ class BraveChainTest {
     @BeforeTest
     fun init() {
         braveChainHandler = BraveChainHandler(
-            utils = Utils()
+            utils = AttackUtils()
         )
     }
 

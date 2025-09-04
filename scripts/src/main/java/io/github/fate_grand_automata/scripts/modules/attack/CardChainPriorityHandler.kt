@@ -14,7 +14,7 @@ class CardChainPriorityHandler @Inject constructor(
     private val mightyChainHandler: MightyChainHandler,
     private val colorChainHandler: ColorChainHandler,
     private val avoidChainHandler: AvoidChainHandler,
-    private val utils: Utils
+    private val utils: AttackUtils
 ) {
     fun pick(
         cards: List<ParsedCard>,
