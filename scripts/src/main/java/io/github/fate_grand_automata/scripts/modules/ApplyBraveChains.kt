@@ -11,7 +11,7 @@ import java.util.Collections
 import javax.inject.Inject
 
 @ScriptScope
-class ApplyBraveChains () {
+class ApplyBraveChains @Inject constructor() {
     private fun rearrange(
         cards: List<ParsedCard>,
         rearrange: Boolean,

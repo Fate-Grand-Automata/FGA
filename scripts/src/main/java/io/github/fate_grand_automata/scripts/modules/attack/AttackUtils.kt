@@ -9,7 +9,7 @@ import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.lib_automata.dagger.ScriptScope
 
 @ScriptScope
-class AttackUtils () {
+class AttackUtils @Inject constructor() {
     fun getCardsPerFieldSlotMap (
         cards: List<ParsedCard>,
         npUsage: NPUsage = NPUsage.none
