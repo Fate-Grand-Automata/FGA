@@ -31,10 +31,13 @@ class CardChainPriorityIntegrationTest {
     @BeforeTest
     fun init() {
         val utils = AttackUtils()
-        braveChainHandler = BraveChainHandler(utils)
         mightyChainHandler = MightyChainHandler(utils)
         colorChainHandler = ColorChainHandler(utils)
         avoidChainHandler = AvoidChainHandler(utils)
+        braveChainHandler = BraveChainHandler(
+            utils = utils,
+            avoidChainHandler = avoidChainHandler
+        )
 
         attackPriorityHandler = AttackPriorityHandler(
             braveChainHandler = braveChainHandler,

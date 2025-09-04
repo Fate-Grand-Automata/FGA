@@ -9,21 +9,45 @@ import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
+import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.modules.attack.AttackUtils
+import io.github.fate_grand_automata.scripts.modules.attack.AvoidChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.BraveChainHandler
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class BraveChainTest {
     lateinit var braveChainHandler: BraveChainHandler
+    lateinit var avoidChainHandler: AvoidChainHandler
 
     val braveChainEnums = BraveChainEnum.entries
 
     @BeforeTest
     fun init() {
-        braveChainHandler = BraveChainHandler(
-            utils = AttackUtils()
+        val utils = AttackUtils()
+        avoidChainHandler = AvoidChainHandler(
+            utils = utils
         )
+        braveChainHandler = BraveChainHandler(
+            utils = AttackUtils(),
+            avoidChainHandler = avoidChainHandler,
+        )
+    }
+
+    fun assertDefaultAvoidChain (
+        cards: List<ParsedCard>,
+        picked: List<CommandCard.Face>,
+        braveChainEnum: BraveChainEnum,
+        npUsage: NPUsage = NPUsage.none,
+    ) {
+        if (braveChainEnum != BraveChainEnum.Avoid) return
+        val defaultAvoid = avoidChainHandler.pick(
+            cards = cards,
+            npUsage = npUsage,
+            avoidBraveChains = true,
+            avoidCardChains = false,
+        )?.map { it.card } ?: emptyList()
+        assertThat(picked, BraveChainEnum.Avoid.toString()).isEqualTo(defaultAvoid)
     }
 
     @Test
@@ -32,10 +56,17 @@ class BraveChainTest {
         for (braveChainEnum in braveChainEnums) {
             val picked = braveChainHandler.pick(
                 cards = cards,
-                braveChainEnum = braveChainEnum
+                braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
 
-            assertThat(picked, braveChainEnum.toString()).isEmpty()
+            when (braveChainEnum) {
+                BraveChainEnum.Avoid -> assertDefaultAvoidChain(
+                    cards = cards,
+                    braveChainEnum = braveChainEnum,
+                    picked = picked,
+                )
+                else -> assertThat(picked, braveChainEnum.toString()).isEmpty()
+            }
         }
     }
 
@@ -46,10 +77,18 @@ class BraveChainTest {
             val picked = braveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
-                npUsage = NPUsage(setOf(CommandCard.NP.A), 0)
+                npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
             )?.map { it.card } ?: emptyList()
 
-            assertThat(picked, braveChainEnum.toString()).isEmpty()
+            when (braveChainEnum) {
+                BraveChainEnum.Avoid -> assertDefaultAvoidChain(
+                    cards = cards,
+                    braveChainEnum = braveChainEnum,
+                    npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+                    picked = picked,
+                )
+                else -> assertThat(picked, braveChainEnum.toString()).isEmpty()
+            }
         }
     }
 
@@ -64,6 +103,12 @@ class BraveChainTest {
             )?.map { it.card } ?: emptyList()
 
             when (braveChainEnum) {
+                BraveChainEnum.Avoid -> assertDefaultAvoidChain(
+                    cards = cards,
+                    braveChainEnum = braveChainEnum,
+                    npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+                    picked = picked,
+                )
                 BraveChainEnum.WithNP,
                 BraveChainEnum.Always, ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
@@ -89,6 +134,12 @@ class BraveChainTest {
             )?.map { it.card } ?: emptyList()
 
             when (braveChainEnum) {
+                BraveChainEnum.Avoid -> assertDefaultAvoidChain(
+                    cards = cards,
+                    braveChainEnum = braveChainEnum,
+                    npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
+                    picked = picked,
+                )
                 BraveChainEnum.WithNP,
                 BraveChainEnum.Always, ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
@@ -110,10 +161,18 @@ class BraveChainTest {
             val picked = braveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
-                npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0)
+                npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
             )?.map { it.card } ?: emptyList()
 
-            assertThat(picked, braveChainEnum.toString()).isEmpty()
+            when (braveChainEnum) {
+                BraveChainEnum.Avoid -> assertDefaultAvoidChain(
+                    cards = cards,
+                    braveChainEnum = braveChainEnum,
+                    npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
+                    picked = picked,
+                )
+                else -> assertThat(picked, braveChainEnum.toString()).isEmpty()
+            }
         }
     }
 
@@ -126,7 +185,14 @@ class BraveChainTest {
                 braveChainEnum = braveChainEnum
             )?.map { it.card } ?: emptyList()
 
-            assertThat(picked, braveChainEnum.toString()).isEmpty()
+            when (braveChainEnum) {
+                BraveChainEnum.Avoid -> assertDefaultAvoidChain(
+                    cards = cards,
+                    braveChainEnum = braveChainEnum,
+                    picked = picked,
+                )
+                else -> assertThat(picked, braveChainEnum.toString()).isEmpty()
+            }
         }
     }
 
@@ -137,10 +203,18 @@ class BraveChainTest {
             val picked = braveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
-                npUsage = NPUsage(setOf(CommandCard.NP.A), 0)
+                npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
             )?.map { it.card } ?: emptyList()
 
-            assertThat(picked, braveChainEnum.toString()).isEmpty()
+            when (braveChainEnum) {
+                BraveChainEnum.Avoid -> assertDefaultAvoidChain(
+                    cards = cards,
+                    braveChainEnum = braveChainEnum,
+                    npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+                    picked = picked,
+                )
+                else -> assertThat(picked, braveChainEnum.toString()).isEmpty()
+            }
         }
     }
 
@@ -155,6 +229,12 @@ class BraveChainTest {
             )?.map { it.card } ?: emptyList()
 
             when (braveChainEnum) {
+                BraveChainEnum.Avoid -> assertDefaultAvoidChain(
+                    cards = cards,
+                    braveChainEnum = braveChainEnum,
+                    npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+                    picked = picked,
+                )
                 BraveChainEnum.WithNP,
                 BraveChainEnum.Always, ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
@@ -180,6 +260,12 @@ class BraveChainTest {
             )?.map { it.card } ?: emptyList()
 
             when (braveChainEnum) {
+                BraveChainEnum.Avoid -> assertDefaultAvoidChain(
+                    cards = cards,
+                    braveChainEnum = braveChainEnum,
+                    npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
+                    picked = picked,
+                )
                 BraveChainEnum.WithNP,
                 BraveChainEnum.Always, ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
@@ -204,6 +290,11 @@ class BraveChainTest {
             )?.map { it.card } ?: emptyList()
 
             when (braveChainEnum) {
+                BraveChainEnum.Avoid -> assertDefaultAvoidChain(
+                    cards = cards,
+                    braveChainEnum = braveChainEnum,
+                    picked = picked,
+                )
                 BraveChainEnum.Always, ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
                         CommandCard.Face.A,
@@ -228,6 +319,12 @@ class BraveChainTest {
             )?.map { it.card } ?: emptyList()
 
             when (braveChainEnum) {
+                BraveChainEnum.Avoid -> assertDefaultAvoidChain(
+                    cards = cards,
+                    braveChainEnum = braveChainEnum,
+                    npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+                    picked = picked,
+                )
                 BraveChainEnum.WithNP,
                 BraveChainEnum.Always, ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
@@ -253,6 +350,12 @@ class BraveChainTest {
             )?.map { it.card } ?: emptyList()
 
             when (braveChainEnum) {
+                BraveChainEnum.Avoid -> assertDefaultAvoidChain(
+                    cards = cards,
+                    braveChainEnum = braveChainEnum,
+                    npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
+                    picked = picked,
+                )
                 BraveChainEnum.WithNP,
                 BraveChainEnum.Always, ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
@@ -277,6 +380,11 @@ class BraveChainTest {
             )?.map { it.card } ?: emptyList()
 
             when (braveChainEnum) {
+                BraveChainEnum.Avoid -> assertDefaultAvoidChain(
+                    cards = cards,
+                    braveChainEnum = braveChainEnum,
+                    picked = picked,
+                )
                 BraveChainEnum.Always, ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
                         CommandCard.Face.A,
@@ -300,6 +408,11 @@ class BraveChainTest {
             )?.map { it.card } ?: emptyList()
 
             when (braveChainEnum) {
+                BraveChainEnum.Avoid -> assertDefaultAvoidChain(
+                    cards = cards,
+                    braveChainEnum = braveChainEnum,
+                    picked = picked,
+                )
                 BraveChainEnum.Always, ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
                         CommandCard.Face.A,

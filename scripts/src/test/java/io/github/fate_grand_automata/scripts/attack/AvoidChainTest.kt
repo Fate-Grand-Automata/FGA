@@ -47,6 +47,23 @@ class AvoidChainTest {
     }
 
     @Test
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP`() {
+        val cards = AttackLineUps.Standard.lineup1
+        val picked = avoidChain.pick(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+        )?.map { it.card } ?: emptyList()
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.A,
+            CommandCard.Face.B,
+            CommandCard.Face.C,
+            CommandCard.Face.D,
+            CommandCard.Face.E,
+        )
+    }
+
+    @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP, with npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
         val picked = avoidChain.pick(

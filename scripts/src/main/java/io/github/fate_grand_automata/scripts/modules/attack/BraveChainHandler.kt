@@ -10,7 +10,8 @@ import javax.inject.Inject
 
 @ScriptScope
 class BraveChainHandler @Inject constructor(
-    private val utils: AttackUtils
+    private val utils: AttackUtils,
+    private val avoidChainHandler: AvoidChainHandler,
 ) {
     fun pick(
         cards: List<ParsedCard>,
@@ -19,6 +20,16 @@ class BraveChainHandler @Inject constructor(
         cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
     ): List<ParsedCard>? {
         val cardsPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(cards, npUsage)
+
+        if (braveChainEnum == BraveChainEnum.Avoid) {
+            return avoidChainHandler.pick(
+                cards = cards,
+                npUsage = npUsage,
+                avoidBraveChains = true,
+                avoidCardChains = false,
+            )
+        }
+
         if (!isBraveChainAllowed(braveChainEnum, npUsage, cardsPerFieldSlotMap)) return null
 
         // Always returns a valid field slot if there is one for BraveChain
