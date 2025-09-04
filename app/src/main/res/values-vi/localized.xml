@@ -188,11 +188,34 @@ Sao chép hoặc đổi tên nó nếu bạn muốn giữ nó."</string>
     <string name="p_boost_item_disabled">"Tắt"</string>
     <string name="p_boost_item_skip">"Bỏ qua"</string>
     <string name="spam">"Chế độ spam"</string>
+    <string name="spam_short">SPAM</string>
     <string name="spam_target">"Mục tiêu"</string>
+    <string name="spam_target_none">Không</string>
+    <string name="spam_target_left">Trái</string>
+    <string name="spam_target_center">Giữa</string>
+    <string name="spam_target_right">Phải</string>
+    <string name="spam_target_transform">Biến hình</string>
+    <string name="spam_target_option_1">Tùy chọn 1</string>
+    <string name="spam_target_option_2">Tùy chọn 2</string>
+    <string name="spam_target_option_3">Tùy chọn 3</string>
     <string name="spam_np">"Bảo khí:"</string>
     <string name="p_spam_none">"Không có"</string>
     <string name="p_spam_spam">"Spam"</string>
     <string name="p_spam_danger">"Nguy hiểm"</string>
+    <string name="p_spam_mode">"Cài đặt Spam"</string>
+    <string name="p_np_condition">Trạng thái NP</string>
+    <string name="p_np_gauge_none">"Luôn luôn"</string>
+    <string name="p_np_gauge_low">"Bảo khí thấp"</string>
+    <string name="p_np_gauge_ready">"Bảo khí đầy"</string>
+    <string name="p_star_condition">Trạng thái Sao</string>
+    <string name="p_spam_star_none">"Luôn luôn"</string>
+    <string name="p_spam_headline_none">Chưa sử dụng</string>
+    <string name="p_spam_headline_spam">Spam</string>
+    <string name="p_spam_headline_danger">Danger</string>
+    <string name="p_spam_supporting_none_hint">Chạm để thiết lập</string>
+    <string name="p_spam_np_low">NP thấp</string>
+    <string name="p_spam_np_charged">NP đầy</string>
+    <string name="p_spam_repeat_until_used">Lặp lại cho đến khi sử dụng</string>
     <string name="p_support_mode_first">"Đầu tiên"</string>
     <string name="p_support_mode_manual">"Thủ công"</string>
     <string name="p_support_mode_preferred">"Ưu tiên"</string>
@@ -394,4 +417,4 @@ Sau khi nhấn nút, hãy chuyển bộ lọc ứng dụng từ \"Không đượ
     <string name="p_max_gold_ember_total_count">"Tổng số lượng than hồng vàng tối đa"</string>
     <string name="update_download_success">"Tải xuống thành công. Khởi động lại ứng dụng sau 5 giây."</string>
     <string name="p_battle_config_use_servant_priority">"Sử dụng ưu tiên Servant"</string>
-                                                                                                                        </resources>
+</resources>

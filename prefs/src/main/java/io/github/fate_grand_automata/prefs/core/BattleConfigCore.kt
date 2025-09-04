@@ -14,6 +14,7 @@ import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantSpamConfig
+import io.github.fate_grand_automata.scripts.models.SkillSpamConfig
 
 class BattleConfigCore(
     val id: String,
@@ -112,7 +113,15 @@ class BattleConfigCore(
     )
 
     private val gson = Gson()
-    private val defaultSpamConfig = (1..6).map { ServantSpamConfig() }
+
+    private var currentOrder = 0
+    private val defaultSpamConfig = (1..6).map {
+        ServantSpamConfig(
+            skills = (1..3).map {
+                SkillSpamConfig(priority = currentOrder++)
+            }
+        )
+    }
 
     val spam = maker.serialized(
         "spam_x",

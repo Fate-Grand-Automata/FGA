@@ -9,13 +9,15 @@ import io.github.lib_automata.HighlightColor
 import io.github.lib_automata.Region
 import javax.inject.Inject
 
+data class HighlightItem(val color: HighlightColor, val text: String? = null)
+
 @ServiceScoped
 class HighlightManager @Inject constructor() {
     private val tapperService by lazy {
         TapperService.instance ?: throw IllegalStateException("Accessibility service not running")
     }
 
-    private val regionsToHighlight = mutableMapOf<Region, HighlightColor>()
+    private val regionsToHighlight = mutableMapOf<Region, HighlightItem>()
 
     private val highlightView by lazy {
         HighlightView(tapperService, regionsToHighlight)
@@ -45,9 +47,9 @@ class HighlightManager @Inject constructor() {
         accessibilityWindowManager.removeView(highlightView)
     }
 
-    fun add(region: Region, color: HighlightColor) {
+    fun add(region: Region, color: HighlightColor, text: String?) {
         highlightView.post {
-            regionsToHighlight[region] = color
+            regionsToHighlight[region] = HighlightItem(color, text)
 
             highlightView.invalidate()
         }

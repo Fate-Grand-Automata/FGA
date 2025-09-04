@@ -23,4 +23,10 @@
     <string name="language_zhTW" translatable="false">中文（台湾）</string>
     <string name="language_ko" translatable="false">한국어</string>
     <string name="language_vi" translatable="false">Tiếng Việt</string>
+    <string name="p_spam_star_below_ten" translatable="false">-10★</string>
+    <string name="p_spam_star_10" translatable="false">+10★</string>
+    <string name="p_spam_star_below_fifty" translatable="false">-50★</string>
+    <string name="p_spam_star_50" translatable="false">+50★</string>
+    <string name="p_np_gauge_at_least_10" translatable="false">NP ≧ 10</string>
+    <string name="p_np_gauge_at_least_50" translatable="false">NP ≧ 50</string>
 </resources>
