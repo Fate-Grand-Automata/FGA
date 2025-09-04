@@ -114,11 +114,11 @@ class AttackUtils () {
     ): List<ParsedCard>? {
         val npFieldSlots = npUsage.nps.map { it.toFieldSlot() }.toSet()
         // If there is 2 or more NP, it will never be a BraveChain
-        if (npFieldSlots.size >= 2) return cards
+        if (npFieldSlots.size >= 2) return null
 
         val fieldSlotSet = cards.map { it.fieldSlot }.toSet()
         if (
-        // If there is only 1 unique field slot in the list
+            // If there is only 1 unique field slot in the list
             fieldSlotSet.size == 1
             && (
                 // no NPs to cancel out

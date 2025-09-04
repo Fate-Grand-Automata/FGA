@@ -57,6 +57,60 @@ class AttackLineUps {
         val lineup2 = listOf(scathach1WB, scathach5WQ, kama2Q, nero3RA, nero4RA)
     }
 
+    data object MightyOutlier {
+        val scathach1WB = ParsedCard(
+            card = CommandCard.Face.A,
+            servant = TeamSlot.B,
+            fieldSlot = FieldSlot.B,
+            type = CardTypeEnum.Buster,
+            affinity = CardAffinityEnum.Weak
+        )
+        val scathach2WA = ParsedCard(
+            card = CommandCard.Face.B,
+            servant = TeamSlot.B,
+            fieldSlot = FieldSlot.B,
+            type = CardTypeEnum.Arts,
+            affinity = CardAffinityEnum.Weak
+        )
+        val nero3RA = ParsedCard(
+            card = CommandCard.Face.C,
+            servant = TeamSlot.C,
+            fieldSlot = FieldSlot.C,
+            type = CardTypeEnum.Arts,
+            affinity = CardAffinityEnum.Resist
+        )
+        val nero4RA = ParsedCard(
+            card = CommandCard.Face.D,
+            servant = TeamSlot.C,
+            fieldSlot = FieldSlot.C,
+            type = CardTypeEnum.Arts,
+            affinity = CardAffinityEnum.Resist
+        )
+        val scathach5WQ = ParsedCard(
+            card = CommandCard.Face.E,
+            servant = TeamSlot.B,
+            fieldSlot = FieldSlot.B,
+            type = CardTypeEnum.Quick,
+            affinity = CardAffinityEnum.Weak
+        )
+
+        /**
+         * Scathach, Nero;
+         * Scathach 1WB, Scathach 2Q, Nero 3RA, Nero 4RA, Scathach 5WQ
+         */
+        val lineup1 = listOf(scathach1WB, scathach2WA, nero3RA, nero4RA, scathach5WQ)
+        val lineup1_DefaultMightyChain = listOf(scathach1WB, scathach2WA, scathach5WQ)
+        val lineup1_DefaultMightyChain_WithQuickNP = listOf(scathach1WB, scathach2WA)
+        val lineup1_DefaultMightyChain_WithNonScathachBusterNP = listOf(scathach2WA, scathach5WQ)
+        val lineup1_DefaultMightyChain_WithNonScathachArtsNP = listOf(scathach1WB, scathach5WQ)
+
+        /**
+         * Scathach, Nero;
+         * Scathach 1WB, Scathach 5WQ, Scathach 2Q, Nero 3RA, Nero 4RA
+         */
+        val lineup2 = listOf(scathach1WB, scathach5WQ, scathach2WA, nero3RA, nero4RA)
+    }
+
     data object BusterFocus {
         val kiyohime1B = ParsedCard(
             card = CommandCard.Face.A,

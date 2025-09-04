@@ -5,7 +5,9 @@ import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
+import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.lib_automata.dagger.ScriptScope
+import kotlinx.coroutines.selects.select
 import javax.inject.Inject
 import kotlin.collections.Map
 
@@ -98,13 +100,14 @@ class MightyChainHandler @Inject constructor(
         // If there isn't a valid list of cards, reject and return null
         if (uniqueCardTypes.size < cardsToFind) return null
 
-        // Do not have any BraveChains or it is invalid
         if (braveChainEnum == BraveChainEnum.Avoid) {
-            val newSelection = utils.getCardsForAvoidBraveChain(
-                cards = selectedCards + cachedFilteredCards,
+            val newSelection = getMightyChainWithoutBraveChain(
+                cards = cards,
                 npUsage = npUsage,
+                selectedCards = selectedCards.toList()
             )
             if (newSelection == null) return null
+            // if it is not null, there is a valid non-Brave Chain option
             selectedCards = newSelection.toMutableList()
         }
 
@@ -113,6 +116,51 @@ class MightyChainHandler @Inject constructor(
         val combinedCards = selectedCards + remainder
 
         return combinedCards
+    }
+
+    fun getMightyChainWithoutBraveChain (
+        cards: List<ParsedCard>,
+        selectedCards: List<ParsedCard>,
+        npUsage: NPUsage = NPUsage.none,
+    ): List<ParsedCard>? {
+        val cardsPerFieldSlot = utils.getCardsPerFieldSlotMap(cards, npUsage)
+        // If there is only 1 unique field slot throughout, this is a valid entry (since it is impossible to avoid Brave Chain)
+        if (cardsPerFieldSlot.size == 1) return selectedCards
+
+        val allFieldSlots = selectedCards.mapNotNull { it.fieldSlot } + npUsage.nps.map { it.toFieldSlot() }
+        val uniqueFieldSlotsSet = allFieldSlots.toSet()
+        // If there is more than 1 unique fieldSlot, returning is fine
+        if (uniqueFieldSlotsSet.size > 1) return selectedCards
+
+        // Otherwise, attempt to substitute cards
+        val newSelection = mutableListOf<ParsedCard>()
+        var isNewSelectionValid = false
+        for (card in selectedCards) {
+            // if already valid, add the card and continue
+            if (isNewSelectionValid) {
+                newSelection.add(card)
+                continue
+            }
+            val validReplacements = cards.filter{
+                it.type == card.type
+                && it.fieldSlot != card.fieldSlot
+            }
+            if (validReplacements.isEmpty()) {
+                newSelection.add(card)
+            } else {
+                // Found a suitable replacement
+                newSelection.add(validReplacements.first())
+                isNewSelectionValid = true
+            }
+        }
+
+        // If a suitable replacement was found, return is allowed
+        if (isNewSelectionValid) {
+            return newSelection
+        }
+
+        // Otherwise, return null
+        return null
     }
 
     fun isMightyChainAllowed (
