@@ -1,30 +1,28 @@
 package io.github.fate_grand_automata.ui.spam
 
-import android.content.Context
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.enums.NpGaugeEnum
 import io.github.fate_grand_automata.scripts.enums.SpamEnum
 import io.github.fate_grand_automata.scripts.enums.StarConditionEnum
@@ -32,13 +30,16 @@ import io.github.fate_grand_automata.scripts.models.AutoSkillCommand
 import io.github.fate_grand_automata.scripts.models.SkillSpamTarget
 import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.spam.SpamScreenViewModel.SkillSpamState
-import io.github.fate_grand_automata.util.ItemTouchHelperCallback
+import sh.calvin.reorderable.ReorderableItem
+import sh.calvin.reorderable.rememberReorderableLazyListState
 
 data class SkillWithServantRef(
     val servantIndex: Int,
     val skillIndex: Int,
     val state: SkillSpamState
-)
+) {
+    val key = servantIndex * 10 + skillIndex
+}
 
 @Composable
 fun SpamSkillPriorityView(
@@ -62,81 +63,42 @@ fun SpamSkillPriorityView(
             Text("LOW")
         }
 
-        val context = LocalContext.current
+        val listState = rememberLazyListState()
 
-        val priorityAdapter = remember {
-            createAdapter(context, priority, onSkillDragged)
+        suspend fun updateList(from: Int, to: Int) {
+            priority.apply {
+                add(to, removeAt(from))
+            }
+            onSkillDragged(priority)
         }
 
-        AndroidView(
-            factory = { context ->
-                RecyclerView(context).apply {
-                    setHasFixedSize(true)
-                    layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    adapter = priorityAdapter.also { adapter ->
-                        val callback = ItemTouchHelperCallback(adapter)
-                        val itemTouchHelper = ItemTouchHelper(callback)
-                        itemTouchHelper.attachToRecyclerView(this)
-                        adapter.itemTouchHelper = itemTouchHelper
+        val reorderableLazyRowState = rememberReorderableLazyListState(
+            lazyListState = listState,
+            onMove = { from, to ->
+                updateList(from.index, to.index)
+            }
+        )
+
+        LazyRow(state = listState) {
+            items(priority, key = { it.key }) {
+                ReorderableItem(
+                    state = reorderableLazyRowState,
+                    key = it.key
+                ) { isDragging ->
+                    val elevation by animateDpAsState(if (isDragging) 4.dp else 0.dp)
+
+                    Surface(
+                        shadowElevation = elevation,
+                        shape = RoundedCornerShape(4.dp)
+                    ) {
+                        SkillPriorityItem(
+                            it.servantIndex,
+                            it.skillIndex,
+                            modifier = Modifier.draggableHandle())
                     }
                 }
-            },
-            update = { recycler ->
-                priorityAdapter.refreshIfDataChanged()
-            },
-            modifier = Modifier.wrapContentWidth()
-        )
-    }
-}
-
-private fun createAdapter(
-    context: Context,
-    items: MutableList<SkillWithServantRef>,
-    onSkillDragged: (List<SkillWithServantRef>) -> Unit
-): DragSortSkillPriorityAdapter<SkillWithServantRef> {
-    return DragSortSkillPriorityAdapter(items) { item ->
-        val teamSlot = (item.servantIndex + 1).toString()
-        val skillSlot = when (item.skillIndex) {
-            0 -> "L"
-            1 -> "M"
-            else -> "R"
+            }
         }
-        DragSortSkillPriorityAdapter.ItemViewConfig(
-            teamForegroundColor = ContextCompat.getColor(
-                context, when(item.servantIndex) {
-                    1 -> R.color.servant1_primary_text
-                    2 -> R.color.servant2_primary_text
-                    3 -> R.color.servant3_primary_text
-                    4 -> R.color.servant4_primary_text
-                    5 -> R.color.servant5_primary_text
-                    else -> R.color.servant6_primary_text
-                }
-            ),
-            skillForegroundColor = ContextCompat.getColor(
-                context, when(item.servantIndex) {
-                    1 -> R.color.servant1_secondary_text
-                    2 -> R.color.servant2_secondary_text
-                    3 -> R.color.servant3_secondary_text
-                    4 -> R.color.servant4_secondary_text
-                    5 -> R.color.servant5_secondary_text
-                    else -> R.color.servant6_secondary_text
-                }
-            ),
-            backgroundColor = ContextCompat.getColor(
-                context, when(item.servantIndex) {
-                    1 -> R.color.servant1_bg
-                    2 -> R.color.servant2_bg
-                    3 -> R.color.servant3_bg
-                    4 -> R.color.servant4_bg
-                    5 -> R.color.servant5_bg
-                    else -> R.color.servant6_bg
-                }
-            ),
-            teamSlot = teamSlot,
-            skillSlot = skillSlot
-        )
-    }.apply {
-        this.onSkillDragged = onSkillDragged
     }
 }
 
