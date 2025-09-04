@@ -114,43 +114,41 @@ class AttackUtils () {
     ): List<ParsedCard>? {
         val npFieldSlots = npUsage.nps.map { it.toFieldSlot() }.toSet()
         // If there is 2 or more NP, it will never be a BraveChain
-        if (npFieldSlots.size <= 1) {
-            val fieldSlotSet = cards.map { it.fieldSlot }.toSet()
-            if (
-            // If there is only 1 unique field slot in the list
-                fieldSlotSet.size == 1
-                && (
-                    // no NPs to cancel out
-                    npFieldSlots.isEmpty()
-                    // Or there is exactly 1 NP and it is the same
-                    || npFieldSlots.first() == fieldSlotSet.first()
-                )
-            ) return null
+        if (npFieldSlots.size >= 2) return cards
 
-            val npFieldSlot = npFieldSlots.firstOrNull()
+        val fieldSlotSet = cards.map { it.fieldSlot }.toSet()
+        if (
+        // If there is only 1 unique field slot in the list
+            fieldSlotSet.size == 1
+            && (
+                // no NPs to cancel out
+                npFieldSlots.isEmpty()
+                // Or there is exactly 1 NP and it is the same
+                || npFieldSlots.first() == fieldSlotSet.first()
+            )
+        ) return null
 
-            // Otherwise, it is valid, but the correct cards must be selected
-            val cardsNeeded = 3 - npUsage.nps.size
-            val filteredCards = cards.take(cardsNeeded).toMutableList()
-            val firstFieldSlot =  filteredCards.first().fieldSlot
-            if (
-                // If all cards are the same field slot
-                filteredCards.all { it.fieldSlot == firstFieldSlot }
-                && (
-                    // and it matches the NP
-                    npFieldSlot == firstFieldSlot
-                    // or the NP is null
-                        || npFieldSlot == null
-                )
-            ) {
-                val differentSlot = cards.firstOrNull() { it.fieldSlot != firstFieldSlot }
-                if (differentSlot == null) return null
-                // Just add new card to index 1, aka 2nd card
-                filteredCards.add(1, differentSlot)
-            }
-            return filteredCards + (cards - filteredCards)
+        val npFieldSlot = npFieldSlots.firstOrNull()
+
+        // Otherwise, it is valid, but the correct cards must be selected
+        val cardsNeeded = 3 - npUsage.nps.size
+        val filteredCards = cards.take(cardsNeeded).toMutableList()
+        val firstFieldSlot =  filteredCards.first().fieldSlot
+        if (
+            // If all cards are the same field slot
+            filteredCards.all { it.fieldSlot == firstFieldSlot }
+            && (
+                // and it matches the NP
+                npFieldSlot == firstFieldSlot
+                // or the NP is null
+                    || npFieldSlot == null
+            )
+        ) {
+            val differentSlot = cards.firstOrNull() { it.fieldSlot != firstFieldSlot }
+            if (differentSlot == null) return null
+            // Just add new card to index 1, aka 2nd card
+            filteredCards.add(1, differentSlot)
         }
-
-        return cards
+        return filteredCards + (cards - filteredCards)
     }
 }
