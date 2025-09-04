@@ -200,10 +200,10 @@ class AttackLineUps {
         val lineup3 = listOf(scathach5WQ, scathach2WQ, scathach3WA, scathach1WB, scathach4WB)
 
         // 3 Quick, 2 Buster; Buster starting card
-        /** scathach1WB, scathach2WQ, scathach3WAltQ, scathach4WB, scathach5WQ */
+        /** servant1WB, servant2WQ, servant3WAltQ, servant4WB, servant5WQ */
         val lineup4 = listOf(scathach1WB, scathach2WQ, scathach3WAltQ, scathach4WB, scathach5WQ)
         // 3 Quick, 2 Buster; Quick starting card
-        /** scathach5WQ, scathach2WQ, scathach3WAltQ, scathach1WB, scathach4WB */
+        /** servant5WQ, servant2WQ, servant3WAltQ, servant1WB, servant4WB */
         val lineup5 = listOf(scathach5WQ, scathach2WQ, scathach3WAltQ, scathach1WB, scathach4WB)
     }
 }

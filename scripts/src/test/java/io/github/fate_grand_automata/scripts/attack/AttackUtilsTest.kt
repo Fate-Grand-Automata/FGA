@@ -14,7 +14,7 @@ import kotlin.test.Test
 
 class AttackUtilsTest {
     val utils = AttackUtils()
-    val BRAVE_CHAIN_ENUM_LIST = BraveChainEnum.entries
+    val braveChainEnums = BraveChainEnum.entries
 
     @Test
     fun `getCardsPerFieldSlotMap, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
@@ -279,7 +279,7 @@ class AttackUtilsTest {
 
     @Test
     fun `getBraveChainFieldSlot, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
-        for (braveChainEnum in BRAVE_CHAIN_ENUM_LIST) {
+        for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.Standard.lineup1
             val result = utils.getBraveChainFieldSlot(
                 cards = cards,
@@ -292,7 +292,7 @@ class AttackUtilsTest {
 
     @Test
     fun `getBraveChainFieldSlot, Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA)`() {
-        for (braveChainEnum in BRAVE_CHAIN_ENUM_LIST) {
+        for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.Standard.lineup2
             val result = utils.getBraveChainFieldSlot(
                 cards = cards,
@@ -305,7 +305,7 @@ class AttackUtilsTest {
 
     @Test
     fun `getBraveChainFieldSlot, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1-KamaNP`() {
-        for (braveChainEnum in BRAVE_CHAIN_ENUM_LIST) {
+        for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.Standard.lineup2
             val result = utils.getBraveChainFieldSlot(
                 cards = cards,
@@ -319,7 +319,7 @@ class AttackUtilsTest {
 
     @Test
     fun `getBraveChainFieldSlot, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2-ScathachNP`() {
-        for (braveChainEnum in BRAVE_CHAIN_ENUM_LIST) {
+        for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.Standard.lineup1
             val result = utils.getBraveChainFieldSlot(
                 cards = cards,
@@ -338,7 +338,7 @@ class AttackUtilsTest {
 
     @Test
     fun `getBraveChainFieldSlot, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3-NeroNP`() {
-        for (braveChainEnum in BRAVE_CHAIN_ENUM_LIST) {
+        for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.Standard.lineup1
             val result = utils.getBraveChainFieldSlot(
                 cards = cards,
@@ -357,7 +357,7 @@ class AttackUtilsTest {
 
     @Test
     fun `getBraveChainFieldSlot, Standard -lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1-KamaNP + 2-ScathachNP`() {
-        for (braveChainEnum in BRAVE_CHAIN_ENUM_LIST) {
+        for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.Standard.lineup1
             val result = utils.getBraveChainFieldSlot(
                 cards = cards,
@@ -371,7 +371,7 @@ class AttackUtilsTest {
 
     @Test
     fun `getBraveChainFieldSlot, Standard -lineup1 (1SB,2KQ,3NA,4NA,5SQ) + All 3 NP`() {
-        for (braveChainEnum in BRAVE_CHAIN_ENUM_LIST) {
+        for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.Standard.lineup1
             val result = utils.getBraveChainFieldSlot(
                 cards = cards,
@@ -385,7 +385,7 @@ class AttackUtilsTest {
 
     @Test
     fun `getBraveChainFieldSlot, BusterFocus - lineup01 (1KB,2KB,3NA,4NA,5KB)`() {
-        for (braveChainEnum in BRAVE_CHAIN_ENUM_LIST) {
+        for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.BusterFocus.lineup01
             val result = utils.getBraveChainFieldSlot(
                 cards = cards,
@@ -402,7 +402,7 @@ class AttackUtilsTest {
 
     @Test
     fun `getBraveChainFieldSlot, BusterFocus - lineup03 (1KB,2KB,3NA,4NA,5NB)`() {
-        for (braveChainEnum in BRAVE_CHAIN_ENUM_LIST) {
+        for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.BusterFocus.lineup03
             val result = utils.getBraveChainFieldSlot(
                 cards = cards,
@@ -419,7 +419,7 @@ class AttackUtilsTest {
 
     @Test
     fun `getBraveChainFieldSlot, BusterFocus - lineup03 (1KB,2KB,3NA,4NA,5NB) - 2Kiyo-NP`() {
-        for (braveChainEnum in BRAVE_CHAIN_ENUM_LIST) {
+        for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.BusterFocus.lineup03
             val result = utils.getBraveChainFieldSlot(
                 cards = cards,
@@ -438,7 +438,7 @@ class AttackUtilsTest {
 
     @Test
     fun `getBraveChainFieldSlot, BusterFocus - lineup03 (1KB,2KB,3NA,4NA,5NB) - 3Nero-NP`() {
-        for (braveChainEnum in BRAVE_CHAIN_ENUM_LIST) {
+        for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.BusterFocus.lineup03
             val result = utils.getBraveChainFieldSlot(
                 cards = cards,
