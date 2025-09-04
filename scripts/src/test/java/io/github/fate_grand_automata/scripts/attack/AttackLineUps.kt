@@ -101,7 +101,7 @@ class AttackLineUps {
             affinity = CardAffinityEnum.Resist
         )
         val nero4BAlt = ParsedCard(
-            card = CommandCard.Face.E,
+            card = CommandCard.Face.D,
             servant = TeamSlot.C,
             fieldSlot = FieldSlot.C,
             type = CardTypeEnum.Buster,

@@ -97,7 +97,7 @@ class AttackUtils () {
             val firstNp = npUsage.nps.firstOrNull()
             val fieldSlot = firstNp?.toFieldSlot()
             // Only return the field slot if it is valid for a Brave Chain
-            if (cards.filter { it.fieldSlot == fieldSlot }.size > 1) return fieldSlot
+            if (cards.filter { it.fieldSlot == fieldSlot }.size >= 2) return fieldSlot
         } else if (braveChainEnum == BraveChainEnum.Always) {
             // Force brave chain only if it always wants a Brave Chain
             val braveChainCapableFieldSlots = getFieldSlotsWithValidBraveChain(cards, npUsage)

@@ -21,20 +21,14 @@ class BraveChainHandler @Inject constructor(
         val cardsPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(cards, npUsage)
         if (!isBraveChainAllowed(braveChainEnum, npUsage, cardsPerFieldSlotMap)) return null
 
-        val braveChainCapableFieldSlots = utils.getFieldSlotsWithValidBraveChain(cardsPerFieldSlotMap)
-
-        val npFieldSlot = if (npUsage.nps.size == 1) npUsage.nps.firstOrNull()?.toFieldSlot() else null
-
-        val braveChainPriorityCard = cards.firstOrNull {
-            // Use the first valid one, since it is already the highest priority
-            braveChainCapableFieldSlots.contains(it.fieldSlot) &&
-            // And if there is an NP, it must match the NP
-            (npFieldSlot == null || npFieldSlot == it.fieldSlot)
-        }
-        val priorityFieldSlot = braveChainPriorityCard?.fieldSlot
-
-        // Safety check
+        // Always returns a valid field slot if there is one for BraveChain
+        val priorityFieldSlot = utils.getBraveChainFieldSlot(
+            braveChainEnum = braveChainEnum,
+            cards = cards,
+            npUsage = npUsage,
+        )
         if (priorityFieldSlot == null) return null
+
         val selectedCards = cards
             .filter { it.fieldSlot == priorityFieldSlot }
             .take((3 - npUsage.nps.size).coerceAtLeast(0))
