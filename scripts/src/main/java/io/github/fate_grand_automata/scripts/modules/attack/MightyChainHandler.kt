@@ -7,7 +7,6 @@ import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.lib_automata.dagger.ScriptScope
-import kotlinx.coroutines.selects.select
 import javax.inject.Inject
 import kotlin.collections.Map
 
@@ -24,6 +23,7 @@ class MightyChainHandler @Inject constructor(
         npUsage: NPUsage = NPUsage.none,
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
         braveChainEnum: BraveChainEnum = BraveChainEnum.None,
+        cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
         cardCountPerCardTypeMap: Map<CardTypeEnum, Int>? = null,
         forceBraveChain: Boolean = false,
     ): List<ParsedCard>? {
@@ -52,6 +52,8 @@ class MightyChainHandler @Inject constructor(
             uniqueCardTypesAlreadyFilled = uniqueCardTypesFromNp,
             braveChainFieldSlot = braveChainFieldSlot,
             braveChainEnum = braveChainEnum,
+
+            cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
         )
     }
 
@@ -65,6 +67,8 @@ class MightyChainHandler @Inject constructor(
         // In case of a Brave chain, we want to know what slot it is
         braveChainFieldSlot: FieldSlot? = null,
         braveChainEnum: BraveChainEnum = BraveChainEnum.None,
+
+        cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
     ): List<ParsedCard>? {
         val cardsToFind = totalUniqueCardTypesPermitted
         val uniqueCardTypes = uniqueCardTypesAlreadyFilled.toMutableSet()
@@ -104,7 +108,8 @@ class MightyChainHandler @Inject constructor(
             val newSelection = getMightyChainWithoutBraveChain(
                 cards = cards,
                 npUsage = npUsage,
-                selectedCards = selectedCards.toList()
+                selectedCards = selectedCards.toList(),
+                cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
             )
             if (newSelection == null) return null
             // if it is not null, there is a valid non-Brave Chain option
@@ -122,10 +127,11 @@ class MightyChainHandler @Inject constructor(
         cards: List<ParsedCard>,
         selectedCards: List<ParsedCard>,
         npUsage: NPUsage = NPUsage.none,
+        cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
     ): List<ParsedCard>? {
-        val cardsPerFieldSlot = utils.getCardsPerFieldSlotMap(cards, npUsage)
+        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(cards, npUsage)
         // If there is only 1 unique field slot throughout, this is a valid entry (since it is impossible to avoid Brave Chain)
-        if (cardsPerFieldSlot.size == 1) return selectedCards
+        if (cardCountPerFieldSlotMap.size == 1) return selectedCards
 
         val allFieldSlots = selectedCards.mapNotNull { it.fieldSlot } + npUsage.nps.map { it.toFieldSlot() }
         val uniqueFieldSlotsSet = allFieldSlots.toSet()

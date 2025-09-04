@@ -40,6 +40,7 @@ class CardChainPriorityHandler @Inject constructor(
                     braveChainEnum = braveChainEnum,
                     forceBraveChain = forceBraveChain,
                     cardCountPerCardTypeMap = cardCountPerCardTypeMap,
+                    cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
                 )
                 ChainTypeEnum.Arts,
                 ChainTypeEnum.Buster,
@@ -56,6 +57,7 @@ class CardChainPriorityHandler @Inject constructor(
                     braveChainEnum = braveChainEnum,
                     forceBraveChain = forceBraveChain,
                     cardCountPerCardTypeMap = cardCountPerCardTypeMap,
+                    cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
                 )
                 ChainTypeEnum.Avoid -> avoidChainHandler.pick(
                     cards = cards,

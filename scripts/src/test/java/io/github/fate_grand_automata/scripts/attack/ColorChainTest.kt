@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.scripts.attack
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
+import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
@@ -609,5 +610,204 @@ class ColorChainTest {
             results.getOrElse(CardTypeEnum.Quick) { emptyList() },
             "Quick"
         ).isEmpty()
+    }
+
+    /**
+     * Special cases
+     */
+    @Test
+    fun `getCardsForAvoidBraveChain, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
+        val cards = AttackLineUps.Standard.lineup1
+        for (cardType in cardTypeList) {
+            val result = colorChain.getCardsForAvoidBraveChain(
+                cards = cards,
+                selectedCards = cards.filter { it.type == cardType },
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(result, cardType.toString()).isEmpty()
+        }
+    }
+
+    @Test
+    fun `getCardsForAvoidBraveChain, Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA)`() {
+        val cards = AttackLineUps.Standard.lineup2
+        for (cardType in cardTypeList) {
+            val result = colorChain.getCardsForAvoidBraveChain(
+                cards = cards,
+                selectedCards = cards.filter { it.type == cardType },
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(result, cardType.toString()).isEmpty()
+        }
+    }
+
+    @Test
+    fun `getCardsForAvoidBraveChain, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + Slot 1 NP`() {
+        val cards = AttackLineUps.Standard.lineup1
+        for (cardType in cardTypeList) {
+            val result = colorChain.getCardsForAvoidBraveChain(
+                cards = cards,
+                selectedCards = cards.filter { it.type == cardType },
+                npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+            )?.map { it.card } ?: emptyList()
+
+            when (cardType) {
+                CardTypeEnum.Quick ->
+                    assertThat(result, cardType.toString()).containsExactly(
+                        CommandCard.Face.B,
+                        CommandCard.Face.E,
+                        CommandCard.Face.A,
+                        CommandCard.Face.C,
+                        CommandCard.Face.D,
+                    )
+                else -> assertThat(result, cardType.toString()).isEmpty()
+            }
+        }
+    }
+
+    @Test
+    fun `getCardsForAvoidBraveChain, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + Slot 2 NP`() {
+        val cards = AttackLineUps.Standard.lineup1
+        for (cardType in cardTypeList) {
+            val result = colorChain.getCardsForAvoidBraveChain(
+                cards = cards,
+                selectedCards = cards.filter { it.type == cardType },
+                npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+            )?.map { it.card } ?: emptyList()
+
+            when (cardType) {
+                CardTypeEnum.Quick ->
+                    assertThat(result, cardType.toString()).containsExactly(
+                        CommandCard.Face.B,
+                        CommandCard.Face.E,
+                        CommandCard.Face.A,
+                        CommandCard.Face.C,
+                        CommandCard.Face.D,
+                    )
+                else -> assertThat(result, cardType.toString()).isEmpty()
+            }
+        }
+    }
+
+    @Test
+    fun `getCardsForAvoidBraveChain, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + Slot 3 NP`() {
+        val cards = AttackLineUps.Standard.lineup1
+        for (cardType in cardTypeList) {
+            val result = colorChain.getCardsForAvoidBraveChain(
+                cards = cards,
+                selectedCards = cards.filter { it.type == cardType },
+                npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
+            )?.map { it.card } ?: emptyList()
+
+            when (cardType) {
+                CardTypeEnum.Quick ->
+                    assertThat(result, cardType.toString()).containsExactly(
+                        CommandCard.Face.B,
+                        CommandCard.Face.E,
+                        CommandCard.Face.A,
+                        CommandCard.Face.C,
+                        CommandCard.Face.D,
+                    )
+                else -> assertThat(result, cardType.toString()).isEmpty()
+            }
+        }
+    }
+
+    @Test
+    fun `getCardsForAvoidBraveChain, Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA) + Slot 1 NP`() {
+        val cards = AttackLineUps.Standard.lineup2
+        for (cardType in cardTypeList) {
+            val result = colorChain.getCardsForAvoidBraveChain(
+                cards = cards,
+                selectedCards = cards.filter { it.type == cardType },
+                npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+            )?.map { it.card } ?: emptyList()
+
+            when (cardType) {
+                CardTypeEnum.Quick ->
+                    assertThat(result, cardType.toString()).containsExactly(
+                        CommandCard.Face.E,
+                        CommandCard.Face.B,
+                        CommandCard.Face.A,
+                        CommandCard.Face.C,
+                        CommandCard.Face.D,
+                    )
+                else -> assertThat(result, cardType.toString()).isEmpty()
+            }
+        }
+    }
+
+    @Test
+    fun `getCardsForAvoidBraveChain, Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA) + Slot 2 NP`() {
+        val cards = AttackLineUps.Standard.lineup2
+        for (cardType in cardTypeList) {
+            val result = colorChain.getCardsForAvoidBraveChain(
+                cards = cards,
+                selectedCards = cards.filter { it.type == cardType },
+                npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+            )?.map { it.card } ?: emptyList()
+
+            when (cardType) {
+                CardTypeEnum.Quick ->
+                    assertThat(result, cardType.toString()).containsExactly(
+                        CommandCard.Face.E,
+                        CommandCard.Face.B,
+                        CommandCard.Face.A,
+                        CommandCard.Face.C,
+                        CommandCard.Face.D,
+                    )
+                else -> assertThat(result, cardType.toString()).isEmpty()
+            }
+        }
+    }
+
+    @Test
+    fun `getCardsForAvoidBraveChain, Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA) + Slot 3 NP`() {
+        val cards = AttackLineUps.Standard.lineup2
+        for (cardType in cardTypeList) {
+            val result = colorChain.getCardsForAvoidBraveChain(
+                cards = cards,
+                selectedCards = cards.filter { it.type == cardType },
+                npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
+            )?.map { it.card } ?: emptyList()
+
+            when (cardType) {
+                CardTypeEnum.Quick ->
+                    assertThat(result, cardType.toString()).containsExactly(
+                        CommandCard.Face.E,
+                        CommandCard.Face.B,
+                        CommandCard.Face.A,
+                        CommandCard.Face.C,
+                        CommandCard.Face.D,
+                    )
+                else -> assertThat(result, cardType.toString()).isEmpty()
+            }
+        }
+    }
+
+    @Test
+    fun `getCardsForAvoidBraveChain, BusterFocus - lineup01 (1KB,2KB,3NA,4NA,5KB)`() {
+        val cards = AttackLineUps.BusterFocus.lineup01
+        for (cardType in cardTypeList) {
+            val result = colorChain.getCardsForAvoidBraveChain(
+                cards = cards,
+                selectedCards = cards.filter { it.type == cardType },
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(result, cardType.toString()).isEmpty()
+        }
+    }
+
+    @Test
+    fun `getCardsForAvoidBraveChain, BusterFocus - lineup02 (1KB,5KB,2KB,3NA,4NA)`() {
+        val cards = AttackLineUps.BusterFocus.lineup02
+        for (cardType in cardTypeList) {
+            val result = colorChain.getCardsForAvoidBraveChain(
+                cards = cards,
+                selectedCards = cards.filter { it.type == cardType },
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(result, cardType.toString()).isEmpty()
+        }
     }
 }
