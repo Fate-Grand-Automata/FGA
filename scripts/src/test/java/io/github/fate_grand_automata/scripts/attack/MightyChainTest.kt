@@ -560,6 +560,202 @@ class MightyChainTest {
     }
 
     /**
+     * Unknown handling
+     */
+    @Test
+    fun `Unknown - lineup1 (1 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup1
+        for (braveChainEnum in braveChainEnums) {
+            val picked = mightyChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(picked, braveChainEnum.toString()).isEmpty()
+        }
+    }
+
+    @Test
+    fun `Unknown - lineup1 (1 Unknown) + 1 Valid Buster NP, with npTypes`() {
+        val cards = AttackLineUps.Unknown.lineup1
+        for (braveChainEnum in braveChainEnums) {
+            val picked = mightyChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+                npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+                npTypes = mapOf(
+                    FieldSlot.A to CardTypeEnum.Buster
+                )
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(picked, braveChainEnum.toString()).containsExactly(
+                CommandCard.Face.B,
+                CommandCard.Face.C,
+                CommandCard.Face.D,
+                CommandCard.Face.E,
+                CommandCard.Face.A,
+            )
+        }
+    }
+
+    @Test
+    fun `Unknown - lineup2 (2 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup2
+        for (braveChainEnum in braveChainEnums) {
+            val picked = mightyChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(picked, braveChainEnum.toString()).isEmpty()
+        }
+    }
+
+    @Test
+    fun `Unknown - lineup2 (2 Unknown) + 1 Valid Buster NP, with npTypes`() {
+        val cards = AttackLineUps.Unknown.lineup2
+        for (braveChainEnum in braveChainEnums) {
+            val picked = mightyChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+                npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+                npTypes = mapOf(
+                    FieldSlot.A to CardTypeEnum.Buster
+                )
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(picked, braveChainEnum.toString()).containsExactly(
+                CommandCard.Face.C,
+                CommandCard.Face.E,
+                CommandCard.Face.D,
+                CommandCard.Face.A,
+                CommandCard.Face.B,
+            )
+        }
+    }
+
+    @Test
+    fun `Unknown - lineup3 (3 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup3
+        for (braveChainEnum in braveChainEnums) {
+            val picked = mightyChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(picked, braveChainEnum.toString()).isEmpty()
+        }
+    }
+
+    @Test
+    fun `Unknown - lineup3 (3 Unknown) + 1 Valid Buster NP, with npTypes`() {
+        val cards = AttackLineUps.Unknown.lineup3
+        for (braveChainEnum in braveChainEnums) {
+            val picked = mightyChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+                npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+                npTypes = mapOf(
+                    FieldSlot.A to CardTypeEnum.Buster
+                )
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(picked, braveChainEnum.toString()).containsExactly(
+                CommandCard.Face.D,
+                CommandCard.Face.E,
+                CommandCard.Face.A,
+                CommandCard.Face.B,
+                CommandCard.Face.C,
+            )
+        }
+    }
+
+    @Test
+    fun `Unknown - lineup4 (5 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup4
+        for (braveChainEnum in braveChainEnums) {
+            val picked = mightyChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(picked, braveChainEnum.toString()).isEmpty()
+        }
+    }
+
+    @Test
+    fun `Unknown - lineup5 (1 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup5
+        for (braveChainEnum in braveChainEnums) {
+            val picked = mightyChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(picked, braveChainEnum.toString()).isEmpty()
+        }
+    }
+
+    @Test
+    fun `Unknown - lineup5 (1 Unknown) + 1 Valid Quick NP, with npTypes`() {
+        val cards = AttackLineUps.Unknown.lineup5
+        for (braveChainEnum in braveChainEnums) {
+            val picked = mightyChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+                npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+                npTypes = mapOf(
+                    FieldSlot.A to CardTypeEnum.Quick
+                )
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(picked, braveChainEnum.toString()).containsExactly(
+                CommandCard.Face.A,
+                CommandCard.Face.D,
+                CommandCard.Face.B,
+                CommandCard.Face.E,
+                CommandCard.Face.C,
+            )
+        }
+    }
+
+    @Test
+    fun `Unknown - lineup6 (1 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup6
+        for (braveChainEnum in braveChainEnums) {
+            val picked = mightyChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(picked, braveChainEnum.toString()).isEmpty()
+        }
+    }
+
+    @Test
+    fun `Unknown - lineup6 (1 Unknown) + 1 Valid Quick NP, with npTypes`() {
+        val cards = AttackLineUps.Unknown.lineup6
+        for (braveChainEnum in braveChainEnums) {
+            val picked = mightyChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+                npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+                npTypes = mapOf(
+                    FieldSlot.A to CardTypeEnum.Quick
+                )
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(picked, braveChainEnum.toString()).containsExactly(
+                CommandCard.Face.B,
+                CommandCard.Face.D,
+                CommandCard.Face.E,
+                CommandCard.Face.A,
+                CommandCard.Face.C,
+            )
+        }
+    }
+
+    /**
      * Special edge cases
      */
     @Test
