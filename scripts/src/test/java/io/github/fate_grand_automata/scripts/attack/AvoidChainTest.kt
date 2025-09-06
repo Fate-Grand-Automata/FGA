@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.scripts.attack
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
@@ -282,6 +283,160 @@ class AvoidChainTest {
                 FieldSlot.B to CardTypeEnum.Quick,
                 FieldSlot.C to CardTypeEnum.Arts,
             )
+        )?.map { it.card } ?: emptyList()
+
+        assertThat(picked).isEmpty()
+    }
+
+    @Test
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1 Unknown NP`() {
+        val cards = AttackLineUps.Standard.lineup1
+        val picked = avoidChainHandler.pick(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Unknown
+            ),
+        )?.map { it.card } ?: emptyList()
+
+        assertThat(picked).isEmpty()
+    }
+
+    @Test
+    fun `Unknown - lineup1 (1 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup1
+        val picked = avoidChainHandler.pick(
+            cards = cards,
+        )?.map { it.card } ?: emptyList()
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.B,
+            CommandCard.Face.C,
+            CommandCard.Face.E,
+            CommandCard.Face.D,
+            CommandCard.Face.A,
+        )
+    }
+
+    @Test
+    fun `Unknown - lineup1 (1 Unknown) + 1 Valid NP`() {
+        val cards = AttackLineUps.Unknown.lineup1
+        val picked = avoidChainHandler.pick(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+        )?.map { it.card } ?: emptyList()
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.B,
+            CommandCard.Face.C,
+            CommandCard.Face.D,
+            CommandCard.Face.E,
+            CommandCard.Face.A,
+        )
+    }
+
+    @Test
+    fun `Unknown - lineup1 (1 Unknown) + 1 Valid NP, with npTypes`() {
+        val cards = AttackLineUps.Unknown.lineup1
+        val picked = avoidChainHandler.pick(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Quick
+            ),
+        )?.map { it.card } ?: emptyList()
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.B,
+            CommandCard.Face.C,
+            CommandCard.Face.D,
+            CommandCard.Face.E,
+            CommandCard.Face.A,
+        )
+    }
+
+    @Test
+    fun `Unknown - lineup1 (1 Unknown) + 1 Unknown NP`() {
+        val cards = AttackLineUps.Unknown.lineup1
+        val picked = avoidChainHandler.pick(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Unknown
+            ),
+        )?.map { it.card } ?: emptyList()
+
+        assertThat(picked).isEmpty()
+    }
+
+    @Test
+    fun `Unknown - lineup2 (2 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup2
+        val picked = avoidChainHandler.pick(
+            cards = cards,
+        )?.map { it.card } ?: emptyList()
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.C,
+            CommandCard.Face.E,
+            CommandCard.Face.D,
+            CommandCard.Face.A,
+            CommandCard.Face.B,
+        )
+    }
+
+    @Test
+    fun `Unknown - lineup3 (3 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup3
+        val picked = avoidChainHandler.pick(
+            cards = cards,
+        )?.map { it.card } ?: emptyList()
+
+        assertThat(picked).isEmpty()
+    }
+
+    @Test
+    fun `Unknown - lineup3 (3 Unknown) + 1 Valid NP`() {
+        val cards = AttackLineUps.Unknown.lineup3
+        val picked = avoidChainHandler.pick(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+        )?.map { it.card } ?: emptyList()
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.D,
+            CommandCard.Face.E,
+            CommandCard.Face.A,
+            CommandCard.Face.B,
+            CommandCard.Face.C,
+        )
+    }
+
+    @Test
+    fun `Unknown - lineup3 (3 Unknown) + 1 Valid NP, with npTypes`() {
+        val cards = AttackLineUps.Unknown.lineup3
+        val picked = avoidChainHandler.pick(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Quick
+            ),
+        )?.map { it.card } ?: emptyList()
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.D,
+            CommandCard.Face.E,
+            CommandCard.Face.A,
+            CommandCard.Face.B,
+            CommandCard.Face.C,
+        )
+    }
+
+    @Test
+    fun `Unknown - lineup4 (5 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup4
+        val picked = avoidChainHandler.pick(
+            cards = cards,
         )?.map { it.card } ?: emptyList()
 
         assertThat(picked).isEmpty()

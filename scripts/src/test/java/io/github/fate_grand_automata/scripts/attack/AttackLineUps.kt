@@ -340,5 +340,26 @@ class AttackLineUps {
             nero4Unknown,
             scathach5Unknown,
         )
+
+        /**
+         * Special option for Buster/Brave Chain. 1 Unknown
+         */
+        val lineup5 = listOf(
+            BusterFocus.kiyohime1B,
+            BusterFocus.kiyohime2B,
+            nero3Unknown,
+            BusterFocus.nero4RA,
+            BusterFocus.kiyohime5B,
+        )
+        /**
+         * Special option for Buster/Brave Chain. 2 Unknown, only valid BraveChain with NP.
+         */
+        val lineup6 = listOf(
+            scathach1Unknown,
+            BusterFocus.kiyohime2B,
+            nero3Unknown,
+            BusterFocus.nero4RA,
+            BusterFocus.kiyohime5B,
+        )
     }
 }
