@@ -27,10 +27,20 @@ class MightyChainHandler @Inject constructor(
         cardCountPerCardTypeMap: Map<CardTypeEnum, Int>? = null,
         forceBraveChain: Boolean = false,
     ): List<ParsedCard>? {
+        // Try to ensure unknown is handled
+        val filteredCards = utils.getValidNonUnknownCards(cards)
+        if (!utils.isChainable(
+            cards = filteredCards,
+            npUsage = npUsage,
+            npTypes = npTypes,
+        )) {
+            return null
+        }
+
         val uniqueCardTypesFromNp = npTypes.values.toSet()
-        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(cards, npTypes)
+        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(filteredCards, npTypes)
         if (!isMightyChainAllowed(
-            cards = cards,
+            cards = filteredCards,
             npUsage = npUsage,
             uniqueCardTypesFromNp = uniqueCardTypesFromNp,
             npTypes = npTypes,
@@ -40,14 +50,14 @@ class MightyChainHandler @Inject constructor(
         // Check for Brave Chain
         val braveChainFieldSlot = utils.getBraveChainFieldSlot(
             braveChainEnum = braveChainEnum,
-            cards = cards,
+            cards = filteredCards,
             npUsage = npUsage,
             forceBraveChain = forceBraveChain,
         )
         val braveChainEnum = if (forceBraveChain) BraveChainEnum.Always else braveChainEnum
 
         return pick(
-            cards = cards,
+            cards = filteredCards,
             npUsage = npUsage,
             uniqueCardTypesAlreadyFilled = uniqueCardTypesFromNp,
             braveChainFieldSlot = braveChainFieldSlot,
@@ -180,9 +190,18 @@ class MightyChainHandler @Inject constructor(
         val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(cards, npTypes)
         val npUsageSize = npUsage.nps.size
 
+        // Unable to make a Mighty Chain with Unknown cards in NP
+        if (npTypes.values.contains(CardTypeEnum.Unknown)) return false
+
         // if there are more than 1 NP and we don't know their types,
         // just do the default since we can't guarantee a mighty chain anyway
         if (npUsageSize > 0 && npTypes.size != npUsageSize) return false
+
+        // Unable to make a Mighty Chain with Unknown cards in NP
+        if (npTypes.values.contains(CardTypeEnum.Unknown)) return false
+
+        // Do not accept Unknown cards for Mighty Chain
+        if (cardCountPerCardTypeMap.getOrElse(CardTypeEnum.Unknown) { 0 } > 0) return false;
 
         // If we do not have 3 unique cards at least, it is impossible to Mighty Chain
         if (cardCountPerCardTypeMap.size < 3) return false

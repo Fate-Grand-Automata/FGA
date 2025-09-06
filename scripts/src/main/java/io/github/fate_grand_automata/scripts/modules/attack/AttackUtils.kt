@@ -107,4 +107,27 @@ class AttackUtils @Inject constructor() {
         }
         return null
     }
+
+    /**
+     * @returns A list of non-Unknown type cards that can be used to make a Chain.
+     */
+    fun getValidNonUnknownCards (
+        cards: List<ParsedCard>
+    ): List<ParsedCard> {
+        // Try to ensure unknown is handled
+        return cards.filter { it.type != CardTypeEnum.Unknown }
+    }
+
+    /**
+     * @returns Are there enough cards to make a chain?
+     */
+    fun isChainable (
+        cards: List<ParsedCard>,
+        npUsage: NPUsage = NPUsage.none,
+        npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
+    ): Boolean {
+        if (npTypes.values.contains(CardTypeEnum.Unknown)) return false
+        val cardsNeeded = 3 - npUsage.nps.size
+        return getValidNonUnknownCards(cards).size >= cardsNeeded
+    }
 }

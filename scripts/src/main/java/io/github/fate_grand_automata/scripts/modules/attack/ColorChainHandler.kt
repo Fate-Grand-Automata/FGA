@@ -44,6 +44,15 @@ open class ColorChainHandler @Inject constructor(
         val cardsNeeded = 3 - npUsage.nps.size
         var selectedCards = cards.filter { it.type == cardType }
 
+        // Do a pre-emptive check
+        if (!utils.isChainable(
+            cards = selectedCards,
+            npUsage = npUsage,
+            npTypes = npTypes,
+        )) {
+            return null
+        }
+
         // Do not have any BraveChains or it is invalid
         if (braveChainEnum == BraveChainEnum.Avoid) {
             val newSelection = getCardsForAvoidBraveChain(
@@ -69,6 +78,7 @@ open class ColorChainHandler @Inject constructor(
                 selectedCards = fieldSlotList
         }
 
+        // Secondary check
         if (selectedCards.size < cardsNeeded) return null
         val combinedCards = selectedCards + (cards - selectedCards)
         return combinedCards
@@ -80,6 +90,9 @@ open class ColorChainHandler @Inject constructor(
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
         cardCountPerCardTypeMap: Map<CardTypeEnum, Int>? = null
     ): Boolean {
+        // NEVER want to make a chain of Unknown cards
+        if (cardType == CardTypeEnum.Unknown) return false
+
         val uniqueCardTypesFromNp = npTypes.values.toSet()
         // Impossible if the unique number of card types are not 1
         if (uniqueCardTypesFromNp.size > 1) return false
@@ -89,6 +102,7 @@ open class ColorChainHandler @Inject constructor(
         val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(cards, npTypes)
 
         // Ensure there are at least 3 cards of the type
+        // This innately handles Unknown for Color chain
         return cardCountPerCardTypeMap.getOrElse(cardType) { 0 } >= 3
     }
 
@@ -138,7 +152,7 @@ open class ColorChainHandler @Inject constructor(
         ) {
             // Attempt to fetch a different field slot
             val differentCard = cards.firstOrNull() { it.fieldSlot != filteredCardsSet.first() }
-            // If there is no different card (even though there should, by this stage), reutrn null
+            // If there is no different card (even though there should, by this stage), return null
             if (differentCard == null) return null
             // Just add new card to index 1, aka 2nd card
             filteredCards.add(1, differentCard)

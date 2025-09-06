@@ -8,6 +8,7 @@ import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
+import kotlin.collections.plus
 
 @ScriptScope
 class CardChainPriorityHandler @Inject constructor(
@@ -26,6 +27,16 @@ class CardChainPriorityHandler @Inject constructor(
         cardCountPerCardTypeMap: Map<CardTypeEnum, Int>? = null,
         forceBraveChain: Boolean = false,
     ): List<ParsedCard>? {
+        // Try to ensure unknown is handled
+        val filteredCards = utils.getValidNonUnknownCards(cards)
+        if (!utils.isChainable(
+            cards = filteredCards,
+            npUsage = npUsage,
+            npTypes = npTypes,
+        )) {
+            return filteredCards + (cards - filteredCards)
+        }
+
         var newCardOrder: List<ParsedCard>? = null
         val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(cards, npUsage)
         val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(cards, npTypes)

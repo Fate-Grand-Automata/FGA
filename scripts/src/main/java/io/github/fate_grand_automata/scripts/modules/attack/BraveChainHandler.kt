@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.scripts.modules.attack
 
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
@@ -14,16 +15,25 @@ class BraveChainHandler @Inject constructor(
     private val avoidChainHandler: AvoidChainHandler,
 ) {
     fun pick(
+        npUsage: NPUsage = NPUsage.none,
         cards: List<ParsedCard>,
         braveChainEnum: BraveChainEnum,
-        npUsage: NPUsage = NPUsage.none,
         cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
     ): List<ParsedCard>? {
-        val cardsPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(cards, npUsage)
+        // Try to ensure unknown is handled
+        val filteredCards = utils.getValidNonUnknownCards(cards)
+        if (!utils.isChainable(
+            cards = filteredCards,
+            npUsage = npUsage,
+        )) {
+            return null
+        }
+
+        val cardsPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(filteredCards, npUsage)
 
         if (braveChainEnum == BraveChainEnum.Avoid) {
             return avoidChainHandler.pick(
-                cards = cards,
+                cards = filteredCards,
                 npUsage = npUsage,
                 avoidBraveChains = true,
                 avoidCardChains = false,
@@ -35,15 +45,15 @@ class BraveChainHandler @Inject constructor(
         // Always returns a valid field slot if there is one for BraveChain
         val priorityFieldSlot = utils.getBraveChainFieldSlot(
             braveChainEnum = braveChainEnum,
-            cards = cards,
+            cards = filteredCards,
             npUsage = npUsage,
         )
         if (priorityFieldSlot == null) return null
 
-        val selectedCards = cards
+        val selectedCards = filteredCards
             .filter { it.fieldSlot == priorityFieldSlot }
             .take((3 - npUsage.nps.size).coerceAtLeast(0))
-        val remainder = cards - selectedCards
+        val remainder = filteredCards - selectedCards
         return selectedCards + remainder
     }
 

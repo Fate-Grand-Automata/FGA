@@ -24,10 +24,18 @@ class AvoidChainHandler @Inject constructor(
     ): List<ParsedCard>? {
         // If there are already 3 NPs, there is nothing to avoid
         if (npUsage.nps.size == 3) return null
-        // No matter what is returned, it will be valid for sure
+
+        // Try to ensure unknown is handled
+        val filteredCards = utils.getValidNonUnknownCards(cards)
+        if (!utils.isChainable(
+            cards = filteredCards,
+            npUsage = npUsage,
+            npTypes = npTypes,
+        )) return null
+
         if (npUsage.nps.size == 2) {
             // No matter what is returned, it will be valid for sure
-            if (!avoidCardChains) return cards
+            if (!avoidCardChains) return filteredCards + (cards - filteredCards)
             // Otherwise, need to check if they have the same NP type
         }
 
@@ -52,7 +60,7 @@ class AvoidChainHandler @Inject constructor(
         val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(cards, npUsage)
         val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(cards, npTypes)
 
-        var cachedFilteredCards = cards
+        var cachedFilteredCards: List<ParsedCard> = filteredCards
         var previousFieldSlot: FieldSlot? = null
 
         // Otherwise, calculate
