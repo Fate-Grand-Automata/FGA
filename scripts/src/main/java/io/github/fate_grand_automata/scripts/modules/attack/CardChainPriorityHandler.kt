@@ -34,7 +34,7 @@ class CardChainPriorityHandler @Inject constructor(
             npUsage = npUsage,
             npTypes = npTypes,
         )) {
-            return nonUnknownCards + (nonUnknownCards - nonUnknownCards)
+            return nonUnknownCards + (cards - nonUnknownCards)
         }
 
         var newCardOrder: List<ParsedCard>? = null

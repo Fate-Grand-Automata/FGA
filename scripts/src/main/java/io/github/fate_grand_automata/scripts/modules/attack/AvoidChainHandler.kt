@@ -57,8 +57,8 @@ class AvoidChainHandler @Inject constructor(
             }
         }
 
-        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(cards, npUsage)
-        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(cards, npTypes)
+        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
+        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(nonUnknownCards, npTypes)
 
         var cachedFilteredCards: List<ParsedCard> = nonUnknownCards
         var previousFieldSlot: FieldSlot? = null
@@ -122,7 +122,7 @@ class AvoidChainHandler @Inject constructor(
         // Return empty if cannot fulfill
         if (selectedCards.size < cardsNeeded) return null
 
-        val remainder = cards - selectedCards
+        val remainder = (nonUnknownCards - selectedCards) + (cards - nonUnknownCards)
         val combinedCards = selectedCards + remainder
 
         return combinedCards

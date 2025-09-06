@@ -69,6 +69,13 @@ class AttackPriorityHandler @Inject constructor(
         // and the system does not deal with CardTypeEnum.Unknown
         val nonUnknownCards = cards.filter { it.type != CardTypeEnum.Unknown }
         val finalFallback = nonUnknownCards + (cards - nonUnknownCards)
+        if (!utils.isChainable(
+                cards = nonUnknownCards,
+                npUsage = npUsage,
+                npTypes = npTypes,
+            )) {
+            return finalFallback
+        }
 
         // Get all the supplementary data
         val cardCountPerFieldSlotMap = utils.getCardsPerFieldSlotMap(cards, npUsage)

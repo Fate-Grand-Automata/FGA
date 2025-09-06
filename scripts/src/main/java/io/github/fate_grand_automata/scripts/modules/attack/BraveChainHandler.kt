@@ -19,6 +19,15 @@ class BraveChainHandler @Inject constructor(
         braveChainEnum: BraveChainEnum,
         cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
     ): List<ParsedCard>? {
+        if (braveChainEnum == BraveChainEnum.Avoid) {
+            return avoidChainHandler.pick(
+                cards = cards,
+                npUsage = npUsage,
+                avoidBraveChains = true,
+                avoidCardChains = false,
+            )
+        }
+
         // Try to ensure unknown is handled
         val nonUnknownCards = utils.getValidNonUnknownCards(cards)
         if (!utils.isChainable(
@@ -29,16 +38,6 @@ class BraveChainHandler @Inject constructor(
         }
 
         val cardsPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
-
-        if (braveChainEnum == BraveChainEnum.Avoid) {
-            return avoidChainHandler.pick(
-                cards = nonUnknownCards,
-                npUsage = npUsage,
-                avoidBraveChains = true,
-                avoidCardChains = false,
-            )
-        }
-
         if (!isBraveChainAllowed(braveChainEnum, npUsage, cardsPerFieldSlotMap)) return null
 
         // Always returns a valid field slot if there is one for BraveChain
@@ -52,7 +51,7 @@ class BraveChainHandler @Inject constructor(
         val selectedCards = nonUnknownCards
             .filter { it.fieldSlot == priorityFieldSlot }
             .take((3 - npUsage.nps.size).coerceAtLeast(0))
-        val remainder = nonUnknownCards - selectedCards
+        val remainder = (nonUnknownCards - selectedCards) + (cards - nonUnknownCards)
         return selectedCards + remainder
     }
 

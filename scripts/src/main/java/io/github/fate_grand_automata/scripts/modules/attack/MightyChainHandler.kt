@@ -56,7 +56,7 @@ class MightyChainHandler @Inject constructor(
         )
         val braveChainEnum = if (forceBraveChain) BraveChainEnum.Always else braveChainEnum
 
-        return pick(
+        val selectedCards = pick(
             cards = nonUnknownCards,
             npUsage = npUsage,
             uniqueCardTypesAlreadyFilled = uniqueCardTypesFromNp,
@@ -65,6 +65,10 @@ class MightyChainHandler @Inject constructor(
 
             cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
         )
+
+        if (selectedCards == null) return null
+        // Handle for CardType.Unknown and ensure that 5 cards are always returned
+        return selectedCards + (cards - selectedCards)
     }
 
     // Returns null if uniqueCards cannot be found
