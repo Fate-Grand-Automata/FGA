@@ -28,9 +28,9 @@ class MightyChainHandler @Inject constructor(
         forceBraveChain: Boolean = false,
     ): List<ParsedCard>? {
         // Try to ensure unknown is handled
-        val filteredCards = utils.getValidNonUnknownCards(cards)
+        val nonUnknownCards = utils.getValidNonUnknownCards(cards)
         if (!utils.isChainable(
-            cards = filteredCards,
+            cards = nonUnknownCards,
             npUsage = npUsage,
             npTypes = npTypes,
         )) {
@@ -38,9 +38,9 @@ class MightyChainHandler @Inject constructor(
         }
 
         val uniqueCardTypesFromNp = npTypes.values.toSet()
-        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(filteredCards, npTypes)
+        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(nonUnknownCards, npTypes)
         if (!isMightyChainAllowed(
-            cards = filteredCards,
+            cards = nonUnknownCards,
             npUsage = npUsage,
             uniqueCardTypesFromNp = uniqueCardTypesFromNp,
             npTypes = npTypes,
@@ -50,14 +50,14 @@ class MightyChainHandler @Inject constructor(
         // Check for Brave Chain
         val braveChainFieldSlot = utils.getBraveChainFieldSlot(
             braveChainEnum = braveChainEnum,
-            cards = filteredCards,
+            cards = nonUnknownCards,
             npUsage = npUsage,
             forceBraveChain = forceBraveChain,
         )
         val braveChainEnum = if (forceBraveChain) BraveChainEnum.Always else braveChainEnum
 
         return pick(
-            cards = filteredCards,
+            cards = nonUnknownCards,
             npUsage = npUsage,
             uniqueCardTypesAlreadyFilled = uniqueCardTypesFromNp,
             braveChainFieldSlot = braveChainFieldSlot,

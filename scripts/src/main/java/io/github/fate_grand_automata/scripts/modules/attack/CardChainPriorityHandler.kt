@@ -28,24 +28,24 @@ class CardChainPriorityHandler @Inject constructor(
         forceBraveChain: Boolean = false,
     ): List<ParsedCard>? {
         // Try to ensure unknown is handled
-        val filteredCards = utils.getValidNonUnknownCards(cards)
+        val nonUnknownCards = utils.getValidNonUnknownCards(cards)
         if (!utils.isChainable(
-            cards = filteredCards,
+            cards = nonUnknownCards,
             npUsage = npUsage,
             npTypes = npTypes,
         )) {
-            return filteredCards + (cards - filteredCards)
+            return nonUnknownCards + (nonUnknownCards - nonUnknownCards)
         }
 
         var newCardOrder: List<ParsedCard>? = null
-        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(cards, npUsage)
-        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(cards, npTypes)
+        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
+        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(nonUnknownCards, npTypes)
 
         for (chain in chainPriority) {
             if (newCardOrder != null) continue
             newCardOrder = when (chain) {
                 ChainTypeEnum.Mighty -> mightyChainHandler.pick(
-                    cards = cards,
+                    cards = nonUnknownCards,
                     npUsage = npUsage,
                     npTypes = npTypes,
                     braveChainEnum = braveChainEnum,
@@ -62,7 +62,7 @@ class CardChainPriorityHandler @Inject constructor(
                         ChainTypeEnum.Quick -> CardTypeEnum.Quick
                         else -> CardTypeEnum.Unknown
                     },
-                    cards = cards,
+                    cards = nonUnknownCards,
                     npUsage = npUsage,
                     npTypes = npTypes,
                     braveChainEnum = braveChainEnum,
@@ -71,7 +71,7 @@ class CardChainPriorityHandler @Inject constructor(
                     cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
                 )
                 ChainTypeEnum.Avoid -> avoidChainHandler.pick(
-                    cards = cards,
+                    cards = nonUnknownCards,
                     npUsage = npUsage,
                     npTypes = npTypes,
                     avoidBraveChains = braveChainEnum == BraveChainEnum.Avoid,

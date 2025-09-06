@@ -67,8 +67,8 @@ class AttackPriorityHandler @Inject constructor(
         // All stunned cards are categorized as Unknown.
         // Filter all of them since those cards are to be avoided if possible
         // and the system does not deal with CardTypeEnum.Unknown
-        val filteredCards = cards.filter { it.type != CardTypeEnum.Unknown }
-        val finalFallback = filteredCards + (cards - filteredCards)
+        val nonUnknownCards = cards.filter { it.type != CardTypeEnum.Unknown }
+        val finalFallback = nonUnknownCards + (cards - nonUnknownCards)
 
         // Get all the supplementary data
         val cardCountPerFieldSlotMap = utils.getCardsPerFieldSlotMap(cards, npUsage)
@@ -81,7 +81,7 @@ class AttackPriorityHandler @Inject constructor(
             when (attackPriority) {
                 AttackPriorityEnum.BraveChainPriority -> {
                     braveChainFallback = braveChainHandler.pick(
-                        cards = filteredCards,
+                        cards = nonUnknownCards,
                         braveChainEnum = braveChainEnum,
                         npUsage = npUsage,
                         cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
@@ -102,7 +102,7 @@ class AttackPriorityHandler @Inject constructor(
                     }
 
                     newCardOrder = cardChainPriorityHandler.pick(
-                        cards = filteredCards,
+                        cards = nonUnknownCards,
                         chainPriority = filteredChainPriority,
                         braveChainEnum = braveChainEnum,
                         npUsage = npUsage,
