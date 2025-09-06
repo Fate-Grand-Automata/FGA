@@ -183,8 +183,10 @@ class ColorChainTest {
                     ),
                 )?.map { it.card } ?: emptyList()
 
-                when (cardType) {
-                    CardTypeEnum.Arts ->
+                when (cardType to braveChainEnum) {
+                    CardTypeEnum.Arts to BraveChainEnum.None,
+                    CardTypeEnum.Arts to BraveChainEnum.Always,
+                    CardTypeEnum.Arts to BraveChainEnum.WithNP, ->
                         assertThat(result, cardType.toString()).containsExactly(
                             CommandCard.Face.C,
                             CommandCard.Face.D,
@@ -444,8 +446,10 @@ class ColorChainTest {
                     braveChainEnum = braveChainEnum,
                 )?.map { it.card } ?: emptyList()
 
-                when (cardType) {
-                    CardTypeEnum.Buster ->
+                when (cardType to braveChainEnum) {
+                    CardTypeEnum.Buster to BraveChainEnum.None,
+                    CardTypeEnum.Buster to BraveChainEnum.Always,
+                    CardTypeEnum.Buster to BraveChainEnum.WithNP, ->
                         assertThat(result, cardType.toString()).containsExactly(
                             CommandCard.Face.A,
                             CommandCard.Face.B,
@@ -475,8 +479,10 @@ class ColorChainTest {
                     ),
                 )?.map { it.card } ?: emptyList()
 
-                when (cardType) {
-                    CardTypeEnum.Buster ->
+                when (cardType to braveChainEnum) {
+                    CardTypeEnum.Buster to BraveChainEnum.None,
+                    CardTypeEnum.Buster to BraveChainEnum.Always,
+                    CardTypeEnum.Buster to BraveChainEnum.WithNP, ->
                         assertThat(result, "$braveChainEnum, $cardType").containsExactly(
                             CommandCard.Face.A,
                             CommandCard.Face.B,
@@ -506,8 +512,10 @@ class ColorChainTest {
                     ),
                 )?.map { it.card } ?: emptyList()
 
-                when (cardType) {
-                    CardTypeEnum.Arts ->
+                when (cardType to braveChainEnum) {
+                    CardTypeEnum.Arts to BraveChainEnum.None,
+                    CardTypeEnum.Arts to BraveChainEnum.Always,
+                    CardTypeEnum.Arts to BraveChainEnum.WithNP, ->
                         assertThat(result, "$braveChainEnum, $cardType").containsExactly(
                             CommandCard.Face.C,
                             CommandCard.Face.D,
@@ -607,8 +615,10 @@ class ColorChainTest {
                     ),
                 )?.map { it.card } ?: emptyList()
 
-                when (cardType) {
-                    CardTypeEnum.Arts ->
+                when (cardType to braveChainEnum) {
+                    CardTypeEnum.Arts to BraveChainEnum.None,
+                    CardTypeEnum.Arts to BraveChainEnum.Always,
+                    CardTypeEnum.Arts to BraveChainEnum.WithNP, ->
                         assertThat(result, "$braveChainEnum, $cardType").containsExactly(
                             CommandCard.Face.C,
                             CommandCard.Face.D,
@@ -674,8 +684,10 @@ class ColorChainTest {
                     ),
                 )?.map { it.card } ?: emptyList()
 
-                when (cardType) {
-                    CardTypeEnum.Arts ->
+                when (cardType to braveChainEnum) {
+                    CardTypeEnum.Arts to BraveChainEnum.None,
+                    CardTypeEnum.Arts to BraveChainEnum.Always,
+                    CardTypeEnum.Arts to BraveChainEnum.WithNP, ->
                         assertThat(result, "$braveChainEnum, $cardType").containsExactly(
                             CommandCard.Face.C,
                             CommandCard.Face.D,
@@ -763,8 +775,10 @@ class ColorChainTest {
                     braveChainEnum = braveChainEnum,
                 )?.map { it.card } ?: emptyList()
 
-                when (cardType) {
-                    CardTypeEnum.Buster ->
+                when (cardType to braveChainEnum) {
+                    CardTypeEnum.Buster to BraveChainEnum.None,
+                    CardTypeEnum.Buster to BraveChainEnum.Always,
+                    CardTypeEnum.Buster to BraveChainEnum.WithNP, ->
                         assertThat(result, "$braveChainEnum, $cardType").containsExactly(
                             CommandCard.Face.A,
                             CommandCard.Face.B,
@@ -842,8 +856,10 @@ class ColorChainTest {
                     )
                 )?.map { it.card } ?: emptyList()
 
-                when (cardType) {
-                    CardTypeEnum.Buster ->
+                when (cardType to braveChainEnum) {
+                    CardTypeEnum.Buster to BraveChainEnum.None,
+                    CardTypeEnum.Buster to BraveChainEnum.Always,
+                    CardTypeEnum.Buster to BraveChainEnum.WithNP, ->
                         assertThat(result, "$braveChainEnum, $cardType").containsExactly(
                             CommandCard.Face.B,
                             CommandCard.Face.E,

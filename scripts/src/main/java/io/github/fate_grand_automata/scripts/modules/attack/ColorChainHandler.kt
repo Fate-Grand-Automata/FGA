@@ -63,7 +63,8 @@ open class ColorChainHandler @Inject constructor(
             )
             // if it is null, it means that it is impossible to get a list that avoids a BraveChain
             // if it is not null, there is a valid non-Brave Chain option
-            if (newSelection != null) selectedCards = newSelection.toMutableList()
+            if (newSelection == null) return null
+            selectedCards = newSelection.toMutableList()
         }
         // If there is a braveChainFieldSlot, try for a Brave Color Chain
         else if (braveChainFieldSlot != null) {
