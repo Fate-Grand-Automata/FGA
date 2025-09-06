@@ -260,4 +260,85 @@ class AttackLineUps {
         /** servant5WQ, servant2WQ, servant3WAltQ, servant1WB, servant4WB */
         val lineup5 = listOf(scathach5WQ, scathach2WQ, scathach3WAltQ, scathach1WB, scathach4WB)
     }
+
+    data object Unknown {
+        val scathach1Unknown = ParsedCard(
+            card = CommandCard.Face.A,
+            servant = TeamSlot.B,
+            fieldSlot = FieldSlot.B,
+            type = CardTypeEnum.Unknown,
+            affinity = CardAffinityEnum.Weak
+        )
+        val kama2Unknown = ParsedCard(
+            card = CommandCard.Face.B,
+            servant = TeamSlot.A,
+            fieldSlot = FieldSlot.A,
+            type = CardTypeEnum.Unknown
+        )
+        val nero3Unknown = ParsedCard(
+            card = CommandCard.Face.C,
+            servant = TeamSlot.C,
+            fieldSlot = FieldSlot.C,
+            type = CardTypeEnum.Unknown,
+            affinity = CardAffinityEnum.Resist
+        )
+        val nero4Unknown = ParsedCard(
+            card = CommandCard.Face.D,
+            servant = TeamSlot.C,
+            fieldSlot = FieldSlot.C,
+            type = CardTypeEnum.Unknown,
+            affinity = CardAffinityEnum.Resist
+        )
+        val scathach5Unknown = ParsedCard(
+            card = CommandCard.Face.E,
+            servant = TeamSlot.B,
+            fieldSlot = FieldSlot.B,
+            type = CardTypeEnum.Unknown,
+            affinity = CardAffinityEnum.Weak
+        )
+
+        /**
+         * Standard.lineup1 with 1st card Unknown
+         */
+        val lineup1 = listOf(
+            scathach1Unknown,
+            Standard.kama2Q,
+            Standard.nero3RA,
+            Standard.nero4RA,
+            Standard.scathach5WQ,
+        )
+
+        /**
+         * Standard.lineup1 with 2 cards Unknown
+         */
+        val lineup2 = listOf(
+            scathach1Unknown,
+            kama2Unknown,
+            Standard.nero3RA,
+            Standard.nero4RA,
+            Standard.scathach5WQ,
+        )
+
+        /**
+         * Standard.lineup1 with 3 cards Unknown
+         */
+        val lineup3 = listOf(
+            scathach1Unknown,
+            kama2Unknown,
+            nero3Unknown,
+            Standard.nero4RA,
+            Standard.scathach5WQ,
+        )
+
+        /**
+         * All cards Unknown
+         */
+        val lineup4 = listOf(
+            scathach1Unknown,
+            kama2Unknown,
+            nero3Unknown,
+            nero4Unknown,
+            scathach5Unknown,
+        )
+    }
 }

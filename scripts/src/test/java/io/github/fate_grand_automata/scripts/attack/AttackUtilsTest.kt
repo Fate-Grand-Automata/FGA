@@ -1,7 +1,6 @@
 package io.github.fate_grand_automata.scripts.attack
 
 import assertk.assertThat
-import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
@@ -356,7 +355,7 @@ class AttackUtilsTest {
     }
 
     @Test
-    fun `getBraveChainFieldSlot, Standard -lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1-KamaNP + 2-ScathachNP`() {
+    fun `getBraveChainFieldSlot, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1-KamaNP + 2-ScathachNP`() {
         for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.Standard.lineup1
             val result = utils.getBraveChainFieldSlot(
@@ -370,7 +369,7 @@ class AttackUtilsTest {
     }
 
     @Test
-    fun `getBraveChainFieldSlot, Standard -lineup1 (1SB,2KQ,3NA,4NA,5SQ) + All 3 NP`() {
+    fun `getBraveChainFieldSlot, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + All 3 NP`() {
         for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.Standard.lineup1
             val result = utils.getBraveChainFieldSlot(
@@ -453,5 +452,302 @@ class AttackUtilsTest {
                 else -> assertThat(result, braveChainEnum.toString()).isNull()
             }
         }
+    }
+
+    @Test
+    fun `getValidNonUnknownCards, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
+        val cards = AttackLineUps.Standard.lineup1
+        val result = utils.getValidNonUnknownCards(
+            cards = cards,
+        )
+
+        assertThat(result.size).isEqualTo(5)
+    }
+
+    @Test
+    fun `getValidNonUnknownCards, Unknown - lineup1 (1 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup1
+        val result = utils.getValidNonUnknownCards(
+            cards = cards,
+        )
+
+        assertThat(result.size).isEqualTo(4)
+    }
+
+    @Test
+    fun `getValidNonUnknownCards, Unknown - lineup2 (2 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup2
+        val result = utils.getValidNonUnknownCards(
+            cards = cards,
+        )
+
+        assertThat(result.size).isEqualTo(3)
+    }
+
+    @Test
+    fun `getValidNonUnknownCards, Unknown - lineup3 (3 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup3
+        val result = utils.getValidNonUnknownCards(
+            cards = cards,
+        )
+
+        assertThat(result.size).isEqualTo(2)
+    }
+
+    @Test
+    fun `getValidNonUnknownCards, Unknown - lineup4 (5 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup4
+        val result = utils.getValidNonUnknownCards(
+            cards = cards,
+        )
+
+        assertThat(result.size).isEqualTo(0)
+    }
+
+    @Test
+    fun `isChainable, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
+        val cards = AttackLineUps.Standard.lineup1
+        val result = utils.isChainable(
+            cards = cards,
+        )
+
+        assertThat(result).isEqualTo(true)
+    }
+
+    @Test
+    fun `isChainable, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1 Valid NP`() {
+        val cards = AttackLineUps.Standard.lineup1
+        val result = utils.isChainable(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+        )
+
+        assertThat(result).isEqualTo(true)
+    }
+
+    @Test
+    fun `isChainable, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1 Valid NP, with npTypes`() {
+        val cards = AttackLineUps.Standard.lineup1
+        val result = utils.isChainable(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Quick
+            ),
+        )
+
+        assertThat(result).isEqualTo(true)
+    }
+
+    @Test
+    fun `isChainable, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1 Unknown NP`() {
+        val cards = AttackLineUps.Standard.lineup1
+        val result = utils.isChainable(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Unknown
+            ),
+        )
+
+        assertThat(result).isEqualTo(false)
+    }
+
+    @Test
+    fun `isChainable, Unknown - lineup1 (1 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup1
+        val result = utils.isChainable(
+            cards = cards,
+        )
+
+        assertThat(result).isEqualTo(true)
+    }
+
+    @Test
+    fun `isChainable, Unknown - lineup1 (1 Unknown) + 1 Valid NP`() {
+        val cards = AttackLineUps.Unknown.lineup1
+        val result = utils.isChainable(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+        )
+
+        assertThat(result).isEqualTo(true)
+    }
+
+    @Test
+    fun `isChainable, Unknown - lineup1 (1 Unknown) + 1 Valid NP, with npTypes`() {
+        val cards = AttackLineUps.Unknown.lineup1
+        val result = utils.isChainable(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Quick
+            ),
+        )
+
+        assertThat(result).isEqualTo(true)
+    }
+
+    @Test
+    fun `isChainable, Unknown - lineup1 (1 Unknown) + 1 Unknown NP, with npTypes`() {
+        val cards = AttackLineUps.Unknown.lineup1
+        val result = utils.isChainable(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Unknown
+            ),
+        )
+
+        assertThat(result).isEqualTo(false)
+    }
+
+    @Test
+    fun `isChainable, Unknown - lineup2 (2 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup2
+        val result = utils.isChainable(
+            cards = cards,
+        )
+
+        assertThat(result).isEqualTo(true)
+    }
+
+    @Test
+    fun `isChainable, Unknown - lineup3 (3 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup3
+        val result = utils.isChainable(
+            cards = cards,
+        )
+
+        assertThat(result).isEqualTo(false)
+    }
+
+    @Test
+    fun `isChainable, Unknown - lineup3 (3 Unknown) + Valid NP`() {
+        val cards = AttackLineUps.Unknown.lineup3
+        val result = utils.isChainable(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+        )
+
+        assertThat(result).isEqualTo(true)
+    }
+
+    @Test
+    fun `isChainable, Unknown - lineup3 (3 Unknown) + Valid NP, with npTypes`() {
+        val cards = AttackLineUps.Unknown.lineup3
+        val result = utils.isChainable(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Quick
+            ),
+        )
+
+        assertThat(result).isEqualTo(true)
+    }
+
+    @Test
+    fun `isChainable, Unknown - lineup4 (5 Unknown)`() {
+        val cards = AttackLineUps.Unknown.lineup4
+        val result = utils.isChainable(
+            cards = cards,
+        )
+
+        assertThat(result).isEqualTo(false)
+    }
+
+    @Test
+    fun `isChainable, Unknown - lineup4 (5 Unknown) + 1 Valid NP`() {
+        val cards = AttackLineUps.Unknown.lineup4
+        val result = utils.isChainable(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+        )
+
+        assertThat(result).isEqualTo(false)
+    }
+
+    @Test
+    fun `isChainable, Unknown - lineup4 (5 Unknown) + 1 Valid NP, with npTypes`() {
+        val cards = AttackLineUps.Unknown.lineup4
+        val result = utils.isChainable(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Quick
+            ),
+        )
+
+        assertThat(result).isEqualTo(false)
+    }
+
+    @Test
+    fun `isChainable, Unknown - lineup4 (5 Unknown) + 2 Valid NP`() {
+        val cards = AttackLineUps.Unknown.lineup4
+        val result = utils.isChainable(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
+        )
+
+        assertThat(result).isEqualTo(false)
+    }
+
+    @Test
+    fun `isChainable, Unknown - lineup4 (5 Unknown) + 2 Valid NP, with npTypes`() {
+        val cards = AttackLineUps.Unknown.lineup4
+        val result = utils.isChainable(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Quick,
+                FieldSlot.B to CardTypeEnum.Quick,
+            ),
+        )
+
+        assertThat(result).isEqualTo(false)
+    }
+
+    @Test
+    fun `isChainable, Unknown - lineup4 (5 Unknown) + 3 Valid NP`() {
+        val cards = AttackLineUps.Unknown.lineup4
+        val result = utils.isChainable(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B, CommandCard.NP.C), 0),
+        )
+
+        assertThat(result).isEqualTo(true)
+    }
+
+    @Test
+    fun `isChainable, Unknown - lineup4 (5 Unknown) + 3 Valid NP, with npTypes`() {
+        val cards = AttackLineUps.Unknown.lineup4
+        val result = utils.isChainable(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B, CommandCard.NP.C), 0),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Quick,
+                FieldSlot.B to CardTypeEnum.Quick,
+                FieldSlot.B to CardTypeEnum.Arts,
+            ),
+        )
+
+        assertThat(result).isEqualTo(true)
+    }
+
+    @Test
+    fun `isChainable, Unknown - lineup4 (5 Unknown) + 2 Valid NP + 1 Unknown NP, with npTypes`() {
+        val cards = AttackLineUps.Unknown.lineup4
+        val result = utils.isChainable(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B, CommandCard.NP.C), 0),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Quick,
+                FieldSlot.B to CardTypeEnum.Quick,
+                FieldSlot.B to CardTypeEnum.Unknown,
+            ),
+        )
+
+        assertThat(result).isEqualTo(false)
     }
 }
