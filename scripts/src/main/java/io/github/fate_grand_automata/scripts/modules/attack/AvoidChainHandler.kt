@@ -9,8 +9,7 @@ import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.collections.set
 
-@ScriptScope
-class AvoidChainHandler @Inject constructor() {
+object AvoidChainHandler {
     fun pick(
         cards: List<ParsedCard>,
         npUsage: NPUsage = NPUsage.none,

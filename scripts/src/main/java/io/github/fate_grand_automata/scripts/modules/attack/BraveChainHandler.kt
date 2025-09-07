@@ -9,9 +9,7 @@ import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
 @ScriptScope
-class BraveChainHandler @Inject constructor(
-    private val avoidChainHandler: AvoidChainHandler,
-) {
+class BraveChainHandler @Inject constructor() {
     fun pick(
         npUsage: NPUsage = NPUsage.none,
         cards: List<ParsedCard>,
@@ -19,7 +17,7 @@ class BraveChainHandler @Inject constructor(
         cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
     ): List<ParsedCard>? {
         if (braveChainEnum == BraveChainEnum.Avoid) {
-            return avoidChainHandler.pick(
+            return AvoidChainHandler.pick(
                 cards = cards,
                 npUsage = npUsage,
                 avoidBraveChains = true,

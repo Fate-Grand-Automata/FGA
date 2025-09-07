@@ -16,16 +16,11 @@ import kotlin.test.Test
 
 class BraveChainTest {
     lateinit var braveChainHandler: BraveChainHandler
-    lateinit var avoidChainHandler: AvoidChainHandler
-
     val braveChainEnums = BraveChainEnum.entries
 
     @BeforeTest
     fun init() {
-        avoidChainHandler = AvoidChainHandler()
-        braveChainHandler = BraveChainHandler(
-            avoidChainHandler = avoidChainHandler,
-        )
+        braveChainHandler = BraveChainHandler()
     }
 
     fun assertDefaultAvoidChain (
@@ -35,7 +30,7 @@ class BraveChainTest {
         npUsage: NPUsage = NPUsage.none,
     ) {
         if (braveChainEnum != BraveChainEnum.Avoid) return
-        val defaultAvoid = avoidChainHandler.pick(
+        val defaultAvoid = AvoidChainHandler.pick(
             cards = cards,
             npUsage = npUsage,
             avoidBraveChains = true,

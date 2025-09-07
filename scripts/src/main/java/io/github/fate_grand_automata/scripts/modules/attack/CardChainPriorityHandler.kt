@@ -14,7 +14,6 @@ import kotlin.collections.plus
 class CardChainPriorityHandler @Inject constructor(
     private val mightyChainHandler: MightyChainHandler,
     private val colorChainHandler: ColorChainHandler,
-    private val avoidChainHandler: AvoidChainHandler,
 ) {
     fun pick(
         cards: List<ParsedCard>,
@@ -69,7 +68,7 @@ class CardChainPriorityHandler @Inject constructor(
                     cardCountPerCardTypeMap = cardCountPerCardTypeMap,
                     cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
                 )
-                ChainTypeEnum.Avoid -> avoidChainHandler.pick(
+                ChainTypeEnum.Avoid -> AvoidChainHandler.pick(
                     cards = nonUnknownCards,
                     npUsage = npUsage,
                     npTypes = npTypes,
