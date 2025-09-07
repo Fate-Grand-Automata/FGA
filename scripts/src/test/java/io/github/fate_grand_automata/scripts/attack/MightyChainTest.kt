@@ -16,21 +16,13 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class MightyChainTest {
-    lateinit var mightyChainHandler: MightyChainHandler
-    lateinit var utils: AttackUtils
-
     val braveChainEnums = BraveChainEnum.entries
-
-    @BeforeTest
-    fun init() {
-        mightyChainHandler = MightyChainHandler()
-    }
 
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -49,7 +41,7 @@ class MightyChainTest {
     fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA)`() {
         val cards = AttackLineUps.Standard.lineup2
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -68,7 +60,7 @@ class MightyChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -83,7 +75,7 @@ class MightyChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP, with npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -106,7 +98,7 @@ class MightyChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.B), 0)
@@ -121,7 +113,7 @@ class MightyChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -148,7 +140,7 @@ class MightyChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with Arts as npType`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -183,7 +175,7 @@ class MightyChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.C), 0)
@@ -198,7 +190,7 @@ class MightyChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, with npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
@@ -225,7 +217,7 @@ class MightyChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, with npTypes & forcedBraveChain`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
@@ -243,7 +235,7 @@ class MightyChainTest {
     fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA) + 1Kama-NP, with npTypes`() {
         val cards = AttackLineUps.Standard.lineup2
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -266,7 +258,7 @@ class MightyChainTest {
     fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA) + 2Scathach-NP, with npTypes`() {
         val cards = AttackLineUps.Standard.lineup2
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -293,7 +285,7 @@ class MightyChainTest {
     fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA) + 2Scathach-NP, with Arts as npType`() {
         val cards = AttackLineUps.Standard.lineup2
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -329,7 +321,7 @@ class MightyChainTest {
     fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA) + 3Nero-NP, with npTypes`() {
         val cards = AttackLineUps.Standard.lineup2
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
@@ -356,7 +348,7 @@ class MightyChainTest {
     fun `SingleServantOnly - lineup1 (1B,2Q,3A,4B,5Q) + 3Nero-NP, with npTypes`() {
         val cards = AttackLineUps.SingleServantOnly.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
@@ -379,7 +371,7 @@ class MightyChainTest {
     fun `SingleServantOnly - lineup1 (1B,2Q,3A,4B,5Q) + Buster NP, with npTypes`() {
         val cards = AttackLineUps.SingleServantOnly.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
@@ -402,7 +394,7 @@ class MightyChainTest {
     fun `SingleServantOnly - lineup2 (1B,4B,5Q,2Q,3A)`() {
         val cards = AttackLineUps.SingleServantOnly.lineup2
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -421,7 +413,7 @@ class MightyChainTest {
     fun `SingleServantOnly - lineup3 (5Q,2Q,3A,1B,4B)`() {
         val cards = AttackLineUps.SingleServantOnly.lineup3
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -441,7 +433,7 @@ class MightyChainTest {
     fun `SingleServantOnly - lineup4 (1B,2Q,3Q,4B,5Q) - No mighty chain`() {
         val cards = AttackLineUps.SingleServantOnly.lineup4
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -455,7 +447,7 @@ class MightyChainTest {
     fun `SingleServantOnly - lineup5 (1Q,2Q,3Q,4B,5B) - No mighty chain`() {
         val cards = AttackLineUps.SingleServantOnly.lineup5
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -471,7 +463,7 @@ class MightyChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (2Kama, 3Nero) - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.B, CommandCard.NP.C), 0)
@@ -485,7 +477,7 @@ class MightyChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 3Nero), with npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.C), 0),
@@ -509,7 +501,7 @@ class MightyChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 2Scathach) - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
@@ -523,7 +515,7 @@ class MightyChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 2Scathach), with npTypes - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
@@ -541,7 +533,7 @@ class MightyChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3 NP, with npTypes - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B, CommandCard.NP.C), 0),
@@ -563,7 +555,7 @@ class MightyChainTest {
     fun `Unknown - lineup1 (1 Unknown)`() {
         val cards = AttackLineUps.Unknown.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -576,7 +568,7 @@ class MightyChainTest {
     fun `Unknown - lineup1 (1 Unknown) + 1 Valid Buster NP, with npTypes`() {
         val cards = AttackLineUps.Unknown.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -599,7 +591,7 @@ class MightyChainTest {
     fun `Unknown - lineup2 (2 Unknown)`() {
         val cards = AttackLineUps.Unknown.lineup2
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -612,7 +604,7 @@ class MightyChainTest {
     fun `Unknown - lineup2 (2 Unknown) + 1 Valid Buster NP, with npTypes`() {
         val cards = AttackLineUps.Unknown.lineup2
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -635,7 +627,7 @@ class MightyChainTest {
     fun `Unknown - lineup3 (3 Unknown)`() {
         val cards = AttackLineUps.Unknown.lineup3
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -648,7 +640,7 @@ class MightyChainTest {
     fun `Unknown - lineup3 (3 Unknown) + 1 Valid Buster NP, with npTypes`() {
         val cards = AttackLineUps.Unknown.lineup3
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -671,7 +663,7 @@ class MightyChainTest {
     fun `Unknown - lineup4 (5 Unknown)`() {
         val cards = AttackLineUps.Unknown.lineup4
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -684,7 +676,7 @@ class MightyChainTest {
     fun `Unknown - lineup5 (1 Unknown)`() {
         val cards = AttackLineUps.Unknown.lineup5
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -697,7 +689,7 @@ class MightyChainTest {
     fun `Unknown - lineup5 (1 Unknown) + 1 Valid Quick NP, with npTypes`() {
         val cards = AttackLineUps.Unknown.lineup5
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -720,7 +712,7 @@ class MightyChainTest {
     fun `Unknown - lineup6 (1 Unknown)`() {
         val cards = AttackLineUps.Unknown.lineup6
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -733,7 +725,7 @@ class MightyChainTest {
     fun `Unknown - lineup6 (1 Unknown) + 1 Valid Quick NP, with npTypes`() {
         val cards = AttackLineUps.Unknown.lineup6
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -758,7 +750,7 @@ class MightyChainTest {
     @Test
     fun `getMightyChainWithoutBraveChain, MightyOutlier - lineup1 (1SB,2SA,3NA,4NA,5SQ)`() {
         val cards = AttackLineUps.MightyOutlier.lineup1
-        val picked = mightyChainHandler.getMightyChainWithoutBraveChain(
+        val picked = MightyChainHandler.getMightyChainWithoutBraveChain(
             cards = cards,
             selectedCards = AttackLineUps.MightyOutlier.lineup1_DefaultMightyChain
         )?.map { it.card } ?: emptyList()
@@ -773,7 +765,7 @@ class MightyChainTest {
     @Test
     fun `getMightyChainWithoutBraveChain, MightyOutlier - lineup1 (1SB,2SA,3NA,4NA,5SQ) + ScathachNP`() {
         val cards = AttackLineUps.MightyOutlier.lineup1
-        val picked = mightyChainHandler.getMightyChainWithoutBraveChain(
+        val picked = MightyChainHandler.getMightyChainWithoutBraveChain(
             cards = cards,
             selectedCards = AttackLineUps.MightyOutlier.lineup1_DefaultMightyChain_WithQuickNP,
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -788,7 +780,7 @@ class MightyChainTest {
     @Test
     fun `getMightyChainWithoutBraveChain, MightyOutlier - lineup1 (1SB,2SA,3NA,4NA,5SQ) + Non-Scathach Buster NP`() {
         val cards = AttackLineUps.MightyOutlier.lineup1
-        val picked = mightyChainHandler.getMightyChainWithoutBraveChain(
+        val picked = MightyChainHandler.getMightyChainWithoutBraveChain(
             cards = cards,
             selectedCards = AttackLineUps.MightyOutlier.lineup1_DefaultMightyChain_WithNonScathachBusterNP,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -803,7 +795,7 @@ class MightyChainTest {
     @Test
     fun `getMightyChainWithoutBraveChain, MightyOutlier - lineup1 (1SB,2SA,3NA,4NA,5SQ) + Non-Scathach Arts NP`() {
         val cards = AttackLineUps.MightyOutlier.lineup1
-        val picked = mightyChainHandler.getMightyChainWithoutBraveChain(
+        val picked = MightyChainHandler.getMightyChainWithoutBraveChain(
             cards = cards,
             selectedCards = AttackLineUps.MightyOutlier.lineup1_DefaultMightyChain_WithNonScathachArtsNP,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -818,7 +810,7 @@ class MightyChainTest {
     @Test
     fun `getMightyChainWithoutBraveChain, MightyOutlier - lineup1 (1SB,2SA,3NA,4NA,5SQ) + Non-Scathach Quick NP`() {
         val cards = AttackLineUps.MightyOutlier.lineup1
-        val picked = mightyChainHandler.getMightyChainWithoutBraveChain(
+        val picked = MightyChainHandler.getMightyChainWithoutBraveChain(
             cards = cards,
             selectedCards = AttackLineUps.MightyOutlier.lineup1_DefaultMightyChain_WithQuickNP,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -834,7 +826,7 @@ class MightyChainTest {
     fun `MightyOutlier - lineup1 (1SB,2SA,3NA,4NA,5SQ)`() {
         val cards = AttackLineUps.MightyOutlier.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -864,7 +856,7 @@ class MightyChainTest {
     fun `MightyOutlier - lineup1 (1SB,2SA,3NA,4NA,5SQ) + 1 NP (Scathach)`() {
         val cards = AttackLineUps.MightyOutlier.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -899,7 +891,7 @@ class MightyChainTest {
     fun `MightyOutlier - lineup2 (1SB,5SQ,2SA,3NA,4NA)`() {
         val cards = AttackLineUps.MightyOutlier.lineup2
         for (braveChainEnum in braveChainEnums) {
-            val picked = mightyChainHandler.pick(
+            val picked = MightyChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()

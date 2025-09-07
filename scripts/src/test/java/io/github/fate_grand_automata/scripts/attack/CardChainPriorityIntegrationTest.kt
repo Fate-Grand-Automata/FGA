@@ -23,16 +23,10 @@ import kotlin.test.Test
 class CardChainPriorityIntegrationTest {
     lateinit var attackPriorityHandler: AttackPriorityHandler
 
-    lateinit var mightyChainHandler: MightyChainHandler
-
     @BeforeTest
     fun init() {
-        mightyChainHandler = MightyChainHandler()
-
         attackPriorityHandler = AttackPriorityHandler(
-            cardChainPriorityHandler = CardChainPriorityHandler(
-                mightyChainHandler = mightyChainHandler,
-            ),
+            cardChainPriorityHandler = CardChainPriorityHandler(),
         )
     }
 
@@ -61,7 +55,7 @@ class CardChainPriorityIntegrationTest {
         npUsage: NPUsage = NPUsage.none,
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
     ): List<ParsedCard> {
-        val results = mightyChainHandler.pick(
+        val results = MightyChainHandler.pick(
             cards = cards,
             npUsage = npUsage,
             npTypes = npTypes,

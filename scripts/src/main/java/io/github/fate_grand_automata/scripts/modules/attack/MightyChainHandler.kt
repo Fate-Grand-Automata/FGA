@@ -10,10 +10,9 @@ import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.collections.Map
 
-@ScriptScope
-class MightyChainHandler @Inject constructor() {
+object MightyChainHandler {
     // We want 3 unique types, the magic number
-    val totalUniqueCardTypesPermitted = 3
+    const val totalUniqueCardTypesPermitted = 3
 
     // Returns null if uniqueCards cannot be found
     fun pick (

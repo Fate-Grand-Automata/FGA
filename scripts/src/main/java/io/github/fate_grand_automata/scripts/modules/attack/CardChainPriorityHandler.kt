@@ -11,9 +11,7 @@ import javax.inject.Inject
 import kotlin.collections.plus
 
 @ScriptScope
-class CardChainPriorityHandler @Inject constructor(
-    private val mightyChainHandler: MightyChainHandler,
-) {
+class CardChainPriorityHandler @Inject constructor() {
     fun pick(
         cards: List<ParsedCard>,
         chainPriority: List<ChainTypeEnum> = ChainTypeEnum.defaultOrder,
@@ -41,7 +39,7 @@ class CardChainPriorityHandler @Inject constructor(
         for (chain in chainPriority) {
             if (newCardOrder != null) continue
             newCardOrder = when (chain) {
-                ChainTypeEnum.Mighty -> mightyChainHandler.pick(
+                ChainTypeEnum.Mighty -> MightyChainHandler.pick(
                     cards = nonUnknownCards,
                     npUsage = npUsage,
                     npTypes = npTypes,
