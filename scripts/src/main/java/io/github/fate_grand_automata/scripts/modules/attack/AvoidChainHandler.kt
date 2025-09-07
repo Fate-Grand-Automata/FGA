@@ -10,9 +10,7 @@ import javax.inject.Inject
 import kotlin.collections.set
 
 @ScriptScope
-class AvoidChainHandler @Inject constructor(
-    private val utils: AttackUtils
-) {
+class AvoidChainHandler @Inject constructor() {
     fun pick(
         cards: List<ParsedCard>,
         npUsage: NPUsage = NPUsage.none,
@@ -26,8 +24,8 @@ class AvoidChainHandler @Inject constructor(
         if (npUsage.nps.size == 3) return null
 
         // Try to ensure unknown is handled
-        val nonUnknownCards = utils.getValidNonUnknownCards(cards)
-        if (!utils.isChainable(
+        val nonUnknownCards = AttackUtils.getValidNonUnknownCards(cards)
+        if (!AttackUtils.isChainable(
             cards = nonUnknownCards,
             npUsage = npUsage,
             npTypes = npTypes,
@@ -57,8 +55,8 @@ class AvoidChainHandler @Inject constructor(
             }
         }
 
-        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
-        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(nonUnknownCards, npTypes)
+        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: AttackUtils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
+        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: AttackUtils.getCardsPerCardTypeMap(nonUnknownCards, npTypes)
 
         var cachedFilteredCards: List<ParsedCard> = nonUnknownCards
         var previousFieldSlot: FieldSlot? = null

@@ -23,10 +23,7 @@ class MightyChainTest {
 
     @BeforeTest
     fun init() {
-        utils = AttackUtils()
-        mightyChainHandler = MightyChainHandler(
-            utils = utils
-        )
+        mightyChainHandler = MightyChainHandler()
     }
 
     @Test

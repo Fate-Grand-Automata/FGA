@@ -15,7 +15,6 @@ class CardChainPriorityHandler @Inject constructor(
     private val mightyChainHandler: MightyChainHandler,
     private val colorChainHandler: ColorChainHandler,
     private val avoidChainHandler: AvoidChainHandler,
-    private val utils: AttackUtils
 ) {
     fun pick(
         cards: List<ParsedCard>,
@@ -28,8 +27,8 @@ class CardChainPriorityHandler @Inject constructor(
         forceBraveChain: Boolean = false,
     ): List<ParsedCard>? {
         // Try to ensure unknown is handled
-        val nonUnknownCards = utils.getValidNonUnknownCards(cards)
-        if (!utils.isChainable(
+        val nonUnknownCards = AttackUtils.getValidNonUnknownCards(cards)
+        if (!AttackUtils.isChainable(
             cards = nonUnknownCards,
             npUsage = npUsage,
             npTypes = npTypes,
@@ -38,8 +37,8 @@ class CardChainPriorityHandler @Inject constructor(
         }
 
         var newCardOrder: List<ParsedCard>? = null
-        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
-        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(nonUnknownCards, npTypes)
+        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: AttackUtils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
+        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: AttackUtils.getCardsPerCardTypeMap(nonUnknownCards, npTypes)
 
         for (chain in chainPriority) {
             if (newCardOrder != null) continue

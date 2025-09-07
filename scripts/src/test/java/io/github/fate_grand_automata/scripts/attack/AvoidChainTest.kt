@@ -13,7 +13,7 @@ import io.github.fate_grand_automata.scripts.modules.attack.AvoidChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.AttackUtils
 
 class AvoidChainTest {
-    val avoidChainHandler = AvoidChainHandler(utils = AttackUtils())
+    val avoidChainHandler = AvoidChainHandler()
 
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {

@@ -22,12 +22,8 @@ class BraveChainTest {
 
     @BeforeTest
     fun init() {
-        val utils = AttackUtils()
-        avoidChainHandler = AvoidChainHandler(
-            utils = utils
-        )
+        avoidChainHandler = AvoidChainHandler()
         braveChainHandler = BraveChainHandler(
-            utils = AttackUtils(),
             avoidChainHandler = avoidChainHandler,
         )
     }

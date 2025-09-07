@@ -11,9 +11,7 @@ import javax.inject.Inject
 import kotlin.collections.Map
 
 @ScriptScope
-class MightyChainHandler @Inject constructor(
-    private val utils: AttackUtils
-) {
+class MightyChainHandler @Inject constructor() {
     // We want 3 unique types, the magic number
     val totalUniqueCardTypesPermitted = 3
 
@@ -28,8 +26,8 @@ class MightyChainHandler @Inject constructor(
         forceBraveChain: Boolean = false,
     ): List<ParsedCard>? {
         // Try to ensure unknown is handled
-        val nonUnknownCards = utils.getValidNonUnknownCards(cards)
-        if (!utils.isChainable(
+        val nonUnknownCards = AttackUtils.getValidNonUnknownCards(cards)
+        if (!AttackUtils.isChainable(
             cards = nonUnknownCards,
             npUsage = npUsage,
             npTypes = npTypes,
@@ -38,7 +36,7 @@ class MightyChainHandler @Inject constructor(
         }
 
         val uniqueCardTypesFromNp = npTypes.values.toSet()
-        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(nonUnknownCards, npTypes)
+        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: AttackUtils.getCardsPerCardTypeMap(nonUnknownCards, npTypes)
         if (!isMightyChainAllowed(
             cards = nonUnknownCards,
             npUsage = npUsage,
@@ -48,7 +46,7 @@ class MightyChainHandler @Inject constructor(
         )) return null
 
         // Check for Brave Chain
-        val braveChainFieldSlot = utils.getBraveChainFieldSlot(
+        val braveChainFieldSlot = AttackUtils.getBraveChainFieldSlot(
             braveChainEnum = braveChainEnum,
             cards = nonUnknownCards,
             npUsage = npUsage,
@@ -143,7 +141,7 @@ class MightyChainHandler @Inject constructor(
         npUsage: NPUsage = NPUsage.none,
         cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
     ): List<ParsedCard>? {
-        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(cards, npUsage)
+        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: AttackUtils.getCardsPerFieldSlotMap(cards, npUsage)
         // If there is only 1 unique field slot throughout, this is a valid entry (since it is impossible to avoid Brave Chain)
         if (cardCountPerFieldSlotMap.size == 1) return selectedCards
 
@@ -191,7 +189,7 @@ class MightyChainHandler @Inject constructor(
         cardCountPerCardTypeMap: Map<CardTypeEnum, Int>? = null,
     ): Boolean {
         val uniqueCardTypesFromNp = uniqueCardTypesFromNp ?: npTypes.values.toSet()
-        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(cards, npTypes)
+        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: AttackUtils.getCardsPerCardTypeMap(cards, npTypes)
         val npUsageSize = npUsage.nps.size
 
         // Unable to make a Mighty Chain with Unknown cards in NP

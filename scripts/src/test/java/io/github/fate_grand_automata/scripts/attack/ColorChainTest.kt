@@ -15,7 +15,7 @@ import io.github.fate_grand_automata.scripts.modules.attack.ColorChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.AttackUtils
 
 class ColorChainTest {
-    val colorChain = ColorChainHandler(utils = AttackUtils())
+    val colorChain = ColorChainHandler()
     val cardTypeList = CardTypeEnum.entries
 
     val braveChainEnums = BraveChainEnum.entries

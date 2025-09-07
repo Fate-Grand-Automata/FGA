@@ -10,7 +10,6 @@ import javax.inject.Inject
 
 @ScriptScope
 class BraveChainHandler @Inject constructor(
-    private val utils: AttackUtils,
     private val avoidChainHandler: AvoidChainHandler,
 ) {
     fun pick(
@@ -29,19 +28,19 @@ class BraveChainHandler @Inject constructor(
         }
 
         // Try to ensure unknown is handled
-        val nonUnknownCards = utils.getValidNonUnknownCards(cards)
-        if (!utils.isChainable(
+        val nonUnknownCards = AttackUtils.getValidNonUnknownCards(cards)
+        if (!AttackUtils.isChainable(
             cards = nonUnknownCards,
             npUsage = npUsage,
         )) {
             return null
         }
 
-        val cardsPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
+        val cardsPerFieldSlotMap = cardCountPerFieldSlotMap ?: AttackUtils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
         if (!isBraveChainAllowed(braveChainEnum, npUsage, cardsPerFieldSlotMap)) return null
 
         // Always returns a valid field slot if there is one for BraveChain
-        val priorityFieldSlot = utils.getBraveChainFieldSlot(
+        val priorityFieldSlot = AttackUtils.getBraveChainFieldSlot(
             braveChainEnum = braveChainEnum,
             cards = nonUnknownCards,
             npUsage = npUsage,
