@@ -6,12 +6,9 @@ import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
-import io.github.lib_automata.dagger.ScriptScope
-import javax.inject.Inject
 import kotlin.collections.plus
 
-@ScriptScope
-class CardChainPriorityHandler @Inject constructor() {
+object CardChainPriorityHandler {
     fun pick(
         cards: List<ParsedCard>,
         chainPriority: List<ChainTypeEnum> = ChainTypeEnum.defaultOrder,

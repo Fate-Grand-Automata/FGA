@@ -14,7 +14,6 @@ import io.github.fate_grand_automata.scripts.modules.attack.MightyChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.AttackPriorityHandler
 import io.github.fate_grand_automata.scripts.modules.attack.AvoidChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.BraveChainHandler
-import io.github.fate_grand_automata.scripts.modules.attack.CardChainPriorityHandler
 import io.github.fate_grand_automata.scripts.modules.attack.ColorChainHandler
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -24,9 +23,7 @@ class CardChainPriorityIntegrationTest {
 
     @BeforeTest
     fun init() {
-        attackPriorityHandler = AttackPriorityHandler(
-            cardChainPriorityHandler = CardChainPriorityHandler(),
-        )
+        attackPriorityHandler = AttackPriorityHandler()
     }
 
     fun getDefaultBraveChainResult (

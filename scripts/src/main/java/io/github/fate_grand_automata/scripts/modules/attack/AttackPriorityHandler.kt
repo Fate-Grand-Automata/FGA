@@ -12,9 +12,7 @@ import java.util.Collections
 import javax.inject.Inject
 
 @ScriptScope
-class AttackPriorityHandler @Inject constructor(
-    private val cardChainPriorityHandler: CardChainPriorityHandler,
-) {
+class AttackPriorityHandler @Inject constructor() {
     fun rearrange(
         cards: List<ParsedCard>,
         rearrange: Boolean,
@@ -106,7 +104,7 @@ class AttackPriorityHandler @Inject constructor(
                         else -> chainPriority.subList(0, indexOfAvoid + allowAvoid)
                     }
 
-                    newCardOrder = cardChainPriorityHandler.pick(
+                    newCardOrder = CardChainPriorityHandler.pick(
                         cards = nonUnknownCards,
                         chainPriority = filteredChainPriority,
                         braveChainEnum = braveChainEnum,
