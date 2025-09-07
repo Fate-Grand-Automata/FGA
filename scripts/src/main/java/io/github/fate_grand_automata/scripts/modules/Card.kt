@@ -63,10 +63,11 @@ class Card @Inject constructor(
 
         val useChainPriority = battleConfig.useChainPriority
         if (useChainPriority) {
+            val detectedNPs = npUsage.detected()
             val chainPriority = battleConfig.chainPriority.atWave(state.stage)
             return AttackPriorityHandler.pick(
                 cards = cardsOrderedByPriority,
-                npUsage = npUsage,
+                npUsage = detectedNPs,
                 braveChainEnum = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
                 chainPriority = chainPriority,
                 rearrange = rearrangeCardsPerWave.inCurrentWave(false),
@@ -115,5 +116,13 @@ class Card @Inject constructor(
         val teamSlot = servantTracker.deployed[fieldSlot] ?: return CardTypeEnum.Unknown
         if (teamSlot is TeamSlot.Unknown) return CardTypeEnum.Unknown
         return servantTracker.getNpCardType(teamSlot)
+    }
+
+    fun NPUsage.detected (): NPUsage {
+        val npCardsDetected = servantTracker.npCardsDetected()
+        val validNPs = (this.nps + spamNps)
+            .filter { it in npCardsDetected }
+            .toSet()
+        return NPUsage(validNPs, this.cardsBeforeNP)
     }
 }

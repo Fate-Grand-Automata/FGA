@@ -9,6 +9,7 @@ import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.OrderChangeMember
 import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.scripts.models.skills
+import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.lib_automata.Pattern
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
@@ -286,6 +287,38 @@ class ServantTracker @Inject constructor(
         return result
     }
 
+    val npCardDetectionScoreCutoff = 0.8
+    fun npCardsDetected(): Set<CommandCard.NP> {
+        if (prefs.skipServantFaceCardCheck) {
+            return emptySet()
+        }
+
+        val npCards = CommandCard.NP.list.toSet()
+        val deployedServants = faceCardImages
+            .filterKeys { it in deployed.values }
+
+        val scores = npCards
+            .map { npCard ->
+                npCard to deployedServants
+                    .filterKeys { it.toFieldSlot() == npCard.toFieldSlot() }
+                    .mapValues { (_, images) ->
+                        images.maxOf { image ->
+                            locations.attack.servantNPMatchRegion(npCard)
+                                .find(image, 0.4)?.score ?: 0.0
+                        }
+                    }
+                    .values
+            }
+        val result = scores
+            .filter { (_, values) ->
+                values.filter { it > npCardDetectionScoreCutoff }.maxByOrNull { it } != null
+            }
+            .map { it.first }
+            .toSet()
+
+        return result
+    }
+
     /**
      * Adds the 3rd Ascension Melusine image to the existing 1st/2nd Ascension
      * image so both are detected as the same Servant.
@@ -308,4 +341,11 @@ class ServantTracker @Inject constructor(
      */
     private fun isSupport(slot: FieldSlot) = !prefs.treatSupportLikeOwnServant &&
             images[Images.ServantCheckSupport] in locations.battle.servantChangeSupportCheckRegion(slot)
+
+    fun TeamSlot.toFieldSlot(): FieldSlot? {
+        return deployed
+            .entries
+            .firstOrNull { (_, teamSlot) -> teamSlot == this }
+            ?.key
+    }
 }
