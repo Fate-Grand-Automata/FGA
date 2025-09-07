@@ -4,12 +4,9 @@ import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
-import io.github.lib_automata.dagger.ScriptScope
 import java.util.Collections
-import javax.inject.Inject
 
-@ScriptScope
-class ApplyBraveChains @Inject constructor() {
+object ApplyBraveChains {
     private fun rearrange(
         cards: List<ParsedCard>,
         rearrange: Boolean,
