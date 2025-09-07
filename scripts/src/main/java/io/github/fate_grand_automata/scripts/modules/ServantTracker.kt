@@ -201,7 +201,7 @@ class ServantTracker @Inject constructor(
         supportSlot?.let { supportSlot ->
             if (supportSlot in deployed.values) {
                 val matched = cardsRemaining.filter { card ->
-                    images[Images.Support] in locations.attack.supportCheckRegion(card)
+                    images[Images.Support] in locations.attack.supportCheckNewRegion(card)
                 }.toSet()
 
                 cardsRemaining -= matched
