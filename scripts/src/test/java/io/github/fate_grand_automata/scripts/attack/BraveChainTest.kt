@@ -8,10 +8,8 @@ import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
-import io.github.fate_grand_automata.scripts.modules.attack.AttackUtils
 import io.github.fate_grand_automata.scripts.modules.attack.AvoidChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.BraveChainHandler
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class BraveChainTest {
@@ -278,7 +276,7 @@ class BraveChainTest {
                     braveChainEnum = braveChainEnum,
                     picked = picked,
                 )
-                BraveChainEnum.Always, ->
+                BraveChainEnum.Always ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
                         CommandCard.Face.A,
                         CommandCard.Face.B,
@@ -368,7 +366,7 @@ class BraveChainTest {
                     braveChainEnum = braveChainEnum,
                     picked = picked,
                 )
-                BraveChainEnum.Always, ->
+                BraveChainEnum.Always ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
                         CommandCard.Face.A,
                         CommandCard.Face.E,
@@ -396,7 +394,7 @@ class BraveChainTest {
                     braveChainEnum = braveChainEnum,
                     picked = picked,
                 )
-                BraveChainEnum.Always, ->
+                BraveChainEnum.Always ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
                         CommandCard.Face.A,
                         CommandCard.Face.B,

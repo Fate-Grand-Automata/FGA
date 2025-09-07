@@ -3,14 +3,12 @@ package io.github.fate_grand_automata.scripts.attack
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
-import assertk.assertions.isEqualTo
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import kotlin.test.Test
 import io.github.fate_grand_automata.scripts.modules.attack.AvoidChainHandler
-import io.github.fate_grand_automata.scripts.modules.attack.AttackUtils
 
 class AvoidChainTest {
     @Test

@@ -12,7 +12,6 @@ import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import kotlin.test.Test
 import io.github.fate_grand_automata.scripts.modules.attack.ColorChainHandler
-import io.github.fate_grand_automata.scripts.modules.attack.AttackUtils
 
 class ColorChainTest {
     val cardTypeList = CardTypeEnum.entries
