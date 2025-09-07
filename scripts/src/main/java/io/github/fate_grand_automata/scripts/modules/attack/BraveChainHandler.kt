@@ -9,7 +9,7 @@ import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
 @ScriptScope
-class BraveChainHandler @Inject constructor() {
+object BraveChainHandler {
     fun pick(
         npUsage: NPUsage = NPUsage.none,
         cards: List<ParsedCard>,

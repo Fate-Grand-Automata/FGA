@@ -14,7 +14,6 @@ import javax.inject.Inject
 @ScriptScope
 class AttackPriorityHandler @Inject constructor(
     private val cardChainPriorityHandler: CardChainPriorityHandler,
-    private val braveChainHandler: BraveChainHandler,
 ) {
     fun rearrange(
         cards: List<ParsedCard>,
@@ -86,7 +85,7 @@ class AttackPriorityHandler @Inject constructor(
         for (attackPriority in attackPriorityOrder) {
             when (attackPriority) {
                 AttackPriorityEnum.BraveChainPriority -> {
-                    braveChainFallback = braveChainHandler.pick(
+                    braveChainFallback = BraveChainHandler.pick(
                         cards = nonUnknownCards,
                         braveChainEnum = braveChainEnum,
                         npUsage = npUsage,
