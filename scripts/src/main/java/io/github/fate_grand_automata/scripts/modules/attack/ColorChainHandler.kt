@@ -6,8 +6,6 @@ import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
-import io.github.lib_automata.dagger.ScriptScope
-import javax.inject.Inject
 import kotlin.collections.Map
 
 object ColorChainHandler {
@@ -149,7 +147,7 @@ object ColorChainHandler {
             )
         ) {
             // Attempt to fetch a different field slot
-            val differentCard = cards.firstOrNull() { it.fieldSlot != filteredCardsSet.first() }
+            val differentCard = cards.firstOrNull { it.fieldSlot != filteredCardsSet.first() }
             // If there is no different card (even though there should, by this stage), return null
             if (differentCard == null) return null
             // Just add new card to index 1, aka 2nd card

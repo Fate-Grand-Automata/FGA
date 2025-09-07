@@ -13,7 +13,6 @@ import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.modules.attack.MightyChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.AttackPriorityHandler
 import io.github.fate_grand_automata.scripts.modules.attack.AvoidChainHandler
-import io.github.fate_grand_automata.scripts.modules.attack.AttackUtils
 import io.github.fate_grand_automata.scripts.modules.attack.BraveChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.CardChainPriorityHandler
 import io.github.fate_grand_automata.scripts.modules.attack.ColorChainHandler

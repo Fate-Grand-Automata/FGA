@@ -6,13 +6,11 @@ import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
-import io.github.lib_automata.dagger.ScriptScope
-import javax.inject.Inject
 import kotlin.collections.Map
 
 object MightyChainHandler {
     // We want 3 unique types, the magic number
-    const val totalUniqueCardTypesPermitted = 3
+    const val TOTAL_UNIQUE_CARD_TYPES_PERMITTED = 3
 
     // Returns null if uniqueCards cannot be found
     fun pick (
@@ -81,7 +79,7 @@ object MightyChainHandler {
 
         cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
     ): List<ParsedCard>? {
-        val cardsToFind = totalUniqueCardTypesPermitted
+        val cardsToFind = TOTAL_UNIQUE_CARD_TYPES_PERMITTED
         val uniqueCardTypes = uniqueCardTypesAlreadyFilled.toMutableSet()
 
         var selectedCards = mutableListOf<ParsedCard>()
@@ -202,7 +200,7 @@ object MightyChainHandler {
         if (npTypes.values.contains(CardTypeEnum.Unknown)) return false
 
         // Do not accept Unknown cards for Mighty Chain
-        if (cardCountPerCardTypeMap.getOrElse(CardTypeEnum.Unknown) { 0 } > 0) return false;
+        if (cardCountPerCardTypeMap.getOrElse(CardTypeEnum.Unknown) { 0 } > 0) return false
 
         // If we do not have 3 unique cards at least, it is impossible to Mighty Chain
         if (cardCountPerCardTypeMap.size < 3) return false
