@@ -13,7 +13,6 @@ import kotlin.collections.plus
 @ScriptScope
 class CardChainPriorityHandler @Inject constructor(
     private val mightyChainHandler: MightyChainHandler,
-    private val colorChainHandler: ColorChainHandler,
 ) {
     fun pick(
         cards: List<ParsedCard>,
@@ -53,7 +52,7 @@ class CardChainPriorityHandler @Inject constructor(
                 )
                 ChainTypeEnum.Arts,
                 ChainTypeEnum.Buster,
-                ChainTypeEnum.Quick -> colorChainHandler.pick(
+                ChainTypeEnum.Quick -> ColorChainHandler.pick(
                     cardType = when (chain) {
                         ChainTypeEnum.Buster -> CardTypeEnum.Buster
                         ChainTypeEnum.Arts -> CardTypeEnum.Arts

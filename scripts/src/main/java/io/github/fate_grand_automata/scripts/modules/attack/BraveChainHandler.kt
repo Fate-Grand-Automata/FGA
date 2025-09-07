@@ -8,7 +8,6 @@ import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
-@ScriptScope
 object BraveChainHandler {
     fun pick(
         npUsage: NPUsage = NPUsage.none,

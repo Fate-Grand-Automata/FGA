@@ -24,17 +24,14 @@ class CardChainPriorityIntegrationTest {
     lateinit var attackPriorityHandler: AttackPriorityHandler
 
     lateinit var mightyChainHandler: MightyChainHandler
-    lateinit var colorChainHandler: ColorChainHandler
 
     @BeforeTest
     fun init() {
         mightyChainHandler = MightyChainHandler()
-        colorChainHandler = ColorChainHandler()
 
         attackPriorityHandler = AttackPriorityHandler(
             cardChainPriorityHandler = CardChainPriorityHandler(
                 mightyChainHandler = mightyChainHandler,
-                colorChainHandler = colorChainHandler,
             ),
         )
     }
@@ -86,7 +83,7 @@ class CardChainPriorityIntegrationTest {
         npUsage: NPUsage = NPUsage.none,
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
     ): List<ParsedCard> {
-        val results = colorChainHandler.pick(
+        val results = ColorChainHandler.pick(
             cardType = cardType,
             cards = cards,
             npUsage = npUsage,

@@ -10,8 +10,7 @@ import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.collections.Map
 
-@ScriptScope
-open class ColorChainHandler @Inject constructor() {
+object ColorChainHandler {
     // Returns null if uniqueCards cannot be found
     fun pick (
         cardType: CardTypeEnum,
