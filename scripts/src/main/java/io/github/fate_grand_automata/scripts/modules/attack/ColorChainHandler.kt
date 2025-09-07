@@ -6,14 +6,9 @@ import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
-import io.github.lib_automata.dagger.ScriptScope
-import javax.inject.Inject
 import kotlin.collections.Map
 
-@ScriptScope
-open class ColorChainHandler @Inject constructor(
-    private val utils: AttackUtils
-) {
+object ColorChainHandler {
     // Returns null if uniqueCards cannot be found
     fun pick (
         cardType: CardTypeEnum,
@@ -28,11 +23,11 @@ open class ColorChainHandler @Inject constructor(
         // NEVER want to make a chain of Unknown cards
         if (cardType == CardTypeEnum.Unknown) return null
 
-        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(cards, npTypes)
+        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: AttackUtils.getCardsPerCardTypeMap(cards, npTypes)
         if (!isColorChainAllowed(cardType, cards, npTypes, cardCountPerCardTypeMap)) return null
 
         // Check for Brave Chain
-        val braveChainFieldSlot = utils.getBraveChainFieldSlot(
+        val braveChainFieldSlot = AttackUtils.getBraveChainFieldSlot(
             braveChainEnum = braveChainEnum,
             cards = cards,
             npUsage = npUsage,
@@ -45,7 +40,7 @@ open class ColorChainHandler @Inject constructor(
         var selectedCards = cards.filter { it.type == cardType }
 
         // Do a pre-emptive check
-        if (!utils.isChainable(
+        if (!AttackUtils.isChainable(
             cards = selectedCards,
             npUsage = npUsage,
             npTypes = npTypes,
@@ -100,7 +95,7 @@ open class ColorChainHandler @Inject constructor(
         // Impossible if the nps are not of the chain type
         if (uniqueCardTypesFromNp.size == 1 && uniqueCardTypesFromNp.firstOrNull() != cardType) return false
 
-        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(cards, npTypes)
+        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: AttackUtils.getCardsPerCardTypeMap(cards, npTypes)
 
         // Ensure there are at least 3 cards of the type
         // This innately handles Unknown for Color chain
@@ -125,7 +120,7 @@ open class ColorChainHandler @Inject constructor(
         val cardsNeeded = 3 - npUsage.nps.size
         if (selectedCards.size < cardsNeeded) return null
 
-        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(cards, npUsage)
+        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: AttackUtils.getCardsPerFieldSlotMap(cards, npUsage)
         // If there is only 1 unique field slot throughout, this is a valid entry (since it is impossible to avoid Brave Chain)
         if (cardCountPerFieldSlotMap.size == 1) return selectedCards
 
@@ -152,7 +147,7 @@ open class ColorChainHandler @Inject constructor(
             )
         ) {
             // Attempt to fetch a different field slot
-            val differentCard = cards.firstOrNull() { it.fieldSlot != filteredCardsSet.first() }
+            val differentCard = cards.firstOrNull { it.fieldSlot != filteredCardsSet.first() }
             // If there is no different card (even though there should, by this stage), return null
             if (differentCard == null) return null
             // Just add new card to index 1, aka 2nd card

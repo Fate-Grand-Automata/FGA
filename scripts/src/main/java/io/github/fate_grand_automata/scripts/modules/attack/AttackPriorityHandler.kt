@@ -7,16 +7,9 @@ import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
-import io.github.lib_automata.dagger.ScriptScope
 import java.util.Collections
-import javax.inject.Inject
 
-@ScriptScope
-class AttackPriorityHandler @Inject constructor(
-    private val cardChainPriorityHandler: CardChainPriorityHandler,
-    private val braveChainHandler: BraveChainHandler,
-    private val utils: AttackUtils,
-) {
+object AttackPriorityHandler {
     fun rearrange(
         cards: List<ParsedCard>,
         rearrange: Boolean,
@@ -69,7 +62,7 @@ class AttackPriorityHandler @Inject constructor(
         // and the system does not deal with CardTypeEnum.Unknown
         val nonUnknownCards = cards.filter { it.type != CardTypeEnum.Unknown }
         val finalFallback = nonUnknownCards + (cards - nonUnknownCards)
-        if (!utils.isChainable(
+        if (!AttackUtils.isChainable(
                 cards = nonUnknownCards,
                 npUsage = npUsage,
                 npTypes = npTypes,
@@ -78,8 +71,8 @@ class AttackPriorityHandler @Inject constructor(
         }
 
         // Get all the supplementary data
-        val cardCountPerFieldSlotMap = utils.getCardsPerFieldSlotMap(cards, npUsage)
-        val cardCountPerCardTypeMap = utils.getCardsPerCardTypeMap(cards, npTypes)
+        val cardCountPerFieldSlotMap = AttackUtils.getCardsPerFieldSlotMap(cards, npUsage)
+        val cardCountPerCardTypeMap = AttackUtils.getCardsPerCardTypeMap(cards, npTypes)
 
         // Start
         var newCardOrder: List<ParsedCard>? = null
@@ -87,7 +80,7 @@ class AttackPriorityHandler @Inject constructor(
         for (attackPriority in attackPriorityOrder) {
             when (attackPriority) {
                 AttackPriorityEnum.BraveChainPriority -> {
-                    braveChainFallback = braveChainHandler.pick(
+                    braveChainFallback = BraveChainHandler.pick(
                         cards = nonUnknownCards,
                         braveChainEnum = braveChainEnum,
                         npUsage = npUsage,
@@ -108,7 +101,7 @@ class AttackPriorityHandler @Inject constructor(
                         else -> chainPriority.subList(0, indexOfAvoid + allowAvoid)
                     }
 
-                    newCardOrder = cardChainPriorityHandler.pick(
+                    newCardOrder = CardChainPriorityHandler.pick(
                         cards = nonUnknownCards,
                         chainPriority = filteredChainPriority,
                         braveChainEnum = braveChainEnum,

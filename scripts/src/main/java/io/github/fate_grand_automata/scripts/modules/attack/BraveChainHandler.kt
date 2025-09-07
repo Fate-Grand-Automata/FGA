@@ -5,14 +5,8 @@ import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
-import io.github.lib_automata.dagger.ScriptScope
-import javax.inject.Inject
 
-@ScriptScope
-class BraveChainHandler @Inject constructor(
-    private val utils: AttackUtils,
-    private val avoidChainHandler: AvoidChainHandler,
-) {
+object BraveChainHandler {
     fun pick(
         npUsage: NPUsage = NPUsage.none,
         cards: List<ParsedCard>,
@@ -20,7 +14,7 @@ class BraveChainHandler @Inject constructor(
         cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
     ): List<ParsedCard>? {
         if (braveChainEnum == BraveChainEnum.Avoid) {
-            return avoidChainHandler.pick(
+            return AvoidChainHandler.pick(
                 cards = cards,
                 npUsage = npUsage,
                 avoidBraveChains = true,
@@ -29,19 +23,19 @@ class BraveChainHandler @Inject constructor(
         }
 
         // Try to ensure unknown is handled
-        val nonUnknownCards = utils.getValidNonUnknownCards(cards)
-        if (!utils.isChainable(
+        val nonUnknownCards = AttackUtils.getValidNonUnknownCards(cards)
+        if (!AttackUtils.isChainable(
             cards = nonUnknownCards,
             npUsage = npUsage,
         )) {
             return null
         }
 
-        val cardsPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
+        val cardsPerFieldSlotMap = cardCountPerFieldSlotMap ?: AttackUtils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
         if (!isBraveChainAllowed(braveChainEnum, npUsage, cardsPerFieldSlotMap)) return null
 
         // Always returns a valid field slot if there is one for BraveChain
-        val priorityFieldSlot = utils.getBraveChainFieldSlot(
+        val priorityFieldSlot = AttackUtils.getBraveChainFieldSlot(
             braveChainEnum = braveChainEnum,
             cards = nonUnknownCards,
             npUsage = npUsage,

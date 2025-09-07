@@ -8,29 +8,12 @@ import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
-import io.github.fate_grand_automata.scripts.modules.attack.AttackUtils
 import io.github.fate_grand_automata.scripts.modules.attack.AvoidChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.BraveChainHandler
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class BraveChainTest {
-    lateinit var braveChainHandler: BraveChainHandler
-    lateinit var avoidChainHandler: AvoidChainHandler
-
     val braveChainEnums = BraveChainEnum.entries
-
-    @BeforeTest
-    fun init() {
-        val utils = AttackUtils()
-        avoidChainHandler = AvoidChainHandler(
-            utils = utils
-        )
-        braveChainHandler = BraveChainHandler(
-            utils = AttackUtils(),
-            avoidChainHandler = avoidChainHandler,
-        )
-    }
 
     fun assertDefaultAvoidChain (
         cards: List<ParsedCard>,
@@ -39,7 +22,7 @@ class BraveChainTest {
         npUsage: NPUsage = NPUsage.none,
     ) {
         if (braveChainEnum != BraveChainEnum.Avoid) return
-        val defaultAvoid = avoidChainHandler.pick(
+        val defaultAvoid = AvoidChainHandler.pick(
             cards = cards,
             npUsage = npUsage,
             avoidBraveChains = true,
@@ -52,7 +35,7 @@ class BraveChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -72,7 +55,7 @@ class BraveChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -94,7 +77,7 @@ class BraveChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -125,7 +108,7 @@ class BraveChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
@@ -156,7 +139,7 @@ class BraveChainTest {
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama + 2Scathach)`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
@@ -178,7 +161,7 @@ class BraveChainTest {
     fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA)`() {
         val cards = AttackLineUps.Standard.lineup2
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum
             )?.map { it.card } ?: emptyList()
@@ -198,7 +181,7 @@ class BraveChainTest {
     fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA) + 1Kama-NP`() {
         val cards = AttackLineUps.Standard.lineup2
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -220,7 +203,7 @@ class BraveChainTest {
     fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA) + 2Scathach-NP`() {
         val cards = AttackLineUps.Standard.lineup2
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -251,7 +234,7 @@ class BraveChainTest {
     fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA) + 3Nero-NP`() {
         val cards = AttackLineUps.Standard.lineup2
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
@@ -282,7 +265,7 @@ class BraveChainTest {
     fun `BusterFocus - lineup01 (1KB,2KB,3NA,4NA,5KB)`() {
         val cards = AttackLineUps.BusterFocus.lineup01
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -293,7 +276,7 @@ class BraveChainTest {
                     braveChainEnum = braveChainEnum,
                     picked = picked,
                 )
-                BraveChainEnum.Always, ->
+                BraveChainEnum.Always ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
                         CommandCard.Face.A,
                         CommandCard.Face.B,
@@ -310,7 +293,7 @@ class BraveChainTest {
     fun `BusterFocus - lineup01 (1KB,2KB,3NA,4NA,5KB) + 1 NP (2Kiyohime)`() {
         val cards = AttackLineUps.BusterFocus.lineup01
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -341,7 +324,7 @@ class BraveChainTest {
     fun `BusterFocus - lineup01 (1KB,2KB,3NA,4NA,5KB) + 1 NP (3Nero)`() {
         val cards = AttackLineUps.BusterFocus.lineup01
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
@@ -372,7 +355,7 @@ class BraveChainTest {
     fun `BusterFocus - lineup02 (1KB,5KB,2KB,3NA,4NA)`() {
         val cards = AttackLineUps.BusterFocus.lineup02
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -383,7 +366,7 @@ class BraveChainTest {
                     braveChainEnum = braveChainEnum,
                     picked = picked,
                 )
-                BraveChainEnum.Always, ->
+                BraveChainEnum.Always ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
                         CommandCard.Face.A,
                         CommandCard.Face.E,
@@ -400,7 +383,7 @@ class BraveChainTest {
     fun `BusterFocus - lineup05 (1KB,2KB,3NA,4NB,5KB)`() {
         val cards = AttackLineUps.BusterFocus.lineup05
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -411,7 +394,7 @@ class BraveChainTest {
                     braveChainEnum = braveChainEnum,
                     picked = picked,
                 )
-                BraveChainEnum.Always, ->
+                BraveChainEnum.Always ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
                         CommandCard.Face.A,
                         CommandCard.Face.B,
@@ -428,7 +411,7 @@ class BraveChainTest {
     fun `Unknown - lineup1 (1 Unknown)`() {
         val cards = AttackLineUps.Unknown.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -448,7 +431,7 @@ class BraveChainTest {
     fun `Unknown - lineup1 (1 Unknown) + 1 Valid NP`() {
         val cards = AttackLineUps.Unknown.lineup1
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
@@ -479,7 +462,7 @@ class BraveChainTest {
     fun `Unknown - lineup2 (2 Unknown)`() {
         val cards = AttackLineUps.Unknown.lineup2
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -499,7 +482,7 @@ class BraveChainTest {
     fun `Unknown - lineup2 (2 Unknown) + 1 Valid NP`() {
         val cards = AttackLineUps.Unknown.lineup2
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
@@ -530,7 +513,7 @@ class BraveChainTest {
     fun `Unknown - lineup3 (3 Unknown)`() {
         val cards = AttackLineUps.Unknown.lineup3
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -550,7 +533,7 @@ class BraveChainTest {
     fun `Unknown - lineup5 (1 Unknown, Brave Chain available)`() {
         val cards = AttackLineUps.Unknown.lineup5
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -578,7 +561,7 @@ class BraveChainTest {
     fun `Unknown - lineup5 (1 Unknown) + 1 Valid NP`() {
         val cards = AttackLineUps.Unknown.lineup5
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -609,7 +592,7 @@ class BraveChainTest {
     fun `Unknown - lineup6 (2 Unknown, no Brave Chain available)`() {
         val cards = AttackLineUps.Unknown.lineup6
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
@@ -629,7 +612,7 @@ class BraveChainTest {
     fun `Unknown - lineup6 (2 Unknown) + 1 Valid NP`() {
         val cards = AttackLineUps.Unknown.lineup6
         for (braveChainEnum in braveChainEnums) {
-            val picked = braveChainHandler.pick(
+            val picked = BraveChainHandler.pick(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.B), 0),

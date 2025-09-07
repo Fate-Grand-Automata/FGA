@@ -12,10 +12,8 @@ import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import kotlin.test.Test
 import io.github.fate_grand_automata.scripts.modules.attack.ColorChainHandler
-import io.github.fate_grand_automata.scripts.modules.attack.AttackUtils
 
 class ColorChainTest {
-    val colorChain = ColorChainHandler(utils = AttackUtils())
     val cardTypeList = CardTypeEnum.entries
 
     val braveChainEnums = BraveChainEnum.entries
@@ -25,7 +23,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -41,7 +39,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Standard.lineup2
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -57,7 +55,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -88,7 +86,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -120,7 +118,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -152,7 +150,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -173,7 +171,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -206,7 +204,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -227,7 +225,7 @@ class ColorChainTest {
         val cards = AttackLineUps.SingleServantOnly.lineup1
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -243,7 +241,7 @@ class ColorChainTest {
         val cards = AttackLineUps.SingleServantOnly.lineup2
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -259,7 +257,7 @@ class ColorChainTest {
         val cards = AttackLineUps.SingleServantOnly.lineup3
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -275,7 +273,7 @@ class ColorChainTest {
         val cards = AttackLineUps.SingleServantOnly.lineup4
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -303,7 +301,7 @@ class ColorChainTest {
         val cards = AttackLineUps.SingleServantOnly.lineup5
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -333,7 +331,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -354,7 +352,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -386,7 +384,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -418,7 +416,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -440,7 +438,7 @@ class ColorChainTest {
         val cards = AttackLineUps.BusterFocus.lineup01
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -469,7 +467,7 @@ class ColorChainTest {
         val cards = AttackLineUps.BusterFocus.lineup01
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -502,7 +500,7 @@ class ColorChainTest {
         val cards = AttackLineUps.BusterFocus.lineup01
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -538,7 +536,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -558,7 +556,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Unknown.lineup1
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -574,7 +572,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Unknown.lineup1
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -605,7 +603,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Unknown.lineup1
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -638,7 +636,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Unknown.lineup2
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -654,7 +652,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Unknown.lineup2
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -674,7 +672,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Unknown.lineup2
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -707,7 +705,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Unknown.lineup4
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -723,7 +721,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Unknown.lineup4
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -744,7 +742,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Unknown.lineup4
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -769,7 +767,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Unknown.lineup5
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -798,7 +796,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Unknown.lineup5
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -830,7 +828,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Unknown.lineup6
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -846,7 +844,7 @@ class ColorChainTest {
         val cards = AttackLineUps.Unknown.lineup6
         for (braveChainEnum in braveChainEnums) {
             for (cardType in cardTypeList) {
-                val result = colorChain.pick(
+                val result = ColorChainHandler.pick(
                     cards = cards,
                     cardType = cardType,
                     braveChainEnum = braveChainEnum,
@@ -881,7 +879,7 @@ class ColorChainTest {
     fun `getCardsForAvoidBraveChain, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
         val cards = AttackLineUps.Standard.lineup1
         for (cardType in cardTypeList) {
-            val result = colorChain.getCardsForAvoidBraveChain(
+            val result = ColorChainHandler.getCardsForAvoidBraveChain(
                 cards = cards,
                 selectedCards = cards.filter { it.type == cardType },
             )?.map { it.card } ?: emptyList()
@@ -894,7 +892,7 @@ class ColorChainTest {
     fun `getCardsForAvoidBraveChain, Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA)`() {
         val cards = AttackLineUps.Standard.lineup2
         for (cardType in cardTypeList) {
-            val result = colorChain.getCardsForAvoidBraveChain(
+            val result = ColorChainHandler.getCardsForAvoidBraveChain(
                 cards = cards,
                 selectedCards = cards.filter { it.type == cardType },
             )?.map { it.card } ?: emptyList()
@@ -907,7 +905,7 @@ class ColorChainTest {
     fun `getCardsForAvoidBraveChain, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + Slot 1 NP`() {
         val cards = AttackLineUps.Standard.lineup1
         for (cardType in cardTypeList) {
-            val result = colorChain.getCardsForAvoidBraveChain(
+            val result = ColorChainHandler.getCardsForAvoidBraveChain(
                 cards = cards,
                 selectedCards = cards.filter { it.type == cardType },
                 npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -931,7 +929,7 @@ class ColorChainTest {
     fun `getCardsForAvoidBraveChain, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + Slot 2 NP`() {
         val cards = AttackLineUps.Standard.lineup1
         for (cardType in cardTypeList) {
-            val result = colorChain.getCardsForAvoidBraveChain(
+            val result = ColorChainHandler.getCardsForAvoidBraveChain(
                 cards = cards,
                 selectedCards = cards.filter { it.type == cardType },
                 npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -955,7 +953,7 @@ class ColorChainTest {
     fun `getCardsForAvoidBraveChain, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + Slot 3 NP`() {
         val cards = AttackLineUps.Standard.lineup1
         for (cardType in cardTypeList) {
-            val result = colorChain.getCardsForAvoidBraveChain(
+            val result = ColorChainHandler.getCardsForAvoidBraveChain(
                 cards = cards,
                 selectedCards = cards.filter { it.type == cardType },
                 npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
@@ -979,7 +977,7 @@ class ColorChainTest {
     fun `getCardsForAvoidBraveChain, Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA) + Slot 1 NP`() {
         val cards = AttackLineUps.Standard.lineup2
         for (cardType in cardTypeList) {
-            val result = colorChain.getCardsForAvoidBraveChain(
+            val result = ColorChainHandler.getCardsForAvoidBraveChain(
                 cards = cards,
                 selectedCards = cards.filter { it.type == cardType },
                 npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -1003,7 +1001,7 @@ class ColorChainTest {
     fun `getCardsForAvoidBraveChain, Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA) + Slot 2 NP`() {
         val cards = AttackLineUps.Standard.lineup2
         for (cardType in cardTypeList) {
-            val result = colorChain.getCardsForAvoidBraveChain(
+            val result = ColorChainHandler.getCardsForAvoidBraveChain(
                 cards = cards,
                 selectedCards = cards.filter { it.type == cardType },
                 npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -1027,7 +1025,7 @@ class ColorChainTest {
     fun `getCardsForAvoidBraveChain, Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA) + Slot 3 NP`() {
         val cards = AttackLineUps.Standard.lineup2
         for (cardType in cardTypeList) {
-            val result = colorChain.getCardsForAvoidBraveChain(
+            val result = ColorChainHandler.getCardsForAvoidBraveChain(
                 cards = cards,
                 selectedCards = cards.filter { it.type == cardType },
                 npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
@@ -1051,7 +1049,7 @@ class ColorChainTest {
     fun `getCardsForAvoidBraveChain, BusterFocus - lineup01 (1KB,2KB,3NA,4NA,5KB)`() {
         val cards = AttackLineUps.BusterFocus.lineup01
         for (cardType in cardTypeList) {
-            val result = colorChain.getCardsForAvoidBraveChain(
+            val result = ColorChainHandler.getCardsForAvoidBraveChain(
                 cards = cards,
                 selectedCards = cards.filter { it.type == cardType },
             )?.map { it.card } ?: emptyList()
@@ -1064,7 +1062,7 @@ class ColorChainTest {
     fun `getCardsForAvoidBraveChain, BusterFocus - lineup02 (1KB,5KB,2KB,3NA,4NA)`() {
         val cards = AttackLineUps.BusterFocus.lineup02
         for (cardType in cardTypeList) {
-            val result = colorChain.getCardsForAvoidBraveChain(
+            val result = ColorChainHandler.getCardsForAvoidBraveChain(
                 cards = cards,
                 selectedCards = cards.filter { it.type == cardType },
             )?.map { it.card } ?: emptyList()

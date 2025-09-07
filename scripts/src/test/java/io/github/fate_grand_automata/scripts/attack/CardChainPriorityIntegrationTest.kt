@@ -13,56 +13,23 @@ import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.modules.attack.MightyChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.AttackPriorityHandler
 import io.github.fate_grand_automata.scripts.modules.attack.AvoidChainHandler
-import io.github.fate_grand_automata.scripts.modules.attack.AttackUtils
 import io.github.fate_grand_automata.scripts.modules.attack.BraveChainHandler
-import io.github.fate_grand_automata.scripts.modules.attack.CardChainPriorityHandler
 import io.github.fate_grand_automata.scripts.modules.attack.ColorChainHandler
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class CardChainPriorityIntegrationTest {
-    lateinit var attackPriorityHandler: AttackPriorityHandler
-
-    lateinit var braveChainHandler: BraveChainHandler
-    lateinit var mightyChainHandler: MightyChainHandler
-    lateinit var colorChainHandler: ColorChainHandler
-    lateinit var avoidChainHandler: AvoidChainHandler
-
-    @BeforeTest
-    fun init() {
-        val utils = AttackUtils()
-        mightyChainHandler = MightyChainHandler(utils)
-        colorChainHandler = ColorChainHandler(utils)
-        avoidChainHandler = AvoidChainHandler(utils)
-        braveChainHandler = BraveChainHandler(
-            utils = utils,
-            avoidChainHandler = avoidChainHandler
-        )
-
-        attackPriorityHandler = AttackPriorityHandler(
-            braveChainHandler = braveChainHandler,
-            utils = utils,
-            cardChainPriorityHandler = CardChainPriorityHandler(
-                mightyChainHandler = mightyChainHandler,
-                colorChainHandler = colorChainHandler,
-                avoidChainHandler = avoidChainHandler,
-                utils = utils,
-            ),
-        )
-    }
-
     fun getDefaultBraveChainResult (
         cards: List<ParsedCard>,
         braveChainEnum: BraveChainEnum,
         rearrange: Boolean = false,
         npUsage: NPUsage = NPUsage.none,
     ): List<ParsedCard> {
-        val results = braveChainHandler.pick(
+        val results = BraveChainHandler.pick(
             cards = cards,
             braveChainEnum = braveChainEnum,
             npUsage = npUsage,
         ) ?: cards
-        return attackPriorityHandler.rearrange(
+        return AttackPriorityHandler.rearrange(
             cards = results,
             rearrange = rearrange,
             npUsage = npUsage,
@@ -76,14 +43,14 @@ class CardChainPriorityIntegrationTest {
         npUsage: NPUsage = NPUsage.none,
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
     ): List<ParsedCard> {
-        val results = mightyChainHandler.pick(
+        val results = MightyChainHandler.pick(
             cards = cards,
             npUsage = npUsage,
             npTypes = npTypes,
             braveChainEnum = braveChainEnum,
             forceBraveChain = braveChainEnum == BraveChainEnum.Always,
         ) ?: cards
-        return attackPriorityHandler.rearrange(
+        return AttackPriorityHandler.rearrange(
             cards = results,
             rearrange = rearrange,
             npUsage = npUsage,
@@ -98,7 +65,7 @@ class CardChainPriorityIntegrationTest {
         npUsage: NPUsage = NPUsage.none,
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
     ): List<ParsedCard> {
-        val results = colorChainHandler.pick(
+        val results = ColorChainHandler.pick(
             cardType = cardType,
             cards = cards,
             npUsage = npUsage,
@@ -106,7 +73,7 @@ class CardChainPriorityIntegrationTest {
             braveChainEnum = braveChainEnum,
             forceBraveChain = braveChainEnum == BraveChainEnum.Always,
         ) ?: cards
-        return attackPriorityHandler.rearrange(
+        return AttackPriorityHandler.rearrange(
             cards = results,
             rearrange = rearrange,
             npUsage = npUsage,
@@ -171,14 +138,14 @@ class CardChainPriorityIntegrationTest {
         npUsage: NPUsage = NPUsage.none,
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
     ): List<ParsedCard> {
-        val results = avoidChainHandler.pick(
+        val results = AvoidChainHandler.pick(
             cards = cards,
             npUsage = npUsage,
             npTypes = npTypes,
             avoidBraveChains = braveChainEnum == BraveChainEnum.Avoid,
             avoidCardChains = true,
         ) ?: cards
-        return attackPriorityHandler.rearrange(
+        return AttackPriorityHandler.rearrange(
             cards = results,
             rearrange = rearrange,
             npUsage = npUsage,
@@ -188,7 +155,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
         ).map { it.card }
@@ -200,7 +167,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ), No Mighty allowed`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             chainPriority = ChainTypeEnum.defaultOrder.filter { it != ChainTypeEnum.Mighty },
@@ -216,7 +183,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ), No Mighty allowed, raw`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             chainPriority = ChainTypeEnum.defaultOrder.filter { it != ChainTypeEnum.Mighty },
@@ -229,7 +196,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ), with rearrange`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             rearrange = true
@@ -242,7 +209,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA)`() {
         val cards = AttackLineUps.Standard.lineup2
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
         ).map { it.card }
@@ -254,7 +221,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA), with rearrange`() {
         val cards = AttackLineUps.Standard.lineup2
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             rearrange = true
@@ -267,7 +234,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0)
@@ -285,7 +252,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP, with rearrange`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -305,7 +272,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP, with npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -321,7 +288,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP, with rearrange & npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
@@ -338,7 +305,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -356,7 +323,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with rearrange`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -375,7 +342,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -396,7 +363,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes, raw`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -413,7 +380,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes & rearrange`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -436,7 +403,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes & rearrange, raw`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
@@ -453,7 +420,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.C), 0)
@@ -467,7 +434,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, with rearranged`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
@@ -481,7 +448,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, with npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
@@ -497,7 +464,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, with rearrange & npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
@@ -514,7 +481,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `SingleServantOnly - lineup1 (BQABQ)`() {
         val cards = AttackLineUps.SingleServantOnly.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
         ).map { it.card }
@@ -527,7 +494,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `SingleServantOnly - lineup1 (BQABQ), with rearranged`() {
         val cards = AttackLineUps.SingleServantOnly.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             rearrange = true
@@ -540,7 +507,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `SingleServantOnly - lineup2 (BBQQA)`() {
         val cards = AttackLineUps.SingleServantOnly.lineup2
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
         ).map { it.card }
@@ -552,7 +519,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `SingleServantOnly - lineup2 (BBQQA), with rearranged`() {
         val cards = AttackLineUps.SingleServantOnly.lineup2
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             rearrange = true
@@ -565,7 +532,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `SingleServantOnly - lineup3 (5Q,2Q,3A,1B,4B)`() {
         val cards = AttackLineUps.SingleServantOnly.lineup3
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
         ).map { it.card }
@@ -577,7 +544,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `SingleServantOnly - lineup3 (5Q,2Q,3A,1B,4B) - Buster priority`() {
         val cards = AttackLineUps.SingleServantOnly.lineup3
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             chainPriority = listOf(ChainTypeEnum.Buster, ChainTypeEnum.Mighty),
@@ -599,7 +566,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `SingleServantOnly - lineup3 (5Q,2Q,3A,1B,4B), with rearranged`() {
         val cards = AttackLineUps.SingleServantOnly.lineup3
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             rearrange = true
@@ -613,7 +580,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `SingleServantOnly - lineup4 (1B,2Q,3Q,4B,5Q)`() {
         val cards = AttackLineUps.SingleServantOnly.lineup4
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
         ).map { it.card }
@@ -629,7 +596,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `SingleServantOnly - lineup5 (5Q,2Q,3Q,1B,4B)`() {
         val cards = AttackLineUps.SingleServantOnly.lineup5
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
         ).map { it.card }
@@ -647,7 +614,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (2Kama, 3Nero) - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.B, CommandCard.NP.C), 0)
@@ -665,7 +632,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 3Nero), with npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.C), 0),
@@ -682,7 +649,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 2Scathach) - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
@@ -700,7 +667,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2 NP (1Kama, 2Scathach), with npTypes - No mighty chain`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
@@ -728,7 +695,7 @@ class CardChainPriorityIntegrationTest {
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3 NP, with npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
-        val picked = attackPriorityHandler.pick(
+        val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B, CommandCard.NP.C), 0),

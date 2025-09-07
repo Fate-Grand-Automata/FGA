@@ -6,17 +6,9 @@ import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
-import io.github.lib_automata.dagger.ScriptScope
-import javax.inject.Inject
 import kotlin.collections.plus
 
-@ScriptScope
-class CardChainPriorityHandler @Inject constructor(
-    private val mightyChainHandler: MightyChainHandler,
-    private val colorChainHandler: ColorChainHandler,
-    private val avoidChainHandler: AvoidChainHandler,
-    private val utils: AttackUtils
-) {
+object CardChainPriorityHandler {
     fun pick(
         cards: List<ParsedCard>,
         chainPriority: List<ChainTypeEnum> = ChainTypeEnum.defaultOrder,
@@ -28,8 +20,8 @@ class CardChainPriorityHandler @Inject constructor(
         forceBraveChain: Boolean = false,
     ): List<ParsedCard>? {
         // Try to ensure unknown is handled
-        val nonUnknownCards = utils.getValidNonUnknownCards(cards)
-        if (!utils.isChainable(
+        val nonUnknownCards = AttackUtils.getValidNonUnknownCards(cards)
+        if (!AttackUtils.isChainable(
             cards = nonUnknownCards,
             npUsage = npUsage,
             npTypes = npTypes,
@@ -38,13 +30,13 @@ class CardChainPriorityHandler @Inject constructor(
         }
 
         var newCardOrder: List<ParsedCard>? = null
-        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: utils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
-        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: utils.getCardsPerCardTypeMap(nonUnknownCards, npTypes)
+        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: AttackUtils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
+        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: AttackUtils.getCardsPerCardTypeMap(nonUnknownCards, npTypes)
 
         for (chain in chainPriority) {
             if (newCardOrder != null) continue
             newCardOrder = when (chain) {
-                ChainTypeEnum.Mighty -> mightyChainHandler.pick(
+                ChainTypeEnum.Mighty -> MightyChainHandler.pick(
                     cards = nonUnknownCards,
                     npUsage = npUsage,
                     npTypes = npTypes,
@@ -55,7 +47,7 @@ class CardChainPriorityHandler @Inject constructor(
                 )
                 ChainTypeEnum.Arts,
                 ChainTypeEnum.Buster,
-                ChainTypeEnum.Quick -> colorChainHandler.pick(
+                ChainTypeEnum.Quick -> ColorChainHandler.pick(
                     cardType = when (chain) {
                         ChainTypeEnum.Buster -> CardTypeEnum.Buster
                         ChainTypeEnum.Arts -> CardTypeEnum.Arts
@@ -70,7 +62,7 @@ class CardChainPriorityHandler @Inject constructor(
                     cardCountPerCardTypeMap = cardCountPerCardTypeMap,
                     cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
                 )
-                ChainTypeEnum.Avoid -> avoidChainHandler.pick(
+                ChainTypeEnum.Avoid -> AvoidChainHandler.pick(
                     cards = nonUnknownCards,
                     npUsage = npUsage,
                     npTypes = npTypes,

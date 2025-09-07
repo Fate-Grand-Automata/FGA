@@ -12,13 +12,12 @@ import io.github.fate_grand_automata.scripts.modules.attack.AttackUtils
 import kotlin.test.Test
 
 class AttackUtilsTest {
-    val utils = AttackUtils()
     val braveChainEnums = BraveChainEnum.entries
 
     @Test
     fun `getCardsPerFieldSlotMap, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.getCardsPerFieldSlotMap(
+        val result = AttackUtils.getCardsPerFieldSlotMap(
             cards = cards,
         )
 
@@ -31,7 +30,7 @@ class AttackUtilsTest {
     @Test
     fun `getCardsPerFieldSlotMap, Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA)`() {
         val cards = AttackLineUps.Standard.lineup2
-        val result = utils.getCardsPerFieldSlotMap(
+        val result = AttackUtils.getCardsPerFieldSlotMap(
             cards = cards,
         )
 
@@ -44,7 +43,7 @@ class AttackUtilsTest {
     @Test
     fun `getCardsPerFieldSlotMap, BusterFocus - lineup01 (1KB,2KB,3NA,4NA,5KB)`() {
         val cards = AttackLineUps.BusterFocus.lineup01
-        val result = utils.getCardsPerFieldSlotMap(
+        val result = AttackUtils.getCardsPerFieldSlotMap(
             cards = cards,
         )
 
@@ -56,7 +55,7 @@ class AttackUtilsTest {
     @Test
     fun `getCardsPerFieldSlotMap, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1-KamaNP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.getCardsPerFieldSlotMap(
+        val result = AttackUtils.getCardsPerFieldSlotMap(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0)
         )
@@ -70,7 +69,7 @@ class AttackUtilsTest {
     @Test
     fun `getCardsPerFieldSlotMap, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2-ScathachNP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.getCardsPerFieldSlotMap(
+        val result = AttackUtils.getCardsPerFieldSlotMap(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0)
         )
@@ -84,7 +83,7 @@ class AttackUtilsTest {
     @Test
     fun `getCardsPerFieldSlotMap, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3-NeroNP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.getCardsPerFieldSlotMap(
+        val result = AttackUtils.getCardsPerFieldSlotMap(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.C), 0)
         )
@@ -98,7 +97,7 @@ class AttackUtilsTest {
     @Test
     fun `getFieldSlotsWithValidBraveChain, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.getFieldSlotsWithValidBraveChain(
+        val result = AttackUtils.getFieldSlotsWithValidBraveChain(
             cards = cards,
         )
 
@@ -108,7 +107,7 @@ class AttackUtilsTest {
     @Test
     fun `getFieldSlotsWithValidBraveChain, Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA)`() {
         val cards = AttackLineUps.Standard.lineup2
-        val result = utils.getFieldSlotsWithValidBraveChain(
+        val result = AttackUtils.getFieldSlotsWithValidBraveChain(
             cards = cards,
         )
 
@@ -118,7 +117,7 @@ class AttackUtilsTest {
     @Test
     fun `getFieldSlotsWithValidBraveChain, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1-KamaNP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.getFieldSlotsWithValidBraveChain(
+        val result = AttackUtils.getFieldSlotsWithValidBraveChain(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0)
         )
@@ -129,7 +128,7 @@ class AttackUtilsTest {
     @Test
     fun `getFieldSlotsWithValidBraveChain, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2-ScathachNP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.getFieldSlotsWithValidBraveChain(
+        val result = AttackUtils.getFieldSlotsWithValidBraveChain(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0)
         )
@@ -141,7 +140,7 @@ class AttackUtilsTest {
     @Test
     fun `getFieldSlotsWithValidBraveChain, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3-NeroNP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.getFieldSlotsWithValidBraveChain(
+        val result = AttackUtils.getFieldSlotsWithValidBraveChain(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.C), 0)
         )
@@ -153,7 +152,7 @@ class AttackUtilsTest {
     @Test
     fun `getFieldSlotsWithValidBraveChain, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1-KamaNP + 2-ScathachNP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.getFieldSlotsWithValidBraveChain(
+        val result = AttackUtils.getFieldSlotsWithValidBraveChain(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0)
         )
@@ -164,7 +163,7 @@ class AttackUtilsTest {
     @Test
     fun `getFieldSlotsWithValidBraveChain, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + All 3 NP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.getFieldSlotsWithValidBraveChain(
+        val result = AttackUtils.getFieldSlotsWithValidBraveChain(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B, CommandCard.NP.C), 0)
         )
@@ -175,7 +174,7 @@ class AttackUtilsTest {
     @Test
     fun `getCardsPerCardTypeMap, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.getCardsPerCardTypeMap(
+        val result = AttackUtils.getCardsPerCardTypeMap(
             cards = cards,
         )
 
@@ -188,7 +187,7 @@ class AttackUtilsTest {
     @Test
     fun `getCardsPerCardTypeMap, Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA)`() {
         val cards = AttackLineUps.Standard.lineup2
-        val result = utils.getCardsPerCardTypeMap(
+        val result = AttackUtils.getCardsPerCardTypeMap(
             cards = cards,
         )
 
@@ -201,7 +200,7 @@ class AttackUtilsTest {
     @Test
     fun `getCardsPerCardTypeMap, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1-KamaNP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.getCardsPerCardTypeMap(
+        val result = AttackUtils.getCardsPerCardTypeMap(
             cards = cards,
             npTypes = mapOf(
                 FieldSlot.A to CardTypeEnum.Quick
@@ -217,7 +216,7 @@ class AttackUtilsTest {
     @Test
     fun `getCardsPerCardTypeMap, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2-ScathachNP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.getCardsPerCardTypeMap(
+        val result = AttackUtils.getCardsPerCardTypeMap(
             cards = cards,
             npTypes = mapOf(
                 FieldSlot.B to CardTypeEnum.Quick
@@ -233,7 +232,7 @@ class AttackUtilsTest {
     @Test
     fun `getCardsPerCardTypeMap, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3-NeroNP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.getCardsPerCardTypeMap(
+        val result = AttackUtils.getCardsPerCardTypeMap(
             cards = cards,
             npTypes = mapOf(
                 FieldSlot.C to CardTypeEnum.Arts
@@ -249,7 +248,7 @@ class AttackUtilsTest {
     @Test
     fun `getCardsPerCardTypeMap, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1-KamaNP + 2-ScathachNP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.getCardsPerCardTypeMap(
+        val result = AttackUtils.getCardsPerCardTypeMap(
             cards = cards,
             npTypes = mapOf(
                 FieldSlot.A to CardTypeEnum.Quick,
@@ -266,7 +265,7 @@ class AttackUtilsTest {
     @Test
     fun `getCardsPerCardTypeMap, BusterFocus - lineup01 (1KB,2KB,3NA,4NA,5KB)`() {
         val cards = AttackLineUps.BusterFocus.lineup01
-        val result = utils.getCardsPerCardTypeMap(
+        val result = AttackUtils.getCardsPerCardTypeMap(
             cards = cards,
         )
 
@@ -280,7 +279,7 @@ class AttackUtilsTest {
     fun `getBraveChainFieldSlot, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
         for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.Standard.lineup1
-            val result = utils.getBraveChainFieldSlot(
+            val result = AttackUtils.getBraveChainFieldSlot(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )
@@ -293,7 +292,7 @@ class AttackUtilsTest {
     fun `getBraveChainFieldSlot, Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA)`() {
         for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.Standard.lineup2
-            val result = utils.getBraveChainFieldSlot(
+            val result = AttackUtils.getBraveChainFieldSlot(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )
@@ -306,7 +305,7 @@ class AttackUtilsTest {
     fun `getBraveChainFieldSlot, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1-KamaNP`() {
         for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.Standard.lineup2
-            val result = utils.getBraveChainFieldSlot(
+            val result = AttackUtils.getBraveChainFieldSlot(
                 cards = cards,
                 npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
                 braveChainEnum = braveChainEnum,
@@ -320,7 +319,7 @@ class AttackUtilsTest {
     fun `getBraveChainFieldSlot, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2-ScathachNP`() {
         for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.Standard.lineup1
-            val result = utils.getBraveChainFieldSlot(
+            val result = AttackUtils.getBraveChainFieldSlot(
                 cards = cards,
                 npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
                 braveChainEnum = braveChainEnum,
@@ -339,7 +338,7 @@ class AttackUtilsTest {
     fun `getBraveChainFieldSlot, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3-NeroNP`() {
         for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.Standard.lineup1
-            val result = utils.getBraveChainFieldSlot(
+            val result = AttackUtils.getBraveChainFieldSlot(
                 cards = cards,
                 npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
                 braveChainEnum = braveChainEnum,
@@ -358,7 +357,7 @@ class AttackUtilsTest {
     fun `getBraveChainFieldSlot, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1-KamaNP + 2-ScathachNP`() {
         for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.Standard.lineup1
-            val result = utils.getBraveChainFieldSlot(
+            val result = AttackUtils.getBraveChainFieldSlot(
                 cards = cards,
                 npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
                 braveChainEnum = braveChainEnum,
@@ -372,7 +371,7 @@ class AttackUtilsTest {
     fun `getBraveChainFieldSlot, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + All 3 NP`() {
         for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.Standard.lineup1
-            val result = utils.getBraveChainFieldSlot(
+            val result = AttackUtils.getBraveChainFieldSlot(
                 cards = cards,
                 npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B, CommandCard.NP.C), 0),
                 braveChainEnum = braveChainEnum,
@@ -386,7 +385,7 @@ class AttackUtilsTest {
     fun `getBraveChainFieldSlot, BusterFocus - lineup01 (1KB,2KB,3NA,4NA,5KB)`() {
         for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.BusterFocus.lineup01
-            val result = utils.getBraveChainFieldSlot(
+            val result = AttackUtils.getBraveChainFieldSlot(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )
@@ -403,7 +402,7 @@ class AttackUtilsTest {
     fun `getBraveChainFieldSlot, BusterFocus - lineup03 (1KB,2KB,3NA,4NA,5NB)`() {
         for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.BusterFocus.lineup03
-            val result = utils.getBraveChainFieldSlot(
+            val result = AttackUtils.getBraveChainFieldSlot(
                 cards = cards,
                 braveChainEnum = braveChainEnum,
             )
@@ -420,7 +419,7 @@ class AttackUtilsTest {
     fun `getBraveChainFieldSlot, BusterFocus - lineup03 (1KB,2KB,3NA,4NA,5NB) - 2Kiyo-NP`() {
         for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.BusterFocus.lineup03
-            val result = utils.getBraveChainFieldSlot(
+            val result = AttackUtils.getBraveChainFieldSlot(
                 cards = cards,
                 npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
                 braveChainEnum = braveChainEnum,
@@ -439,7 +438,7 @@ class AttackUtilsTest {
     fun `getBraveChainFieldSlot, BusterFocus - lineup03 (1KB,2KB,3NA,4NA,5NB) - 3Nero-NP`() {
         for (braveChainEnum in braveChainEnums) {
             val cards = AttackLineUps.BusterFocus.lineup03
-            val result = utils.getBraveChainFieldSlot(
+            val result = AttackUtils.getBraveChainFieldSlot(
                 cards = cards,
                 npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
                 braveChainEnum = braveChainEnum,
@@ -457,7 +456,7 @@ class AttackUtilsTest {
     @Test
     fun `getValidNonUnknownCards, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.getValidNonUnknownCards(
+        val result = AttackUtils.getValidNonUnknownCards(
             cards = cards,
         )
 
@@ -467,7 +466,7 @@ class AttackUtilsTest {
     @Test
     fun `getValidNonUnknownCards, Unknown - lineup1 (1 Unknown)`() {
         val cards = AttackLineUps.Unknown.lineup1
-        val result = utils.getValidNonUnknownCards(
+        val result = AttackUtils.getValidNonUnknownCards(
             cards = cards,
         )
 
@@ -477,7 +476,7 @@ class AttackUtilsTest {
     @Test
     fun `getValidNonUnknownCards, Unknown - lineup2 (2 Unknown)`() {
         val cards = AttackLineUps.Unknown.lineup2
-        val result = utils.getValidNonUnknownCards(
+        val result = AttackUtils.getValidNonUnknownCards(
             cards = cards,
         )
 
@@ -487,7 +486,7 @@ class AttackUtilsTest {
     @Test
     fun `getValidNonUnknownCards, Unknown - lineup3 (3 Unknown)`() {
         val cards = AttackLineUps.Unknown.lineup3
-        val result = utils.getValidNonUnknownCards(
+        val result = AttackUtils.getValidNonUnknownCards(
             cards = cards,
         )
 
@@ -497,7 +496,7 @@ class AttackUtilsTest {
     @Test
     fun `getValidNonUnknownCards, Unknown - lineup4 (5 Unknown)`() {
         val cards = AttackLineUps.Unknown.lineup4
-        val result = utils.getValidNonUnknownCards(
+        val result = AttackUtils.getValidNonUnknownCards(
             cards = cards,
         )
 
@@ -507,7 +506,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
         )
 
@@ -517,7 +516,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1 Valid NP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
         )
@@ -528,7 +527,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1 Valid NP, with npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
             npTypes = mapOf(
@@ -542,7 +541,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1 Unknown NP`() {
         val cards = AttackLineUps.Standard.lineup1
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
             npTypes = mapOf(
@@ -556,7 +555,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Unknown - lineup1 (1 Unknown)`() {
         val cards = AttackLineUps.Unknown.lineup1
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
         )
 
@@ -566,7 +565,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Unknown - lineup1 (1 Unknown) + 1 Valid NP`() {
         val cards = AttackLineUps.Unknown.lineup1
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
         )
@@ -577,7 +576,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Unknown - lineup1 (1 Unknown) + 1 Valid NP, with npTypes`() {
         val cards = AttackLineUps.Unknown.lineup1
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
             npTypes = mapOf(
@@ -591,7 +590,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Unknown - lineup1 (1 Unknown) + 1 Unknown NP, with npTypes`() {
         val cards = AttackLineUps.Unknown.lineup1
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
             npTypes = mapOf(
@@ -605,7 +604,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Unknown - lineup2 (2 Unknown)`() {
         val cards = AttackLineUps.Unknown.lineup2
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
         )
 
@@ -615,7 +614,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Unknown - lineup3 (3 Unknown)`() {
         val cards = AttackLineUps.Unknown.lineup3
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
         )
 
@@ -625,7 +624,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Unknown - lineup3 (3 Unknown) + Valid NP`() {
         val cards = AttackLineUps.Unknown.lineup3
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
         )
@@ -636,7 +635,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Unknown - lineup3 (3 Unknown) + Valid NP, with npTypes`() {
         val cards = AttackLineUps.Unknown.lineup3
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
             npTypes = mapOf(
@@ -650,7 +649,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Unknown - lineup4 (5 Unknown)`() {
         val cards = AttackLineUps.Unknown.lineup4
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
         )
 
@@ -660,7 +659,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Unknown - lineup4 (5 Unknown) + 1 Valid NP`() {
         val cards = AttackLineUps.Unknown.lineup4
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
         )
@@ -671,7 +670,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Unknown - lineup4 (5 Unknown) + 1 Valid NP, with npTypes`() {
         val cards = AttackLineUps.Unknown.lineup4
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
             npTypes = mapOf(
@@ -685,7 +684,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Unknown - lineup4 (5 Unknown) + 2 Valid NP`() {
         val cards = AttackLineUps.Unknown.lineup4
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
         )
@@ -696,7 +695,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Unknown - lineup4 (5 Unknown) + 2 Valid NP, with npTypes`() {
         val cards = AttackLineUps.Unknown.lineup4
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
             npTypes = mapOf(
@@ -711,7 +710,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Unknown - lineup4 (5 Unknown) + 3 Valid NP`() {
         val cards = AttackLineUps.Unknown.lineup4
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B, CommandCard.NP.C), 0),
         )
@@ -722,7 +721,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Unknown - lineup4 (5 Unknown) + 3 Valid NP, with npTypes`() {
         val cards = AttackLineUps.Unknown.lineup4
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B, CommandCard.NP.C), 0),
             npTypes = mapOf(
@@ -738,7 +737,7 @@ class AttackUtilsTest {
     @Test
     fun `isChainable, Unknown - lineup4 (5 Unknown) + 2 Valid NP + 1 Unknown NP, with npTypes`() {
         val cards = AttackLineUps.Unknown.lineup4
-        val result = utils.isChainable(
+        val result = AttackUtils.isChainable(
             cards = cards,
             npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B, CommandCard.NP.C), 0),
             npTypes = mapOf(
