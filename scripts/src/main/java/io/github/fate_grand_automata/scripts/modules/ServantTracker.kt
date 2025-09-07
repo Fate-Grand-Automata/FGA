@@ -92,10 +92,11 @@ class ServantTracker @Inject constructor(
 
         if (supportSlot == null && isSupport) {
             supportSlot = teamSlot
-        } else if (!isSupport) {
-            // Don't useSameSnapIn here, since we open a dialog
-            initFaceCard(teamSlot, slot)
         }
+
+        // We now always want to init the face card, so that there is a fallback for support servant detection failing
+        // Don't useSameSnapIn here, since we open a dialog
+        initFaceCard(teamSlot, slot)
     }
 
     private fun initFaceCard(teamSlot: TeamSlot, slot: FieldSlot, addAnotherImage: Boolean = false) {
@@ -208,8 +209,12 @@ class ServantTracker @Inject constructor(
             }
         }
 
+        // Fallback for if the support servant is not found
+        val currentSupportSlot = supportSlot
+        val isSupportFound = if (currentSupportSlot != null) (result.getOrElse(currentSupportSlot) { emptySet() }).isNotEmpty() else false
+
         val ownedServants = faceCardImages
-            .filterKeys { it != supportSlot && it in deployed.values }
+            .filterKeys { (!isSupportFound || it != supportSlot) && it in deployed.values }
         cardsRemaining
             .groupBy { card ->
                 // find the best matching Servant which isn't the support
