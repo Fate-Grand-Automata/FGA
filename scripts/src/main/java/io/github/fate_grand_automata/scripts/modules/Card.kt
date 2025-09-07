@@ -27,7 +27,6 @@ class Card @Inject constructor(
     private val parser: CardParser,
     private val priority: FaceCardPriority,
     private val braveChains: ApplyBraveChains,
-    private val attackPriorityHandler: AttackPriorityHandler,
     private val battleConfig: IBattleConfig
 ) : IFgoAutomataApi by api {
 
@@ -66,7 +65,7 @@ class Card @Inject constructor(
         val useChainPriority = battleConfig.useChainPriority
         if (useChainPriority) {
             val chainPriority = battleConfig.chainPriority.atWave(state.stage)
-            return attackPriorityHandler.pick(
+            return AttackPriorityHandler.pick(
                 cards = cardsOrderedByPriority,
                 npUsage = npUsage,
                 braveChainEnum = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),

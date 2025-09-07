@@ -11,8 +11,7 @@ import io.github.lib_automata.dagger.ScriptScope
 import java.util.Collections
 import javax.inject.Inject
 
-@ScriptScope
-class AttackPriorityHandler @Inject constructor() {
+object AttackPriorityHandler {
     fun rearrange(
         cards: List<ParsedCard>,
         rearrange: Boolean,
