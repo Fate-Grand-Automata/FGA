@@ -35,6 +35,9 @@ class ChainPriorityPerWave private constructor(
                                 .map {
                                     ChainTypeEnum.valueOf(it)
                                 }
+                                .toSet()
+                                .plusElement(ChainTypeEnum.None)
+                                .toList()
                         }
                 )
             }
