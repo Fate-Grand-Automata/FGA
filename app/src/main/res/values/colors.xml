@@ -2,7 +2,8 @@
 <resources>
     <color name="colorPrimaryDark">#1B3147</color>
     <color name="colorAccent">#3498db</color>
-    <color name="colorDisabled">#ebebe4</color>
+    <color name="colorDisabledBackground">#efefef</color>
+    <color name="colorDisabledText">#1010104d</color>
 
     <color name="colorEnemyTarget">#2e7d32</color>
     <color name="colorMasterSkill">#006064</color>

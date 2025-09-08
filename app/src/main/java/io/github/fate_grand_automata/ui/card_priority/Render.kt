@@ -148,15 +148,22 @@ private fun ChainPriority(
 
     val context = LocalContext.current
 
+    val getForegroundColor = fun (enum: ChainTypeEnum): Int {
+        return (if (priorities.isAfterCutoff(enum)) R.color.colorDisabledText
+        else when (enum) {
+            ChainTypeEnum.None -> Color.BLACK
+            else -> Color.WHITE
+        })
+    }
     val getBackgroundColor = fun (enum: ChainTypeEnum): Int {
-        return (if (priorities.isAfterCutoff(enum)) R.color.colorDisabled
+        return (if (priorities.isAfterCutoff(enum)) R.color.colorDisabledBackground
             else when (enum) {
                 ChainTypeEnum.Arts -> R.color.colorArts
                 ChainTypeEnum.Quick -> R.color.colorQuick
                 ChainTypeEnum.Buster -> R.color.colorBuster
                 ChainTypeEnum.Mighty -> R.color.colorPrimaryDark
                 ChainTypeEnum.Avoid -> R.color.colorAvoid
-                ChainTypeEnum.None -> R.color.colorDisabled
+                ChainTypeEnum.None -> R.color.colorDisabledBackground
             }
         ).let { res -> context.getColor(res) }
     }
@@ -168,7 +175,7 @@ private fun ChainPriority(
         items = priorities,
         viewConfigGrabber = {
             DragSortAdapter.ItemViewConfig(
-                foregroundColor = if (it == ChainTypeEnum.None) Color.BLACK else Color.WHITE,
+                foregroundColor = getForegroundColor(it),
                 backgroundColor = getBackgroundColor(it),
                 text = localizedStringMap.getOrElse(it) { it.name },
             )

@@ -73,6 +73,8 @@ class DragSortAdapter<T>(
             val view = views[index]
             if (updateBackgroundColorOnMove && view != null) {
                 view.setBackgroundColor(viewConfig.backgroundColor)
+                val textView: TextView = view.findViewById(R.id.drag_sort_text)
+                textView.setTextColor(viewConfig.foregroundColor)
             }
         }
 
