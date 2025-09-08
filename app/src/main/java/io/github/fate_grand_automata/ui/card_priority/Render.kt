@@ -149,7 +149,7 @@ private fun ChainPriority(
     val context = LocalContext.current
 
     val getForegroundColor = fun (enum: ChainTypeEnum): Int {
-        return (if (priorities.isAfterCutoff(enum)) R.color.colorDisabledText
+        return (if (priorities.isAfterCutoff(enum)) context.getColor(R.color.colorDisabledText)
         else when (enum) {
             ChainTypeEnum.None -> Color.BLACK
             else -> Color.WHITE
