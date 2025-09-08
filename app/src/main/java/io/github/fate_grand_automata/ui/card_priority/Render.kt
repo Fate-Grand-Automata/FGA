@@ -149,25 +149,26 @@ private fun ChainPriority(
     val context = LocalContext.current
 
     val getBackgroundColor = fun (enum: ChainTypeEnum): Int {
-        return (if (priorities.isAfterAvoid(enum)) R.color.colorDisabled
+        return (if (priorities.isAfterCutoff(enum)) R.color.colorDisabled
             else when (enum) {
                 ChainTypeEnum.Arts -> R.color.colorArts
                 ChainTypeEnum.Quick -> R.color.colorQuick
                 ChainTypeEnum.Buster -> R.color.colorBuster
                 ChainTypeEnum.Mighty -> R.color.colorPrimaryDark
                 ChainTypeEnum.Avoid -> R.color.colorAvoid
+                ChainTypeEnum.None -> R.color.colorDisabled
             }
         ).let { res -> context.getColor(res) }
     }
     val localizedStringMap: MutableMap<ChainTypeEnum, String> = mutableMapOf()
-    priorities.forEach {
-        localizedStringMap[it] = stringResource(it.stringRes)
+    ChainTypeEnum.entries.forEach {
+        localizedStringMap[it] = if (it == ChainTypeEnum.None) "│" else stringResource(it.stringRes)
     }
     DragSort(
         items = priorities,
         viewConfigGrabber = {
             DragSortAdapter.ItemViewConfig(
-                foregroundColor = Color.WHITE,
+                foregroundColor = if (it == ChainTypeEnum.None) Color.BLACK else Color.WHITE,
                 backgroundColor = getBackgroundColor(it),
                 text = localizedStringMap.getOrElse(it) { it.name },
             )
@@ -176,8 +177,8 @@ private fun ChainPriority(
     )
 }
 
-fun MutableList<ChainTypeEnum>.isAfterAvoid(chainTypeEnum: ChainTypeEnum, indexOfAvoid: Int? = null): Boolean {
-    val avoidIndex = indexOfAvoid ?: this.indexOf(ChainTypeEnum.Avoid)
+fun MutableList<ChainTypeEnum>.isAfterCutoff(chainTypeEnum: ChainTypeEnum, indexOfAvoid: Int? = null): Boolean {
+    val avoidIndex = indexOfAvoid ?: this.indexOf(ChainTypeEnum.Cutoff)
     val enumIndex = this.indexOf(chainTypeEnum)
     if (avoidIndex < 0) return false
     return enumIndex > avoidIndex

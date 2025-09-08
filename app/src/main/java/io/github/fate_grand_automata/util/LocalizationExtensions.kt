@@ -37,6 +37,7 @@ val ChainTypeEnum.stringRes
         ChainTypeEnum.Buster -> R.string.p_chain_type_buster
         ChainTypeEnum.Mighty -> R.string.p_chain_type_mighty
         ChainTypeEnum.Avoid -> R.string.p_chain_type_avoid
+        ChainTypeEnum.None -> R.string.p_spam_none
     }
 
 val SpamEnum.stringRes

@@ -36,6 +36,7 @@ object CardChainPriorityHandler {
         for (chain in chainPriority) {
             if (newCardOrder != null) continue
             newCardOrder = when (chain) {
+                ChainTypeEnum.None -> break;
                 ChainTypeEnum.Mighty -> MightyChainHandler.pick(
                     cards = nonUnknownCards,
                     npUsage = npUsage,

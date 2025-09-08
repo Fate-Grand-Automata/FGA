@@ -90,20 +90,9 @@ object AttackPriorityHandler {
                 AttackPriorityEnum.CardChainPriority -> {
                     if (newCardOrder != null) continue
 
-                    // Determine the allowed chain priority
-                    val indexOfAvoid = chainPriority.indexOf(ChainTypeEnum.Avoid)
-                    // If braveChainFallback does not exist,
-                    // 'Avoid' is to be included, since it is treated as cardPriorityHandler's own fallback method
-                    val allowAvoid = if (braveChainFallback == null) 1 else 0
-                    val filteredChainPriority = when (indexOfAvoid) {
-                        -1 -> chainPriority
-                        0 -> listOf(ChainTypeEnum.Avoid)
-                        else -> chainPriority.subList(0, indexOfAvoid + allowAvoid)
-                    }
-
                     newCardOrder = CardChainPriorityHandler.pick(
                         cards = nonUnknownCards,
-                        chainPriority = filteredChainPriority,
+                        chainPriority = chainPriority,
                         braveChainEnum = braveChainEnum,
                         npUsage = npUsage,
                         npTypes = npTypes,
@@ -111,8 +100,7 @@ object AttackPriorityHandler {
                         cardCountPerCardTypeMap = cardCountPerCardTypeMap,
                         // BraveChain is higher priority than color chain
                         forceBraveChain = braveChainFallback != null
-                                && braveChainEnum != BraveChainEnum.Avoid
-                                && braveChainEnum != BraveChainEnum.None
+                                && (braveChainEnum == BraveChainEnum.WithNP || braveChainEnum == BraveChainEnum.Always)
                     )
                 }
                 else -> continue

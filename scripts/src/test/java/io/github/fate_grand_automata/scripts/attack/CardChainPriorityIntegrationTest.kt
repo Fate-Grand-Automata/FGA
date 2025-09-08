@@ -170,7 +170,7 @@ class CardChainPriorityIntegrationTest {
         val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
-            chainPriority = ChainTypeEnum.defaultOrder.filter { it != ChainTypeEnum.Mighty },
+            chainPriority = ChainTypeEnum.allPermitted.filter { it != ChainTypeEnum.Mighty },
         ).map { it.card }
         val pickedDefault = getDefaultAvoidChainResult(
             cards = cards,
@@ -186,7 +186,7 @@ class CardChainPriorityIntegrationTest {
         val picked = AttackPriorityHandler.pick(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
-            chainPriority = ChainTypeEnum.defaultOrder.filter { it != ChainTypeEnum.Mighty },
+            chainPriority = ChainTypeEnum.allPermitted.filter { it != ChainTypeEnum.Mighty },
         ).map { it.card }
 
         // Expect avoid SB,KQ,SQ,NA,NA - 12534 - ABECD
