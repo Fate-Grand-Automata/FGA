@@ -3,7 +3,7 @@
     <color name="colorPrimaryDark">#1B3147</color>
     <color name="colorAccent">#3498db</color>
     <color name="colorDisabledBackground">#efefef</color>
-    <color name="colorDisabledText">#c0c0c0</color>
+    <color name="colorDisabledText">#909090</color>
 
     <color name="colorEnemyTarget">#2e7d32</color>
     <color name="colorMasterSkill">#006064</color>
