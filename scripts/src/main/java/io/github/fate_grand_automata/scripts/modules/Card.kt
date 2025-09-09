@@ -16,6 +16,7 @@ import io.github.fate_grand_automata.scripts.modules.attack.AttackPriorityHandle
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 
 @ScriptScope
 class Card @Inject constructor(
@@ -119,12 +120,25 @@ class Card @Inject constructor(
     }
 
     fun NPUsage.detected (): NPUsage {
-        val validNPs = (this.nps + spamNps).detected()
+        var validNPs: Set<CommandCard.NP> = emptySet()
+        var counter = 0
+        do {
+            if (counter > 0) {
+                // We want to wait for the cards to settle a bit more before we try again
+                100.milliseconds.wait()
+            }
+            val newSet = (this.nps + spamNps).detected()
+            if (newSet.size > validNPs.size) {
+                validNPs = newSet
+            }
+            counter++
+        } while (counter < 3 && !validNPs.containsAll(this.nps))
+
         return NPUsage(validNPs, this.cardsBeforeNP)
     }
 
     fun Set<CommandCard.NP>.detected (): Set<CommandCard.NP> {
-        val npCardsDetected = servantTracker.npCardsDetected()
+        val npCardsDetected = servantTracker.npCardsDetectedUsingServantFaces()
         return this
             .filter { it in npCardsDetected }
             .toSet()

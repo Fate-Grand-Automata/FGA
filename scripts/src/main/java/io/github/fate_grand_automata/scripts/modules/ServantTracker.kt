@@ -288,7 +288,8 @@ class ServantTracker @Inject constructor(
     }
 
     val npCardDetectionScoreCutoff = 0.8
-    fun npCardsDetected(): Set<CommandCard.NP> {
+
+    fun npCardsDetectedUsingServantFaces(): Set<CommandCard.NP> {
         if (prefs.skipServantFaceCardCheck) {
             return emptySet()
         }
