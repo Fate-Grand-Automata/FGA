@@ -119,10 +119,14 @@ class Card @Inject constructor(
     }
 
     fun NPUsage.detected (): NPUsage {
+        val validNPs = (this.nps + spamNps).detected()
+        return NPUsage(validNPs, this.cardsBeforeNP)
+    }
+
+    fun Set<CommandCard.NP>.detected (): Set<CommandCard.NP> {
         val npCardsDetected = servantTracker.npCardsDetected()
-        val validNPs = (this.nps + spamNps)
+        return this
             .filter { it in npCardsDetected }
             .toSet()
-        return NPUsage(validNPs, this.cardsBeforeNP)
     }
 }
