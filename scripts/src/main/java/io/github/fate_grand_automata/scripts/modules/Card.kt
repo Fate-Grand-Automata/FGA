@@ -99,8 +99,11 @@ class Card @Inject constructor(
 
         val nps = npUsage.nps + spamNps
 
-        if (nps.isNotEmpty()) {
-            nps
+        val useChainPriority = battleConfig.useChainPriority
+        val npsToUse = if (useChainPriority) nps.detected() else nps
+
+        if (npsToUse.isNotEmpty()) {
+            npsToUse
                 .also { messages.log(ScriptLog.ClickingNPs(it)) }
                 .forEach { caster.use(it) }
         }
