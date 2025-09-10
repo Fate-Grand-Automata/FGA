@@ -121,20 +121,7 @@ class Card @Inject constructor(
     }
 
     fun NPUsage.detected (): NPUsage {
-        var validNPs: Set<CommandCard.NP> = emptySet()
-        var counter = 0
-        do {
-            if (counter > 0) {
-                // We want to wait for the cards to settle a bit more before we try again
-                100.milliseconds.wait()
-            }
-            val newSet = (this.nps + spamNps).detected()
-            if (newSet.size > validNPs.size) {
-                validNPs = newSet
-            }
-            counter++
-        } while (counter < 3 && !validNPs.containsAll(this.nps))
-
+        val validNPs = (this.nps + spamNps).detected()
         return NPUsage(validNPs, this.cardsBeforeNP)
     }
 
