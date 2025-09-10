@@ -63,12 +63,13 @@ class Card @Inject constructor(
 
         val useChainPriority = battleConfig.useChainPriority
         if (useChainPriority) {
-            val detectedNPUsage = npUsage.detected()
-            val npTypes = detectedNPUsage.nps.associate { it.toFieldSlot() to it.type() }
+            val npUsageToUse = NPUsage(npUsage.nps + spamNps.detected(), npUsage.cardsBeforeNP)
+
+            val npTypes = npUsageToUse.nps.associate { it.toFieldSlot() to it.type() }
             val chainPriority = battleConfig.chainPriority.atWave(state.stage)
             return AttackPriorityHandler.pick(
                 cards = cardsOrderedByPriority,
-                npUsage = detectedNPUsage,
+                npUsage = npUsageToUse,
                 braveChainEnum = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
                 chainPriority = chainPriority,
                 rearrange = rearrangeCardsPerWave.inCurrentWave(false),
