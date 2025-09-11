@@ -8,29 +8,32 @@ import javax.inject.Inject
 
 @ScriptScope
 class FPLocations @Inject constructor(
-    scriptAreaTransforms: IScriptAreaTransforms
+    scriptAreaTransforms: IScriptAreaTransforms,
 ) : IScriptAreaTransforms by scriptAreaTransforms {
     // 9th anniversary adds 100x summon to the FP screen
     private val afterAnni9 = gameServer is GameServer.Jp || gameServer is GameServer.Cn || gameServer is GameServer.Kr
 
-    val summonCheck = if (afterAnni9)
+    val summonCheck = if (afterAnni9) {
         Region(250, 1121, 100, 143).xFromCenter()
-    else
+    } else {
         Region(100, 1152, 75, 143).xFromCenter()
+    }
 
     val initialSummonCheck = Region(-305, 1121, 240, 183).xFromCenter()
-    val initialSummonClick = if (afterAnni9)
+    val initialSummonClick = if (afterAnni9) {
         Location(2, 977).xFromCenter()
-    else
+    } else {
         Location(2, 1052).xFromCenter()
+    }
     val initialSummonContinueClick = Region(341, 1145, 120, 60).xFromCenter()
 
     val continueSummonRegion = Region(-36, 1264, 580, 170).xFromCenter()
-    val first10SummonClick = if (afterAnni9)
+    val first10SummonClick = if (afterAnni9) {
         // the old location is still valid but only for 10x FP
         Location(400, 1062).xFromCenter()
-    else
+    } else {
         Location(170, 1062).xFromCenter()
+    }
 
     val okClick = Location(320, 1120).xFromCenter()
     val continueSummonClick = Location(320, 1325).xFromCenter()

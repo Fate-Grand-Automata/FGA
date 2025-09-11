@@ -95,7 +95,6 @@ dependencies {
     implementation(project(":scripts"))
     implementation(project(":prefs"))
 
-
     implementation(libs.kotlin.stdlib)
 
     implementation(libs.androidx.appcompat)
@@ -112,7 +111,6 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.viewmodel.savedstate)
     implementation(libs.lifecycle.viewmodel.compose)
-
 
     implementation(libs.google.gson)
 
@@ -136,12 +134,9 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
 
-
-
     implementation(libs.accompanist.permissions)
 
     implementation(libs.google.android.play.update.ktx)
     implementation(libs.coil)
     implementation(libs.coil.gif)
-
 }

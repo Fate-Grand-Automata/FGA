@@ -4,7 +4,7 @@ import io.github.fate_grand_automata.scripts.enums.CardAffinityEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 
 class CardPriorityPerWave private constructor(
-    private val scoresPerWave: List<CardPriority>
+    private val scoresPerWave: List<CardPriority>,
 ) : List<CardPriority> by scoresPerWave {
     fun atWave(wave: Int) =
         scoresPerWave[wave.coerceIn(scoresPerWave.indices)]
@@ -12,19 +12,19 @@ class CardPriorityPerWave private constructor(
             .plus(
                 CardScore(
                     CardTypeEnum.Unknown,
-                    CardAffinityEnum.Normal
-                )
+                    CardAffinityEnum.Normal,
+                ),
             )
 
     override fun toString() =
-        scoresPerWave.joinToString(cardPriorityStageSeparator)
+        scoresPerWave.joinToString(CARD_PRIORITY_STAGE_SEPARATOR)
 
     companion object {
-        private const val defaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ"
-        private const val cardPriorityStageSeparator = "\n"
+        private const val DEFAULT_CARD_PRIORITY = "WB, WA, WQ, B, A, Q, RB, RA, RQ"
+        private const val CARD_PRIORITY_STAGE_SEPARATOR = "\n"
 
         val default get() =
-            of(defaultCardPriority)
+            of(DEFAULT_CARD_PRIORITY)
 
         fun from(scoresPerWave: List<CardPriority>) =
             CardPriorityPerWave(scoresPerWave)
@@ -35,8 +35,8 @@ class CardPriorityPerWave private constructor(
             } else {
                 CardPriorityPerWave(
                     priority
-                        .split(cardPriorityStageSeparator)
-                        .map { CardPriority.of(it) }
+                        .split(CARD_PRIORITY_STAGE_SEPARATOR)
+                        .map { CardPriority.of(it) },
                 )
             }
     }

@@ -62,45 +62,45 @@ fun SkillMakerTarget(
     onNpType3: () -> Unit,
     onChoice2: (SkillSlot) -> Unit,
     onChoice3: (SkillSlot) -> Unit,
-    onTransform: () -> Unit
+    onTransform: () -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         FGATitle(
-            stringResource(R.string.skill_maker_target_header)
+            stringResource(R.string.skill_maker_target_header),
         )
 
         Box(
             modifier = Modifier
                 .weight(2f)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .align(Alignment.Center)
+                    .align(Alignment.Center),
             ) {
                 TargetButton(
                     onClick = { onSkillTarget(ServantTarget.A) },
                     color = colorResource(R.color.colorServant1),
-                    text = stringResource(R.string.skill_maker_target_servant, 1)
+                    text = stringResource(R.string.skill_maker_target_servant, 1),
                 )
 
                 TargetButton(
                     onClick = { onSkillTarget(ServantTarget.B) },
                     color = colorResource(R.color.colorServant2),
-                    text = stringResource(R.string.skill_maker_target_servant, 2)
+                    text = stringResource(R.string.skill_maker_target_servant, 2),
                 )
 
                 TargetButton(
                     onClick = { onSkillTarget(ServantTarget.C) },
                     color = colorResource(R.color.colorServant3),
-                    text = stringResource(R.string.skill_maker_target_servant, 3)
+                    text = stringResource(R.string.skill_maker_target_servant, 3),
                 )
             }
         }
@@ -108,19 +108,18 @@ fun SkillMakerTarget(
         Box(
             modifier = Modifier
                 .weight(1f)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Button(
                 onClick = { onSkillTarget(null) },
                 modifier = Modifier
                     .padding(horizontal = 4.dp)
                     .padding(bottom = 4.dp)
-                    .align(Alignment.TopCenter)
+                    .align(Alignment.TopCenter),
             ) {
                 Text(stringResource(R.string.skill_maker_target_none))
             }
         }
-
 
         val state = rememberLazyListState()
 
@@ -148,20 +147,20 @@ fun SkillMakerTarget(
 
         Box(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Column {
                 if (slot != null) {
                     Row(
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
                     ) {
                         Text(
                             stringResource(R.string.skill_maker_special_targets_warning).uppercase(),
                             style = MaterialTheme.typography.bodySmall,
                             textAlign = TextAlign.Center,
-                            textDecoration = TextDecoration.Underline
+                            textDecoration = TextDecoration.Underline,
                         )
                     }
 
@@ -169,7 +168,7 @@ fun SkillMakerTarget(
                         state = state,
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
                     ) {
                         if (slot == SkillSlot.Third) {
                             item {
@@ -178,7 +177,9 @@ fun SkillMakerTarget(
                                     text = stringResource(R.string.skill_maker_change_np_type_2),
                                     hint = stringResource(R.string.skill_maker_change_np_type_2_hint),
                                     image = R.drawable.skill_maker_np_type_2,
-                                    servants = stringArrayResource(R.array.skill_maker_change_np_type_2_array).joinToString("\n")
+                                    servants = stringArrayResource(
+                                        R.array.skill_maker_change_np_type_2_array,
+                                    ).joinToString("\n"),
                                 )
                             }
                         }
@@ -190,7 +191,9 @@ fun SkillMakerTarget(
                                     text = stringResource(R.string.skill_maker_change_np_type_3),
                                     hint = stringResource(R.string.skill_maker_change_np_type_3_hint),
                                     image = R.drawable.skill_maker_np_type_3,
-                                    servants = stringArrayResource(R.array.skill_maker_change_np_type_3_array).joinToString("\n")
+                                    servants = stringArrayResource(
+                                        R.array.skill_maker_change_np_type_3_array,
+                                    ).joinToString("\n"),
                                 )
                             }
                         }
@@ -203,10 +206,12 @@ fun SkillMakerTarget(
                                 text = stringResource(R.string.skill_maker_choices_2),
                                 hint = stringResource(R.string.skill_maker_choices_2_hint),
                                 image = R.drawable.skill_maker_choices_2,
-                                servants = stringArrayResource(when(slot) {
-                                    SkillSlot.Third -> R.array.skill_maker_choices_2_array_slot_3
-                                    else -> R.array.skill_maker_choices_2_array_slot_1and2
-                                }).joinToString("\n")
+                                servants = stringArrayResource(
+                                    when (slot) {
+                                        SkillSlot.Third -> R.array.skill_maker_choices_2_array_slot_3
+                                        else -> R.array.skill_maker_choices_2_array_slot_1and2
+                                    },
+                                ).joinToString("\n"),
                             )
                         }
 
@@ -219,10 +224,12 @@ fun SkillMakerTarget(
                                     text = stringResource(R.string.skill_maker_choices_3),
                                     hint = stringResource(R.string.skill_maker_choices_3_hint),
                                     image = R.drawable.skill_maker_choices_3,
-                                    servants = stringArrayResource(when(slot) {
-                                        SkillSlot.First -> R.array.skill_maker_choices_3_array_slot_1
-                                        else -> R.array.skill_maker_choices_3_array_slot_3
-                                    }).joinToString("\n")
+                                    servants = stringArrayResource(
+                                        when (slot) {
+                                            SkillSlot.First -> R.array.skill_maker_choices_3_array_slot_1
+                                            else -> R.array.skill_maker_choices_3_array_slot_3
+                                        },
+                                    ).joinToString("\n"),
                                 )
                             }
                         }
@@ -233,7 +240,9 @@ fun SkillMakerTarget(
                                     text = stringResource(R.string.skill_maker_transform),
                                     hint = stringResource(R.string.skill_maker_transform_hint),
                                     image = R.drawable.skill_maker_transform,
-                                    servants = stringArrayResource(R.array.skill_maker_transform_array).joinToString("\n")
+                                    servants = stringArrayResource(
+                                        R.array.skill_maker_transform_array,
+                                    ).joinToString("\n"),
                                 )
                             }
                         }
@@ -258,12 +267,12 @@ fun SkillMakerTarget(
                     },
                     colors = IconButtonDefaults.filledIconButtonColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                        contentColor = MaterialTheme.colorScheme.onSurface
+                        contentColor = MaterialTheme.colorScheme.onSurface,
                     ),
                 ) {
                     Icon(
                         imageVector = Icons.Default.KeyboardDoubleArrowLeft,
-                        contentDescription = "Go to the first item"
+                        contentDescription = "Go to the first item",
                     )
                 }
             }
@@ -282,12 +291,12 @@ fun SkillMakerTarget(
                     },
                     colors = IconButtonDefaults.filledIconButtonColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                        contentColor = MaterialTheme.colorScheme.onSurface
+                        contentColor = MaterialTheme.colorScheme.onSurface,
                     ),
                 ) {
                     Icon(
                         imageVector = Icons.Default.KeyboardDoubleArrowRight,
-                        contentDescription = "Go to the last item"
+                        contentDescription = "Go to the last item",
                     )
                 }
             }
@@ -301,7 +310,7 @@ private fun ButtonWithHint(
     text: String,
     hint: String,
     image: Int,
-    servants: String
+    servants: String,
 ) {
     val dialog = FgaDialog()
 
@@ -311,24 +320,24 @@ private fun ButtonWithHint(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(16.dp),
         ) {
             Text(
                 text = hint.uppercase(),
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             )
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             ) {
                 Text(
-                    servants
+                    servants,
                 )
 
                 AsyncImage(
@@ -338,7 +347,7 @@ private fun ButtonWithHint(
                     modifier = Modifier
                         .padding(4.dp)
                         .weight(1f)
-                        .fillMaxHeight(0.7f)
+                        .fillMaxHeight(0.7f),
                 )
             }
         }
@@ -348,37 +357,34 @@ private fun ButtonWithHint(
             showCancel = false,
             onSubmit = {
                 dialog.hide()
-            }
+            },
         )
-
     }
-
 
     Row(
         horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Button(
             onClick = onClick,
-            contentPadding = PaddingValues(7.dp)
+            contentPadding = PaddingValues(7.dp),
         ) {
             Text(
-                text = text
+                text = text,
             )
         }
 
         IconButton(
             onClick = {
                 dialog.show()
-            }
+            },
         ) {
             Icon(
                 imageVector = Icons.Default.Info,
-                contentDescription = "Info"
+                contentDescription = "Info",
             )
         }
     }
-
 }
 
 @Composable
@@ -400,7 +406,7 @@ fun TestSkillMakerNoSlot() = TestSkillMaker(slot = null)
 
 @Composable
 private fun TestSkillMaker(
-    slot: SkillSlot?
+    slot: SkillSlot?,
 ) {
     FGATheme {
         SkillMakerTarget(
@@ -410,7 +416,7 @@ private fun TestSkillMaker(
             onNpType3 = {},
             onChoice2 = {},
             onTransform = {},
-            onChoice3 = {}
+            onChoice3 = {},
         )
     }
 }

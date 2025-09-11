@@ -83,6 +83,7 @@ enum class Images(val path: String) {
     ServantAscensionBanner("servant_ascension_banner.png"),
     ServantAscensionReturnToLevel("servant_ascension_return_to_level.png"),
     Ok("ok.png"),
+
     /**
      * 2nd OK button for FGO KR
      */

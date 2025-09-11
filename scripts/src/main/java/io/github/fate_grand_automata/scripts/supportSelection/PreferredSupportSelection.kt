@@ -16,7 +16,7 @@ class PreferredSupportSelection @Inject constructor(
     private val friendChecker: SupportFriendChecker,
     private val servantSelection: ServantSelection,
     private val ceSelection: CESelection,
-    private val friendSelection: FriendSelection
+    private val friendSelection: FriendSelection,
 ) : SupportSelectionProvider, IFgoAutomataApi by api {
     private val servants = supportPrefs.preferredServants
     private val ces = supportPrefs.preferredCEs
@@ -49,7 +49,7 @@ class PreferredSupportSelection @Inject constructor(
                     if (!topScrollbar) {
                         movedSrollBar = images[Images.SupportScrollBarMoved] in locations.support.topScrollbarRegion
                         bottomScrollbar = images[Images.SupportScrollBarBottom] in
-                                locations.support.bottomScrollbarRegion
+                            locations.support.bottomScrollbarRegion
                     }
                 }
                 when {
@@ -72,6 +72,8 @@ class PreferredSupportSelection @Inject constructor(
             (!supportPrefs.friendsOnly || friendSelection.check(friendNames, bounds))
         ) {
             bounds.region
-        } else null
+        } else {
+            null
+        }
     }
 }

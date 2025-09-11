@@ -61,7 +61,7 @@ import java.io.File
 fun SupportGroup(
     config: SupportPrefsCore,
     maxSkillText: String,
-    goToPreferred: () -> Unit
+    goToPreferred: () -> Unit,
 ) {
     val supportMode by config.selectionMode.remember()
 
@@ -71,29 +71,29 @@ fun SupportGroup(
             .padding(bottom = 16.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        ),
     ) {
         Column(
             modifier = Modifier
-                .padding(bottom = 16.dp)
+                .padding(bottom = 16.dp),
         ) {
             PreferenceGroupHeader(
-                title = stringResource(R.string.p_battle_config_support)
+                title = stringResource(R.string.p_battle_config_support),
             )
 
             var supportClass by config.supportClass.remember()
 
             SupportClassPicker(
                 selected = supportClass,
-                onSelectedChange = { supportClass = it }
+                onSelectedChange = { supportClass = it },
             )
 
             val canAlsoCheckAll = supportClass.canAlsoCheckAll && supportMode != SupportSelectionModeEnum.Manual
 
             AnimatedVisibility(canAlsoCheckAll) {
                 config.alsoCheckAll.SwitchPreference(
-                    title = stringResource(R.string.p_battle_config_support_also_check_all)
+                    title = stringResource(R.string.p_battle_config_support_also_check_all),
                 )
             }
 
@@ -104,7 +104,7 @@ fun SupportGroup(
                     title = stringResource(R.string.p_battle_config_support_selection_mode),
                     entries = SupportSelectionModeEnum.entries
                         .associateWith { stringResource(it.stringRes) },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 )
 
                 if (preferredMode) {
@@ -112,9 +112,9 @@ fun SupportGroup(
                         title = stringResource(R.string.p_battle_config_support_fallback_selection_mode),
                         entries = listOf(
                             SupportSelectionModeEnum.First,
-                            SupportSelectionModeEnum.Manual
+                            SupportSelectionModeEnum.Manual,
                         ).associateWith { stringResource(it.stringRes) },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                 }
             }
@@ -147,15 +147,15 @@ fun SupportGroup(
                                 maxSkillText = maxSkillText,
                                 servants = servants,
                                 ces = cesFormatted,
-                                friendNames = friendNamesFormatted
+                                friendNames = friendNamesFormatted,
                             )
                         },
-                        onClick = goToPreferred
+                        onClick = goToPreferred,
                     )
 
                     AnimatedVisibility(servants.isEmpty() && ces.isEmpty()) {
                         PreferenceError(
-                            stringResource(R.string.support_selection_preferred_not_set)
+                            stringResource(R.string.support_selection_preferred_not_set),
                         )
                     }
                 }
@@ -167,7 +167,7 @@ fun SupportGroup(
 @Composable
 fun SupportClassPicker(
     selected: SupportClass,
-    onSelectedChange: (SupportClass) -> Unit
+    onSelectedChange: (SupportClass) -> Unit,
 ) {
     Card(
         elevation = cardElevation(2.dp),
@@ -176,14 +176,14 @@ fun SupportClassPicker(
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        ),
     ) {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth(),
             contentPadding = PaddingValues(5.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             items(SupportClass.entries.drop(1)) {
                 val isSelected = selected == it
@@ -192,9 +192,11 @@ fun SupportClassPicker(
                     if (selected) 1f else 0.4f
                 }
                 val borderClass by transition.animateColor(label = "border color") { selected ->
-                    if (selected)
+                    if (selected) {
                         MaterialTheme.colorScheme.secondary
-                    else Color.Transparent
+                    } else {
+                        Color.Transparent
+                    }
                 }
 
                 AsyncImage(
@@ -208,11 +210,13 @@ fun SupportClassPicker(
                         .clip(DiamondShape)
                         .clickable {
                             onSelectedChange(
-                                if (isSelected)
+                                if (isSelected) {
                                     SupportClass.None
-                                else it
+                                } else {
+                                    it
+                                },
                             )
-                        }
+                        },
                 )
             }
         }
@@ -242,31 +246,33 @@ fun PreferredSummary(
     maxSkillText: String,
     servants: Set<String>,
     ces: Set<String>,
-    friendNames: Set<String>
+    friendNames: Set<String>,
 ) {
     Column(
         modifier = Modifier
-            .padding(vertical = 5.dp)
+            .padding(vertical = 5.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(vertical = 2.dp)
+                .padding(vertical = 2.dp),
         ) {
             DimmedIcon(
                 icon(R.drawable.ic_crown),
-                contentDescription = "crown"
+                contentDescription = "crown",
             )
 
-            val text = if (servants.isNotEmpty())
+            val text = if (servants.isNotEmpty()) {
                 servants.joinToString()
-            else stringResource(R.string.battle_config_support_any)
+            } else {
+                stringResource(R.string.battle_config_support_any)
+            }
 
             Text(
                 text,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = 16.dp),
             )
 
             if (servants.isNotEmpty()) {
@@ -274,14 +280,14 @@ fun PreferredSummary(
                     elevation = cardElevation(2.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    ),
                 ) {
                     Text(
                         maxSkillText,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier
-                            .padding(5.dp, 1.dp)
+                            .padding(5.dp, 1.dp),
                     )
                 }
             }
@@ -290,22 +296,24 @@ fun PreferredSummary(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(vertical = 2.dp)
+                .padding(vertical = 2.dp),
         ) {
             DimmedIcon(
                 icon(R.drawable.ic_card),
-                contentDescription = "card"
+                contentDescription = "card",
             )
 
-            val text = if (ces.isNotEmpty())
+            val text = if (ces.isNotEmpty()) {
                 ces.joinToString()
-            else stringResource(R.string.battle_config_support_any)
+            } else {
+                stringResource(R.string.battle_config_support_any)
+            }
 
             Text(
                 text,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(start = 16.dp)
+                    .padding(start = 16.dp),
             )
 
             if (ces.isNotEmpty()) {
@@ -316,7 +324,7 @@ fun PreferredSummary(
                         Icons.Default.Star,
                         contentDescription = "MLB",
                         tint = MaterialTheme.colorScheme.secondary,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(20.dp),
                     )
                 }
             }
@@ -328,22 +336,24 @@ fun PreferredSummary(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .padding(vertical = 2.dp)
+                    .padding(vertical = 2.dp),
             ) {
                 DimmedIcon(
                     icon(R.drawable.ic_friend),
-                    contentDescription = "friend"
+                    contentDescription = "friend",
                 )
 
-                val text = if (friendNames.isNotEmpty())
+                val text = if (friendNames.isNotEmpty()) {
                     friendNames.joinToString()
-                else stringResource(R.string.battle_config_support_any)
+                } else {
+                    stringResource(R.string.battle_config_support_any)
+                }
 
                 Text(
                     text,
                     modifier = Modifier
                         .weight(1f)
-                        .padding(start = 16.dp)
+                        .padding(start = 16.dp),
                 )
             }
         }

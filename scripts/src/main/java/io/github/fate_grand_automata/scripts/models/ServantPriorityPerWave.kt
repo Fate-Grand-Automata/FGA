@@ -1,23 +1,23 @@
 package io.github.fate_grand_automata.scripts.models
 
 class ServantPriorityPerWave private constructor(
-    private val scoresPerWave: List<List<TeamSlot>>
+    private val scoresPerWave: List<List<TeamSlot>>,
 ) : List<List<TeamSlot>> by scoresPerWave {
     fun atWave(wave: Int) =
         scoresPerWave[wave.coerceIn(scoresPerWave.indices)]
 
     override fun toString() =
         scoresPerWave
-            .joinToString(stageSeparator) {
-                it.joinToString(separator) { m ->
+            .joinToString(STAGE_SEPARATOR) {
+                it.joinToString(SEPARATOR) { m ->
                     m.position.toString()
                 }
             }
 
     companion object {
         val default = from(listOf(TeamSlot.list))
-        private const val stageSeparator = "\n"
-        private const val separator = ","
+        private const val STAGE_SEPARATOR = "\n"
+        private const val SEPARATOR = ","
 
         fun from(scoresPerWave: List<List<TeamSlot>>) =
             ServantPriorityPerWave(scoresPerWave)
@@ -28,14 +28,14 @@ class ServantPriorityPerWave private constructor(
             } else {
                 ServantPriorityPerWave(
                     priority
-                        .split(stageSeparator)
+                        .split(STAGE_SEPARATOR)
                         .map { priorityOnAWave ->
                             priorityOnAWave
-                                .split(separator)
+                                .split(SEPARATOR)
                                 .map {
                                     TeamSlot.list[it.toInt() - 1]
                                 }
-                        }
+                        },
                 )
             }
     }

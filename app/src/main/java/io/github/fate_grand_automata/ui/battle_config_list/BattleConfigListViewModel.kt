@@ -28,7 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BattleConfigListViewModel @Inject constructor(
     prefsCore: PrefsCore,
-    val prefs: IPreferences
+    val prefs: IPreferences,
 ) : ViewModel() {
     val battleConfigItems = prefsCore
         .battleConfigList
@@ -44,7 +44,7 @@ class BattleConfigListViewModel @Inject constructor(
                         }
                     }.thenBy(String.CASE_INSENSITIVE_ORDER) {
                         it.name.get()
-                    }
+                    },
                 )
         }
 
@@ -74,7 +74,9 @@ class BattleConfigListViewModel @Inject constructor(
     private fun configsToExport() =
         if (selectionMode.value) {
             selectedConfigs.value.map { prefs.forBattleConfig(it) }
-        } else prefs.battleConfigs
+        } else {
+            prefs.battleConfigs
+        }
 
     fun newConfig(): IBattleConfig {
         val guid = UUID.randomUUID().toString()

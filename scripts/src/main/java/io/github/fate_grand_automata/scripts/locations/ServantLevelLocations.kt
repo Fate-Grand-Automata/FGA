@@ -6,7 +6,7 @@ import io.github.lib_automata.Region
 import javax.inject.Inject
 
 class ServantLevelLocations @Inject constructor(
-    scriptAreaTransforms: IScriptAreaTransforms
+    scriptAreaTransforms: IScriptAreaTransforms,
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
     val emberConfirmationDialogRegion = when (gameServer) {
@@ -23,7 +23,6 @@ class ServantLevelLocations @Inject constructor(
         is GameServer.Jp -> Region(764, 0, 260, 60).xFromCenter()
         else -> Region(1032, 0, 238, 53).xFromCenter()
     }.copy(y = if (isWide) 268 else 308)
-     
 
     val autoSelectLocation = when (isWide) {
         true -> Location(-347, 294).xFromRight()
@@ -40,13 +39,13 @@ class ServantLevelLocations @Inject constructor(
         false -> Region(613, 1047, 58, 128).xFromCenter()
     }
 
-    fun servantRedirectCheckRegion(server: GameServer) = when(server){
-        is GameServer.En, is GameServer.Jp -> when(isWide) {
+    fun servantRedirectCheckRegion(server: GameServer) = when (server) {
+        is GameServer.En, is GameServer.Jp -> when (isWide) {
             true -> Region(687, 1013, 47, 115).xFromCenter()
             false -> Region(687, 1058, 47, 115).xFromCenter()
         }
         // CN, TW, KR
-        else -> when(isWide){
+        else -> when (isWide) {
             true -> Region(774, 1013, 50, 114).xFromCenter()
             false -> Region(774, 1058, 50, 114).xFromCenter()
         }
@@ -58,7 +57,7 @@ class ServantLevelLocations @Inject constructor(
 
     val returnToServantMenuFromAscensionLocation = Location(816, 572).xFromCenter()
 
-    val ascensionReturnToLevelRegion = when(isWide){
+    val ascensionReturnToLevelRegion = when (isWide) {
         true -> Region(566, 487, 47, 86).xFromCenter()
         false -> Region(566, 527, 47, 86).xFromCenter()
     }

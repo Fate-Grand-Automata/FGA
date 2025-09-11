@@ -11,7 +11,7 @@ import javax.inject.Inject
 class AutoSkill @Inject constructor(
     api: IFgoAutomataApi,
     private val skillCommand: AutoSkillCommand,
-    private val caster: Caster
+    private val caster: Caster,
 ) : IFgoAutomataApi by api {
     private fun act(action: AutoSkillAction) = when (action) {
         is AutoSkillAction.Atk -> {}

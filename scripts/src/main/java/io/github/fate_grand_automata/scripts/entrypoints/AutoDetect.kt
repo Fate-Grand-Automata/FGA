@@ -17,24 +17,28 @@ class AutoDetect @Inject constructor(
 
         when {
             images[Images.FriendSummon] in locations.fp.summonCheck ||
-                    findImage(locations.fp.continueSummonRegion, Images.FPSummonContinue) ||
-                    images[Images.FriendSummon] in locations.fp.initialSummonCheck ->
+                findImage(locations.fp.continueSummonRegion, Images.FPSummonContinue) ||
+                images[Images.FriendSummon] in locations.fp.initialSummonCheck ->
                 ScriptModeEnum.FP
 
-            images[Images.LotteryBoxFinished] in locations.lottery.checkRegion || images[Images.LotteryBoxFinished] in locations.lottery.finishedRegion ->
+            images[Images.LotteryBoxFinished] in locations.lottery.checkRegion ||
+                images[Images.LotteryBoxFinished] in locations.lottery.finishedRegion ->
                 ScriptModeEnum.Lottery
 
             listOf(images[Images.GoldXP], images[Images.SilverXP], images[Images.Gold5StarXP]) in emberSearchRegion ->
                 ScriptModeEnum.PresentBox
 
-            locations.support.confirmSetupButtonRegion.exists(images[Images.SupportConfirmSetupButton], similarity = 0.75) ->
+            locations.support.confirmSetupButtonRegion.exists(
+                images[Images.SupportConfirmSetupButton],
+                similarity = 0.75,
+            ) ->
                 ScriptModeEnum.SupportImageMaker
 
             mapOf(
                 images[Images.ServantAutoSelect] to locations.servant.servantAutoSelectRegion,
                 images[Images.ServantAutoSelectOff] to locations.servant.servantAutoSelectRegion,
-                images[Images.ServantAscensionBanner] to locations.enhancementBannerRegion
-            ).exists()->
+                images[Images.ServantAscensionBanner] to locations.enhancementBannerRegion,
+            ).exists() ->
                 ScriptModeEnum.ServantLevel
 
             images[Images.EmptyEnhance] in locations.emptyEnhanceRegion ->

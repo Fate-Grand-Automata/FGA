@@ -42,18 +42,18 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnboardingScreen(
     vm: OnboardingViewModel = viewModel(),
-    navigateToHome: () -> Unit
+    navigateToHome: () -> Unit,
 ) {
     OnboardingContent(
         vm,
-        navigateToHome
+        navigateToHome,
     )
 }
 
 @Composable
 fun OnboardingContent(
     vm: OnboardingViewModel = viewModel(),
-    navigateToHome: () -> Unit
+    navigateToHome: () -> Unit,
 ) {
     val pages = remember {
         listOf(
@@ -61,7 +61,7 @@ fun OnboardingContent(
             PickLanguage(vm),
             PickDirectory(vm),
             DisableBatteryOptimization(vm),
-            YoutubeVideo(vm)
+            YoutubeVideo(vm),
         ).filter { !it.shouldSkip() }
     }
 
@@ -72,11 +72,13 @@ fun OnboardingContent(
     Column(modifier = Modifier.fillMaxSize()) {
         TopSection(
             onBackClick = {
-                if (pageState.currentPage + 1 > 1) scope.launch {
-                    pageState.scrollToPage(pageState.currentPage - 1)
-                    nextEnabled = true
+                if (pageState.currentPage + 1 > 1) {
+                    scope.launch {
+                        pageState.scrollToPage(pageState.currentPage - 1)
+                        nextEnabled = true
+                    }
                 }
-            }
+            },
         )
 
         HorizontalPager(
@@ -84,7 +86,7 @@ fun OnboardingContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            userScrollEnabled = false
+            userScrollEnabled = false,
         ) { page ->
             OnBoardingPage {
                 pages[page].UI {
@@ -93,11 +95,13 @@ fun OnboardingContent(
             }
         }
         BottomSection(size = pages.size, index = pageState.currentPage, enabled = nextEnabled) {
-            if (pageState.currentPage + 1 < pages.size) scope.launch {
-                pageState.scrollToPage(pageState.currentPage + 1)
-                // enable next button if the new screen is optional or if the requirements were fulfilled
-                nextEnabled = pages[pageState.currentPage]
-                    .let { it.canSkip || it.shouldSkip() }
+            if (pageState.currentPage + 1 < pages.size) {
+                scope.launch {
+                    pageState.scrollToPage(pageState.currentPage + 1)
+                    // enable next button if the new screen is optional or if the requirements were fulfilled
+                    nextEnabled = pages[pageState.currentPage]
+                        .let { it.canSkip || it.shouldSkip() }
+                }
             } else {
                 vm.prefs.completedOnboarding()
                 navigateToHome()
@@ -111,12 +115,12 @@ fun TopSection(onBackClick: () -> Unit = {}) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp)
+            .padding(horizontal = 12.dp),
     ) {
         // Back button
         IconButton(
             onClick = onBackClick,
-            modifier = Modifier.align(Alignment.CenterStart)
+            modifier = Modifier.align(Alignment.CenterStart),
         ) {
             Icon(imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowLeft, contentDescription = null)
         }
@@ -128,7 +132,7 @@ fun BottomSection(size: Int, index: Int, enabled: Boolean, onButtonClick: () -> 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp)
+            .padding(horizontal = 12.dp),
     ) {
         // Indicators
         Indicators(size, index)
@@ -138,12 +142,12 @@ fun BottomSection(size: Int, index: Int, enabled: Boolean, onButtonClick: () -> 
             enabled = enabled,
             modifier = Modifier
                 .align(Alignment.CenterEnd)
-                .clip(RoundedCornerShape(15.dp, 15.dp, 15.dp, 15.dp))
+                .clip(RoundedCornerShape(15.dp, 15.dp, 15.dp, 15.dp)),
         ) {
             Icon(
                 Icons.AutoMirrored.Outlined.KeyboardArrowRight,
                 tint = Color.White,
-                contentDescription = "Localized description"
+                contentDescription = "Localized description",
             )
         }
     }
@@ -154,7 +158,7 @@ fun BoxScope.Indicators(size: Int, index: Int) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier.align(Alignment.CenterStart)
+        modifier = Modifier.align(Alignment.CenterStart),
     ) {
         repeat(size) {
             Indicator(isSelected = it == index)
@@ -166,7 +170,7 @@ fun BoxScope.Indicators(size: Int, index: Int) {
 fun Indicator(isSelected: Boolean) {
     val width = animateDpAsState(
         targetValue = if (isSelected) 25.dp else 10.dp,
-        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy)
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
     )
 
     Box(
@@ -175,10 +179,9 @@ fun Indicator(isSelected: Boolean) {
             .width(width.value)
             .clip(CircleShape)
             .background(
-                color = if (isSelected) MaterialTheme.colorScheme.primary else Color(0XFFF8E2E7)
-            )
+                color = if (isSelected) MaterialTheme.colorScheme.primary else Color(0XFFF8E2E7),
+            ),
     ) {
-
     }
 }
 
@@ -189,7 +192,7 @@ fun OnBoardingPage(content: @Composable () -> Unit) {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = 20.dp, end = 20.dp)
+            .padding(start = 20.dp, end = 20.dp),
     ) {
         content()
     }

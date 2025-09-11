@@ -12,14 +12,14 @@ interface Highlighter {
     operator fun invoke(
         region: Region,
         color: HighlightColor,
-        duration: Duration = DEFAULT_DURATION
+        duration: Duration = DEFAULT_DURATION,
     )
 }
 
 class RealHighlighter @Inject constructor(
     private val exitManager: ExitManager,
     private val platformImpl: PlatformImpl,
-    private val transform: Transformer
+    private val transform: Transformer,
 ) : Highlighter {
     override fun invoke(region: Region, color: HighlightColor, duration: Duration) {
         exitManager.checkExitRequested()

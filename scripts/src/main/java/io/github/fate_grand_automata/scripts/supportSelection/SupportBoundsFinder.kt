@@ -12,18 +12,18 @@ value class SupportBounds(val region: Region)
 
 @ScriptScope
 class SupportBoundsFinder @Inject constructor(
-    api: IFgoAutomataApi
+    api: IFgoAutomataApi,
 ) : IFgoAutomataApi by api {
     fun all(): Sequence<SupportBounds> =
         locations.support.confirmSetupButtonRegion
             .findAll(
                 images[Images.SupportConfirmSetupButton],
-                Support.supportRegionToolSimilarity
+                Support.SUPPORT_REGION_TOOL_SIMILARITY,
             )
             .map {
                 SupportBounds(
                     locations.support.defaultBounds
-                        .copy(y = it.region.y - 70)
+                        .copy(y = it.region.y - 70),
                 )
             }.sortedBy {
                 it.region

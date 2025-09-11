@@ -18,7 +18,7 @@ class AutoGiftBox @Inject constructor(
     exitManager: ExitManager,
     api: IFgoAutomataApi,
     private val swipe: Swiper,
-    private val connectionRetry: ConnectionRetry
+    private val connectionRetry: ConnectionRetry,
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason {
         object NoEmbersFound : ExitReason()
@@ -28,27 +28,32 @@ class AutoGiftBox @Inject constructor(
     class ExitException(val reason: ExitReason) : Exception()
 
     companion object {
-        const val maxClickCount = 99
-        const val maxNullStreak = 3
+        const val MAX_CLICK_COUNT = 99
+        const val MAX_NULL_STREAK = 3
+
+        val regex = Regex("""x ?(\d+)$""")
     }
 
     private data class IterationResult(
         val pickedStacks: Int = 0,
-        val pickedGoldEmbers: Int = 0
+        val pickedGoldEmbers: Int = 0,
     ) {
         operator fun plus(other: IterationResult): IterationResult {
             return IterationResult(
                 pickedStacks + other.pickedStacks,
-                pickedGoldEmbers + other.pickedGoldEmbers
+                pickedGoldEmbers + other.pickedGoldEmbers,
             )
         }
     }
 
     override fun script(): Nothing {
         var totalSelected = IterationResult()
-        val xpOffsetX = locations.scriptArea.find(listOf(images[Images.GoldXP], images[Images.SilverXP], images[Images.Gold5StarXP]))
-            ?.region?.center?.x
-            ?: throw ExitException(ExitReason.NoEmbersFound)
+        val xpOffsetX =
+            locations.scriptArea.find(
+                listOf(images[Images.GoldXP], images[Images.SilverXP], images[Images.Gold5StarXP]),
+            )
+                ?.region?.center?.x
+                ?: throw ExitException(ExitReason.NoEmbersFound)
 
         val checkRegion = Region(xpOffsetX + 1320, 350, 140, 1500)
         val scrollEndRegion = Region(100 + checkRegion.x, 1320, 320, 60)
@@ -66,7 +71,9 @@ class AutoGiftBox @Inject constructor(
                     if (connectionRetry.needsToRetry()) connectionRetry.retry() else break
                 }
                 receiveSelectedClick.click()
-            } else break
+            } else {
+                break
+            }
         } while (
             totalSelected.pickedGoldEmbers < prefs.maxGoldEmberTotalCount &&
             receiveEnabledPattern in receiveEnabledRegion
@@ -75,14 +82,14 @@ class AutoGiftBox @Inject constructor(
         throw ExitException(
             ExitReason.CannotSelectAnyMore(
                 totalSelected.pickedStacks,
-                totalSelected.pickedGoldEmbers
-            )
+                totalSelected.pickedGoldEmbers,
+            ),
         )
     }
 
     private fun iteration(
         checkRegion: Region,
-        scrollEndRegion: Region
+        scrollEndRegion: Region,
     ): IterationResult {
         var iterationResult = IterationResult(0, 0)
         var aroundEnd = false
@@ -103,16 +110,18 @@ class AutoGiftBox @Inject constructor(
 
             swipe(
                 locations.giftBoxSwipeStart,
-                locations.giftBoxSwipeEnd
+                locations.giftBoxSwipeEnd,
             )
 
             if (aroundEnd) {
                 // Once we're around the end, stop after we don't pick anything consecutively
                 if (picked.pickedStacks == 0) {
                     ++nullStreak
-                } else nullStreak = 0
+                } else {
+                    nullStreak = 0
+                }
 
-                if (nullStreak >= maxNullStreak) {
+                if (nullStreak >= MAX_NULL_STREAK) {
                     break
                 }
 
@@ -120,7 +129,7 @@ class AutoGiftBox @Inject constructor(
                 1.seconds.wait()
             }
         } while (
-            iterationResult.pickedStacks < maxClickCount &&
+            iterationResult.pickedStacks < MAX_CLICK_COUNT &&
             iterationResult.pickedGoldEmbers < prefs.maxGoldEmberTotalCount
         )
 
@@ -152,7 +161,6 @@ class AutoGiftBox @Inject constructor(
                         .replace("S", "5")
                         .replace("O", "0")
                         .lowercase()
-                    val regex = Regex("""x ?(\d+)$""")
                     // extract the count if it was found in the text
                     val count = regex.find(text)?.groupValues?.getOrNull(1)?.toInt()
 

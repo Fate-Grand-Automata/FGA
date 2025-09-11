@@ -24,7 +24,7 @@ class Battle @Inject constructor(
     private val skillSpam: SkillSpam,
     private val shuffleChecker: ShuffleChecker,
     private val stageTracker: StageTracker,
-    private val autoChooseTarget: AutoChooseTarget
+    private val autoChooseTarget: AutoChooseTarget,
 ) : IFgoAutomataApi by api {
     init {
         prefs.stopAfterThisRun = false
@@ -97,7 +97,7 @@ class Battle @Inject constructor(
         return shuffleChecker.shouldShuffle(
             mode = battleConfig.shuffleCards,
             cards = cards,
-            npUsage = npUsage
+            npUsage = npUsage,
         )
     }
 

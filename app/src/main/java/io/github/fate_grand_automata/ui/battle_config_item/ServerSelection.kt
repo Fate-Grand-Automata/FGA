@@ -38,11 +38,11 @@ fun ServerSelection(config: BattleConfigCore) {
             LazyRow(
                 horizontalArrangement = Arrangement.Center,
                 modifier = modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             ) {
                 items(
                     // battle configs don't need to know about BetterFGO
-                    GameServer.values.filter { !it.betterFgo }
+                    GameServer.values.filter { !it.betterFgo },
                 ) {
                     GroupSelectorItem(
                         stringResource(it.stringRes),
@@ -50,7 +50,7 @@ fun ServerSelection(config: BattleConfigCore) {
                         onSelect = {
                             server = BattleConfigCore.Server.Set(it)
                             dialog.hide()
-                        }
+                        },
                     )
                 }
             }
@@ -60,7 +60,7 @@ fun ServerSelection(config: BattleConfigCore) {
             showCancel = false,
             // TODO: Localize
             okLabel = "CLEAR",
-            onSubmit = { server = BattleConfigCore.Server.NotSet }
+            onSubmit = { server = BattleConfigCore.Server.NotSet },
         )
     }
 
@@ -70,16 +70,16 @@ fun ServerSelection(config: BattleConfigCore) {
             .clickable(onClick = { dialog.show() })
             .padding(16.dp, 5.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Text(
             stringResource(R.string.p_battle_config_server).uppercase(),
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
         )
 
         Text(
             server.asGameServer()?.let { stringResource(it.stringRes) } ?: "--",
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
         )
     }
 }

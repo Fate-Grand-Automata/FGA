@@ -18,90 +18,90 @@ import kotlin.coroutines.resume
 
 private fun getSupportEntries(
     frame: View,
-    storageProvider: StorageProvider
+    storageProvider: StorageProvider,
 ): List<SupportImgEntry> {
     val tempDir = storageProvider.supportImageTempDir
 
     val servant0 = SupportImgEntry(
         SupportImageMaker.getServantImgPath(
             tempDir,
-            0
+            0,
         ),
         SupportImageKind.Servant,
-        frame.findViewById(R.id.support_img_servant_0)
+        frame.findViewById(R.id.support_img_servant_0),
     )
     val servant1 = SupportImgEntry(
         SupportImageMaker.getServantImgPath(
             tempDir,
-            1
+            1,
         ),
         SupportImageKind.Servant,
-        frame.findViewById(R.id.support_img_servant_1)
+        frame.findViewById(R.id.support_img_servant_1),
     )
 
     val ce0 = SupportImgEntry(
         SupportImageMaker.getCeImgPath(
             tempDir,
-            0
+            0,
         ),
         SupportImageKind.CE,
-        frame.findViewById(R.id.support_img_ce_0)
+        frame.findViewById(R.id.support_img_ce_0),
     )
     val ce1 = SupportImgEntry(
         SupportImageMaker.getCeImgPath(
             tempDir,
-            1
+            1,
         ),
         SupportImageKind.CE,
-        frame.findViewById(R.id.support_img_ce_1)
+        frame.findViewById(R.id.support_img_ce_1),
     )
     val ce2 = SupportImgEntry(
         SupportImageMaker.getCeImgPath(
             tempDir,
-            2
+            2,
         ),
         SupportImageKind.CE,
-        frame.findViewById(R.id.support_img_ce_2)
+        frame.findViewById(R.id.support_img_ce_2),
     )
     val ce3 = SupportImgEntry(
         SupportImageMaker.getCeImgPath(
             tempDir,
-            3
+            3,
         ),
         SupportImageKind.CE,
-        frame.findViewById(R.id.support_img_ce_3)
+        frame.findViewById(R.id.support_img_ce_3),
     )
     val ce4 = SupportImgEntry(
         SupportImageMaker.getCeImgPath(
             tempDir,
-            4
+            4,
         ),
         SupportImageKind.CE,
-        frame.findViewById(R.id.support_img_ce_4)
+        frame.findViewById(R.id.support_img_ce_4),
     )
     val ce5 = SupportImgEntry(
         SupportImageMaker.getCeImgPath(
             tempDir,
-            5
+            5,
         ),
         SupportImageKind.CE,
-        frame.findViewById(R.id.support_img_ce_5)
+        frame.findViewById(R.id.support_img_ce_5),
     )
     val friend0 = SupportImgEntry(
         SupportImageMaker.getFriendImgPath(
             tempDir,
-            0
+            0,
         ),
         SupportImageKind.Friend,
-        frame.findViewById(R.id.support_img_friend_0)
+        frame.findViewById(R.id.support_img_friend_0),
     )
     val friend1 = SupportImgEntry(
         SupportImageMaker.getFriendImgPath(
             tempDir,
-            1
+            1,
         ),
         SupportImageKind.Friend,
-        frame.findViewById(R.id.support_img_friend_1)
+        frame.findViewById(R.id.support_img_friend_1),
     )
 
     return listOf(servant0, servant1, ce0, ce1, ce2, ce3, ce4, ce5, friend0, friend1)

@@ -12,9 +12,9 @@ import androidx.compose.material.icons.filled.Fullscreen
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardDefaults.cardElevation
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,13 +39,13 @@ import io.github.fate_grand_automata.util.stringRes
 
 fun LazyListScope.advancedGroup(
     prefs: PrefsCore,
-    goToFineTune: () -> Unit
+    goToFineTune: () -> Unit,
 ) {
     item {
         Preference(
             title = stringResource(R.string.p_fine_tune),
             icon = icon(R.drawable.ic_tune),
-            onClick = goToFineTune
+            onClick = goToFineTune,
         )
     }
 
@@ -53,7 +53,7 @@ fun LazyListScope.advancedGroup(
         prefs.debugMode.SwitchPreference(
             title = stringResource(R.string.p_debug_mode),
             summary = stringResource(R.string.p_debug_mode_summary),
-            icon = icon(R.drawable.ic_bug)
+            icon = icon(R.drawable.ic_bug),
         )
     }
 
@@ -61,7 +61,7 @@ fun LazyListScope.advancedGroup(
         val rootForScreenshots by prefs.useRootForScreenshots.remember()
 
         val enabled = !rootForScreenshots &&
-                android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.TIRAMISU
+            android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.TIRAMISU
         if (!enabled) {
             prefs.recordScreen.resetToDefault()
         }
@@ -69,7 +69,7 @@ fun LazyListScope.advancedGroup(
             title = stringResource(R.string.p_record_screen),
             summary = stringResource(R.string.p_record_screen_summary),
             icon = icon(R.drawable.ic_video),
-            enabled = enabled
+            enabled = enabled,
         )
     }
 
@@ -80,7 +80,7 @@ fun LazyListScope.advancedGroup(
     item {
         prefs.autoStartService.SwitchPreference(
             title = stringResource(R.string.p_auto_start_service),
-            icon = icon(R.drawable.ic_launch)
+            icon = icon(R.drawable.ic_launch),
         )
     }
 
@@ -90,7 +90,7 @@ fun LazyListScope.advancedGroup(
                 title = stringResource(R.string.p_game_area_mode),
                 icon = icon(Icons.Default.Fullscreen),
                 entries = GameAreaMode.entries
-                    .associateWith { stringResource(it.stringRes) }
+                    .associateWith { stringResource(it.stringRes) },
             )
 
             val gameAreaMode by prefs.gameAreaMode.remember()
@@ -101,11 +101,11 @@ fun LazyListScope.advancedGroup(
                     elevation = cardElevation(5.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    ),
                 ) {
                     Column(
-                        modifier = Modifier.scale(0.9f)
+                        modifier = Modifier.scale(0.9f),
                     ) {
                         prefs.gameOffsetLeft.customOffset(stringResource(R.string.p_game_area_custom_left))
                         prefs.gameOffsetRight.customOffset(stringResource(R.string.p_game_area_custom_right))
@@ -120,7 +120,7 @@ fun LazyListScope.advancedGroup(
     item {
         prefs.stageCounterNew.SwitchPreference(
             title = stringResource(R.string.p_thresholded_stage_counter),
-            icon = icon(R.drawable.ic_counter)
+            icon = icon(R.drawable.ic_counter),
         )
     }
 }
@@ -129,7 +129,7 @@ fun LazyListScope.advancedGroup(
 private fun Pref<Int>.customOffset(text: String) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         var value by remember()
 
@@ -137,7 +137,7 @@ private fun Pref<Int>.customOffset(text: String) {
         Stepper(
             value = value,
             onValueChange = { value = it },
-            valueRange = 0..999
+            valueRange = 0..999,
         )
     }
 }
@@ -151,7 +151,7 @@ private fun hasRootAccess() = try {
 
 @Composable
 private fun RootForScreenshots(
-    pref: Pref<Boolean>
+    pref: Pref<Boolean>,
 ) {
     var state by pref.remember()
     var enabled by remember { mutableStateOf(true) }
@@ -182,7 +182,7 @@ private fun RootForScreenshots(
             Switch(
                 checked = state,
                 onCheckedChange = action,
-                enabled = enabled
+                enabled = enabled,
             )
         }
     }

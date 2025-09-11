@@ -8,7 +8,7 @@ class SkillMakerModel(skillString: String) {
     private fun reduce(
         acc: List<SkillMakerEntry>,
         add: List<SkillMakerEntry>,
-        separator: (AutoSkillAction.Atk) -> SkillMakerEntry.Next
+        separator: (AutoSkillAction.Atk) -> SkillMakerEntry.Next,
     ): List<SkillMakerEntry> {
         if (acc.isNotEmpty()) {
             val last = acc.last()

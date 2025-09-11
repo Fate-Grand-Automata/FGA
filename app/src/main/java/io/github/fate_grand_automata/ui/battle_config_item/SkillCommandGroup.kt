@@ -39,7 +39,7 @@ import io.github.fate_grand_automata.ui.skill_maker.colorRes
 fun SkillCommandGroup(
     config: BattleConfigCore,
     vm: BattleConfigScreenViewModel,
-    openSkillMaker: () -> Unit
+    openSkillMaker: () -> Unit,
 ) {
     var cmd by config.skillCommand.remember()
     val parsedCommand by vm.skillCommand.collectAsState(listOf())
@@ -67,8 +67,8 @@ fun SkillCommandGroup(
                 },
                 onCancel = { editing = false },
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done
-                )
+                    imeAction = ImeAction.Done,
+                ),
             )
 
             if (errorMessage.isNotBlank()) {
@@ -80,15 +80,17 @@ fun SkillCommandGroup(
             title = { Text(stringResource(R.string.p_battle_config_cmd)) },
             summary = if (parsedCommand.isNotEmpty()) {
                 { SkillCommandSummary(parsedCommand) }
-            } else null,
-            onClick = openSkillMaker
+            } else {
+                null
+            },
+            onClick = openSkillMaker,
         ) {
             IconButton(
-                onClick = { editing = true }
+                onClick = { editing = true },
             ) {
                 DimmedIcon(
                     icon(R.drawable.ic_terminal),
-                    contentDescription = "Show Textbox for editing Skill command"
+                    contentDescription = "Show Textbox for editing Skill command",
                 )
             }
         }
@@ -102,21 +104,21 @@ fun SkillCommandSummary(skillCommand: List<SkillMakerEntry>) {
         modifier = Modifier
             .padding(vertical = 2.dp)
             .height(25.dp) // without this, the app crashes when opening battle configs
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         items(skillCommand) {
             Card(
                 colors = cardColors(
-                    containerColor = colorResource(it.colorRes)
+                    containerColor = colorResource(it.colorRes),
                 ),
                 modifier = Modifier
-                    .padding(horizontal = 2.dp)
+                    .padding(horizontal = 2.dp),
             ) {
                 Text(
                     it.toString(),
                     color = Color.White,
                     modifier = Modifier
-                        .padding(2.dp, 1.dp)
+                        .padding(2.dp, 1.dp),
                 )
             }
         }
@@ -131,6 +133,6 @@ fun PreferenceError(error: String) {
         color = MaterialTheme.colorScheme.error,
         modifier = Modifier
             .padding(16.dp, 2.dp)
-            .padding(bottom = 5.dp)
+            .padding(bottom = 5.dp),
     )
 }

@@ -15,12 +15,12 @@ class ScriptAreaTransforms @Inject constructor(
     prefs: IPreferences,
     scale: Scale,
     gameAreaManager: GameAreaManager,
-    platformImpl: PlatformImpl
+    platformImpl: PlatformImpl,
 ) : IScriptAreaTransforms {
     override val scriptArea =
         Region(
             Location(),
-            gameAreaManager.gameArea.size * (1 / scale.scriptToScreen)
+            gameAreaManager.gameArea.size * (1 / scale.scriptToScreen),
         )
 
     override val isWide = scriptArea.size.isWide()

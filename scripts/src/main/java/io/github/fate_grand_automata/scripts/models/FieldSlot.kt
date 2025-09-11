@@ -1,9 +1,9 @@
 package io.github.fate_grand_automata.scripts.models
 
 sealed class FieldSlot(val position: Int) {
-    object A: FieldSlot(1)
-    object B: FieldSlot(2)
-    object C: FieldSlot(3)
+    object A : FieldSlot(1)
+    object B : FieldSlot(2)
+    object C : FieldSlot(3)
 
     companion object {
         val list by lazy { listOf(A, B, C) }

@@ -15,7 +15,7 @@ import kotlin.time.Duration.Companion.seconds
 @ScriptScope
 class AutoFriendGacha @Inject constructor(
     exitManager: ExitManager,
-    api: IFgoAutomataApi
+    api: IFgoAutomataApi,
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason {
         object InventoryFull : ExitReason()
@@ -57,7 +57,7 @@ class AutoFriendGacha @Inject constructor(
 
                 initialScreen = true
             },
-            { isSummonButtonVisible() } to { rollFPAgain() }
+            { isSummonButtonVisible() } to { rollFPAgain() },
         )
 
         while (true) {

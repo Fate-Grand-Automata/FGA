@@ -11,7 +11,7 @@ enum class SupportClass {
     Assassin,
     Berserker,
     Extra,
-    Mix
+    Mix,
 }
 
 val SupportClass.canAlsoCheckAll get() =

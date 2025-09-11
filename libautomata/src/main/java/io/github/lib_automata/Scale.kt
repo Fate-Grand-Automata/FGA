@@ -4,7 +4,7 @@ import javax.inject.Inject
 
 interface Scale {
     companion object {
-        const val NoScaling = 1.0
+        const val NO_SCALING = 1.0
     }
 
     /**
@@ -26,14 +26,16 @@ interface Scale {
 }
 
 class RealScale @Inject constructor(
-    private val gameAreaManager: GameAreaManager
+    private val gameAreaManager: GameAreaManager,
 ) : Scale {
     override val screenToImage: Double?
         get() {
             val targetDimensions =
                 if (gameAreaManager.compareDimension !is CompareBy.None) {
                     gameAreaManager.compareDimension
-                } else gameAreaManager.scriptDimension
+                } else {
+                    gameAreaManager.scriptDimension
+                }
 
             val gameArea = gameAreaManager.gameArea
 
@@ -41,12 +43,16 @@ class RealScale @Inject constructor(
                 is CompareBy.Width -> {
                     if (targetDimensions.width == gameArea.width) {
                         null
-                    } else targetDimensions.width / gameArea.width.toDouble()
+                    } else {
+                        targetDimensions.width / gameArea.width.toDouble()
+                    }
                 }
                 is CompareBy.Height -> {
                     if (targetDimensions.height == gameArea.height) {
                         null
-                    } else targetDimensions.height / gameArea.height.toDouble()
+                    } else {
+                        targetDimensions.height / gameArea.height.toDouble()
+                    }
                 }
                 CompareBy.None -> null
             }
@@ -61,18 +67,22 @@ class RealScale @Inject constructor(
             return when (sourceRegion) {
                 is CompareBy.Width -> {
                     if (targetRegion.width == sourceRegion.width) {
-                        Scale.NoScaling
-                    } else targetRegion.width / sourceRegion.width.toDouble()
+                        Scale.NO_SCALING
+                    } else {
+                        targetRegion.width / sourceRegion.width.toDouble()
+                    }
                 }
                 is CompareBy.Height -> {
                     if (targetRegion.height == sourceRegion.height) {
-                        Scale.NoScaling
-                    } else targetRegion.height / sourceRegion.height.toDouble()
+                        Scale.NO_SCALING
+                    } else {
+                        targetRegion.height / sourceRegion.height.toDouble()
+                    }
                 }
-                CompareBy.None -> Scale.NoScaling
+                CompareBy.None -> Scale.NO_SCALING
             }
         }
 
     override val scriptToImage: Double
-        get() = scriptToScreen * (screenToImage ?: Scale.NoScaling)
+        get() = scriptToScreen * (screenToImage ?: Scale.NO_SCALING)
 }

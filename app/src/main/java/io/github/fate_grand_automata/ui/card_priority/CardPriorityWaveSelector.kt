@@ -34,19 +34,19 @@ import io.github.fate_grand_automata.ui.PreventRtl
 fun CardPriorityWaveSelector(
     items: SnapshotStateList<CardPriorityListItem>,
     selectedWave: Int,
-    onSelectedWaveChange: (Int) -> Unit
+    onSelectedWaveChange: (Int) -> Unit,
 ) {
     PreventRtl {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
-                .padding(bottom = 16.dp)
+                .padding(bottom = 16.dp),
         ) {
             LazyRow(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(1f),
             ) {
                 items(items.size) { index ->
                     val isSelected = selectedWave == index
@@ -57,14 +57,14 @@ fun CardPriorityWaveSelector(
                             .padding(end = 5.dp)
                             .background(
                                 color = if (isSelected) MaterialTheme.colorScheme.secondary else Color.Transparent,
-                                shape = MaterialTheme.shapes.medium
+                                shape = MaterialTheme.shapes.medium,
                             )
-                            .clickable { onSelectedWaveChange(index) }
+                            .clickable { onSelectedWaveChange(index) },
                     ) {
                         Text(
                             stringResource(R.string.card_priority_wave_number, index + 1),
                             color = if (isSelected) MaterialTheme.colorScheme.onSecondary else Color.Unspecified,
-                            modifier = Modifier.padding(5.dp, 2.dp)
+                            modifier = Modifier.padding(5.dp, 2.dp),
                         )
 
                         AnimatedVisibility(index > 0 && index == items.lastIndex) {
@@ -77,12 +77,12 @@ fun CardPriorityWaveSelector(
                                             }
                                             items.removeAt(items.lastIndex)
                                         }
-                                    }
+                                    },
                             ) {
                                 Icon(
                                     painterResource(R.drawable.ic_close),
                                     contentDescription = "Remove wave",
-                                    tint = MaterialTheme.colorScheme.error
+                                    tint = MaterialTheme.colorScheme.error,
                                 )
                             }
                         }
@@ -93,13 +93,13 @@ fun CardPriorityWaveSelector(
             AnimatedVisibility(
                 items.size < 3,
                 enter = slideInHorizontally(initialOffsetX = { it * 2 }),
-                exit = slideOutHorizontally(targetOffsetX = { it * 2 })
+                exit = slideOutHorizontally(targetOffsetX = { it * 2 }),
             ) {
                 Box(
                     modifier = Modifier
                         .background(
                             MaterialTheme.colorScheme.secondary,
-                            shape = CircleShape
+                            shape = CircleShape,
                         )
                         .clip(CircleShape)
                         .clickable {
@@ -109,16 +109,16 @@ fun CardPriorityWaveSelector(
                                         items[0].scores.toMutableList(),
                                         items[0].servantPriority.toMutableList(),
                                         mutableStateOf(false),
-                                        mutableStateOf(BraveChainEnum.None)
-                                    )
+                                        mutableStateOf(BraveChainEnum.None),
+                                    ),
                                 )
                             }
-                        }
+                        },
                 ) {
                     Icon(
                         Icons.Default.Add,
                         contentDescription = "Add wave",
-                        tint = MaterialTheme.colorScheme.onSecondary
+                        tint = MaterialTheme.colorScheme.onSecondary,
                     )
                 }
             }

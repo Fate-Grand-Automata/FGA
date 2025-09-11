@@ -1,7 +1,7 @@
 package io.github.fate_grand_automata.scripts.models
 
 sealed class WaveTurn(
-    val code: String
+    val code: String,
 ) {
     /**
      * The ",#," string that represents the next wave.

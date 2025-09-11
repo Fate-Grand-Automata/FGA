@@ -23,14 +23,14 @@ class SupportImgEntry(
 
     companion object {
         // *, ?, \, |, / are special characters in Regex and need to be escaped using \
-        private const val InvalidChars = """<>"\|:\*\?\\\/"""
-        private const val FileNameRegex = """[^\.\s$InvalidChars][^$InvalidChars]*"""
+        private const val INVALID_CHARS = """<>"\|:\*\?\\\/"""
+        private const val FILE_NAME_REGEX = """[^\.\s$INVALID_CHARS][^$INVALID_CHARS]*"""
 
-        val regex = Regex("""$FileNameRegex(/$FileNameRegex)?""")
-        private const val InvalidCharsMsg = "<, >, \", |, :, *, ?, \\, /"
+        val regex = Regex("""$FILE_NAME_REGEX(/$FILE_NAME_REGEX)?""")
+        private const val INVALID_CHARS_MSG = "<, >, \", |, :, *, ?, \\, /"
     }
 
-    private val invalidMsg = frame.context.getString(R.string.support_img_namer_invalid_message, InvalidCharsMsg)
+    private val invalidMsg = frame.context.getString(R.string.support_img_namer_invalid_message, INVALID_CHARS_MSG)
 
     init {
         if (!imgPath.exists()) {

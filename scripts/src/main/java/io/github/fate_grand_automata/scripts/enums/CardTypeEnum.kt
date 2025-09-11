@@ -9,5 +9,5 @@ enum class CardTypeEnum {
      * Couldn't detect card type.
      * Can be because Attack screen didn't open up or because the servant is stunned/charmed.
      */
-    Unknown
+    Unknown,
 }

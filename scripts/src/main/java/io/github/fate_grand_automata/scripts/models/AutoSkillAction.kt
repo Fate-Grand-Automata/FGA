@@ -29,6 +29,6 @@ sealed class AutoSkillAction {
 
     class OrderChange(
         val starting: OrderChangeMember.Starting,
-        val sub: OrderChangeMember.Sub
+        val sub: OrderChangeMember.Sub,
     ) : AutoSkillAction()
 }

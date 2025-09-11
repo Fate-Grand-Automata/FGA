@@ -60,7 +60,7 @@ class WelcomeScreen(vm: OnboardingViewModel) : OnboardingItem(vm, true) {
 
         Text(
             text = stringResource(R.string.p_welcome_description),
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
     }
 }
@@ -78,7 +78,6 @@ class PickLanguage(vm: OnboardingViewModel) : OnboardingItem(vm, true) {
 
 @Composable
 fun LocaleDropdownMenu() {
-
     val locales = LanguagePref.availableLanguages()
         .mapKeys { Locale.forLanguageTag(it.key) }
 
@@ -88,7 +87,7 @@ fun LocaleDropdownMenu() {
         expanded = expanded,
         onExpandedChange = {
             expanded = !expanded
-        }
+        },
     ) {
         val selectedLocales = AppCompatDelegate.getApplicationLocales()
         val locale: String = if (!selectedLocales.isEmpty) {
@@ -106,16 +105,16 @@ fun LocaleDropdownMenu() {
             onValueChange = { },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = expanded
+                    expanded = expanded,
                 )
             },
-            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable)
+            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
         )
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = {
                 expanded = false
-            }
+            },
         ) {
             locales.forEach { selectionLocale ->
                 DropdownMenuItem(
@@ -124,11 +123,11 @@ fun LocaleDropdownMenu() {
                         // set app locale given the user's selected locale
                         AppCompatDelegate.setApplicationLocales(
                             LocaleListCompat.forLanguageTags(
-                                selectionLocale.key.toLanguageTag()
-                            )
+                                selectionLocale.key.toLanguageTag(),
+                            ),
                         )
                     },
-                    text = { Text(selectionLocale.value) }
+                    text = { Text(selectionLocale.value) },
                 )
             }
         }
@@ -146,7 +145,7 @@ class PickDirectory(vm: OnboardingViewModel) : OnboardingItem(vm) {
 
         Text(
             text = stringResource(R.string.p_choose_folder_message),
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
 
         val context = LocalContext.current
@@ -170,11 +169,11 @@ class PickDirectory(vm: OnboardingViewModel) : OnboardingItem(vm) {
         }
         OutlinedButton(
             onClick = { dirPicker.launch(Uri.EMPTY) },
-            modifier = Modifier.padding(vertical = 15.dp)
+            modifier = Modifier.padding(vertical = 15.dp),
         ) {
             Text(
                 text = stringResource(R.string.p_choose_folder_action),
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
             )
         }
     }
@@ -190,7 +189,7 @@ class DisableBatteryOptimization(vm: OnboardingViewModel) : OnboardingItem(vm) {
 
         Text(
             text = stringResource(R.string.p_battery_optimization_description),
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
         val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             onFinished()
@@ -201,11 +200,11 @@ class DisableBatteryOptimization(vm: OnboardingViewModel) : OnboardingItem(vm) {
                 val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
                 launcher.launch(intent)
             },
-            modifier = Modifier.padding(vertical = 15.dp)
+            modifier = Modifier.padding(vertical = 15.dp),
         ) {
             Text(
                 text = stringResource(R.string.p_battery_optimization_action),
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
             )
         }
 
@@ -214,10 +213,10 @@ class DisableBatteryOptimization(vm: OnboardingViewModel) : OnboardingItem(vm) {
                 val linkText = stringResource(R.string.link_dontkillmyapp)
                 val warningText = stringResource(
                     R.string.p_battery_optimization_dontkillmyapp,
-                    linkText
+                    linkText,
                 ).split(
                     // Split while keeping the delimiter
-                    Regex("(?<=$linkText)|(?=$linkText)")
+                    Regex("(?<=$linkText)|(?=$linkText)"),
                 )
                 warningText.forEach { text ->
                     if (text == linkText) {
@@ -227,10 +226,10 @@ class DisableBatteryOptimization(vm: OnboardingViewModel) : OnboardingItem(vm) {
                                 styles = TextLinkStyles(
                                     style = SpanStyle(
                                         color = MaterialTheme.colorScheme.tertiary,
-                                        textDecoration = TextDecoration.Underline
-                                    )
-                                )
-                            )
+                                        textDecoration = TextDecoration.Underline,
+                                    ),
+                                ),
+                            ),
                         ) {
                             append(linkText)
                         }
@@ -239,10 +238,9 @@ class DisableBatteryOptimization(vm: OnboardingViewModel) : OnboardingItem(vm) {
                     }
                 }
             },
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
     }
-
 }
 
 class YoutubeVideo(vm: OnboardingViewModel) : OnboardingItem(vm, true) {
@@ -257,7 +255,7 @@ class YoutubeVideo(vm: OnboardingViewModel) : OnboardingItem(vm, true) {
 
         Text(
             text = stringResource(R.string.p_youtube_guide_description),
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
 
         val context = LocalContext.current
@@ -266,13 +264,12 @@ class YoutubeVideo(vm: OnboardingViewModel) : OnboardingItem(vm, true) {
             onClick = {
                 context.openLinkIntent(R.string.link_youtube)
             },
-            modifier = Modifier.padding(vertical = 15.dp)
+            modifier = Modifier.padding(vertical = 15.dp),
         ) {
             Text(
                 text = stringResource(R.string.p_youtube_guide_action),
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
             )
         }
     }
-
 }

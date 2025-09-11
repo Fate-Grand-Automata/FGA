@@ -16,5 +16,5 @@ fun FGATitle(
     textAlign = TextAlign.Center,
     color = MaterialTheme.colorScheme.onSurface,
     modifier = modifier
-        .fillMaxWidth()
+        .fillMaxWidth(),
 )

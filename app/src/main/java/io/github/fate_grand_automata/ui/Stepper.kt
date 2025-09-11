@@ -26,7 +26,7 @@ private fun DeltaButton(
     valueRange: IntRange,
     delta: Int,
     text: String,
-    enabled: Boolean
+    enabled: Boolean,
 ) {
     val canDelta = (currentValue + delta) in valueRange
     val isEnabled = enabled && canDelta
@@ -34,7 +34,7 @@ private fun DeltaButton(
     Surface(
         color = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onBackground,
-        shape = CircleShape
+        shape = CircleShape,
     ) {
         StatusWrapper(enabled = isEnabled) {
             Text(
@@ -45,9 +45,9 @@ private fun DeltaButton(
                             onCurrentValueChange((currentValue + delta).coerceIn(valueRange))
                         },
                         onEnd = onCommit,
-                        enabled = isEnabled
+                        enabled = isEnabled,
                     )
-                    .padding(20.dp, 10.dp)
+                    .padding(20.dp, 10.dp),
             )
         }
     }
@@ -60,14 +60,14 @@ fun Stepper(
     valueRange: IntRange,
     enabled: Boolean = true,
     delta: Int = 1,
-    valueRepresentation: (Int) -> String = { it.toString() }
+    valueRepresentation: (Int) -> String = { it.toString() },
 ) {
     var currentValue by remember(value) { mutableStateOf(value) }
 
     val onCommit = { onValueChange(currentValue.coerceIn(valueRange)) }
 
     Row(
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         DeltaButton(
             currentValue = currentValue,
@@ -76,7 +76,7 @@ fun Stepper(
             valueRange = valueRange,
             delta = -delta,
             text = "-",
-            enabled = enabled
+            enabled = enabled,
         )
 
         StatusWrapper(enabled = enabled) {
@@ -84,7 +84,7 @@ fun Stepper(
                 valueRepresentation(currentValue),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .padding(horizontal = 5.dp)
+                    .padding(horizontal = 5.dp),
             )
         }
 
@@ -95,7 +95,7 @@ fun Stepper(
             valueRange = valueRange,
             delta = delta,
             text = "+",
-            enabled = enabled
+            enabled = enabled,
         )
     }
 }

@@ -12,7 +12,7 @@ import io.github.lib_automata.Region
 @SuppressLint("ViewConstructor")
 class HighlightView(
     Context: Context,
-    val regionsToHighlight: Map<Region, HighlightColor>
+    val regionsToHighlight: Map<Region, HighlightColor>,
 ) : View(Context) {
     private val colors = HighlightColor.entries.associateWith {
         Paint().apply {
@@ -36,7 +36,7 @@ class HighlightView(
                 region.y.toFloat(),
                 region.right.toFloat(),
                 region.bottom.toFloat(),
-                colors[color] ?: continue
+                colors[color] ?: continue,
             )
         }
     }

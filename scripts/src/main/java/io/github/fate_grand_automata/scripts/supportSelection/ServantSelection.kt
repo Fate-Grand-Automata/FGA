@@ -17,14 +17,15 @@ class ServantSelection @Inject constructor(
     api: IFgoAutomataApi,
     private val supportPrefs: ISupportPreferences,
     private val starChecker: SupportSelectionStarChecker,
-    private val grandChecker: SupportSelectionGrandChecker
+    private val grandChecker: SupportSelectionGrandChecker,
 ) : IFgoAutomataApi by api {
     fun check(servants: List<String>, bounds: SupportBounds): Boolean {
         // TODO: Only check the upper part (excluding CE)
         val searchRegion = bounds.region.clip(locations.support.listRegion)
 
-        if (servants.isEmpty())
+        if (servants.isEmpty()) {
             return true
+        }
 
         val matched = servants
             .flatMap { entry -> images.loadSupportPattern(SupportImageKind.Servant, entry) }
@@ -43,7 +44,7 @@ class ServantSelection @Inject constructor(
                 val needMaxedSkills = listOf(
                     supportPrefs.skill1Max,
                     supportPrefs.skill2Max,
-                    supportPrefs.skill3Max
+                    supportPrefs.skill3Max,
                 )
                 val skillCheckNeeded = needMaxedSkills.any { it }
                 !skillCheckNeeded || checkMaxedSkills(needMaxedSkills, whichSkillsAreMaxed(bounds.region))
@@ -63,8 +64,10 @@ class ServantSelection @Inject constructor(
     private fun cropFriendLock(servant: Pattern): Pattern {
         val lockCropLeft = 15
         val lockCropRegion = Region(
-            lockCropLeft, 0,
-            servant.width - lockCropLeft, servant.height
+            lockCropLeft,
+            0,
+            servant.width - lockCropLeft,
+            servant.height,
         )
         return servant.crop(lockCropRegion)
     }
@@ -92,7 +95,7 @@ class ServantSelection @Inject constructor(
         val skillLoc = listOf(
             Location(x, y),
             Location(x + skillMargin, y),
-            Location(x + 2 * skillMargin, y)
+            Location(x + 2 * skillMargin, y),
         )
 
         return skillLoc
@@ -112,8 +115,8 @@ class ServantSelection @Inject constructor(
         messages.log(
             ScriptLog.MaxSkills(
                 needMaxedSkills = expectedSkills,
-                isSkillMaxed = result
-            )
+                isSkillMaxed = result,
+            ),
         )
 
         return result.all { it }

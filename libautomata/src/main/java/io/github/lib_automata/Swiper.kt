@@ -15,24 +15,24 @@ interface Swiper {
 class RealSwiper @Inject constructor(
     private val gestureService: GestureService,
     private val platformImpl: PlatformImpl,
-    private val transform: Transformer
-): Swiper {
+    private val transform: Transformer,
+) : Swiper {
     override fun invoke(start: Location, end: Location) {
         val endX = lerp(
             start.x,
             end.x,
-            platformImpl.prefs.swipeMultiplier
+            platformImpl.prefs.swipeMultiplier,
         ).coerceAtLeast(0)
 
         val endY = lerp(
             start.y,
             end.y,
-            platformImpl.prefs.swipeMultiplier
+            platformImpl.prefs.swipeMultiplier,
         ).coerceAtLeast(0)
 
         gestureService.swipe(
             transform.toScreen(start),
-            transform.toScreen(Location(endX, endY))
+            transform.toScreen(Location(endX, endY)),
         )
     }
 

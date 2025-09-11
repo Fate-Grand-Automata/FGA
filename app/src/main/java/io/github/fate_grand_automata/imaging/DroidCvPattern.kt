@@ -24,19 +24,19 @@ import org.opencv.core.Size as CvSize
 class DroidCvPattern(
     private var mat: Mat = Mat(),
     private val ownsMat: Boolean = true,
-    override var tag: String = ""
+    override var tag: String = "",
 ) : Pattern {
     private companion object {
         fun makeMat(
             stream: InputStream,
-            isColor: Boolean
+            isColor: Boolean,
         ): Mat {
             val byteArray = stream.readBytes()
 
             return MatOfByte(*byteArray).use {
                 Imgcodecs.imdecode(
                     it,
-                    if (isColor) Imgcodecs.IMREAD_COLOR else Imgcodecs.IMREAD_GRAYSCALE
+                    if (isColor) Imgcodecs.IMREAD_COLOR else Imgcodecs.IMREAD_GRAYSCALE,
                 )
             }
         }
@@ -55,9 +55,12 @@ class DroidCvPattern(
 
     private fun resize(source: Mat, target: Mat, size: Size) {
         Imgproc.resize(
-            source, target,
+            source,
+            target,
             CvSize(size.width.toDouble(), size.height.toDouble()),
-            0.0, 0.0, Imgproc.INTER_AREA
+            0.0,
+            0.0,
+            Imgproc.INTER_AREA,
         )
     }
 
@@ -83,14 +86,14 @@ class DroidCvPattern(
                     mat,
                     template.mat,
                     result,
-                    Imgproc.TM_CCOEFF_NORMED
+                    Imgproc.TM_CCOEFF_NORMED,
                 )
                 return result
             } else {
                 Timber.v("Skipped matching $template: Region out of bounds")
             }
         }
-        return null  
+        return null
     }
 
     override fun findMatches(template: Pattern, similarity: Double) = sequence {
@@ -107,7 +110,7 @@ class DroidCvPattern(
                         loc.x.roundToInt(),
                         loc.y.roundToInt(),
                         template.width,
-                        template.height
+                        template.height,
                     )
 
                     val match = Match(region, score)
@@ -141,9 +144,11 @@ class DroidCvPattern(
         val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
 
         Mat().use {
-            val conversion = if (mat.type() == CvType.CV_8UC1)
+            val conversion = if (mat.type() == CvType.CV_8UC1) {
                 Imgproc.COLOR_GRAY2RGB
-            else Imgproc.COLOR_BGR2RGBA
+            } else {
+                Imgproc.COLOR_BGR2RGBA
+            }
 
             Imgproc.cvtColor(mat, it, conversion)
             org.opencv.android.Utils.matToBitmap(it, bmp)
@@ -206,10 +211,14 @@ class DroidCvPattern(
     private fun Mat.floodFill(startingPoint: Point, maxDiff: Double, newValue: Double) {
         Mat().use { mask ->
             Imgproc.floodFill(
-                this, mask, startingPoint, Scalar(newValue),
+                this,
+                mask,
+                startingPoint,
+                Scalar(newValue),
                 Rect(),
-                Scalar(maxDiff), Scalar(maxDiff),
-                Imgproc.FLOODFILL_FIXED_RANGE
+                Scalar(maxDiff),
+                Scalar(maxDiff),
+                Imgproc.FLOODFILL_FIXED_RANGE,
             )
         }
     }
@@ -219,11 +228,15 @@ class DroidCvPattern(
      */
     private fun Mat.floodFillMask(startingPoint: Point, newValue: Double, mask: Mat) {
         Imgproc.floodFill(
-            this, mask, startingPoint, Scalar(newValue),
-            Rect(), Scalar(0.0), Scalar(0.0),
-            4 + (newValue.toInt() shl 8) + Imgproc.FLOODFILL_MASK_ONLY
+            this,
+            mask,
+            startingPoint,
+            Scalar(newValue),
+            Rect(),
+            Scalar(0.0),
+            Scalar(0.0),
+            4 + (newValue.toInt() shl 8) + Imgproc.FLOODFILL_MASK_ONLY,
         )
-
     }
 
     /**
@@ -255,7 +268,6 @@ class DroidCvPattern(
             if ((parent >= 0) && (hierarchy[0, parent][3] < 0)) {
                 holePoints.add(findTopHolePoint(matOfPoint))
             }
-
         }
         return holePoints
     }

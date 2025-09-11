@@ -34,17 +34,17 @@ import io.github.fate_grand_automata.ui.FGATitle
 
 @Composable
 fun SkillMakerChangeNpType3(
-    onSkillTarget: (ServantTarget) -> Unit
+    onSkillTarget: (ServantTarget) -> Unit,
 ) {
     var changeNp3Type by remember { mutableStateOf(ChangeNp3Type.Generic) }
 
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         FGATitle(
-            stringResource(changeNp3Type.stringRes)
+            stringResource(changeNp3Type.stringRes),
         )
 
         Row(
@@ -52,43 +52,43 @@ fun SkillMakerChangeNpType3(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .weight(1f)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             TargetButton(
                 onClick = { onSkillTarget(ServantTarget.A) },
                 color = colorResource(R.color.colorQuickResist),
-                text = stringResource(changeNp3Type.targetAStringRes)
+                text = stringResource(changeNp3Type.targetAStringRes),
             )
 
             TargetButton(
                 onClick = { onSkillTarget(ServantTarget.B) },
                 color = colorResource(R.color.colorArtsResist),
-                text = stringResource(changeNp3Type.targetBStringRes)
+                text = stringResource(changeNp3Type.targetBStringRes),
             )
 
             TargetButton(
                 onClick = { onSkillTarget(ServantTarget.C) },
                 color = colorResource(R.color.colorBuster),
-                text = stringResource(changeNp3Type.targetCStringRes)
+                text = stringResource(changeNp3Type.targetCStringRes),
             )
         }
 
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Text(
                 stringResource(R.string.skill_maker_update_button_labels).uppercase(),
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
-                textDecoration = TextDecoration.Underline
+                textDecoration = TextDecoration.Underline,
             )
         }
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             ChangeNp3Type.entries.filterNot {
                 it == ChangeNp3Type.Generic
@@ -100,7 +100,7 @@ fun SkillMakerChangeNpType3(
                     } else {
                         MaterialTheme.colorScheme.primary
                     },
-                    label = "Container Color, if ${entry.name} is selected"
+                    label = "Container Color, if ${entry.name} is selected",
                 )
                 val contentColor by animateColorAsState(
                     targetValue = if (changeNp3Type == entry) {
@@ -108,7 +108,7 @@ fun SkillMakerChangeNpType3(
                     } else {
                         MaterialTheme.colorScheme.onPrimary
                     },
-                    label = "Container Color, if ${entry.name} is selected"
+                    label = "Container Color, if ${entry.name} is selected",
                 )
                 Button(
                     onClick = {
@@ -123,11 +123,13 @@ fun SkillMakerChangeNpType3(
                             width = Dp.Hairline,
                             color = MaterialTheme.colorScheme.primary,
                         )
-                    } else null,
+                    } else {
+                        null
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = containerColor,
-                        contentColor = contentColor
-                    )
+                        contentColor = contentColor,
+                    ),
                 ) {
                     Text(stringResource(entry.stringRes))
                 }
@@ -144,7 +146,6 @@ fun TestChangeNpType3() {
         SkillMakerChangeNpType3(onSkillTarget = { })
     }
 }
-
 
 private enum class ChangeNp3Type {
     Generic,

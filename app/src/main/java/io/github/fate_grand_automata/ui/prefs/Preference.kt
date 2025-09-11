@@ -56,7 +56,7 @@ fun Preference(
     icon: VectorIcon? = null,
     enabled: Boolean = true,
     onClick: (() -> Unit)? = null,
-    trailing: @Composable (() -> Unit)? = null
+    trailing: @Composable (() -> Unit)? = null,
 ) {
     Preference(
         title = {
@@ -70,12 +70,14 @@ fun Preference(
                     Text(text = summary, style = MaterialTheme.typography.bodySmall)
                 }
             }
-        } else null,
+        } else {
+            null
+        },
         icon = icon,
         enabled = enabled,
         onClick = onClick,
         trailing = trailing,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -87,7 +89,7 @@ fun Preference(
     icon: VectorIcon? = null,
     enabled: Boolean = true,
     onClick: (() -> Unit)? = null,
-    trailing: @Composable (() -> Unit)? = null
+    trailing: @Composable (() -> Unit)? = null,
 ) {
     StatusWrapper(enabled) {
         ListItem(
@@ -101,15 +103,15 @@ fun Preference(
                         contentDescription = "icon",
                         modifier = Modifier
                             .size(40.dp)
-                            .padding(7.dp)
+                            .padding(7.dp),
                     )
                 }
             },
             modifier = modifier.clickable(
                 enabled = onClick != null && enabled,
-                onClick = { onClick?.invoke() }
+                onClick = { onClick?.invoke() },
             ),
-            trailingContent = trailing
+            trailingContent = trailing,
         )
     }
 }
@@ -117,8 +119,12 @@ fun Preference(
 @Composable
 fun StatusWrapper(enabled: Boolean, content: @Composable () -> Unit) {
     if (!enabled) {
-        CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)) {
+        CompositionLocalProvider(
+            LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f),
+        ) {
             content()
         }
-    } else content()
+    } else {
+        content()
+    }
 }

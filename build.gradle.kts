@@ -24,6 +24,7 @@ plugins {
     alias(libs.plugins.ben.manes.versions)
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.spotless) apply false
 }
 
 
@@ -37,10 +38,31 @@ allprojects {
 }
 
 subprojects {
+    apply(plugin = "com.diffplug.spotless")
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         compilerOptions {
             freeCompilerArgs.add("-opt-in=kotlin.time.ExperimentalTime")
             jvmTarget.set(JvmTarget.JVM_11)
+        }
+    }
+
+    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+        kotlin {
+            target("**/*.kt", "**/*.kts")
+            targetExclude("**/build/**/*.kt")
+            ktlint(libs.ktlint.core.get().version).editorConfigOverride(
+                mapOf(
+                    "ktlint_standard_annotation" to "disabled",
+                    "ktlint_standard_package-name" to "disabled"
+                ),
+            )
+            trimTrailingWhitespace()
+            endWithNewline()
+        }
+        format("xml") {
+            target("**/*.xml")
+            trimTrailingWhitespace()
+            endWithNewline()
         }
     }
 }

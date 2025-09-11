@@ -29,14 +29,14 @@ fun FineTuneItem.FineTuneSetter() {
     hintDialog.build {
         title(
             text = stringResource(name),
-            icon = icon
+            icon = icon,
         )
 
         message("$defaultString\n\n$hint")
 
         buttons(
             onSubmit = { reset() },
-            okLabel = stringResource(R.string.reset_to_default)
+            okLabel = stringResource(R.string.reset_to_default),
         )
     }
 
@@ -46,15 +46,15 @@ fun FineTuneItem.FineTuneSetter() {
                 headlineContent = { Text(stringResource(name)) },
                 supportingContent = { Text(defaultString) },
                 modifier = Modifier.weight(1f),
-                colors = FGAListItemColors()
+                colors = FGAListItemColors(),
             )
 
             IconButton(
-                onClick = { hintDialog.show() }
+                onClick = { hintDialog.show() },
             ) {
                 DimmedIcon(
                     icon(R.drawable.ic_info),
-                    contentDescription = "Info"
+                    contentDescription = "Info",
                 )
             }
         }
@@ -62,7 +62,7 @@ fun FineTuneItem.FineTuneSetter() {
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             var value by pref.remember()
 
@@ -70,7 +70,7 @@ fun FineTuneItem.FineTuneSetter() {
                 value = value,
                 onValueChange = { value = it },
                 valueRange = valueRange,
-                valueRepresentation = valueRepresentation
+                valueRepresentation = valueRepresentation,
             )
         }
     }

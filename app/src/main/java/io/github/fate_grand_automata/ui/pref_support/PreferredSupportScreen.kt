@@ -43,11 +43,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun PreferredSupportScreen(
     vm: PreferredSupportViewModel = viewModel(),
-    supportVm: SupportViewModel = viewModel()
+    supportVm: SupportViewModel = viewModel(),
 ) {
     PreferredSupport(
         config = vm.supportPrefs,
-        vm = supportVm
+        vm = supportVm,
     )
 
     val context = LocalContext.current
@@ -58,7 +58,9 @@ fun PreferredSupportScreen(
         scope.launch(Dispatchers.IO) {
             if (supportVm.shouldExtractSupportImages) {
                 supportVm.performSupportImageExtraction(context)
-            } else supportVm.refresh(context)
+            } else {
+                supportVm.refresh(context)
+            }
         }
     }
 }
@@ -66,7 +68,7 @@ fun PreferredSupportScreen(
 @Composable
 private fun PreferredSupport(
     config: SupportPrefsCore,
-    vm: SupportViewModel
+    vm: SupportViewModel,
 ) {
     val prefServants by config.preferredServants.remember()
     val prefCEs by config.preferredCEs.remember()
@@ -82,46 +84,46 @@ private fun PreferredSupport(
                     .padding(16.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                ),
             ) {
                 Column(
                     modifier = Modifier
-                        .padding(bottom = 16.dp)
+                        .padding(bottom = 16.dp),
                 ) {
                     PreferenceGroupHeader(
-                        title = stringResource(R.string.p_battle_config_support_pref_servants)
+                        title = stringResource(R.string.p_battle_config_support_pref_servants),
                     )
 
                     config.preferredServants.SupportSelectPreference(
                         title = stringResource(R.string.p_battle_config_support_pref_servants),
-                        entries = vm.servants
+                        entries = vm.servants,
                     )
 
                     if (prefServants.isNotEmpty()) {
                         config.maxAscended.SwitchPreference(
-                            title = stringResource(R.string.p_battle_config_support_max_ascended)
+                            title = stringResource(R.string.p_battle_config_support_max_ascended),
                         )
 
                         config.grandServant.SwitchPreference(
-                            title = stringResource(R.string.p_battle_config_support_grand_servant)
+                            title = stringResource(R.string.p_battle_config_support_grand_servant),
                         )
 
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(16.dp)
+                            modifier = Modifier.padding(16.dp),
                         ) {
                             Text(
                                 stringResource(R.string.p_max_skills),
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f),
                             )
 
                             MaxSkills(
                                 skills = listOf(
                                     config.skill1Max,
                                     config.skill2Max,
-                                    config.skill3Max
-                                )
+                                    config.skill3Max,
+                                ),
                             )
                         }
                     }
@@ -135,35 +137,37 @@ private fun PreferredSupport(
                     .padding(16.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                ),
             ) {
                 Column(
                     modifier = Modifier
-                        .padding(bottom = 16.dp)
+                        .padding(bottom = 16.dp),
                 ) {
                     PreferenceGroupHeader(
-                        title = stringResource(R.string.p_battle_config_support_pref_ces)
+                        title = stringResource(R.string.p_battle_config_support_pref_ces),
                     )
 
                     config.preferredCEs.SupportSelectPreference(
                         title = stringResource(R.string.p_battle_config_support_pref_ces),
-                        entries = vm.ces
+                        entries = vm.ces,
                     )
 
                     if (prefCEs.isNotEmpty()) {
                         config.mlb.SwitchPreference(
-                            title = stringResource(R.string.p_battle_config_support_mlb)
+                            title = stringResource(R.string.p_battle_config_support_mlb),
                         )
 
                         config.bondCEEffect.ListPreference(
                             title = stringResource(R.string.p_battle_config_support_bond_ce_effect_preference),
                             entries = BondCEEffectEnum.entries
-                                .associateWith { stringResource(it.stringRes) }
+                                .associateWith { stringResource(it.stringRes) },
                         )
 
                         config.requireBothNormalAndRewardMatch.SwitchPreference(
-                            title = stringResource(R.string.p_battle_config_support_require_both_normal_and_reward_match)
+                            title = stringResource(
+                                R.string.p_battle_config_support_require_both_normal_and_reward_match,
+                            ),
                         )
                     }
                 }
@@ -176,31 +180,31 @@ private fun PreferredSupport(
                     .padding(16.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                ),
             ) {
                 Column {
                     PreferenceGroupHeader(
-                        title = stringResource(R.string.p_support_mode_friend)
+                        title = stringResource(R.string.p_support_mode_friend),
                     )
 
                     config.friendsOnly.SwitchPreference(
-                        title = stringResource(R.string.p_battle_config_support_friends_only)
+                        title = stringResource(R.string.p_battle_config_support_friends_only),
                     )
 
                     val friendsOnly by config.friendsOnly.remember()
 
-                    AnimatedVisibility (friendsOnly) {
+                    AnimatedVisibility(friendsOnly) {
                         if (vm.friends.isNotEmpty()) {
                             config.friendNames.SupportSelectPreference(
                                 title = stringResource(R.string.p_battle_config_support_friend_names),
-                                entries = vm.friends
+                                entries = vm.friends,
                             )
                         } else {
                             Preference(
                                 icon = icon(R.drawable.ic_info),
                                 title = stringResource(R.string.p_battle_config_support_friend_names),
-                                summary = stringResource(R.string.p_battle_config_support_friend_name_hint)
+                                summary = stringResource(R.string.p_battle_config_support_friend_name_hint),
                             )
                         }
                     }
@@ -214,8 +218,8 @@ private fun PreferredSupport(
                     .padding(16.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                ),
             ) {
                 PreferredSupportHelp()
             }
@@ -227,26 +231,26 @@ private fun PreferredSupport(
 private fun PreferredSupportHelp() {
     Column(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         Text(
             """
                 1. You can add more images using 'Support Image Maker' script by clicking the PLAY button on support or friend list screens.
-                
+
                 2. For event CEs, it is better to use the in-game filters in FGO for CEs and MLB setting.
-                """.trimIndent(),
+            """.trimIndent(),
             style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Light
+            fontWeight = FontWeight.Light,
         )
     }
 }
 
 @Composable
 private fun MaxSkills(
-    skills: List<Pref<Boolean>>
+    skills: List<Pref<Boolean>>,
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         fun skillText(max: Boolean) = if (max) "10" else "x"
 
@@ -255,34 +259,38 @@ private fun MaxSkills(
                 Text(
                     "/",
                     modifier = Modifier
-                        .padding(horizontal = 8.dp)
+                        .padding(horizontal = 8.dp),
                 )
             }
 
             var max by pref.remember()
 
             val backgroundColor =
-                if (max)
+                if (max) {
                     MaterialTheme.colorScheme.secondary
-                else MaterialTheme.colorScheme.surfaceVariant
+                } else {
+                    MaterialTheme.colorScheme.surfaceVariant
+                }
 
             val foregroundColor =
-                if (max)
+                if (max) {
                     MaterialTheme.colorScheme.onSecondary
-                else MaterialTheme.colorScheme.onSurfaceVariant
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                }
 
             Card(
                 elevation = cardElevation(5.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = backgroundColor,
-                    contentColor = foregroundColor
-                )
+                    contentColor = foregroundColor,
+                ),
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .clickable { max = !max }
-                        .size(40.dp)
+                        .size(40.dp),
                 ) {
                     Text(skillText(max))
                 }

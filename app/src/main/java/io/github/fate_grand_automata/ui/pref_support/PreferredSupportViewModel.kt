@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PreferredSupportViewModel @Inject constructor(
-    battleConfigCore: BattleConfigCore
-): ViewModel() {
+    battleConfigCore: BattleConfigCore,
+) : ViewModel() {
     val supportPrefs = battleConfigCore.support
 }

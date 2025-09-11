@@ -24,11 +24,11 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun Heading(
     text: String,
-    subheading: (@Composable () -> Unit)? = null
+    subheading: (@Composable () -> Unit)? = null,
 ) {
     Column(
         modifier = Modifier
-            .padding(vertical = 16.dp)
+            .padding(vertical = 16.dp),
     ) {
         val landscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
 
@@ -36,7 +36,7 @@ fun Heading(
             if (landscape) text.uppercase() else text,
             style = if (landscape) MaterialTheme.typography.titleSmall else MaterialTheme.typography.headlineMedium,
             modifier = Modifier
-                .padding(start = 16.dp)
+                .padding(start = 16.dp),
         )
 
         if (subheading != null) {
@@ -46,9 +46,9 @@ fun Heading(
                     .padding(
                         top = if (landscape) 7.dp else 16.dp,
                         start = 16.dp,
-                        end = 16.dp
+                        end = 16.dp,
                     ),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 subheading()
             }
@@ -62,22 +62,22 @@ fun HeadingButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     icon: VectorIcon? = null,
-    isDanger: Boolean = false
+    isDanger: Boolean = false,
 ) {
     Card(
         shape = CircleShape,
         colors = CardDefaults.cardColors(
             containerColor = if (isDanger) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
-            contentColor = if (isDanger) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimary
+            contentColor = if (isDanger) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimary,
         ),
         modifier = modifier
-            .animateContentSize()
+            .animateContentSize(),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .clickable(onClick = onClick)
-                .padding(10.dp, 4.dp)
+                .padding(10.dp, 4.dp),
         ) {
             if (icon != null) {
                 Icon(
@@ -85,13 +85,13 @@ fun HeadingButton(
                     contentDescription = "icon",
                     modifier = Modifier
                         .padding(end = 7.dp)
-                        .size(20.dp)
+                        .size(20.dp),
                 )
             }
 
             Text(
                 text.uppercase(),
-                style = MaterialTheme.typography.titleSmall
+                style = MaterialTheme.typography.titleSmall,
             )
         }
     }
