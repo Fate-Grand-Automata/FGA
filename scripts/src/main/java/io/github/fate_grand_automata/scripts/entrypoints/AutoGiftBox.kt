@@ -30,6 +30,8 @@ class AutoGiftBox @Inject constructor(
     companion object {
         const val maxClickCount = 99
         const val maxNullStreak = 3
+
+        val regex = Regex("""x ?(\d+)$""")
     }
 
     private data class IterationResult(
@@ -155,7 +157,6 @@ class AutoGiftBox @Inject constructor(
                         .replace("S", "5")
                         .replace("O", "0")
                         .lowercase()
-                    val regex = Regex("""x ?(\d+)$""")
                     // extract the count if it was found in the text
                     val count = regex.find(text)?.groupValues?.getOrNull(1)?.toInt()
 
