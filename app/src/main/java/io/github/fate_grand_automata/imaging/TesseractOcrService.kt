@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @ScriptScope
 class TesseractOcrService @Inject constructor(
-    @ApplicationContext val context: Context
+    @param:ApplicationContext val context: Context
 ) : OcrService {
     private val tessApi = TessBaseAPI()
 
