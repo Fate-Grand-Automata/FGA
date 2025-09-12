@@ -68,7 +68,7 @@ object CardChainPriorityHandler {
                     cards = nonUnknownCards,
                     npUsage = npUsage,
                     npTypes = npTypes,
-                    avoidBraveChains = braveChainEnum == BraveChainEnum.Avoid,
+                    braveChainEnum = braveChainEnum,
                     avoidCardChains = true,
                     cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
                     cardCountPerCardTypeMap = cardCountPerCardTypeMap,

@@ -21,11 +21,10 @@ class BraveChainTest {
         braveChainEnum: BraveChainEnum,
         npUsage: NPUsage = NPUsage.none,
     ) {
-        if (braveChainEnum != BraveChainEnum.Avoid) return
         val defaultAvoid = AvoidChainHandler.pick(
             cards = cards,
+            braveChainEnum = braveChainEnum,
             npUsage = npUsage,
-            avoidBraveChains = true,
             avoidCardChains = false,
         )?.map { it.card } ?: emptyList()
         assertThat(picked, BraveChainEnum.Avoid.toString()).isEqualTo(defaultAvoid)

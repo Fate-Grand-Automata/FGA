@@ -17,7 +17,7 @@ object BraveChainHandler {
             return AvoidChainHandler.pick(
                 cards = cards,
                 npUsage = npUsage,
-                avoidBraveChains = true,
+                braveChainEnum = braveChainEnum,
                 avoidCardChains = false,
             )
         }

@@ -138,9 +138,9 @@ class CardChainPriorityIntegrationTest {
     ): List<ParsedCard> {
         val results = AvoidChainHandler.pick(
             cards = cards,
+            braveChainEnum = braveChainEnum,
             npUsage = npUsage,
             npTypes = npTypes,
-            avoidBraveChains = braveChainEnum == BraveChainEnum.Avoid,
             avoidCardChains = true,
         ) ?: cards
         return AttackPriorityHandler.rearrange(

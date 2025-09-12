@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.scripts.modules.attack
 
+import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
@@ -10,9 +11,9 @@ import kotlin.collections.set
 object AvoidChainHandler {
     fun pick(
         cards: List<ParsedCard>,
+        braveChainEnum: BraveChainEnum = BraveChainEnum.Avoid,
         npUsage: NPUsage = NPUsage.none,
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
-        avoidBraveChains: Boolean = true,
         avoidCardChains: Boolean = true,
         cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
         cardCountPerCardTypeMap: Map<CardTypeEnum, Int>? = null,
@@ -34,6 +35,14 @@ object AvoidChainHandler {
             // Otherwise, need to check if they have the same NP type
         }
 
+        // Handle brave chains
+        val avoidBraveChains = braveChainEnum == BraveChainEnum.Avoid
+        val braveChainFieldSlot = AttackUtils.getBraveChainFieldSlot(
+            braveChainEnum = braveChainEnum,
+            cards = nonUnknownCards,
+            npUsage = npUsage,
+        )
+
         // For tracking
         val selectedFieldSlots = mutableMapOf<FieldSlot, Int>()
         val selectedCardTypes = mutableMapOf<CardTypeEnum, Int>()
@@ -52,10 +61,13 @@ object AvoidChainHandler {
             }
         }
 
-        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: AttackUtils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
-        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: AttackUtils.getCardsPerCardTypeMap(nonUnknownCards, npTypes)
+        // Filter BraveChain-able only cards or skip filter (if there is no BraveChain required)
+        val cardsToUse = nonUnknownCards.filter { braveChainFieldSlot == null || it.fieldSlot == braveChainFieldSlot }
 
-        var cachedFilteredCards: List<ParsedCard> = nonUnknownCards
+        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: AttackUtils.getCardsPerFieldSlotMap(cardsToUse, npUsage)
+        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: AttackUtils.getCardsPerCardTypeMap(cardsToUse, npTypes)
+
+        var cachedFilteredCards: List<ParsedCard> = cardsToUse
         var previousFieldSlot: FieldSlot? = null
 
         // Otherwise, calculate
@@ -117,7 +129,7 @@ object AvoidChainHandler {
         // Return empty if cannot fulfill
         if (selectedCards.size < cardsNeeded) return null
 
-        val remainder = (nonUnknownCards - selectedCards) + (cards - nonUnknownCards)
+        val remainder = (cardsToUse - selectedCards) + (cards - cardsToUse)
         val combinedCards = selectedCards + remainder
 
         return combinedCards
