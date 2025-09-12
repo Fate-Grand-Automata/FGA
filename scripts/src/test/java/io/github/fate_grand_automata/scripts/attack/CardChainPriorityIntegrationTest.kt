@@ -48,7 +48,6 @@ class CardChainPriorityIntegrationTest {
             npUsage = npUsage,
             npTypes = npTypes,
             braveChainEnum = braveChainEnum,
-            forceBraveChain = braveChainEnum == BraveChainEnum.Always,
         ) ?: cards
         return AttackPriorityHandler.rearrange(
             cards = results,
@@ -71,7 +70,6 @@ class CardChainPriorityIntegrationTest {
             npUsage = npUsage,
             npTypes = npTypes,
             braveChainEnum = braveChainEnum,
-            forceBraveChain = braveChainEnum == BraveChainEnum.Always,
         ) ?: cards
         return AttackPriorityHandler.rearrange(
             cards = results,
@@ -191,6 +189,18 @@ class CardChainPriorityIntegrationTest {
 
         // Expect avoid SB,KQ,SQ,NA,NA - 12534 - ABECD
         assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D)
+    }
+
+    @Test
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ), No Mighty allowed, end before Avoid`() {
+        val cards = AttackLineUps.Standard.lineup1
+        val picked = AttackPriorityHandler.pick(
+            cards = cards,
+            braveChainEnum = BraveChainEnum.WithNP,
+            chainPriority = ChainTypeEnum.defaultOrder.filter { it != ChainTypeEnum.Mighty },
+        ).map { it.card }
+
+        assertThat(picked).isEqualTo(cards.map{ it.card })
     }
 
     @Test

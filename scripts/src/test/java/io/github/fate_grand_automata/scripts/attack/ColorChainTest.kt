@@ -82,38 +82,6 @@ class ColorChainTest {
     }
 
     @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 1Kama-NP, with npTypes & forceBraveChain`() {
-        val cards = AttackLineUps.Standard.lineup1
-        for (braveChainEnum in braveChainEnums) {
-            for (cardType in cardTypeList) {
-                val result = ColorChainHandler.pick(
-                    cards = cards,
-                    cardType = cardType,
-                    braveChainEnum = braveChainEnum,
-                    npUsage = NPUsage(setOf(CommandCard.NP.A), 0),
-                    npTypes = mapOf(
-                        FieldSlot.A to CardTypeEnum.Quick
-                    ),
-                    forceBraveChain = true,
-                )?.map { it.card } ?: emptyList()
-
-                when (cardType) {
-                    CardTypeEnum.Quick ->
-                        assertThat(result, "$braveChainEnum, $cardType").containsExactly(
-                            CommandCard.Face.B,
-                            CommandCard.Face.E,
-                            CommandCard.Face.A,
-                            CommandCard.Face.C,
-                            CommandCard.Face.D,
-                        )
-
-                    else -> assertThat(result, "$braveChainEnum, $cardType").isEmpty()
-                }
-            }
-        }
-    }
-
-    @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
         for (braveChainEnum in braveChainEnums) {
@@ -141,27 +109,6 @@ class ColorChainTest {
                         )
                     else -> assertThat(result, "$braveChainEnum, $cardType").isEmpty()
                 }
-            }
-        }
-    }
-
-    @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes & forceBraveChain`() {
-        val cards = AttackLineUps.Standard.lineup1
-        for (braveChainEnum in braveChainEnums) {
-            for (cardType in cardTypeList) {
-                val result = ColorChainHandler.pick(
-                    cards = cards,
-                    cardType = cardType,
-                    braveChainEnum = braveChainEnum,
-                    npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
-                    npTypes = mapOf(
-                        FieldSlot.B to CardTypeEnum.Quick
-                    ),
-                    forceBraveChain = true,
-                )?.map { it.card } ?: emptyList()
-
-                assertThat(result, "$braveChainEnum, $cardType").isEmpty()
             }
         }
     }
@@ -195,27 +142,6 @@ class ColorChainTest {
 
                     else -> assertThat(result, "$braveChainEnum, $cardType").isEmpty()
                 }
-            }
-        }
-    }
-
-    @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, with npTypes & forceBraveChain`() {
-        val cards = AttackLineUps.Standard.lineup1
-        for (braveChainEnum in braveChainEnums) {
-            for (cardType in cardTypeList) {
-                val result = ColorChainHandler.pick(
-                    cards = cards,
-                    cardType = cardType,
-                    braveChainEnum = braveChainEnum,
-                    npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
-                    npTypes = mapOf(
-                        FieldSlot.C to CardTypeEnum.Arts
-                    ),
-                    forceBraveChain = true,
-                )?.map { it.card } ?: emptyList()
-
-                assertThat(result, "$braveChainEnum, $cardType").isEmpty()
             }
         }
     }

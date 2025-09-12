@@ -210,24 +210,6 @@ class MightyChainTest {
     }
 
     @Test
-    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, with npTypes & forcedBraveChain`() {
-        val cards = AttackLineUps.Standard.lineup1
-        for (braveChainEnum in braveChainEnums) {
-            val picked = MightyChainHandler.pick(
-                cards = cards,
-                braveChainEnum = braveChainEnum,
-                npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
-                npTypes = mapOf(
-                    FieldSlot.C to CardTypeEnum.Arts
-                ),
-                forceBraveChain = true
-            )?.map { it.card } ?: emptyList()
-
-            assertThat(picked, braveChainEnum.toString()).isEmpty()
-        }
-    }
-
-    @Test
     fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA) + 1Kama-NP, with npTypes`() {
         val cards = AttackLineUps.Standard.lineup2
         for (braveChainEnum in braveChainEnums) {

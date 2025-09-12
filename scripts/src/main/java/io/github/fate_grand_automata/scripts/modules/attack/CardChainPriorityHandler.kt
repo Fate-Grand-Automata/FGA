@@ -33,6 +33,9 @@ object CardChainPriorityHandler {
         val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: AttackUtils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
         val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: AttackUtils.getCardsPerCardTypeMap(nonUnknownCards, npTypes)
 
+        // If forceBraveChain, set the braveChainEnum directly here
+        val braveChainEnum = if (forceBraveChain) BraveChainEnum.Always else braveChainEnum
+
         for (chain in chainPriority) {
             if (newCardOrder != null) continue
             newCardOrder = when (chain) {
@@ -42,7 +45,6 @@ object CardChainPriorityHandler {
                     npUsage = npUsage,
                     npTypes = npTypes,
                     braveChainEnum = braveChainEnum,
-                    forceBraveChain = forceBraveChain,
                     cardCountPerCardTypeMap = cardCountPerCardTypeMap,
                     cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
                 )
@@ -59,7 +61,6 @@ object CardChainPriorityHandler {
                     npUsage = npUsage,
                     npTypes = npTypes,
                     braveChainEnum = braveChainEnum,
-                    forceBraveChain = forceBraveChain,
                     cardCountPerCardTypeMap = cardCountPerCardTypeMap,
                     cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
                 )

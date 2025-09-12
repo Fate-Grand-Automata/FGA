@@ -16,7 +16,6 @@ object ColorChainHandler {
         npUsage: NPUsage = NPUsage.none,
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
         braveChainEnum: BraveChainEnum = BraveChainEnum.None,
-        forceBraveChain: Boolean = false,
         cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
         cardCountPerCardTypeMap: Map<CardTypeEnum, Int>? = null,
     ): List<ParsedCard>? {
@@ -31,9 +30,7 @@ object ColorChainHandler {
             braveChainEnum = braveChainEnum,
             cards = cards,
             npUsage = npUsage,
-            forceBraveChain = forceBraveChain,
         )
-        val braveChainEnum = if (forceBraveChain) BraveChainEnum.Always else braveChainEnum
 
         // if it passes the above, the actual implementation is very easy
         val cardsNeeded = 3 - npUsage.nps.size
@@ -68,7 +65,7 @@ object ColorChainHandler {
                 it.fieldSlot == braveChainFieldSlot
             }
             // If there is a valid number of cards for the fieldSlot, attempt to Brave Chain
-            // Even if it is not valid, if forceBraveChain is on,
+            // Even if it is not valid, if BraveChainEnum.Always,
             // it only accepts Brave Color Chains and not normal Color Chains
             if (fieldSlotList.size >= cardsNeeded || braveChainEnum == BraveChainEnum.Always)
                 selectedCards = fieldSlotList

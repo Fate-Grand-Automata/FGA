@@ -74,16 +74,13 @@ object AttackUtils {
      * BraveChainEnum.Always -> Always returns a fieldSlot if there is a valid one.
      * @param cards The list of cards available to choose from
      * @param npUsage NPs that have been clicked
-     * @param forceBraveChain Treats braveChainEnum as BraveChainEnum.Always
      * @returns A valid FieldSlot for a BraveChain or null if there is none
      */
     fun getBraveChainFieldSlot (
         braveChainEnum: BraveChainEnum = BraveChainEnum.None,
         cards: List<ParsedCard>,
         npUsage: NPUsage = NPUsage.none,
-        forceBraveChain: Boolean = false,
     ): FieldSlot? {
-        val braveChainEnum = if (forceBraveChain) BraveChainEnum.Always else braveChainEnum
         if (
             braveChainEnum == BraveChainEnum.Avoid
             || braveChainEnum == BraveChainEnum.None

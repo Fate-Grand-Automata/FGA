@@ -20,7 +20,6 @@ object MightyChainHandler {
         braveChainEnum: BraveChainEnum = BraveChainEnum.None,
         cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
         cardCountPerCardTypeMap: Map<CardTypeEnum, Int>? = null,
-        forceBraveChain: Boolean = false,
     ): List<ParsedCard>? {
         // Try to ensure unknown is handled
         val nonUnknownCards = AttackUtils.getValidNonUnknownCards(cards)
@@ -47,9 +46,7 @@ object MightyChainHandler {
             braveChainEnum = braveChainEnum,
             cards = nonUnknownCards,
             npUsage = npUsage,
-            forceBraveChain = forceBraveChain,
         )
-        val braveChainEnum = if (forceBraveChain) BraveChainEnum.Always else braveChainEnum
 
         val selectedCards = pick(
             cards = nonUnknownCards,
@@ -100,7 +97,7 @@ object MightyChainHandler {
                 val fieldSlotList = filteredCards.filter {
                     it.fieldSlot == braveChainFieldSlot
                 }
-                // Even if it is empty, if forceBraveChain is on,
+                // Even if it is empty, if BraveChainEnum.Always,
                 // it only accepts Brave Mighty Chains and not normal Mighty Chains
                 if (fieldSlotList.isNotEmpty() || braveChainEnum == BraveChainEnum.Always) filteredCards = fieldSlotList
             }
