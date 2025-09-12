@@ -70,8 +70,6 @@ object CardChainPriorityHandler {
                     npTypes = npTypes,
                     braveChainEnum = braveChainEnum,
                     avoidCardChains = true,
-                    cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
-                    cardCountPerCardTypeMap = cardCountPerCardTypeMap,
                 )
             }
         }

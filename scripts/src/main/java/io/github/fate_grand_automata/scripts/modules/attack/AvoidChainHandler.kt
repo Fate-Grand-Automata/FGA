@@ -36,12 +36,29 @@ object AvoidChainHandler {
         }
 
         // Handle brave chains
+        // If there is a valid braveChainFieldSlot, it means that a Brave Chain must be made while avoiding
+        // Color + Mighty Chains while avoidCardChains = true
         val avoidBraveChains = braveChainEnum == BraveChainEnum.Avoid
         val braveChainFieldSlot = AttackUtils.getBraveChainFieldSlot(
             braveChainEnum = braveChainEnum,
             cards = nonUnknownCards,
             npUsage = npUsage,
         )
+
+        // This is just a normal BraveChain requirement. Go to BraveChainHandler for this
+        if (braveChainFieldSlot != null && !avoidCardChains) return null
+
+        // Filter BraveChain-able only cards or skip filter (if there is no BraveChain required)
+        val cardsToUse = nonUnknownCards.filter { braveChainFieldSlot == null || it.fieldSlot == braveChainFieldSlot }
+
+        val cardCountPerFieldSlotMap = AttackUtils.getCardsPerFieldSlotMap(cardsToUse, npUsage)
+        val cardCountPerCardTypeMap = AttackUtils.getCardsPerCardTypeMap(cardsToUse, npTypes)
+
+        // If only a BraveChain is possible and it is avoidBraveChains
+        if (avoidBraveChains && cardCountPerFieldSlotMap.size == 1) return null
+
+        // If only a ColorChain is possible
+        if (avoidCardChains && cardCountPerCardTypeMap.size == 1) return null
 
         // For tracking
         val selectedFieldSlots = mutableMapOf<FieldSlot, Int>()
@@ -60,12 +77,6 @@ object AvoidChainHandler {
                 selectedCardTypes[npType] = currentValue + 1
             }
         }
-
-        // Filter BraveChain-able only cards or skip filter (if there is no BraveChain required)
-        val cardsToUse = nonUnknownCards.filter { braveChainFieldSlot == null || it.fieldSlot == braveChainFieldSlot }
-
-        val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: AttackUtils.getCardsPerFieldSlotMap(cardsToUse, npUsage)
-        val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: AttackUtils.getCardsPerCardTypeMap(cardsToUse, npTypes)
 
         var cachedFilteredCards: List<ParsedCard> = cardsToUse
         var previousFieldSlot: FieldSlot? = null
@@ -93,8 +104,6 @@ object AvoidChainHandler {
                 val cardType = card.type
                 val cardTypeCount = selectedCardTypes.getOrElse(cardType) { 0 }
                 if (avoidCardChains
-                    // There are at least 2 cards to choose from
-                    && cardCountPerCardTypeMap.size > 1
                     && (
                         cardTypeCount >= 2
                         // Or if it would make a Mighty Chain
@@ -109,7 +118,8 @@ object AvoidChainHandler {
             cachedFilteredCards = filteredCards
 
             // Try to make the next card different from the previous card's fieldSlot, if possible
-            if (previousFieldSlot != null) {
+            // and there must not be a valid BraveChain for WithNP and Always
+            if (previousFieldSlot != null && braveChainFieldSlot == null) {
                 val fieldSlotFilter = filteredCards.filter {
                     it.fieldSlot != previousFieldSlot
                 }

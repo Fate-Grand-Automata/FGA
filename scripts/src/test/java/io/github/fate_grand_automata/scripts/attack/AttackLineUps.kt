@@ -147,6 +147,13 @@ class AttackLineUps {
             type = CardTypeEnum.Buster,
             affinity = CardAffinityEnum.Weak
         )
+        val nero3BAlt = ParsedCard(
+            card = CommandCard.Face.E,
+            servant = TeamSlot.C,
+            fieldSlot = FieldSlot.C,
+            type = CardTypeEnum.Buster,
+            affinity = CardAffinityEnum.Resist
+        )
         val nero3QAlt = ParsedCard(
             card = CommandCard.Face.E,
             servant = TeamSlot.C,
@@ -198,6 +205,10 @@ class AttackLineUps {
         val lineup09 = listOf(kiyohime1B, kiyohime2B, nero3QAlt, nero4RA, nero5BAlt)
         /** kiyohime1B, nero5BAlt, kiyohime2B, nero3QAlt, nero4RA */
         val lineup10 = listOf(kiyohime1B, nero5BAlt, kiyohime2B, nero3QAlt, nero4RA)
+
+        // Avoid chain
+        /** kiyohime1B, kiyohime2B, nero3BAlt, nero4BAlt, kiyohime5B */
+        val lineup11 = listOf(kiyohime1B, kiyohime2B, nero3BAlt, nero4BAlt, kiyohime5B)
     }
 
     data object SingleServantOnly {

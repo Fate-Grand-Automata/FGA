@@ -146,13 +146,7 @@ class AvoidChainTest {
             when (braveChainEnum) {
                 BraveChainEnum.Always,
                 BraveChainEnum.WithNP ->
-                    assertThat(picked, braveChainEnum.toString()).containsExactly(
-                        CommandCard.Face.C,
-                        CommandCard.Face.D,
-                        CommandCard.Face.A,
-                        CommandCard.Face.B,
-                        CommandCard.Face.E,
-                    )
+                    assertThat(picked, braveChainEnum.toString()).isEmpty()
                 else ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
                         CommandCard.Face.A,
@@ -167,6 +161,78 @@ class AvoidChainTest {
     }
 
     @Test
+    fun `BusterFocus - lineup01 (1KB,2KB,3NA,4NA,5KB)`() {
+        val cards = AttackLineUps.BusterFocus.lineup01
+        for (braveChainEnum in braveChainEnums) {
+            val picked = AvoidChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+            )?.map { it.card } ?: emptyList()
+
+
+            when (braveChainEnum) {
+                BraveChainEnum.Always ->
+                    assertThat(picked, braveChainEnum.toString()).isEmpty()
+                else ->
+                    assertThat(picked, braveChainEnum.toString()).containsExactly(
+                        CommandCard.Face.A,
+                        CommandCard.Face.C,
+                        CommandCard.Face.B,
+                        CommandCard.Face.D,
+                        CommandCard.Face.E,
+                    )
+            }
+        }
+    }
+
+    @Test
+    fun `BusterFocus - lineup01 (1KB,2KB,3NA,4NA,5KB) + 1 NP (2Kiyohime)`() {
+        val cards = AttackLineUps.BusterFocus.lineup01
+        for (braveChainEnum in braveChainEnums) {
+            val picked = AvoidChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+                npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+                npTypes = mapOf(
+                    FieldSlot.B to CardTypeEnum.Buster
+                ),
+            )?.map { it.card } ?: emptyList()
+
+
+            when (braveChainEnum) {
+                BraveChainEnum.Always,
+                BraveChainEnum.WithNP ->
+                    assertThat(picked, braveChainEnum.toString()).isEmpty()
+                else ->
+                    assertThat(picked, braveChainEnum.toString()).containsExactly(
+                        CommandCard.Face.A,
+                        CommandCard.Face.C,
+                        CommandCard.Face.B,
+                        CommandCard.Face.D,
+                        CommandCard.Face.E,
+                    )
+            }
+        }
+    }
+
+    @Test
+    fun `BusterFocus - lineup11 (1KB,2KB,3NB,4NB,5KB)`() {
+        val cards = AttackLineUps.BusterFocus.lineup11
+        for (braveChainEnum in braveChainEnums) {
+            val picked = AvoidChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+                npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+                npTypes = mapOf(
+                    FieldSlot.B to CardTypeEnum.Buster
+                ),
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(picked, braveChainEnum.toString()).isEmpty()
+        }
+    }
+
+    @Test
     fun `SingleServantOnly - lineup1 (1B,2Q,3A,4B,5Q)`() {
         val cards = AttackLineUps.SingleServantOnly.lineup1
         for (braveChainEnum in braveChainEnums) {
@@ -175,13 +241,18 @@ class AvoidChainTest {
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
 
-            assertThat(picked, braveChainEnum.toString()).containsExactly(
-                CommandCard.Face.A,
-                CommandCard.Face.B,
-                CommandCard.Face.D,
-                CommandCard.Face.C,
-                CommandCard.Face.E,
-            )
+            when (braveChainEnum) {
+                BraveChainEnum.Avoid ->
+                    assertThat(picked, braveChainEnum.toString()).isEmpty()
+                else ->
+                    assertThat(picked, braveChainEnum.toString()).containsExactly(
+                        CommandCard.Face.A,
+                        CommandCard.Face.B,
+                        CommandCard.Face.D,
+                        CommandCard.Face.C,
+                        CommandCard.Face.E,
+                    )
+            }
         }
     }
 
@@ -194,13 +265,18 @@ class AvoidChainTest {
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
 
-            assertThat(picked, braveChainEnum.toString()).containsExactly(
-                CommandCard.Face.A,
-                CommandCard.Face.D,
-                CommandCard.Face.E,
-                CommandCard.Face.B,
-                CommandCard.Face.C,
-            )
+            when (braveChainEnum) {
+                BraveChainEnum.Avoid ->
+                    assertThat(picked, braveChainEnum.toString()).isEmpty()
+                else ->
+                    assertThat(picked, braveChainEnum.toString()).containsExactly(
+                        CommandCard.Face.A,
+                        CommandCard.Face.D,
+                        CommandCard.Face.E,
+                        CommandCard.Face.B,
+                        CommandCard.Face.C,
+                    )
+            }
         }
     }
 
@@ -213,13 +289,18 @@ class AvoidChainTest {
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
 
-            assertThat(picked, braveChainEnum.toString()).containsExactly(
-                CommandCard.Face.E,
-                CommandCard.Face.B,
-                CommandCard.Face.C,
-                CommandCard.Face.A,
-                CommandCard.Face.D,
-            )
+            when (braveChainEnum) {
+                BraveChainEnum.Avoid ->
+                    assertThat(picked, braveChainEnum.toString()).isEmpty()
+                else ->
+                    assertThat(picked, braveChainEnum.toString()).containsExactly(
+                        CommandCard.Face.E,
+                        CommandCard.Face.B,
+                        CommandCard.Face.C,
+                        CommandCard.Face.A,
+                        CommandCard.Face.D,
+                    )
+            }
         }
     }
 
@@ -233,13 +314,18 @@ class AvoidChainTest {
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
 
-            assertThat(picked, braveChainEnum.toString()).containsExactly(
-                CommandCard.Face.A,
-                CommandCard.Face.B,
-                CommandCard.Face.C,
-                CommandCard.Face.D,
-                CommandCard.Face.E,
-            )
+            when (braveChainEnum) {
+                BraveChainEnum.Avoid ->
+                    assertThat(picked, braveChainEnum.toString()).isEmpty()
+                else ->
+                    assertThat(picked, braveChainEnum.toString()).containsExactly(
+                        CommandCard.Face.A,
+                        CommandCard.Face.B,
+                        CommandCard.Face.C,
+                        CommandCard.Face.D,
+                        CommandCard.Face.E,
+                    )
+            }
         }
     }
 
@@ -253,13 +339,18 @@ class AvoidChainTest {
                 braveChainEnum = braveChainEnum,
             )?.map { it.card } ?: emptyList()
 
-            assertThat(picked, braveChainEnum.toString()).containsExactly(
-                CommandCard.Face.E,
-                CommandCard.Face.B,
-                CommandCard.Face.A,
-                CommandCard.Face.C,
-                CommandCard.Face.D,
-            )
+            when (braveChainEnum) {
+                BraveChainEnum.Avoid ->
+                    assertThat(picked, braveChainEnum.toString()).isEmpty()
+                else ->
+                    assertThat(picked, braveChainEnum.toString()).containsExactly(
+                        CommandCard.Face.E,
+                        CommandCard.Face.B,
+                        CommandCard.Face.A,
+                        CommandCard.Face.C,
+                        CommandCard.Face.D,
+                    )
+            }
         }
     }
 
