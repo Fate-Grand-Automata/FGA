@@ -38,6 +38,13 @@
     - [Card Priority explanation](#card-priority-explanation)
       - [Symbols used in Card Priority](#symbols-used-in-card-priority)
     - [Servant Priority](#servant-priority)
+    - [Chain Priority](#chain-priority)
+      - [Interaction with other priorities](#interaction-with-other-priorities)
+      - [Mighty Chain](#mighty-chain)
+      - [Buster Chain](#buster-chain)
+      - [Arts Chain](#arts-chain)
+      - [Quick Chain](#quick-chain)
+      - [Avoid Chain](#avoid-chain)
     - [Rearrange Cards](#rearrange-cards)
     - [Brave Chain](#brave-chain)
   - [Support Selection](#support-selection)
@@ -390,15 +397,15 @@ With cards in the high will have priority usage over cards on the low end
 
 #### Symbols used in Card Priority
 
-- WB = Weak Buster
-- WA = Weak Art
-- WQ = Weak Quick
-- B - Buster
-- A - Art
-- Q - Quick
-- RB = Resist Buster
-- RA = Resist Art
-- RQ = Resist Quick
+- $${\color{red}WB = Weak Buster}$$
+- $${\color{blue}WA = Weak Art}$$
+- $${\color{green}WQ = Weak Quick}$$
+- $${\color{red}B - Buster}$$
+- $${\color{blue}A - Art}$$
+- $${\color{green}Q - Quick}$$
+- $${\color{red}RB = Resist Buster}$$
+- $${\color{blue}RA = Resist Art}$$
+- $${\color{green}RQ = Resist Quick}$$
 
 Cards can be changed around for different use case eg:
 
@@ -437,13 +444,71 @@ Then you can now select the servant you want to prioritize.
 
 Follow the positioning on the [Party Mapping](#party-mapping)
 
+___
+
+### Chain Priority
+
+![Chain priority on](../img/attack/chain-priority-toggle.png)
+
+Chain Priority is a new feature that allows for attempts at $${\color{black}Mighty}$$, $${\color{red}Buster}$$, $${\color{blue}Arts}$$ or $${\color{green}Quick}$$ Chains, based on the order that the chains are chosen in. There is an additional option called `Avoid`, which when used attempts to avoid any of the other chains. 
+
+| Sample orders                                                                       | Name                            | Description                                                                                                                                                                                                                   | 
+|:------------------------------------------------------------------------------------|:--------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ![Chain priority options default](../img/attack/chain-priority-options-default.png) | Default order                   | The default order used when Chain Priority is turned on. This disables Avoid Chain.                                                                                                                                           | 
+| ![Chain priority options buster](../img/attack/chain-priority-options-buster.png)   | $${\color{red}Buster}$$ focused | This order disables all chains except $${\color{red}Buster}$$ (highest priority) and $${\color{black}Mighty}$$ (second priority). Failure to execute any of these chains will result in no other chain being (actively) used. |
+| ![Chain priority options arts](../img/attack/chain-priority-options-arts.png)       | $${\color{blue}Arts}$$ only     | Only $${\color{blue}Arts}$$ chains will be attempted. All order chains are ignored.                                                                                                                                           | 
+| ![Chain priority options avoid](../img/attack/chain-priority-options-avoid.png)     | `Avoid` only                    | All chains will be avoided, unless it is absolutely impossible (e.g. all cards are $${\color{green}Quick}$$ cards).                                                                                                           | 
+| ![Chain priority options none](../img/attack/chain-priority-options-none.png)       | None                            | This completely skips all checks. It is almost the same as turning Chain Priority off. Why?                                                                                                                                   |
+
+|                        Flow chart of entire system                        | 
+|:-------------------------------------------------------------------------:|
+| ![Attack Priority flowchart](../img/attack/attack-priority-flowchart.png) |
+
+#### Interaction with other priorities
+
+In general, the priority of card handling is in this order:
+
+```
+Brave Chains > Chain Priority > Servant Priority (if on) > Card Priority 
+```
+
+This means that the [Brave Chain](#brave-chain) option is of the highest importance. This interaction with Chain Priority will be elaborated in the corresponding sections.
+
+#### Mighty Chain
+
+TBA
+
+#### Buster Chain
+
+TBA
+
+#### Arts Chain
+
+TBA
+
+#### Quick Chain
+
+TBA
+
+#### Avoid Chain
+
+TBA
+
 ___  
 
 ### Brave Chain
 
-There are only 3 options for brace chains unless you use Servant Priority.
+There are only 4 options for brave chains.
 
-![Battle Configs - Card Priority | Brave Chain options](https://i.imgur.com/nhPPIM0.jpeg "Battle Configs - Card Priority | Brave Chain options")
+![Battle Configs - Card Priority | Brave Chain options](../img/attack/brave-chain-options.png "Battle Configs - Card Priority | Brave Chain options")
+
+| Option     | Description                                                                                                                                                                       |
+|:-----------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Don't care | Will not attempt to form nor avoid any Brave Chains and will simply use whatever order other priorities have sorted in. Thus, there can be the occasional Brave Chain that occur. | 
+| With NP    | Will only attempt to use Brave Chains if a single NP is being used. If no NPs are used, Brave Chains are ignored.                                                                 |
+| Always     | Will always attempt to make a Brave Chain if one is available, regardless of the Servant.                                                                                         |
+| Avoid      | Will actively avoid making Brave Chains if one is available, unless it is absolutely impossible (e.g. all cards belong to a single Servant)                                       |
+
 ___  
 
 ### Rearrange Cards
@@ -456,7 +521,7 @@ Buster card is picked first, all face cards get a damage boost.
 
 The Rearrange Cards feature orders the 3 strongest cards so the 2nd strongest is used last.
 
-![Face Cards](img/face-cards.jpg)
+![Face Cards](../img/face-cards.jpg)
 
 If default card priority is used, FGA will pick these 3 cards:
 - Jeanne Archer Buster (strongest card)
