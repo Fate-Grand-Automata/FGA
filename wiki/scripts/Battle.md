@@ -490,9 +490,11 @@ Mighty Chains, by definition, require all 3 card types in a single chain to be e
 
 <details><summary>Advanced note</summary>
 
-Since the default order is determined using Card Priority, it also takes into account weaknesses. Thus, if a weak card happens to be an Arts card and there is no weak Buster, since Weak Arts is before a neutral Buster, the Mighty Chain will be ABQ.
+```
+Since the default order is determined using Card Priority, it also takes into account Weak and Resist. Thus, if a weak card happens to be an Arts card and there is no weak Buster, since weak Arts is before a neutral Buster, the Mighty Chain will be ABQ.
 
 This slightly strange interaction is something to note when preparing the configuration, though it should rarely occur.
+```
 
 </details>
 
