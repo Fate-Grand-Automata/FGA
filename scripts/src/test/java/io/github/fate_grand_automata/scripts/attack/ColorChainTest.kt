@@ -10,6 +10,7 @@ import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
+import io.github.fate_grand_automata.scripts.modules.attack.BraveChainHandler
 import kotlin.test.Test
 import io.github.fate_grand_automata.scripts.modules.attack.ColorChainHandler
 
@@ -99,6 +100,39 @@ class ColorChainTest {
                 when (cardType to braveChainEnum) {
                     CardTypeEnum.Quick to BraveChainEnum.None,
                     CardTypeEnum.Quick to BraveChainEnum.WithNP,
+                    CardTypeEnum.Quick to BraveChainEnum.Always,
+                    CardTypeEnum.Quick to BraveChainEnum.Avoid, ->
+                        assertThat(result, "$braveChainEnum, $cardType").containsExactly(
+                            CommandCard.Face.B,
+                            CommandCard.Face.E,
+                            CommandCard.Face.A,
+                            CommandCard.Face.C,
+                            CommandCard.Face.D,
+                        )
+                    else -> assertThat(result, "$braveChainEnum, $cardType").isEmpty()
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes + forceBraveChain`() {
+        val cards = AttackLineUps.Standard.lineup1
+        for (braveChainEnum in braveChainEnums) {
+            for (cardType in cardTypeList) {
+                val result = ColorChainHandler.pick(
+                    cards = cards,
+                    cardType = cardType,
+                    braveChainEnum = braveChainEnum,
+                    npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+                    npTypes = mapOf(
+                        FieldSlot.B to CardTypeEnum.Quick
+                    ),
+                    forceBraveChain = true,
+                )?.map { it.card } ?: emptyList()
+
+                when (cardType to braveChainEnum) {
+                    CardTypeEnum.Quick to BraveChainEnum.None,
                     CardTypeEnum.Quick to BraveChainEnum.Avoid, ->
                         assertThat(result, "$braveChainEnum, $cardType").containsExactly(
                             CommandCard.Face.B,
@@ -389,6 +423,36 @@ class ColorChainTest {
     }
 
     @Test
+    fun `BusterFocus - lineup1 (1KB,2KB,3NA,4NA,5KB) + forceBraveChain`() {
+        val cards = AttackLineUps.BusterFocus.lineup01
+        for (braveChainEnum in braveChainEnums) {
+            for (cardType in cardTypeList) {
+                val result = ColorChainHandler.pick(
+                    cards = cards,
+                    cardType = cardType,
+                    braveChainEnum = braveChainEnum,
+                    forceBraveChain = true,
+                )?.map { it.card } ?: emptyList()
+
+                when (cardType to braveChainEnum) {
+                    CardTypeEnum.Buster to BraveChainEnum.None,
+                    CardTypeEnum.Buster to BraveChainEnum.Always,
+                    CardTypeEnum.Buster to BraveChainEnum.WithNP, ->
+                        assertThat(result, cardType.toString()).containsExactly(
+                            CommandCard.Face.A,
+                            CommandCard.Face.B,
+                            CommandCard.Face.E,
+                            CommandCard.Face.C,
+                            CommandCard.Face.D,
+                        )
+
+                    else -> assertThat(result, "$braveChainEnum, $cardType").isEmpty()
+                }
+            }
+        }
+    }
+
+    @Test
     fun `BusterFocus - lineup1 (1KB,2KB,3NA,4NA,5KB) + 1 NP (2Kiyohime), with npTypes`() {
         val cards = AttackLineUps.BusterFocus.lineup01
         for (braveChainEnum in braveChainEnums) {
@@ -445,6 +509,50 @@ class ColorChainTest {
                             CommandCard.Face.D,
                             CommandCard.Face.A,
                             CommandCard.Face.B,
+                            CommandCard.Face.E,
+                        )
+
+                    else -> assertThat(result, "$braveChainEnum, $cardType").isEmpty()
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `BusterFocus - lineup05 (1KB,2KB,3NA,4NB,5KB)`() {
+        val cards = AttackLineUps.BusterFocus.lineup05
+        for (braveChainEnum in braveChainEnums) {
+            for (cardType in cardTypeList) {
+                val result = ColorChainHandler.pick(
+                    cards = cards,
+                    cardType = cardType,
+                    braveChainEnum = braveChainEnum,
+                )?.map { it.card } ?: emptyList()
+
+                when (cardType to braveChainEnum) {
+                    CardTypeEnum.Buster to BraveChainEnum.None,
+                    CardTypeEnum.Buster to BraveChainEnum.WithNP, ->
+                        assertThat(result, "$braveChainEnum, $cardType").containsExactly(
+                            CommandCard.Face.A,
+                            CommandCard.Face.B,
+                            CommandCard.Face.D,
+                            CommandCard.Face.E,
+                            CommandCard.Face.C,
+                        )
+                    CardTypeEnum.Buster to BraveChainEnum.Always,->
+                        assertThat(result, "$braveChainEnum, $cardType").containsExactly(
+                            CommandCard.Face.A,
+                            CommandCard.Face.B,
+                            CommandCard.Face.E,
+                            CommandCard.Face.C,
+                            CommandCard.Face.D,
+                        )
+                    CardTypeEnum.Buster to BraveChainEnum.Avoid, ->
+                        assertThat(result, "$braveChainEnum, $cardType").containsExactly(
+                            CommandCard.Face.A,
+                            CommandCard.Face.B,
+                            CommandCard.Face.D,
+                            CommandCard.Face.C,
                             CommandCard.Face.E,
                         )
 

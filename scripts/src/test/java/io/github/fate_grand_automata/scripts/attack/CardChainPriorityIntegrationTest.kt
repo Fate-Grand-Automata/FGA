@@ -472,6 +472,26 @@ class CardChainPriorityIntegrationTest {
     }
 
     @Test
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, with npTypes using default chain`() {
+        val cards = AttackLineUps.Standard.lineup1
+        val picked = AttackPriorityHandler.pick(
+            cards = cards,
+            braveChainEnum = BraveChainEnum.WithNP,
+            npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
+            npTypes = mapOf(
+                FieldSlot.C to CardTypeEnum.Arts
+            ),
+        ).map { it.card }
+        val pickedDefault = getDefaultBraveChainResult(
+            cards = cards,
+            braveChainEnum = BraveChainEnum.WithNP,
+            npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
+        ).map { it.card }
+
+        assertThat(picked).isEqualTo(pickedDefault)
+    }
+
+    @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, with rearrange & npTypes`() {
         val cards = AttackLineUps.Standard.lineup1
         val picked = AttackPriorityHandler.pick(

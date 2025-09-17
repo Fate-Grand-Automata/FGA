@@ -118,7 +118,32 @@ class MightyChainTest {
                 )
             )?.map { it.card } ?: emptyList()
 
+            assertThat(picked, braveChainEnum.toString()).containsExactly(
+                CommandCard.Face.A,
+                CommandCard.Face.C,
+                CommandCard.Face.B,
+                CommandCard.Face.D,
+                CommandCard.Face.E,
+            )
+        }
+    }
+
+    @Test
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 2Scathach-NP, with npTypes + forceBraveChain`() {
+        val cards = AttackLineUps.Standard.lineup1
+        for (braveChainEnum in braveChainEnums) {
+            val picked = MightyChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+                npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+                npTypes = mapOf(
+                    FieldSlot.B to CardTypeEnum.Quick
+                ),
+                forceBraveChain = true,
+            )?.map { it.card } ?: emptyList()
+
             when (braveChainEnum) {
+                BraveChainEnum.WithNP,
                 BraveChainEnum.Always -> assertThat(picked, braveChainEnum.toString()).isEmpty()
                 else ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
@@ -192,10 +217,35 @@ class MightyChainTest {
                 npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
                 npTypes = mapOf(
                     FieldSlot.C to CardTypeEnum.Arts
-                )
+                ),
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(picked, braveChainEnum.toString()).containsExactly(
+                CommandCard.Face.A,
+                CommandCard.Face.B,
+                CommandCard.Face.C,
+                CommandCard.Face.D,
+                CommandCard.Face.E,
+            )
+        }
+    }
+
+    @Test
+    fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ) + 3Nero-NP, with npTypes + forceBraveChain`() {
+        val cards = AttackLineUps.Standard.lineup1
+        for (braveChainEnum in braveChainEnums) {
+            val picked = MightyChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+                npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
+                npTypes = mapOf(
+                    FieldSlot.C to CardTypeEnum.Arts
+                ),
+                forceBraveChain = true,
             )?.map { it.card } ?: emptyList()
 
             when (braveChainEnum) {
+                BraveChainEnum.WithNP,
                 BraveChainEnum.Always -> assertThat(picked, braveChainEnum.toString()).isEmpty()
                 else ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
@@ -245,7 +295,32 @@ class MightyChainTest {
                 ),
             )?.map { it.card } ?: emptyList()
 
+            assertThat(picked, braveChainEnum.toString()).containsExactly(
+                CommandCard.Face.A,
+                CommandCard.Face.C,
+                CommandCard.Face.E,
+                CommandCard.Face.B,
+                CommandCard.Face.D,
+            )
+        }
+    }
+
+    @Test
+    fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA) + 2Scathach-NP, with npTypes + forceBraveChain`() {
+        val cards = AttackLineUps.Standard.lineup2
+        for (braveChainEnum in braveChainEnums) {
+            val picked = MightyChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+                npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+                npTypes = mapOf(
+                    FieldSlot.B to CardTypeEnum.Quick
+                ),
+                forceBraveChain = true,
+            )?.map { it.card } ?: emptyList()
+
             when (braveChainEnum) {
+                BraveChainEnum.WithNP,
                 BraveChainEnum.Always -> assertThat(picked, braveChainEnum.toString()).isEmpty()
                 else ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
@@ -308,7 +383,32 @@ class MightyChainTest {
                 ),
             )?.map { it.card } ?: emptyList()
 
+            assertThat(picked, braveChainEnum.toString()).containsExactly(
+                CommandCard.Face.A,
+                CommandCard.Face.E,
+                CommandCard.Face.B,
+                CommandCard.Face.C,
+                CommandCard.Face.D,
+            )
+        }
+    }
+
+    @Test
+    fun `Standard - lineup2 (1SB,5SQ,2KQ,3NA,4NA) + 3Nero-NP, with npTypes + forceBraveChain`() {
+        val cards = AttackLineUps.Standard.lineup2
+        for (braveChainEnum in braveChainEnums) {
+            val picked = MightyChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+                npUsage = NPUsage(setOf(CommandCard.NP.C), 0),
+                npTypes = mapOf(
+                    FieldSlot.C to CardTypeEnum.Arts
+                ),
+                forceBraveChain = true,
+            )?.map { it.card } ?: emptyList()
+
             when (braveChainEnum) {
+                BraveChainEnum.WithNP,
                 BraveChainEnum.Always -> assertThat(picked, braveChainEnum.toString()).isEmpty()
                 else ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(

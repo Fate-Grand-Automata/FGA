@@ -18,6 +18,7 @@ object ColorChainHandler {
         braveChainEnum: BraveChainEnum = BraveChainEnum.None,
         cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
         cardCountPerCardTypeMap: Map<CardTypeEnum, Int>? = null,
+        forceBraveChain: Boolean = false,
     ): List<ParsedCard>? {
         // NEVER want to make a chain of Unknown cards
         if (cardType == CardTypeEnum.Unknown) return null
@@ -67,7 +68,7 @@ object ColorChainHandler {
             // If there is a valid number of cards for the fieldSlot, attempt to Brave Chain
             // Even if it is not valid, if BraveChainEnum.Always,
             // it only accepts Brave Color Chains and not normal Color Chains
-            if (fieldSlotList.size >= cardsNeeded || braveChainEnum == BraveChainEnum.Always)
+            if (fieldSlotList.size >= cardsNeeded || forceBraveChain)
                 selectedCards = fieldSlotList
         }
 

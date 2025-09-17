@@ -47,6 +47,7 @@ object CardChainPriorityHandler {
                     braveChainEnum = braveChainEnum,
                     cardCountPerCardTypeMap = cardCountPerCardTypeMap,
                     cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
+                    forceBraveChain = forceBraveChain,
                 )
                 ChainTypeEnum.Arts,
                 ChainTypeEnum.Buster,
@@ -63,6 +64,7 @@ object CardChainPriorityHandler {
                     braveChainEnum = braveChainEnum,
                     cardCountPerCardTypeMap = cardCountPerCardTypeMap,
                     cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
+                    forceBraveChain = forceBraveChain,
                 )
                 ChainTypeEnum.Avoid -> AvoidChainHandler.pick(
                     cards = nonUnknownCards,
