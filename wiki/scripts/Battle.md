@@ -41,9 +41,7 @@
     - [Chain Priority](#chain-priority)
       - [Interaction with other priorities](#interaction-with-other-priorities)
       - [Mighty Chain](#mighty-chain)
-      - [Buster Chain](#buster-chain)
-      - [Arts Chain](#arts-chain)
-      - [Quick Chain](#quick-chain)
+      - [Buster / Arts / Quick Chain](#buster--arts--quick-chain)
       - [Avoid Chain](#avoid-chain)
     - [Rearrange Cards](#rearrange-cards)
     - [Brave Chain](#brave-chain)
@@ -458,9 +456,11 @@ Chain Priority is a new feature that allows for attempts at $${\color{black}Migh
 | ![Chain priority options buster](../img/attack/chain-priority-options-buster.png)   | $${\color{red}Buster}$$ focused | This order disables all chains except $${\color{red}Buster}$$ (highest priority) and $${\color{black}Mighty}$$ (second priority). Failure to execute any of these chains will result in no other chain being (actively) used. |
 | ![Chain priority options arts](../img/attack/chain-priority-options-arts.png)       | $${\color{blue}Arts}$$ only     | Only $${\color{blue}Arts}$$ chains will be attempted. All order chains are ignored.                                                                                                                                           | 
 | ![Chain priority options avoid](../img/attack/chain-priority-options-avoid.png)     | `Avoid` only                    | All chains will be avoided, unless it is absolutely impossible (e.g. all cards are $${\color{green}Quick}$$ cards).                                                                                                           | 
-| ![Chain priority options none](../img/attack/chain-priority-options-none.png)       | None                            | This completely skips all checks. It is almost the same as turning Chain Priority off. Why?                                                                                                                                   |
+| ![Chain priority options none](../img/attack/chain-priority-options-none.png)       | None                            | This completely skips all checks. It is almost the same as turning Chain Priority off, except that it uses Chain Priority's Brave Chain handling instead of the default.                                                      |
 
-|                        Flow chart of entire system                        | 
+The way Chain Priority works is that it checks for Chains in the order that is shown (from left to right). If it finds a chain, then it will use that chain immediately. If Chain Priority is on and is using the `Default order`, it will attempt to check for a Mighty Chain first. If there is no valid Mighty Chain, then it will attempt to check for a Buster Chain. If there is no valid Buster Chain, it will attempt to check for an Arts Chain and so on and so forth. If, however, an Arts Chain was found, it will skip checking for a Quick Chain using the cards and will immediately use the Arts Chain.  
+
+|                        Flowchart of entire system                        | 
 |:-------------------------------------------------------------------------:|
 | ![Attack Priority flowchart](../img/attack/attack-priority-flowchart.png) |
 
@@ -472,25 +472,50 @@ In general, the priority of card handling is in this order:
 Brave Chains > Chain Priority > Servant Priority (if on) > Card Priority 
 ```
 
-This means that the [Brave Chain](#brave-chain) option is of the highest importance. This interaction with Chain Priority will be elaborated in the corresponding sections.
+This means that the [Brave Chain](#brave-chain) option is of the highest importance. This interaction with Chain Priority will be elaborated on in the corresponding sections.
+
+|         Simplified Brave Chain flowchart / decision tree          | 
+|:-----------------------------------------------------------------:|
+| ![Brave Chain flowchart](../img/attack/brave-chain-flowchart.png) |
+
+Please refer to the [Brave Chain](#brave-chain) section for more information on what each Brave Chain option entails. 
 
 #### Mighty Chain
 
-TBA
+|                  Simplified Mighty Chain flowchart                  | 
+|:-------------------------------------------------------------------:|
+| ![Mighty Chain flowchart](../img/attack/mighty-chain-flowchart.png) |
 
-#### Buster Chain
+Mighty Chains, by definition, require all 3 card types in a single chain to be executed. Mighty Chains can be done with multiple Servants or with a single Servant (thus forming a Brave Chain). The order of Mighty Chain cards is currently determined using the [Card Priority](#card-priority-optional). Thus, the default order is BAQ (Buster, Arts, Quick). 
 
-TBA
+<details><summary>Advanced note</summary>
 
-#### Arts Chain
+Since the default order is determined using Card Priority, it also takes into account weaknesses. Thus, if a weak card happens to be an Arts card and there is no weak Buster, since Weak Arts is before a neutral Buster, the Mighty Chain will be ABQ.
 
-TBA
+This slightly strange interaction is something to note when preparing the configuration, though it should rarely occur.
 
-#### Quick Chain
+</details>
+
+| Brave Chains options | Interactions                                                                                                                                                                                                                    |
+|:---------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Don't care           | The default output of Mighty Chains will be used, regardless of whether a Brave Chain is used or not. A Mighty Chain will be used if there is one available, otherwise it will skip to the next Chain option.                   | 
+| With NP              | Will always attempt to make a Mighty Brave Chain only when a single NP is being used.<br>If there is both a Brave Chain and a Mighty Chain separately available, the Brave Chain will be used over the Mighty Chain.            |
+| Always               | Will always attempt to make a Mighty Brave Chain if one is available, regardless of the Servant.<br>If there is both a Brave Chain and a Mighty Chain separately available, the Brave Chain will be used over the Mighty Chain. |
+| Avoid                | Will actively avoid making Brave Chains. If the only Mighty Chain is a Mighty Brave Chain, it will be skipped.                                                                                                                  |
+
+#### Buster / Arts / Quick Chain
+
+|         Simplified Buster / Arts / Quick Chain flowchart          | 
+|:-----------------------------------------------------------------:|
+| ![Color Chain flowchart](../img/attack/color-chain-flowchart.png) |
 
 TBA
 
 #### Avoid Chain
+
+|                 Simplified Avoid Chain flowchart                  | 
+|:-----------------------------------------------------------------:|
+| ![Avoid Chain flowchart](../img/attack/avoid-chain-flowchart.png) |
 
 TBA
 
@@ -498,16 +523,16 @@ ___
 
 ### Brave Chain
 
-There are only 4 options for brave chains.
+There are only 3 options for brave chains, unless [Chain Priority](#chain-priority) is on.
 
 ![Battle Configs - Card Priority | Brave Chain options](../img/attack/brave-chain-options.png "Battle Configs - Card Priority | Brave Chain options")
 
-| Option     | Description                                                                                                                                                                       |
-|:-----------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Don't care | Will not attempt to form nor avoid any Brave Chains and will simply use whatever order other priorities have sorted in. Thus, there can be the occasional Brave Chain that occur. | 
-| With NP    | Will only attempt to use Brave Chains if a single NP is being used. If no NPs are used, Brave Chains are ignored.                                                                 |
-| Always     | Will always attempt to make a Brave Chain if one is available, regardless of the Servant.                                                                                         |
-| Avoid      | Will actively avoid making Brave Chains if one is available, unless it is absolutely impossible (e.g. all cards belong to a single Servant)                                       |
+| Option                                                    | Description                                                                                                                                                                       |
+|:----------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Don't care                                                | Will not attempt to form nor avoid any Brave Chains and will simply use whatever order other priorities have sorted in. Thus, there can be the occasional Brave Chain that occur. | 
+| With NP                                                   | Will always attempt to make a Brave Chain when a single NP is being used. If no NPs are used, Brave Chain checking is ignored.                                                    |
+| Always (only if ([Chain Priority](#chain-priority) is on) | Will always attempt to make a Brave Chain when one is available, regardless of the Servant.                                                                                       |
+| Avoid                                                     | Will actively avoid making Brave Chains if one is available, unless it is absolutely impossible (e.g. all cards belong to a single Servant)                                       |
 
 ___  
 
