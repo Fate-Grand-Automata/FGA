@@ -462,9 +462,9 @@ The way Chain Priority works is that it checks for Chains in the order that is s
 
 E.g. If Chain Priority is on and `Default order` is used, it will attempt to check for a $${\color{black}Mighty}$$ Chain first. If there is no valid $${\color{black}Mighty}$$ Chain, then it will attempt to check for a $${\color{red}Buster}$$ Chain. If there is no valid $${\color{red}Buster}$$ Chain, it will attempt to check for an $${\color{blue}Arts}$$ Chain and so on and so forth. If an $${\color{blue}Arts}$$ Chain was found, it will skip checking for a $${\color{green}Quick}$$ Chain using the cards and will immediately use the $${\color{blue}Arts}$$ Chain. However, if all options fail to find any usable Chain, it will fallback to Servant Priority + Card Priority to determine the cards used.   
 
-|                        Flowchart of entire system                         | 
-|:-------------------------------------------------------------------------:|
-| ![Attack Priority flowchart](../img/attack/attack-priority-flowchart.png) |
+|                         Flowchart of entire system                         | 
+|:--------------------------------------------------------------------------:|
+| ![Attack Priority flow chart](../img/attack/attack-priority-flowchart.png) |
 
 #### Interaction with other priorities
 
