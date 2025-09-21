@@ -672,8 +672,21 @@ class CardChainPriorityIntegrationTest {
             )
         ).map { it.card }
 
+        // Fall back to Mighty chain
+        val pickedDefault = getDefaultMightyChainResult(
+            cards = cards,
+            braveChainEnum = BraveChainEnum.WithNP,
+            npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Quick,
+                FieldSlot.B to CardTypeEnum.Quick
+            )
+        ).map { it.card }
+
         // Expect SB,KQ,NA,NA,SQ - 12345 - ABCDE
         assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
+        // Default behaviour check
+        assertThat(picked).isEqualTo(pickedDefault)
     }
 
     @Test
@@ -759,6 +772,8 @@ class CardChainPriorityIntegrationTest {
                 FieldSlot.A to CardTypeEnum.Quick,
             )
         ).map { it.card }
+
+        // Uses Mighty Chain
         val pickedDefault = getDefaultMightyChainResult(
             cards = cards,
             braveChainEnum = BraveChainEnum.WithNP,
