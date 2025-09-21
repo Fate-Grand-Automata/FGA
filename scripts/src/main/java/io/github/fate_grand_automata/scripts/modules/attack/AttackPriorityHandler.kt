@@ -20,7 +20,7 @@ object AttackPriorityHandler {
           we want the best or matching face-card after NP.
          */
         val shouldSwapForNpUsageScenario = listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
-        if (shouldSwapForNpUsageScenario) {
+        if (rearrange && shouldSwapForNpUsageScenario) {
             return cards.toMutableList().also {
                 Collections.swap(it, 0, 1)
             }

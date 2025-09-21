@@ -744,4 +744,37 @@ class CardChainPriorityIntegrationTest {
         // Should fall back to default behaviour
         assertThat(picked).isEqualTo(pickedDefault)
     }
+
+    // Test case for issue found with BB Worm farming map
+    // Scenario: All cards are BB, all are weak against enemy.
+    // Expected to be a Mighty Chain of A/NP/B, but becomes B/NP/A instead.
+    @Test
+    fun `SingleServantOnly - lineup6 (3A,5A,1B,4B,2Q)`() {
+        val cards = AttackLineUps.SingleServantOnly.lineup6_special
+        val picked = AttackPriorityHandler.pick(
+            cards = cards,
+            braveChainEnum = BraveChainEnum.WithNP,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 1),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Quick,
+            )
+        ).map { it.card }
+        val pickedDefault = getDefaultMightyChainResult(
+            cards = cards,
+            braveChainEnum = BraveChainEnum.WithNP,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 1),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Quick,
+            )
+        ).map { it.card }
+
+        assertThat(picked).isEqualTo(pickedDefault)
+        assertThat(picked).containsExactly(
+            CommandCard.Face.C,
+            CommandCard.Face.A,
+            CommandCard.Face.E,
+            CommandCard.Face.D,
+            CommandCard.Face.B,
+        )
+    }
 }

@@ -254,6 +254,13 @@ class AttackLineUps {
             type = CardTypeEnum.Quick,
             affinity = CardAffinityEnum.Weak
         )
+        val scathach5WAAlt = ParsedCard(
+            card = CommandCard.Face.E,
+            servant = TeamSlot.B,
+            fieldSlot = FieldSlot.B,
+            type = CardTypeEnum.Arts,
+            affinity = CardAffinityEnum.Weak
+        )
 
         /** scathach1WB, scathach2WQ, scathach3WA, scathach4WB, scathach5WQ */
         val lineup1 = listOf(scathach1WB, scathach2WQ, scathach3WA, scathach4WB, scathach5WQ)
@@ -270,6 +277,9 @@ class AttackLineUps {
         // 3 Quick, 2 Buster; Quick starting card
         /** servant5WQ, servant2WQ, servant3WAltQ, servant1WB, servant4WB */
         val lineup5 = listOf(scathach5WQ, scathach2WQ, scathach3WAltQ, scathach1WB, scathach4WB)
+
+        /** scathach3WA, scathach5WAAlt, scathach1WB, scathach4WB, scathach2WQ */
+        val lineup6_special = listOf(scathach3WA, scathach5WAAlt, scathach1WB, scathach4WB, scathach2WQ)
     }
 
     data object Unknown {
