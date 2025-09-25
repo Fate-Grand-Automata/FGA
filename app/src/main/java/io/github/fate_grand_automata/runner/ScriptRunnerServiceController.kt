@@ -14,6 +14,7 @@ import io.github.fate_grand_automata.util.DisplayHelper
 import io.github.fate_grand_automata.util.ImageLoader
 import io.github.fate_grand_automata.util.ScreenOffReceiver
 import io.github.fate_grand_automata.util.ScriptMessages
+import io.github.lib_automata.OcrService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -36,6 +37,7 @@ class ScriptRunnerServiceController @Inject constructor(
     private val displayHelper: DisplayHelper,
     private val messages: ScriptMessages,
     private val messageBox: ScriptRunnerMessageBox,
+    private val ocrService: OcrService,
     @ServiceCoroutineScope private val scope: CoroutineScope
 ) {
     private val screenOffReceiver = ScreenOffReceiver()
@@ -49,6 +51,7 @@ class ScriptRunnerServiceController @Inject constructor(
         imageLoader.clearImageCache()
 
         overlay.hide()
+        ocrService.close()
         scope.cancel()
 
         screenOffReceiver.unregister(service)
