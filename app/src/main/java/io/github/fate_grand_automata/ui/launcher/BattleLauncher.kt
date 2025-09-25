@@ -117,6 +117,7 @@ fun battleLauncher(
     var shouldLimitCEs by remember { mutableStateOf(perServerConfigPref.shouldLimitCEs) }
     var limitCEs by remember { mutableIntStateOf(perServerConfigPref.limitCEs) }
     var waitApRegen by remember { mutableStateOf(perServerConfigPref.waitForAPRegen) }
+    var sendSupportFriendRequest by remember { mutableStateOf(perServerConfigPref.sendSupportFriendRequest) }
 
     var resetAllButton by remember { mutableStateOf(false) }
 
@@ -134,6 +135,7 @@ fun battleLauncher(
             perServerConfigPref.goldApple = goldApple
             perServerConfigPref.rainbowApple = rainbowApple
             perServerConfigPref.waitForAPRegen = waitApRegen
+            perServerConfigPref.sendSupportFriendRequest = sendSupportFriendRequest
             if (refillResources.isNotEmpty()) {
                 perServerConfigPref.selectedApple = refillResources.first()
             }
@@ -371,6 +373,31 @@ fun battleLauncher(
                     onCountChange = { limitCEs = it }
                 )
             }
+
+            item {
+                HorizontalDivider(modifier = Modifier.padding(top = 10.dp, bottom = 16.dp))
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .clickable { sendSupportFriendRequest = !sendSupportFriendRequest }
+                ) {
+                    Checkbox(
+                        checked = sendSupportFriendRequest,
+                        onCheckedChange = { sendSupportFriendRequest = it },
+                        modifier = Modifier
+                            .alpha(if (sendSupportFriendRequest) 1f else 0.7f)
+                            .padding(end = 5.dp)
+                    )
+
+                    Text(
+                        stringResource(R.string.p_send_support_friend_request),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
+
+
         }
     }
 

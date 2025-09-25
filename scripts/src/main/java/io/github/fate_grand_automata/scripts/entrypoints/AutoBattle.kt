@@ -193,7 +193,7 @@ class AutoBattle @Inject constructor(
             { isInInterludeEndScreen() } to { locations.interludeCloseClick.click() },
             { withdraw.needsToWithdraw() } to { withdraw.withdraw() },
             { needsToStorySkip() } to { skipStory() },
-            { isFriendRequestScreen() } to { skipFriendRequestScreen() },
+            { isFriendRequestScreen() } to { handleFriendRequestScreen() },
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() },
             { isDeathAnimation() } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
@@ -397,6 +397,20 @@ class AutoBattle @Inject constructor(
 
     private fun isFriendRequestScreen() =
         images[Images.SupportExtra] in locations.resultFriendRequestRegion
+
+    private fun handleFriendRequestScreen() {
+        if (prefs.selectedServerConfigPref.sendSupportFriendRequest) {
+            sendFriendRequest()
+        } else {
+            skipFriendRequestScreen()
+        }
+    }
+
+    private fun sendFriendRequest() {
+        // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
+        locations.resultFriendRequestSendRequestClick.click()
+    }
+
 
     private fun skipFriendRequestScreen() {
         // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
