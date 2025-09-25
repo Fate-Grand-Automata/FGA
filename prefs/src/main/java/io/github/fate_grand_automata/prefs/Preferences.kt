@@ -171,6 +171,10 @@ class PreferencesImpl @Inject constructor(
 
     override fun completedOnboarding() =
         prefs.onboardingCompletedVersion.set(PrefsCore.CURRENT_ONBOARDING_VERSION)
+    
+    override fun updateCompletedRuns(runs: Int) {
+        prefs.completedRuns.set(runs)
+    }
 
     override val support = object :
         ISupportPreferencesCommon {
