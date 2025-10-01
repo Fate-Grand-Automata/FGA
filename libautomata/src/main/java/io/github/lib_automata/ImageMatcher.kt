@@ -145,6 +145,7 @@ class RealImageMatcher @Inject constructor(
     }
 
     override fun findAll(region: Region, pattern: Pattern, similarity: Double?): Sequence<Match> {
+        var hasMatches = false
         val matches = screenshotManager.getScreenshot()
             .crop(transform.toImage(region))
             .findMatches(
@@ -153,20 +154,19 @@ class RealImageMatcher @Inject constructor(
             )
             .map {
                 exitManager.checkExitRequested()
-
+                hasMatches = true  // Track for highlight
                 // convert the relative position in the region to the absolute position on the screen
                 val matchedRegion = transform.fromImage(it.region) + region.location
 
                 Match(matchedRegion, it.score)
             }
-            .toList() // Convert to list to avoid sequence consumption issues
         
         highlight(
             region,
-            color = if (matches.isNotEmpty()) HighlightColor.Success else HighlightColor.Error
+            color = if (hasMatches) HighlightColor.Success else HighlightColor.Error
         )
         
-        return matches.asSequence()
+        return matches
     }
 
     override fun isWhite(region: Region) =
