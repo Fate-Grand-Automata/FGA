@@ -163,6 +163,8 @@ Order Change"</string>
     <string name="p_fine_tune_min_similarity">"全局识别阈值（%）"</string>
     <string name="p_fine_tune_mlb_similarity">"满破星识别阈值（%）"</string>
     <string name="p_fine_tune_stage_counter_similarity">"战斗场次识别阈值（%）"</string>
+    <string name="p_fine_tune_np_card_type_similarity">"宝具类型识别阈值（%）"</string>
+    <string name="p_fine_tune_np_spam_card_detection_similarity">"宝具瞎打模式识别阈值（%）"</string>
     <string name="p_fine_tune_clicks">"点击"</string>
     <string name="p_fine_tune_wait_after_clicking">"点击后暂停（ms）"</string>
     <string name="p_fine_tune_click_duration">"点击时间（ms）"</string>
@@ -174,6 +176,7 @@ Order Change"</string>
     <string name="p_fine_tune_wait">"等待时间"</string>
     <string name="p_fine_tune_skill_delay">"施放技能后等待时间（ms）"</string>
     <string name="p_fine_tune_wait_before_turn">"回合间等待时间（ms）"</string>
+    <string name="p_fine_tune_wait_after_order_change">"换人（Order Change）后等待时间（ms）"</string>
     <string name="p_fine_tune_wait_before_cards">"选择指令卡前等待时间（ms）"</string>
     <string name="p_fine_tune_wait_multiplier">"等待时间加乘（%）"</string>
     <string name="troubleshoot">"FGA有问题请先点这（GitHub链接）"</string>

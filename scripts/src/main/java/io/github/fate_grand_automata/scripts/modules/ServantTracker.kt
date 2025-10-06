@@ -85,6 +85,7 @@ class ServantTracker @Inject constructor(
         checkImages.clear()
     }
 
+
     private fun init(teamSlot: TeamSlot, slot: FieldSlot) {
         messages.log(
             ScriptLog.ServantEnteredSlot(
@@ -126,7 +127,7 @@ class ServantTracker @Inject constructor(
             val scores = npSplashImages
                 .mapValues {
                     (_, image) -> patternList?.maxOf {
-                        pattern -> pattern.find(image, 0.5)?.score ?: 0.0
+                        pattern -> pattern.find(image, prefs.npCardTypeSimilarity)?.score ?: 0.0
                     } ?: 0.0
                 }
             // Get type by comparing the patterns we have with the splash arts
@@ -291,8 +292,6 @@ class ServantTracker @Inject constructor(
         return result
     }
 
-    val npCardDetectionScoreCutoff = 0.8
-
     fun npCardsDetectedUsingServantFaces(): Set<CommandCard.NP> {
         if (prefs.skipServantFaceCardCheck) {
             return emptySet()
@@ -316,7 +315,7 @@ class ServantTracker @Inject constructor(
             }
         val result = scores
             .filter { (_, values) ->
-                values.filter { it > npCardDetectionScoreCutoff }.maxByOrNull { it } != null
+                values.filter { it > prefs.npSpamCardDetectionSimilarity }.maxByOrNull { it } != null
             }
             .map { it.first }
             .toSet()

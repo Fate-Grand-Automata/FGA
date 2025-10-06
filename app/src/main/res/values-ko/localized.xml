@@ -162,6 +162,8 @@
     <string name="p_fine_tune_min_similarity">"최소 유사도 (%)"</string>
     <string name="p_fine_tune_mlb_similarity">"최대해방 / 풀돌 유사도 (%)"</string>
     <string name="p_fine_tune_stage_counter_similarity">"스테이지 카운터 유사도 (%)"</string>
+    <string name="p_fine_tune_np_card_type_similarity">"보구랑 Buster/Arts/Quick 유사도 (%)"</string>
+    <string name="p_fine_tune_np_spam_card_detection_similarity">"반복 모드 보구랑 유사도 (%)"</string>
     <string name="p_fine_tune_clicks">"터치"</string>
     <string name="p_fine_tune_wait_after_clicking">"터치 후 딜레이 (ms)"</string>
     <string name="p_fine_tune_click_duration">"터치 지속 시간 (ms)"</string>
@@ -173,6 +175,7 @@
     <string name="p_fine_tune_wait">"딜레이"</string>
     <string name="p_fine_tune_skill_delay">"스킬 딜레이 (ms)"</string>
     <string name="p_fine_tune_wait_before_turn">"턴 시작 전 딜레이 (ms)"</string>
+    <string name="p_fine_tune_wait_after_order_change">"오더 체인지 후 딜레이 (ms)"</string>
     <string name="p_fine_tune_wait_before_cards">"카드 뜨기 전 딜레이 (ms)"</string>
     <string name="p_fine_tune_wait_multiplier">"딜레이 배율기 (%)"</string>
     <string name="troubleshoot">"문제 해결"</string>

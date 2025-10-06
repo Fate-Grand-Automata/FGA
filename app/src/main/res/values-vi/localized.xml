@@ -161,6 +161,8 @@ Sao chép hoặc đổi tên nó nếu bạn muốn giữ nó."</string>
     <string name="p_fine_tune_min_similarity">"Độ tương tự tối thiểu"</string>
     <string name="p_fine_tune_mlb_similarity">"MLB giống nhau"</string>
     <string name="p_fine_tune_stage_counter_similarity">"Sự tương đồng của bộ đếm giai đoạn"</string>
+    <string name="p_fine_tune_np_card_type_similarity">"NP Buster/Arts/Quick tương tự"</string>
+    <string name="p_fine_tune_np_spam_card_detection_similarity">"Sự tương đồng trong phát hiện thư rác NP"</string>
     <string name="p_fine_tune_clicks">"Số nhấp chuột"</string>
     <string name="p_fine_tune_wait_after_clicking">"Chờ sau khi nhấp chuột"</string>
     <string name="p_fine_tune_click_duration">"Thời lượng nhấp chuột"</string>
@@ -172,6 +174,7 @@ Sao chép hoặc đổi tên nó nếu bạn muốn giữ nó."</string>
     <string name="p_fine_tune_wait">"Chờ đợi"</string>
     <string name="p_fine_tune_skill_delay">"Độ trễ kỹ năng"</string>
     <string name="p_fine_tune_wait_before_turn">"Đợi trước khi rẽ"</string>
+    <string name="p_fine_tune_wait_after_order_change">"Đợi sau khi thay đổi thứ tự"</string>
     <string name="p_fine_tune_wait_before_cards">"Chờ trước Thẻ"</string>
     <string name="p_fine_tune_wait_multiplier">"Chờ nhân"</string>
     <string name="troubleshoot">"Xử lý sự cố"</string>

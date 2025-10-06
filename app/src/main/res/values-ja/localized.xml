@@ -165,6 +165,8 @@
     <string name="p_fine_tune_min_similarity">"最小の類似度"</string>
     <string name="p_fine_tune_mlb_similarity">"MLBの類似度"</string>
     <string name="p_fine_tune_stage_counter_similarity">"ウェーブカウンターの類似度"</string>
+    <string name="p_fine_tune_np_card_type_similarity">"宝具Buster/Arts/Quickの類似度"</string>
+    <string name="p_fine_tune_np_spam_card_detection_similarity">"リピートモード宝具の類似度"</string>
     <string name="p_fine_tune_clicks">"クリック"</string>
     <string name="p_fine_tune_wait_after_clicking">"クリック後の待機秒数"</string>
     <string name="p_fine_tune_click_duration">"クリックの継続時間"</string>
@@ -176,6 +178,7 @@
     <string name="p_fine_tune_wait">"待機"</string>
     <string name="p_fine_tune_skill_delay">"スキル使用後の待機時間"</string>
     <string name="p_fine_tune_wait_before_turn">"ターン経過後の待機時間"</string>
+    <string name="p_fine_tune_wait_after_order_change">"オーダーチェンジの後の待機時間"</string>
     <string name="p_fine_tune_wait_before_cards">"カード選択後の待機時間"</string>
     <string name="p_fine_tune_wait_multiplier">"待機時間倍率"</string>
     <string name="troubleshoot">"Troubleshooting"</string>

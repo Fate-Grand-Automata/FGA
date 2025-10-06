@@ -166,6 +166,8 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_fine_tune_min_similarity">"Min Similarity"</string>
     <string name="p_fine_tune_mlb_similarity">"MLB Similarity"</string>
     <string name="p_fine_tune_stage_counter_similarity">"Stage Counter Similarity"</string>
+    <string name="p_fine_tune_np_card_type_similarity">"NP Card Type Similarity"</string>
+    <string name="p_fine_tune_np_spam_card_detection_similarity">"NP Spam Detection Similarity"</string>
     <string name="p_fine_tune_clicks">"Clicks"</string>
     <string name="p_fine_tune_wait_after_clicking">"Wait after clicking"</string>
     <string name="p_fine_tune_click_duration">"Click duration"</string>
@@ -177,6 +179,7 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_fine_tune_wait">"Wait"</string>
     <string name="p_fine_tune_skill_delay">"Skill Delay"</string>
     <string name="p_fine_tune_wait_before_turn">"Wait before Turn"</string>
+    <string name="p_fine_tune_wait_after_order_change">"Wait after Order Change"</string>
     <string name="p_fine_tune_wait_before_cards">"Wait before Cards"</string>
     <string name="p_fine_tune_wait_multiplier">"Wait Multiplier"</string>
     <string name="troubleshoot">"Troubleshooting"</string>

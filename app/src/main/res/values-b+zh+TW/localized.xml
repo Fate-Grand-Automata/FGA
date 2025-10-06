@@ -161,6 +161,8 @@ Order Change"</string>
     <string name="p_fine_tune_min_similarity">"最低相似度（%）"</string>
     <string name="p_fine_tune_mlb_similarity">"滿破相似度（%）"</string>
     <string name="p_fine_tune_stage_counter_similarity">"關卡計數相似度（%）"</string>
+    <string name="p_fine_tune_np_card_type_similarity">"Buster/Arts/Quick寶具施相似度（%）"</string>
+    <string name="p_fine_tune_np_spam_card_detection_similarity">"自動模式寶具施相似度（%）"</string>
     <string name="p_fine_tune_clicks">"點選"</string>
     <string name="p_fine_tune_wait_after_clicking">"點選後暫停（ms）"</string>
     <string name="p_fine_tune_click_duration">"點選時間（ms）"</string>
@@ -172,6 +174,7 @@ Order Change"</string>
     <string name="p_fine_tune_wait">"等待時間"</string>
     <string name="p_fine_tune_skill_delay">"施放技能後等待時間（ms）"</string>
     <string name="p_fine_tune_wait_before_turn">"回合間等待時間（ms）"</string>
+    <string name="p_fine_tune_wait_after_order_change">"换人（Order Change）后等待时间（ms）"</string>
     <string name="p_fine_tune_wait_before_cards">"選擇指令卡前等待時間（ms）"</string>
     <string name="p_fine_tune_wait_multiplier">"等待時間加乘（%）"</string>
     <string name="troubleshoot">"若 FGA 有問題請先參考此處（GitHub連結）"</string>
