@@ -135,7 +135,7 @@ class FineTuneSettingsViewModel @Inject constructor(
                     pref = prefs.waitBeforeTurn,
                     name = R.string.p_fine_tune_wait_before_turn,
                     icon = icon(R.drawable.ic_time),
-                    valueRange = 0..2000,
+                    valueRange = 0..5000,
                     valueRepresentation = { "${it}ms" },
                     hint = "Delay before the skill sequence starts after Battle screen is detected. Slower devices might need longer delay."
                 ),

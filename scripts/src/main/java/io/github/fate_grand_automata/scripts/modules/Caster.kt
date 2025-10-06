@@ -164,7 +164,9 @@ class Caster @Inject constructor(
         waitForAnimationToFinish(15.seconds)
 
         // Extra wait for the lag introduced by Order change
-        1.seconds.wait()
+        0.5.seconds.wait()
+        // Dynamic wait (default will be the same amount of time)
+        prefs.waitBeforeTurn.wait()
 
         servantTracker.orderChanged(action.starting, action.sub)
     }
