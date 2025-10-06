@@ -126,7 +126,7 @@ Order Change"</string>
     <string name="p_screenshot_drops_unmodified_summary">"Save unmodified full-screen screenshots instead of cropped and rescaled screenshots"</string>
     <string name="p_boost_item">"加速道具"</string>
     <string name="p_servant_priority">"从者优先级"</string>
-    <string name="p_chain_priority">"追击连携先级"</string>
+    <string name="p_chain_priority">"追击连携优先级"</string>
     <string name="p_brave_chains">"追击连携"</string>
     <string name="p_rearrange_cards">"调换顺序
 （优先级高的卡后出）"</string>
