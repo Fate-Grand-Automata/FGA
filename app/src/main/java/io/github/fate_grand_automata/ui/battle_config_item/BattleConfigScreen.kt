@@ -214,7 +214,7 @@ private fun BattleConfigContent(
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(
-                                        stringResource(R.string.p_spam_spam).uppercase(),
+                                        stringResource(R.string.spam_short).uppercase(),
                                         style = MaterialTheme.typography.bodySmall,
                                         modifier = Modifier
                                             .padding(16.dp, 5.dp)

@@ -36,6 +36,37 @@ class TesseractOcrService @Inject constructor(
         }
     }
 
+    override fun detectNumberInBrackets(pattern: Pattern): String {
+        synchronized(tessApi) {
+            (pattern as DroidCvPattern).asBitmap().use { bmp ->
+                tessApi.setPageSegMode(TessBaseAPI.PageSegMode.PSM_SINGLE_WORD) // PSM 8
+                tessApi.setVariable(TessBaseAPI.VAR_CHAR_WHITELIST, "0123456789(){}AO")
+                tessApi.setImage(bmp)
+                val rawText = tessApi.utF8Text
+                tessApi.clear()
+
+                val normalized = buildString(rawText.length) {
+                    for (c in rawText) {
+                        append(
+                            when (c) {
+                                '{' -> '('
+                                '}' -> ')'
+                                'A' -> '4'
+                                'O' -> '0'
+                                else -> c
+                            }
+                        )
+                    }
+                }
+
+                val regex = Regex("""\(\s*[\d\s]+\s*\)""")
+                val match = regex.find(normalized) ?: return ""
+                val digitsOnly = match.value.replace("""[()\s]""".toRegex(), "")
+                return digitsOnly
+            }
+        }
+    }
+
     protected fun finalize() {
         tessApi.recycle()
     }
