@@ -125,8 +125,8 @@
     <string name="p_stop_on_ce_get_summary">"首次通关及牵绊礼装获得时自动停止脚本"</string>
     <string name="p_screenshot_drops">"掉落截图"</string>
     <string name="p_screenshot_drops_summary">"存至 'drops' 文件夹"</string>
-    <string name="p_screenshot_drops_unmodified">"Save unmodified screenshots"</string>
-    <string name="p_screenshot_drops_unmodified_summary">"Save unmodified full-screen screenshots instead of cropped and rescaled screenshots"</string>
+    <string name="p_screenshot_drops_unmodified">"保存未修改的截图"</string>
+    <string name="p_screenshot_drops_unmodified_summary">"保存未修改的全屏截图，而非裁剪和重新缩放的截图"</string>
     <string name="p_boost_item">"加速道具"</string>
     <string name="p_brave_chains">"追击连携"</string>
     <string name="p_rearrange_cards">"调换顺序（优先级高的卡后出）"</string>
@@ -430,7 +430,7 @@
         <item>"梅柳齐娜"</item>
         <item>"托勒密"</item>
     </string-array>
-    <string name="skill_maker_update_button_labels">"Update Button Labels"</string>
+    <string name="skill_maker_update_button_labels">"更新按钮标签"</string>
     <string name="skill_maker_special_targets_warning">"拥有特殊技能的从者"</string>
     <string name="skill_maker_van_gogh">"梵高〔矿工〕"</string>
     <string name="skill_maker_hakuno">"岸波白野"</string>
@@ -460,8 +460,8 @@
     <string name="p_treat_support_like_own_servant">"助战从者视为自有从者"</string>
     <string name="p_treat_support_like_own_servant_summary">"从者头像检查时将不再匹配助战图标。该功能可解决助战从者带有过多buff时引发的识别问题。但当队伍中有两名相同从者时，该功能可能会破坏指令卡优先级的设定。"</string>
     
-    <string name="p_screenshot_bond">"Screenshot Bond"</string>
-    <string name="p_screenshot_bond_summary">"Experimental screenshot of bond level up regardless of level to 'bond' folder\nNote: Auto-click on another results screen might cause occasional missed screenshots, potentially skipping the bond level-up."</string>
+    <string name="p_screenshot_bond">"截取牵绊提升界面"</string>
+    <string name="p_screenshot_bond_summary">"实验性功能。牵绊提升时，将截图保存至 'bond' 文件夹。\n注意：其他结算界面的自动点击可能导致偶发的截图遗漏，使牵绊提升界面被跳过。"</string>
     <string name="p_hide_sq_in_resource">"在体力资源中隐藏“圣晶石”选项"</string>
     <string name="p_hide_sq_in_resource_summary">"启用该功能可隐藏“圣晶石”选项，避免误触"</string>
 
