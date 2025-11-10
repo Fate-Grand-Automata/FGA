@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/Fate-Grand-Automata/FGA/workflows/CI/badge.svg?branch=master&event=push)](https://github.com/Fate-Grand-Automata/FGA/actions)
 
-[![Discord Banner 2](https://discordapp.com/api/guilds/1117873862500163684/widget.png?style=banner2)](https://discord.gg/hYZ8x5cC)
+[![Discord Banner 2](https://discordapp.com/api/guilds/1117873862500163684/widget.png?style=banner2)](https://discord.gg/VqmYBeU9Zj)
 
 Auto-battle app for FGO (Android 7 or later, no need for root on phones).
 
