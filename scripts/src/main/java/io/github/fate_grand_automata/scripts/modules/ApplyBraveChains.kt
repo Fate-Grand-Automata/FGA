@@ -4,20 +4,30 @@ import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
-import io.github.lib_automata.dagger.ScriptScope
 import java.util.Collections
-import javax.inject.Inject
 
-@ScriptScope
-class ApplyBraveChains @Inject constructor() {
+object ApplyBraveChains {
     private fun rearrange(
         cards: List<ParsedCard>,
         rearrange: Boolean,
         npUsage: NPUsage
     ): List<ParsedCard> {
-        if (rearrange
+        // Get this out of the way asap
+        if (!rearrange) return cards
+
+        /*
+          If there is 1 NP and 1 Card before NP,
+          we want the best or matching face-card after NP immediately
+         */
+        if (listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }) {
+            return cards.toMutableList().also {
+                Collections.swap(it, 0, 1)
+            }
+        }
+
+        if (
             // If there are cards before NP, at max there's only 1 card after NP
-            && npUsage.cardsBeforeNP == 0
+            npUsage.cardsBeforeNP == 0
             // If there are more than 1 NPs, only 1 card after NPs at max
             && npUsage.nps.size <= 1
         ) {
@@ -58,15 +68,6 @@ class ApplyBraveChains @Inject constructor() {
             .toMutableList()
         val nonMatchingCards = cards - matchingCards
         val combinedCards = matchingCards + nonMatchingCards
-        /*
-          When rearrange is active and there is 1 NP and 1 Card before NP,
-          we want the best or matching face-card after NP.
-         */
-        if (rearrange
-            && listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
-        ) {
-            Collections.swap(combinedCards, 0, 1)
-        }
 
         return rearrange(
             cards = combinedCards,
@@ -166,6 +167,7 @@ class ApplyBraveChains @Inject constructor() {
                 npUsage = npUsage
             )
 
+            BraveChainEnum.Always,
             BraveChainEnum.WithNP -> withNp(
                 cards = cards,
                 rearrange = rearrange,

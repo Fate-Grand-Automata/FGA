@@ -59,7 +59,23 @@ class FineTuneSettingsViewModel @Inject constructor(
                     valueRange = 50..100,
                     valueRepresentation = { "$it%" },
                     hint = "Similarity threshold for detecting wave change. If your skill commands are used in the wrong wave, tweaking this might help."
-                )
+                ),
+                FineTuneItem(
+                    pref = prefs.npCardTypeSimilarity,
+                    name = R.string.p_fine_tune_np_card_type_similarity,
+                    icon = icon(Icons.Default.Star),
+                    valueRange = 30..100,
+                    valueRepresentation = { "$it%" },
+                    hint = "Similarity threshold used for the NP card type detection (Buster, Arts, Quick). Only used when Chain Priority is on."
+                ),
+                FineTuneItem(
+                    pref = prefs.npSpamCardDetectionSimilarity,
+                    name = R.string.p_fine_tune_np_spam_card_detection_similarity,
+                    icon = icon(Icons.Default.Star),
+                    valueRange = 30..100,
+                    valueRepresentation = { "$it%" },
+                    hint = "Similarity threshold used for automatically detecting NPs in Spam mode. Only used when Chain Priority is on."
+                ),
             )
         ),
         FineTuneGroup(
@@ -135,9 +151,17 @@ class FineTuneSettingsViewModel @Inject constructor(
                     pref = prefs.waitBeforeTurn,
                     name = R.string.p_fine_tune_wait_before_turn,
                     icon = icon(R.drawable.ic_time),
-                    valueRange = 0..2000,
+                    valueRange = 0..5000,
                     valueRepresentation = { "${it}ms" },
                     hint = "Delay before the skill sequence starts after Battle screen is detected. Slower devices might need longer delay."
+                ),
+                FineTuneItem(
+                    pref = prefs.waitAfterOrderChange,
+                    name = R.string.p_fine_tune_wait_after_order_change,
+                    icon = icon(R.drawable.ic_time),
+                    valueRange = 0..5000,
+                    valueRepresentation = { "${it}ms" },
+                    hint = "Delay before the skill sequence starts after Order Change has been used. Slower devices might need longer delay."
                 ),
                 FineTuneItem(
                     pref = prefs.waitBeforeCards,
