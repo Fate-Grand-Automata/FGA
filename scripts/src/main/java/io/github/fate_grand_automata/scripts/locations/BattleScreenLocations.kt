@@ -84,6 +84,18 @@ class BattleScreenLocations @Inject constructor(
             )
         }
 
+    fun npGaugeEndRegion(slot: FieldSlot) = when (slot) {
+        FieldSlot.A -> Region(586, 1358, 2, 8)
+        FieldSlot.B -> Region(1220,1358,2,8)
+        FieldSlot.C -> Region(1856,1358, 2, 8)
+    } + Location(if (isWide) 100 else 0, if (isWide) -42 else 0)
+
+    fun npGaugeBarRegion(slot: FieldSlot) = when (slot) {
+        FieldSlot.A -> Region(320, 1354, 266, 16)
+        FieldSlot.B -> Region(954, 1354, 266, 16)
+        FieldSlot.C -> Region(1590, 1354, 266, 16)
+    } + Location(if (isWide) 100 else 0, if (isWide) -42 else 0)
+
     val attackClick =
         (if (isWide)
             Location(-460, -230)
@@ -93,8 +105,22 @@ class BattleScreenLocations @Inject constructor(
 
     val skillOkClick = Location(400, 850).xFromCenter()
     val orderChangeOkClick = Location(0, 1260).xFromCenter()
-    val extraInfoWindowCloseClick = Location(-300, 940).xFromRight()
+    val extraInfoWindowCloseClick = Location(-100, 940).xFromRight()
     val skillUseRegion = Region(-210, 320, 420, 85).xFromCenter()
+
+    val skillUseOkRegion = Region(120, 120, 4 ,4).xFromCenter()
+
+    fun skillCooldownCheckRegion(skill: Skill.Servant) = when (skill) {
+        Skill.Servant.A1 -> Region(105, 1221, 83, 1)
+        Skill.Servant.A2 -> Region(281, 1221, 83, 1)
+        Skill.Servant.A3 -> Region(457, 1221, 83, 1)
+        Skill.Servant.B1 -> Region(739, 1221, 83, 1)
+        Skill.Servant.B2 -> Region(915, 1221, 83, 1)
+        Skill.Servant.B3 -> Region(1091, 1221, 83, 1)
+        Skill.Servant.C1 -> Region(1373, 1221, 83, 1)
+        Skill.Servant.C2 -> Region(1549, 1221, 83, 1)
+        Skill.Servant.C3 -> Region(1725, 1221, 83, 1)
+    } + Location(if (isWide) 108 else 0, if (isWide) -42 else 0)
 
     fun servantOpenDetailsClick(slot: FieldSlot) =
         Location(locate(slot.skill2()).x, 810)
@@ -125,4 +151,11 @@ class BattleScreenLocations @Inject constructor(
     }
 
     val battleSafeMiddleOfScreenClick = Location(0, 550).xFromCenter()
+
+    val criticalStarRegion =
+        (if (isWide)
+            Region(-608, -126, 90, 44)
+        else Region(-436, -86, 88, 42))
+            .xFromRight()
+            .yFromBottom()
 }

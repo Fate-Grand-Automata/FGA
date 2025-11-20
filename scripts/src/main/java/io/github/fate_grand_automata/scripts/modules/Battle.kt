@@ -40,6 +40,7 @@ class Battle @Inject constructor(
             state.nextRun()
 
             servantTracker.nextRun()
+            caster.nextRun()
         }
 
         if (prefs.stopAfterThisRun) {

@@ -7,7 +7,6 @@ import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.OrderChangeMember
 import io.github.fate_grand_automata.scripts.models.TeamSlot
-import io.github.fate_grand_automata.scripts.models.skills
 import io.github.lib_automata.Pattern
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
@@ -43,12 +42,10 @@ class ServantTracker @Inject constructor(
     }
 
     data class TeamSlotData(
-        val checkImage: MutableList<Pattern>,
-        val skills: List<Pattern>
+        val checkImage: MutableList<Pattern>
     ) : AutoCloseable {
         override fun close() {
             checkImage.forEach { it.close() }
-            skills.forEach { it.close() }
         }
     }
 
@@ -81,11 +78,7 @@ class ServantTracker @Inject constructor(
                     checkImage = mutableListOf(
                         locations.battle.servantChangeCheckRegion(slot)
                             .getPattern("Servant $teamSlot")
-                    ),
-                    skills = slot.skills().mapIndexed { index, it ->
-                        locations.battle.imageRegion(it)
-                            .getPattern("Servant $teamSlot S${index + 1}")
-                    }
+                    )
                 )
             }
         }

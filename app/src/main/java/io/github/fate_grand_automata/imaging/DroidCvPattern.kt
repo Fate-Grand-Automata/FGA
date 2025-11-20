@@ -1,6 +1,8 @@
 package io.github.fate_grand_automata.imaging
 
 import android.graphics.Bitmap
+import io.github.lib_automata.Axis
+import io.github.lib_automata.Hsv
 import io.github.lib_automata.Match
 import io.github.lib_automata.Pattern
 import io.github.lib_automata.Region
@@ -200,6 +202,98 @@ class DroidCvPattern(
         return DroidCvPattern(mask)
     }
 
+    override fun getAverageBrightness(): Double {
+        return if (mat.channels() == 3) {
+            Mat().use { gray ->
+                Imgproc.cvtColor(mat, gray, Imgproc.COLOR_BGR2GRAY)
+                Core.mean(gray).`val`[0]
+            }
+        } else {
+            Core.mean(mat).`val`[0]
+        }
+    }
+
+    override fun getMinMaxBrightness(): Pair<Double, Double> {
+        return if (mat.channels() == 3) {
+            Mat().use { gray ->
+                Imgproc.cvtColor(mat, gray, Imgproc.COLOR_BGR2GRAY)
+                val minMax = Core.minMaxLoc(gray)
+                Pair(minMax.minVal, minMax.maxVal)
+            }
+        } else {
+            val minMax = Core.minMaxLoc(mat)
+            Pair(minMax.minVal, minMax.maxVal)
+        }
+    }
+
+
+    override fun isSaturationAndValueOver(sThresh: Double, vThresh: Double): Boolean {
+        Mat().use { hsv ->
+            Imgproc.cvtColor(mat, hsv, Imgproc.COLOR_BGR2HSV)
+            val mean = Core.mean(hsv)
+            val meanS = mean.`val`[1]
+            val meanV = mean.`val`[2]
+            return meanS >= sThresh && meanV >= vThresh
+        }
+    }
+    private fun Hsv.scalar() = Scalar(h, s, v)
+
+    override fun getHsvAverage(): Hsv =
+        Mat().use { hsv ->
+            Imgproc.cvtColor(mat, hsv, Imgproc.COLOR_BGR2HSV)
+            Core.mean(hsv).`val`.let { (h, s, v, _) ->
+                Hsv(h, s, v)
+            }
+        }
+
+    override fun normalizeByHsv(lower: Hsv, upper: Hsv, invert: Boolean): Pattern {
+        val normalized = Mat().also { resultMat ->
+            Mat().use { maskMat ->
+                Imgproc.cvtColor(mat, maskMat, Imgproc.COLOR_BGR2HSV)
+                Core.inRange(maskMat, lower.scalar(), upper.scalar(), maskMat)
+                Core.bitwise_and(mat, mat, resultMat, maskMat)
+            }
+
+            Imgproc.cvtColor(resultMat, resultMat, Imgproc.COLOR_BGR2GRAY)
+            Imgproc.threshold(
+                resultMat,
+                resultMat,
+                0.0,
+                255.0,
+                Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU)
+
+            if (invert) {
+                Core.bitwise_not(resultMat, resultMat)
+            }
+        }
+
+        return DroidCvPattern(normalized, tag = tag)
+    }
+
+    override fun cropWhiteRegion(
+        pad: Int
+    ): Pattern = Mat().use { coords ->
+        Core.bitwise_not(mat, coords)
+
+        // If no non-zero pixels, return the full binary image
+        if (coords.empty()) {
+            return this
+        }
+
+        val rect = Imgproc.boundingRect(coords)
+
+        val xStart = maxOf(rect.x - pad, 0)
+        val yStart = maxOf(rect.y - pad, 0)
+        val xEnd = minOf(rect.x + rect.width + pad, mat.cols())
+        val yEnd = minOf(rect.y + rect.height + pad, mat.rows())
+
+        // Crop to ROI and return as DroidCvPattern
+        DroidCvPattern(
+            mat.submat(Rect(xStart, yStart, xEnd - xStart, yEnd - yStart)).clone(),
+            tag = tag
+        )
+    }
+
     /**
      * Flood fills the mat.
      */
@@ -258,5 +352,53 @@ class DroidCvPattern(
 
         }
         return holePoints
+    }
+
+    override fun countPixelsInHsvRange(
+        lower: Hsv,
+        upper: Hsv,
+        axis: Axis
+    ): Int {
+        val gray = Mat()
+        val mask = Mat()
+        val hsvMat = Mat()
+        try {
+            Imgproc.cvtColor(mat, hsvMat, Imgproc.COLOR_BGR2HSV)
+            Core.inRange(hsvMat, lower.scalar(), upper.scalar(), mask)
+            Core.bitwise_and(mat, mat, gray, mask)
+
+            Imgproc.cvtColor(gray, gray, Imgproc.COLOR_BGR2GRAY)
+            Imgproc.threshold(
+                gray, gray,
+                0.0, 255.0,
+                Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU
+            )
+
+            return when (axis) {
+                Axis.HORIZONTAL -> {
+                    var count = 0
+                    for (x in 0 until gray.cols()) {
+                        gray.col(x).use { col ->
+                            if (Core.countNonZero(col) > 0) count++
+                        }
+                    }
+                    count
+                }
+                Axis.VERTICAL -> {
+                    var count = 0
+                    for (y in 0 until gray.rows()) {
+                        gray.row(y).use { row ->
+                            val row = gray.row(y)
+                            if (Core.countNonZero(row) > 0) count++
+                        }
+                    }
+                    count
+                }
+            }
+        } finally {
+            gray.release()
+            mask.release()
+            hsvMat.release()
+        }
     }
 }

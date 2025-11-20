@@ -191,14 +191,37 @@
     <string name="p_brave_chains_avoid">"使用しない"</string>
     <string name="p_boost_item_disabled">"使用確認OFF"</string>
     <string name="p_boost_item_skip">"使用しない"</string>
-    <string name="spam">"リピートモード"</string>
+    <string name="spam">"リピート設定"</string>
+    <string name="spam_short">リピート</string>
     <string name="spam_target">"ターゲット"</string>
+    <string name="spam_target_none">なし</string>
+    <string name="spam_target_left">左</string>
+    <string name="spam_target_center">中</string>
+    <string name="spam_target_right">右</string>
+    <string name="spam_target_transform">変身</string>
+    <string name="spam_target_option_1">選択 1</string>
+    <string name="spam_target_option_2">選択 2</string>
+    <string name="spam_target_option_3">選択 3</string>
     <string name="spam_np">"宝具:"</string>
     <string name="p_spam_none">"なし"</string>
 
     <!-- 変更 -->
-    <string name="p_spam_spam">"リピート設定"</string>
-    <string name="p_spam_danger">"DANGER"</string>
+    <string name="p_spam_spam">即使用</string>
+    <string name="p_spam_danger">"強敵に"</string>
+    <string name="p_spam_mode">リピート方式</string>
+    <string name="p_np_condition">"NPの状態"</string>
+    <string name="p_np_gauge_none">"常に"</string>
+    <string name="p_np_gauge_low">"NP不足時"</string>
+    <string name="p_np_gauge_ready">"NPが溜まった時"</string>
+    <string name="p_star_condition">スターの状態</string>
+    <string name="p_spam_star_none">常に</string>
+    <string name="p_spam_headline_none">未使用</string>
+    <string name="p_spam_headline_spam">Spam</string>
+    <string name="p_spam_headline_danger">Danger</string>
+    <string name="p_spam_supporting_none_hint">タップして設定</string>
+    <string name="p_spam_np_low">NP不足</string>
+    <string name="p_spam_np_charged">NP可</string>
+    <string name="p_spam_repeat_until_used">繰り返し使用</string>
     <string name="p_support_mode_first">"一番上を選択"</string>
     <string name="p_support_mode_manual">"手動"</string>
     <string name="p_support_mode_preferred">"優先"</string>
@@ -410,7 +433,5 @@
     <string name="skill_maker_soujuurou">"静希草十郎"</string>
     <string name="skill_maker_kukulkan_choice_1">"スター消費しない"</string>
     <string name="skill_maker_kukulkan_choice_2">"10個消費する"</string>
-
     <string name="p_battle_config_use_servant_priority">"サーヴァントの優先順位を設定する"</string>
-
 </resources>

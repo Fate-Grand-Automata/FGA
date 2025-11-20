@@ -71,6 +71,19 @@ class StandardAutomataApi @Inject constructor(
             }
     }
 
+    override fun Region.detectNumberInBrackets(lower: Hsv, upper: Hsv, invert: Boolean
+    ): String = useColor {
+        screenshotManager.getScreenshot()
+            .crop(transform.toImage(this))
+            .normalizeByHsv(lower, upper, invert)
+            .cropWhiteRegion(2)
+            .let { normalized ->
+                ocrService.detectNumberInBrackets(normalized).also { result ->
+                    highlight(this, HighlightColor.Info, text = result.takeIf { it.isNotBlank() })
+                }
+            }
+    }
+
     override fun Map<Pattern, Region>.exists(
         timeout: Duration, similarity: Double?, requireAll: Boolean,
     ) = imageMatcher.exists(
@@ -79,5 +92,77 @@ class StandardAutomataApi @Inject constructor(
         similarity = similarity,
         requireAll = requireAll
     )
+
+    override fun Region.isBrightnessAbove(threshold: Double): Boolean =
+        screenshotManager
+            .getScreenshot()
+            .crop(transform.toImage(this))
+            .getAverageBrightness()
+            .let { avg ->
+                (avg >= threshold).also { result ->
+                    highlight(
+                        this.let {
+                            Region(it.x - 6, it.y - 6, it.width + 12, it.height + 12)
+                        },
+                        if (result) HighlightColor.Success else HighlightColor.Error
+                    )
+                }
+            }
+
+    override fun Region.isSaturationAndValueOver(sThresh: Double, vThresh: Double
+    ): Boolean = useColor {
+        screenshotManager
+            .getScreenshot()
+            .crop(transform.toImage(this))
+            .getHsvAverage()
+            .let { hsv ->
+                hsv.s >= sThresh && hsv.v >= vThresh
+            }
+            .also { result ->
+                highlight(
+                    this.let {
+                        Region(it.x - 6, it.y - 6, it.width + 12, it.height + 12)
+                    },
+                    color = if (result) HighlightColor.Success else HighlightColor.Error
+                )
+            }
+    }
+
+    override fun Region.detectVisualBarLength(
+        lower: Hsv,
+        upper: Hsv
+    ): Int = useColor {
+        screenshotManager
+            .getScreenshot()
+            .crop(transform.toImage(this))
+            .countPixelsInHsvRange(lower, upper)
+            .let { count ->
+                if (0 < count) transform.fromImage(Region(0, 0, count, 1)).width else 0
+            }
+            .also { count ->
+                val np = (count * 100.0 / this.width).toInt()
+                highlight(
+                    this.let {
+                        Region(it.x - 6, it.y - 6, it.width + 12, it.height + 12)
+                    },
+                    color = HighlightColor.Info,
+                    text = np.toString()
+                )
+            }
+    }
+
+    override fun Region.isBelowBrightness(
+        threshold: Double
+    ): Boolean = screenshotManager
+        .getScreenshot()
+        .crop(transform.toImage(this))
+        .getAverageBrightness()
+        .let { brightness -> brightness < threshold }
+        .also { result ->
+            highlight(
+                this,
+                color = if (result) HighlightColor.Success else HighlightColor.Error
+            )
+        }
 }
 

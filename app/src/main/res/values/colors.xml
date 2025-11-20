@@ -24,4 +24,28 @@
 
     <color name="system_ui_scrim_light">#B3FFFFFF</color> <!-- 70% white -->
     <color name="system_ui_scrim_dark">#30000000</color> <!-- 19% black -->
+
+    <!-- Servant background colors -->
+    <color name="servant1_bg">#E53935</color> <!-- Red -->
+    <color name="servant2_bg">#FB8C00</color> <!-- Orange -->
+    <color name="servant3_bg">#FDD835</color> <!-- Yellow -->
+    <color name="servant4_bg">#43A047</color> <!-- Green -->
+    <color name="servant5_bg">#1E88E5</color> <!-- Blue -->
+    <color name="servant6_bg">#8E24AA</color> <!-- Purple -->
+
+    <!-- Primary text color (first line) -->
+    <color name="servant1_primary_text">#FFFFFF</color>
+    <color name="servant2_primary_text">#000000</color>
+    <color name="servant3_primary_text">#000000</color>
+    <color name="servant4_primary_text">#FFFFFF</color>
+    <color name="servant5_primary_text">#FFFFFF</color>
+    <color name="servant6_primary_text">#FFFFFF</color>
+
+    <!-- Secondary text color (second line) -->
+    <color name="servant1_secondary_text">#FFEBEE</color>
+    <color name="servant2_secondary_text">#212121</color>
+    <color name="servant3_secondary_text">#424242</color>
+    <color name="servant4_secondary_text">#E8F5E9</color>
+    <color name="servant5_secondary_text">#E3F2FD</color>
+    <color name="servant6_secondary_text">#F3E5F5</color>
 </resources>

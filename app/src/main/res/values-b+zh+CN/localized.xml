@@ -189,12 +189,35 @@ Order Change"</string>
     <string name="p_brave_chains_avoid">"避免追击连携"</string>
     <string name="p_boost_item_disabled">"关闭"</string>
     <string name="p_boost_item_skip">"跳过"</string>
-    <string name="spam">"瞎打模式"</string>
+    <string name="spam">"自动模式"</string>
+    <string name="spam_short">自动</string>
     <string name="spam_target">"目标"</string>
+    <string name="spam_target_none">无</string>
+    <string name="spam_target_left">左</string>
+    <string name="spam_target_center">中</string>
+    <string name="spam_target_right">右</string>
+    <string name="spam_target_transform">變身</string>
+    <string name="spam_target_option_1">选项 1</string>
+    <string name="spam_target_option_2">选项 2</string>
+    <string name="spam_target_option_3">选项 3</string>
     <string name="spam_np">"宝具："</string>
     <string name="p_spam_none">"无"</string>
     <string name="p_spam_spam">"能放就放"</string>
     <string name="p_spam_danger">"危险敌人时施放"</string>
+    <string name="p_spam_mode">"自动模式"</string>
+    <string name="p_np_condition">宝具状态</string>
+    <string name="p_np_gauge_none">"总是"</string>
+    <string name="p_np_gauge_low">"宝具不足时"</string>
+    <string name="p_np_gauge_ready">"宝具已蓄满时"</string>
+    <string name="p_star_condition">星星状态</string>
+    <string name="p_spam_star_none">"总是"</string>
+    <string name="p_spam_headline_none">未使用</string>
+    <string name="p_spam_headline_spam">Spam</string>
+    <string name="p_spam_headline_danger">Danger</string>
+    <string name="p_spam_supporting_none_hint">点击设置</string>
+    <string name="p_spam_np_low">NP未满</string>
+    <string name="p_spam_np_charged">NP已满</string>
+    <string name="p_spam_repeat_until_used">重复直到使用</string>
     <string name="p_support_mode_first">"第一位支援"</string>
     <string name="p_support_mode_manual">"手动选择"</string>
     <string name="p_support_mode_preferred">"偏好从者"</string>
@@ -409,6 +432,6 @@ Order Change"</string>
     <string name="skill_maker_main_delete_selected">"删除所选"</string>
     <string name="skill_maker_main_wave">"第 %d 波"</string>
     <string name="skill_maker_main_turn">"第 %d 回合"</string>
-                <string name="servant_enhancement">"从者强化"</string>
-        <string name="servert_enhancement_warning_notice">"该脚本将使用自动选择功能来选择种火。"</string>
-                                                    </resources>
+    <string name="servant_enhancement">"从者强化"</string>
+    <string name="servert_enhancement_warning_notice">"该脚本将使用自动选择功能来选择种火。"</string>
+</resources>
