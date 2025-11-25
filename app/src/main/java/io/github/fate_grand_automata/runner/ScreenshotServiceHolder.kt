@@ -49,14 +49,14 @@ class ScreenshotServiceHolder @Inject constructor(
 
         screenshotService = try {
             if (prefs.wantsMediaProjectionToken) {
-                // Cloning the Intent allows reuse.
-                // Otherwise, the Intent gets consumed and MediaProjection cannot be started multiple times.
                 val token = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                     ScriptRunnerService.mediaProjectionToken!!.also {
                         // not allowed to reuse tokens on Android 14
                         ScriptRunnerService.mediaProjectionToken = null
                     }
                 } else {
+                    // Cloning the Intent allows reuse.
+                    // Otherwise, the Intent gets consumed and MediaProjection cannot be started multiple times.
                     ScriptRunnerService.mediaProjectionToken?.clone() as Intent
                 }
 
