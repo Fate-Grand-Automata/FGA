@@ -51,15 +51,17 @@ class ScreenshotServiceHolder @Inject constructor(
             if (prefs.wantsMediaProjectionToken) {
                 // Cloning the Intent allows reuse.
                 // Otherwise, the Intent gets consumed and MediaProjection cannot be started multiple times.
-                val token = ScriptRunnerService.mediaProjectionToken?.clone() as Intent
+                val token = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    ScriptRunnerService.mediaProjectionToken.also {
+                        // not allowed to reuse tokens on Android 14
+                        ScriptRunnerService.mediaProjectionToken = null
+                    }
+                } else {
+                    ScriptRunnerService.mediaProjectionToken?.clone() as Intent
+                }
 
                 val mediaProjection =
                     mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, token)
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                    // not allowed to reuse tokens on Android 14
-                    ScriptRunnerService.mediaProjectionToken = null
-                }
 
                 val scaledSize = size * (scale ?: 1.0)
                 val scaledDensity = (landscapeMetrics.densityDpi / (scale ?: 1.0)).roundToInt()
