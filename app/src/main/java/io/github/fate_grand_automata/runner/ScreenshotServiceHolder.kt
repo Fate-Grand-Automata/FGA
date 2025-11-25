@@ -53,11 +53,15 @@ class ScreenshotServiceHolder @Inject constructor(
                     throw IllegalStateException("Media projection token is null")
                 }
                 val token = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                    ScriptRunnerService.mediaProjectionToken
+                    ScriptRunnerService.mediaProjectionToken!!
                 } else {
-                    // Cloning the Intent allows reuse.
-                    // Otherwise, the Intent gets consumed and MediaProjection cannot be started multiple times.
-                    ScriptRunnerService.mediaProjectionToken.clone() as Intent
+                    try {
+                        // Cloning the Intent allows reuse.
+                        // Otherwise, the Intent gets consumed and MediaProjection cannot be started multiple times.
+                        ScriptRunnerService.mediaProjectionToken?.clone() as Intent
+                    } catch (e: Exception) {
+                        ScriptRunnerService.mediaProjectionToken!!
+                    }
                 }
 
                 val mediaProjection =
