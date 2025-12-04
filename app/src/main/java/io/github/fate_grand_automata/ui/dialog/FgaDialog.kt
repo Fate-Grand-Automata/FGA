@@ -282,7 +282,6 @@ fun <T> FgaDialog.singleChoiceList(
             modifier = modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-
         ) {
             items(items) {
                 ChoiceListItem(
