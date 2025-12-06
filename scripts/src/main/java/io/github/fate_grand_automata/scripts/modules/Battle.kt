@@ -1,8 +1,10 @@
 package io.github.fate_grand_automata.scripts.modules
 
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.entrypoints.AutoBattle
+import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.Skill
@@ -10,6 +12,7 @@ import io.github.fate_grand_automata.scripts.models.battle.BattleState
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
@@ -69,6 +72,8 @@ class Battle @Inject constructor(
         prefs.waitBeforeTurn.wait()
 
         onTurnStarted()
+
+        waitForENSubtitleDisappear()
         servantTracker.beginTurn()
 
         val npUsage = autoSkill.execute(state.stage, state.turn)
@@ -81,6 +86,25 @@ class Battle @Inject constructor(
         card.clickCommandCards(cards, npUsage)
 
         0.5.seconds.wait()
+    }
+
+    /**
+     * Waits up to 1.2 seconds for the English subtitle to disappear by checking if the 2nd servant slot becomes visible.
+     * If visible, adds a 250ms buffer delay before proceeding with servant tracking
+     * The subtitle usually blocks the 2nd servant [FieldSlot]
+     */
+    private fun waitForENSubtitleDisappear() {
+        if (prefs.gameServer !is GameServer.En) {
+            return // only for EN servers
+        }
+        val exist = locations.battle.servantPresentRegion(FieldSlot.B).exists(
+            images[Images.ServantExist],
+            timeout = SUBTITLE_WAIT_TIMEOUT,
+            similarity = 0.70
+        )
+        if (exist) {
+            SUBTITLE_FIXED_DELAY.wait()
+        }
     }
 
     private fun shouldShuffle(cards: List<ParsedCard>, npUsage: NPUsage): Boolean {
@@ -118,5 +142,10 @@ class Battle @Inject constructor(
         if (battleConfig.autoChooseTarget) {
             autoChooseTarget.choose()
         }
+    }
+
+    companion object {
+        private val SUBTITLE_WAIT_TIMEOUT = 1.2.seconds
+        private val SUBTITLE_FIXED_DELAY = 250.milliseconds
     }
 }
