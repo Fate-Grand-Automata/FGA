@@ -31,7 +31,7 @@ class AutoGiftBox @Inject constructor(
         const val maxClickCount = 99
         const val maxNullStreak = 3
 
-        val regex = Regex("""x ?(\d+)$""")
+        val regex = Regex("""[xX]? ?(\d+)$""")
     }
 
     private data class IterationResult(
