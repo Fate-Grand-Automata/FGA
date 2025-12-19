@@ -28,6 +28,7 @@ import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.exit.BattleExit
 import io.github.fate_grand_automata.ui.launcher.ScriptLauncher
 import io.github.fate_grand_automata.ui.launcher.ScriptLauncherResponse
+import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIAction
 import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIState
 import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIStateHolder
 import io.github.fate_grand_automata.ui.support_img_namer.showSupportImageNamer
@@ -58,7 +59,7 @@ import kotlin.time.Duration.Companion.milliseconds
 @ServiceScoped
 class ScriptManager @Inject constructor(
     private val service: Service,
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val imageLoader: ImageLoader,
     private val preferences: IPreferences,
     private val prefsCore: PrefsCore,
@@ -67,38 +68,119 @@ class ScriptManager @Inject constructor(
     private val uiStateHolder: ScriptRunnerUIStateHolder,
     private val clipboardManager: ClipboardManager,
     private val messageBox: ScriptRunnerMessageBox,
-    @ServiceCoroutineScope private val scope: CoroutineScope,
-    private val launcherResponseHandler: ScriptLauncherResponseHandler
+    @param:ServiceCoroutineScope private val scope: CoroutineScope,
+    private val launcherResponseHandler: ScriptLauncherResponseHandler,
+    private val screenshotServiceHolder: ScreenshotServiceHolder,
+    private val scriptComponentBuilder: ScriptComponentBuilder
 ) {
-    var scriptState: ScriptState = ScriptState.Stopped
-        private set
+    private var scriptState: ScriptState = ScriptState.Stopped
 
-    private suspend fun showBattleExit(
-        context: Context,
-        exception: AutoBattle.ExitException
-    ) = withContext(Dispatchers.Main) {
-        suspendCancellableCoroutine<Unit> { continuation ->
-            var dialog: DialogInterface? = null
-
-            val composeView = FakedComposeView(context) {
-                BattleExit(
-                    exception = exception,
-                    prefs = preferences,
-                    prefsCore = prefsCore,
-                    onClose = { dialog?.dismiss() },
-                    onCopy = {
-                        clipboardManager.set(context, exception)
-                    }
-                )
+    fun act(action: ScriptRunnerUIAction) {
+        when (action) {
+            ScriptRunnerUIAction.Pause, ScriptRunnerUIAction.Resume -> {
+                pause(PauseAction.Toggle)
             }
 
-            dialog = showOverlayDialog(context) {
-                setView(composeView.view)
-
-                setOnDismissListener {
-                    composeView.close()
-                    continuation.resume(Unit)
+            ScriptRunnerUIAction.Start -> {
+                if (scriptState is ScriptState.Stopped) {
+                    screenshotServiceHolder.screenshotService?.let {
+                        startScript(service, it, scriptComponentBuilder)
+                    }
                 }
+            }
+
+            ScriptRunnerUIAction.Stop -> {
+                if (scriptState is ScriptState.Started) {
+                    stopScript()
+                }
+            }
+
+            is ScriptRunnerUIAction.Status -> {
+                showStatus(action.status)
+            }
+        }
+    }
+
+    private fun startScript(
+        context: Context,
+        screenshotService: ScreenshotService,
+        componentBuilder: ScriptComponentBuilder
+    ) {
+        updateGameServer()
+
+        if (scriptState !is ScriptState.Stopped) {
+            return
+        }
+
+        uiStateHolder.isPlayButtonEnabled = false
+
+        val scriptComponent = componentBuilder
+            .screenshotService(screenshotService)
+            .build()
+
+        val hiltEntryPoint = EntryPoints.get(scriptComponent, ScriptEntryPoint::class.java)
+        val detectedMode = hiltEntryPoint.autoDetect().get()
+
+        scope.launch {
+            val resp = scriptPicker(context, detectedMode)
+
+            uiStateHolder.isPlayButtonEnabled = true
+            launcherResponseHandler.handle(resp)
+
+            if (resp !is ScriptLauncherResponse.Cancel) {
+                delay(500)
+                runEntryPoint(
+                    screenshotService = screenshotService,
+                    entryPointProvider = { getEntryPoint(hiltEntryPoint) }
+                )
+            }
+        }
+    }
+
+    private suspend fun runEntryPoint(
+        screenshotService: ScreenshotService,
+        entryPointProvider: () -> EntryPoint
+    ) {
+        if (scriptState !is ScriptState.Stopped) {
+            return
+        }
+
+        val recording = try {
+            if (preferences.recordScreen) {
+                withContext(Dispatchers.Main) {
+                    screenshotService.startRecording()
+                }
+            } else null
+        } catch (e: Exception) {
+            val msg = context.getString(R.string.cannot_start_recording)
+            Timber.e("$msg ${e.message}")
+            withContext(Dispatchers.Main) {
+                Toast.makeText(service, "${msg}: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+
+            null
+        }
+
+        val entryPoint = entryPointProvider().apply {
+            scriptExitListener = { onScriptExit(it) }
+        }
+
+        scriptState = ScriptState.Started(entryPoint, recording)
+        uiStateHolder.uiState = ScriptRunnerUIState.Running
+
+        if (recording != null) {
+            uiStateHolder.isRecording = true
+        }
+
+        entryPoint.run()
+    }
+
+    fun stopScript() {
+        scriptState.let { state ->
+            if (state is ScriptState.Started) {
+                uiStateHolder.isPlayButtonEnabled = false
+                scriptState = ScriptState.Stopping(state)
+                state.entryPoint.stop()
             }
         }
     }
@@ -132,7 +214,7 @@ class ScriptManager @Inject constructor(
                         }
                     } catch (e: Exception) {
                         val msg = context.getString(R.string.cannot_stop_recording)
-                        Timber.e(e, msg)
+                        Timber.e("$msg ${e.message}")
                         withContext(Dispatchers.Main) {
                             Toast.makeText(service, "${msg}: ${e.message}", Toast.LENGTH_SHORT).show()
                         }
@@ -326,92 +408,12 @@ class ScriptManager @Inject constructor(
             }
     }
 
-    fun startScript(
-        context: Context,
-        screenshotService: ScreenshotService,
-        componentBuilder: ScriptComponentBuilder
-    ) {
-        updateGameServer()
-
-        if (scriptState !is ScriptState.Stopped) {
-            return
-        }
-
-        uiStateHolder.isPlayButtonEnabled = false
-
-        val scriptComponent = componentBuilder
-            .screenshotService(screenshotService)
-            .build()
-
-        val hiltEntryPoint = EntryPoints.get(scriptComponent, ScriptEntryPoint::class.java)
-        val detectedMode = hiltEntryPoint.autoDetect().get()
-
-        scope.launch {
-            val resp = scriptPicker(context, detectedMode)
-
-            uiStateHolder.isPlayButtonEnabled = true
-            launcherResponseHandler.handle(resp)
-
-            if (resp !is ScriptLauncherResponse.Cancel) {
-                delay(500)
-                runEntryPoint(
-                    screenshotService = screenshotService,
-                    entryPointProvider = { getEntryPoint(hiltEntryPoint) }
-                )
-            }
-        }
-    }
-
-    fun stopScript() {
-        scriptState.let { state ->
-            if (state is ScriptState.Started) {
-                uiStateHolder.isPlayButtonEnabled = false
-                scriptState = ScriptState.Stopping(state)
-                state.entryPoint.stop()
-            }
-        }
-    }
-
-    private suspend fun runEntryPoint(screenshotService: ScreenshotService, entryPointProvider: () -> EntryPoint) {
-        if (scriptState !is ScriptState.Stopped) {
-            return
-        }
-
-        val recording = try {
-            if (preferences.recordScreen) {
-                withContext(Dispatchers.Main) {
-                    screenshotService.startRecording()
-                }
-            } else null
-        } catch (e: Exception) {
-            val msg = context.getString(R.string.cannot_start_recording)
-            Timber.e(e, msg)
-            withContext(Dispatchers.Main) {
-                Toast.makeText(service, "${msg}: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-
-            null
-        }
-
-        val entryPoint = entryPointProvider().apply {
-            scriptExitListener = { onScriptExit(it) }
-        }
-
-        scriptState = ScriptState.Started(entryPoint, recording)
-        uiStateHolder.uiState = ScriptRunnerUIState.Running
-
-        if (recording != null) {
-            uiStateHolder.isRecording = true
-        }
-
-        entryPoint.run()
-    }
 
     private suspend fun scriptPicker(
         context: Context,
         detectedMode: ScriptModeEnum
     ) = withContext(Dispatchers.Main) {
-        suspendCoroutine<ScriptLauncherResponse> { continuation ->
+        suspendCoroutine { continuation ->
 
             var dialog: DialogInterface? = null
 
@@ -435,7 +437,7 @@ class ScriptManager @Inject constructor(
                     composeView.close()
                     try {
                         continuation.resume(ScriptLauncherResponse.Cancel)
-                    } catch (e: IllegalStateException) {
+                    } catch (_: IllegalStateException) {
                         // Ignore exception on resuming twice
                     }
                 }
@@ -446,6 +448,36 @@ class ScriptManager @Inject constructor(
     fun showStatus(status: Exception) {
         if (status is AutoBattle.ExitException) {
             scope.launch { showBattleExit(service, status) }
+        }
+    }
+
+    private suspend fun showBattleExit(
+        context: Context,
+        exception: AutoBattle.ExitException
+    ) = withContext(Dispatchers.Main) {
+        suspendCancellableCoroutine { continuation ->
+            var dialog: DialogInterface? = null
+
+            val composeView = FakedComposeView(context) {
+                BattleExit(
+                    exception = exception,
+                    prefs = preferences,
+                    prefsCore = prefsCore,
+                    onClose = { dialog?.dismiss() },
+                    onCopy = {
+                        clipboardManager.set(context, exception)
+                    }
+                )
+            }
+
+            dialog = showOverlayDialog(context) {
+                setView(composeView.view)
+
+                setOnDismissListener {
+                    composeView.close()
+                    continuation.resume(Unit)
+                }
+            }
         }
     }
 }

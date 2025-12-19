@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.PrefsCore
+import io.github.fate_grand_automata.runner.ScriptManager
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.prefs.remember
@@ -31,8 +32,8 @@ import io.github.fate_grand_automata.ui.prefs.remember
 @Composable
 fun ScriptRunnerUI(
     state: ScriptRunnerUIState,
+    manager: ScriptManager,
     prefsCore: PrefsCore,
-    updateState: (ScriptRunnerUIAction) -> Unit,
     onDrag: (Float, Float) -> Unit,
     enabled: Boolean,
     isRecording: Boolean
@@ -62,6 +63,7 @@ fun ScriptRunnerUI(
                         MaterialTheme.colorScheme.surface.copy(
                             alpha = if (hidePlayButton && script == ScriptModeEnum.Battle) 0f else 0.5f
                         )
+
                     else -> MaterialTheme.colorScheme.surface
                 },
                 contentColor = when (state) {
@@ -71,6 +73,7 @@ fun ScriptRunnerUI(
                             alpha = if (hidePlayButton && script == ScriptModeEnum.Battle) 0f else 0.5f
                         )
                     }
+
                     else -> Color.White
                 },
                 tonalElevation = 5.dp,
@@ -82,7 +85,7 @@ fun ScriptRunnerUI(
                         ScriptRunnerUIState.Running -> ScriptRunnerUIAction.Pause
                     }
 
-                    updateState(action)
+                    manager.act(action)
                 },
                 enabled = enabled,
                 modifier = dragModifier
@@ -117,7 +120,9 @@ fun ScriptRunnerUI(
                         color = Color(0xFFCF6679),
                         contentColor = Color.White,
                         shape = shape,
-                        onClick = { updateState(ScriptRunnerUIAction.Stop) },
+                        onClick = {
+                            manager.act(ScriptRunnerUIAction.Stop)
+                        },
                         modifier = dragModifier
                     ) {
                         Icon(
@@ -136,7 +141,9 @@ fun ScriptRunnerUI(
                                 contentColor = MaterialTheme.colorScheme.onSecondary,
                                 tonalElevation = 5.dp,
                                 shape = shape,
-                                onClick = { updateState(ScriptRunnerUIAction.Status(it.pausedStatus)) },
+                                onClick = {
+                                    manager.act(ScriptRunnerUIAction.Status(it.pausedStatus))
+                                },
                                 modifier = dragModifier
                                     .offset(x = (-18).dp)
                                     .zIndex(-2f)
