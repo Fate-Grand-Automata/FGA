@@ -24,12 +24,12 @@ env:
 
 jobs:
   build:
-    runs-on: macos-14
+    runs-on: macos-15
     permissions: 
       pull-requests: write 
     steps:
       # get the PR from the event as JSON
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v8
         id: pr
         with:
           script: |
@@ -40,7 +40,7 @@ jobs:
             return pullRequest
       
       # check out the merged result
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{fromJSON(steps.pr.outputs.result).merge_commit_sha}}
 
