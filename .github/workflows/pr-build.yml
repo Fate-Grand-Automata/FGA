@@ -80,13 +80,13 @@ jobs:
 
       - name: Upload APK
         id: upload-apk
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ env.FGA_APK_ARTIFACT_NAME }}
           path: ${{ env.FGA_APK_PATH }}
 
       - name: Upload De-obfuscation mapping file
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ env.FGA_MAPPING_ARTIFACT_NAME }}
           path: ${{ env.FGA_MAPPING_PATH }}

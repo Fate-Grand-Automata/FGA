@@ -66,14 +66,14 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
 
       - name: Upload Bundle
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: bundle
           path: app/build/outputs/bundle/release/app-release.aab
         if: ${{ !cancelled() }}
 
       - name: Upload De-obfuscation mapping file
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: mapping-release
           path: app/build/outputs/mapping/release/mapping.txt
