@@ -22,7 +22,7 @@ class Locations @Inject constructor(
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
     // 9th anniversary changes the repeat screen and extends to 15 parties
-    private val afterAnni9 = gameServer is GameServer.Jp || gameServer is GameServer.Cn
+    private val afterAnni9 = gameServer is GameServer.Jp || gameServer is GameServer.Cn || gameServer is GameServer.En
 
     val continueRegion = if (afterAnni9)
         Region(120, 1100, 800, 200).xFromCenter()
