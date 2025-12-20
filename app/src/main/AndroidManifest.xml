@@ -32,7 +32,7 @@
             android:name=".accessibility.tileFGAApp.FGATileService"
             android:exported="true"
             android:label="FGA Service"
-            android:icon="@drawable/fga_tile_icon_v1"
+            android:icon="@drawable/ic_notification_icon"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
             >
             <intent-filter>
