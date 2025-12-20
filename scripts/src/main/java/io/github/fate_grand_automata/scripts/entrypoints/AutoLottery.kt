@@ -42,7 +42,7 @@ class AutoLottery @Inject constructor(
      * Switch between the two different spin methods depending on the server
      */
     private fun spinGameServer() = when (prefs.gameServer) {
-        is GameServer.Jp -> spinLongClick()
+        is GameServer.Jp, is GameServer.En -> spinLongClick()
         else -> spin()
     }
 

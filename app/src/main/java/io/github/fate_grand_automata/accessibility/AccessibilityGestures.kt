@@ -164,8 +164,7 @@ class AccessibilityGestures @Inject constructor(
         TapperService.instance?.dispatchGesture(gestureDesc, callback, null)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun longPress8(location: Location, duration: Duration = 2.seconds){
+    override fun longPress(location: Location, duration: Duration) = runBlocking {
         val longPressPath = Path().moveTo(location)
 
         val longPressDuration = duration.inWholeMilliseconds
@@ -194,14 +193,6 @@ class AccessibilityGestures @Inject constructor(
         }
 
         Timber.d("long pressed $location stopped")
-    }
-
-    override fun longPress(location: Location, duration: Duration) = runBlocking {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            longPress8(location, duration)
-        } else {
-            click(location, 2)
-        }
     }
 
     override fun close() {}
