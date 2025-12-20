@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.scripts.entrypoints
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.enums.GameServer
+import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.fate_grand_automata.scripts.modules.ConnectionRetry
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
@@ -21,7 +22,9 @@ class AutoGiftBox @Inject constructor(
     private val connectionRetry: ConnectionRetry
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason {
-        object NoEmbersFound : ExitReason()
+
+        class ReturnToLottery(val pickedStacks: Int, val pickedGoldEmbers: Int)  : ExitReason()
+        data object NoEmbersFound : ExitReason()
         class CannotSelectAnyMore(val pickedStacks: Int, val pickedGoldEmbers: Int) : ExitReason()
     }
 
@@ -71,6 +74,35 @@ class AutoGiftBox @Inject constructor(
             totalSelected.pickedGoldEmbers < prefs.maxGoldEmberTotalCount &&
             receiveEnabledPattern in receiveEnabledRegion
         )
+
+
+        if (prefs.loopIntoLotteryAfterPresentBox && prefs.scriptMode == ScriptModeEnum.Lottery) {
+            val isFullDialog = locations.closeLowerMiddleScreenRegion.exists(
+                images[Images.Close],
+                timeout = 10.seconds
+            )
+            if (isFullDialog) {
+                prefs.isPresentBoxFull = true
+                locations.closeLowerMiddleScreenRegion.click()
+                0.5.seconds.wait()
+            }
+            // close window
+            locations.resultCeRewardCloseClick.click()
+            1.seconds.wait()
+
+            locations.lottery.checkRegion.exists(
+                images[Images.LotteryBoxFinished],
+                timeout = 15.seconds
+            )
+
+            throw ExitException(
+                ExitReason.ReturnToLottery(
+                    totalSelected.pickedStacks,
+                    totalSelected.pickedGoldEmbers
+                )
+            )
+        }
+
 
         throw ExitException(
             ExitReason.CannotSelectAnyMore(
