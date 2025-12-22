@@ -89,6 +89,7 @@ enum class Images(val path: String) {
     OkKR("ok-kr.png"),
     Execute("execute.png"),
     SupportBlankCE("support_blank_ce.png"),
+    StartQuest("start_quest.png"),
     StateON("state_on.png"),
     GrandCeLabel("grand_ce_label.png"),
     BondCeEffectDefault("bond_ce_effect_default.png"),
