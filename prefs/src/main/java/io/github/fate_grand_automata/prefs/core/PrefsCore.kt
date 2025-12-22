@@ -32,7 +32,6 @@ class PrefsCore @Inject constructor(
 
     val battleConfigList = maker.stringSet("autoskill_list")
 
-    val storySkip = maker.bool("story_skip")
     val withdrawEnabled = maker.bool("withdraw_enabled")
 
     val stopOnCEGet = maker.bool("stop_on_ce_get")
@@ -49,7 +48,7 @@ class PrefsCore @Inject constructor(
     val debugMode = maker.bool("debug_mode")
     val autoStartService = maker.bool("auto_start_service")
 
-    val hideSQInAPResources = maker.bool("hide_sq_in_ap_resources")
+    val hideSQInAPResources = maker.bool("hide_sq_in_ap_resources", true)
 
     val shouldLimitFP = maker.bool("should_fp_limit")
     val limitFP = maker.int("fp_limit", 1)

@@ -114,7 +114,6 @@ Master"</string>
     <string name="p_game_server_auto_detect">"Tự động nhận diện"</string>
     <string name="p_spam_summary">"Chế độ nguy hiểm yêu cầu Tự động nhắm mục tiêu"</string>
     <string name="p_auto_choose_target">"Luôn tự động chọn mục tiêu"</string>
-    <string name="p_story_skip">"Bỏ qua cốt truyện"</string>
     <string name="p_enable_withdraw">"Bật \"Đầu hàng\""</string>
     <string name="p_stop_on_ce_get">"Dừng lại khi lấy được CE"</string>
     <string name="p_stop_on_first_clear_rewards">"Dừng lại ở phần thưởng đầu tiên"</string>

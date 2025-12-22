@@ -119,7 +119,6 @@ Skills"</string>
     <string name="p_game_server_auto_detect">"Auto-detect"</string>
     <string name="p_spam_summary">"Danger mode requires Auto-targeting"</string>
     <string name="p_auto_choose_target">"Auto choose target"</string>
-    <string name="p_story_skip">"Story Skip"</string>
     <string name="p_enable_withdraw">"Enable Withdraw"</string>
     <string name="p_stop_on_ce_get">"Stop on CE GET"</string>
     <string name="p_stop_on_first_clear_rewards">"Stop on first-clear rewards"</string>

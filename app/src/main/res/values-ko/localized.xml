@@ -115,7 +115,6 @@
     <string name="p_game_server_auto_detect">"자동 감지"</string>
     <string name="p_spam_summary">"위험 모드는 자동 표적 활성화가 필요합니다"</string>
     <string name="p_auto_choose_target">"대상 자동 선택"</string>
-    <string name="p_story_skip">"스토리 스킵"</string>
     <string name="p_enable_withdraw">"퇴각 활성화"</string>
     <string name="p_stop_on_ce_get">"예장 획득시 정지"</string>
     <string name="p_stop_on_first_clear_rewards">"초회 클리어 보상 수령시 정지"</string>

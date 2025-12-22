@@ -11,7 +11,7 @@ class FPLocations @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms
 ) : IScriptAreaTransforms by scriptAreaTransforms {
     // 9th anniversary adds 100x summon to the FP screen
-    private val afterAnni9 = gameServer is GameServer.Jp || gameServer is GameServer.Cn || gameServer is GameServer.Kr
+    private val afterAnni9 = gameServer is GameServer.Jp || gameServer is GameServer.Cn || gameServer is GameServer.Kr || gameServer is GameServer.En
 
     val summonCheck = if (afterAnni9)
         Region(250, 1121, 100, 143).xFromCenter()
