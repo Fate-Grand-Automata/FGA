@@ -96,6 +96,7 @@
     <string name="p_battle_config_server">"区服"</string>
     <string name="p_battle_config_card_priority">"指令卡优先级"</string>
     <string name="p_battle_config_use_servant_priority">"使用从者优先级"</string>
+    <string name="p_battle_config_use_chain_priority">"使用追击连携先级"</string>
     <string name="p_battle_config_support">"助战从者"</string>
     <string name="p_battle_config_support_selection_mode">"助战从者选取方式"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"备用选取方式"</string>
@@ -405,8 +406,6 @@
     <string name="support_imgs_extracting">"正在提取助战图片"</string>
     <string name="p_max_gold_ember_total_count">"金种火最大领取数（枚数）"</string>
     <string name="update_download_success">"下载成功。5秒后将重启APP。"</string>
-    <string name="p_battle_config_use_servant_priority">"使用从者优先级"</string>
-    <string name="p_battle_config_use_chain_priority">"使用追击连携先级"</string>
     <string name="skill_maker_soujuurou">"静希草十郎"</string>
     <string name="skill_maker_choices_3">"三选项"</string>
     <string-array name="skill_maker_choices_3_array_slot_1">
