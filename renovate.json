@@ -6,6 +6,7 @@
     ":prHourlyLimit2"
   ],
   "timezone": "Europe/Berlin",
+  "semanticCommits": false,
   "gradle": {
     "extends": [
       "schedule:monthly"
@@ -25,6 +26,19 @@
         "/^com.google.devtools.ksp/",
         "/^androidx.compose.compiler/"
       ]
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "addLabels": ["renovate::major"],
+      "prPriority": -1
+    },
+    {
+      "matchUpdateTypes": ["minor"],
+      "addLabels": ["renovate::minor"]
+    },
+    {
+      "matchUpdateTypes": ["patch"],
+      "addLabels": ["renovate::patch"]
     }
   ]
 }

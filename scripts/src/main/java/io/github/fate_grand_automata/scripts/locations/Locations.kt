@@ -21,10 +21,15 @@ class Locations @Inject constructor(
     val servant: ServantLevelLocations,
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
-    val continueRegion = when (gameServer) {
-        is GameServer.Jp -> Region(120, 1100, 800, 200).xFromCenter()
-        else -> Region(120, 1000, 800, 200).xFromCenter()
-    }
+    // 9th anniversary changes the repeat screen and extends to 15 parties
+    // don't forget to edit PartySelection.isSelectionExtended as well
+    private val afterAnni9 = gameServer is GameServer.Jp || gameServer is GameServer.Cn || gameServer is GameServer.En
+
+    val continueRegion = if (afterAnni9)
+        Region(120, 1100, 800, 200).xFromCenter()
+    else
+        Region(120, 1000, 800, 200).xFromCenter()
+
     val continueBoostClick = Location(-20, 1120).xFromCenter()
 
     val inventoryFullRegion = Region(-280, 860, 560, 190).xFromCenter()
@@ -93,27 +98,21 @@ class Locations @Inject constructor(
         BoostItem.Enabled.BoostItem3 -> Location(1280, 1000)
     }.xFromCenter()
 
-    val selectedPartyRegion = when (gameServer) {
-        // JP have 15 max party slots
-        is GameServer.Jp -> Region(-370, 62, 740, 72).xFromCenter()
-        else -> Region(-270, 62, 550, 72).xFromCenter()
-    }
+    val selectedPartyRegion = if (afterAnni9)
+        Region(-370, 62, 740, 72).xFromCenter()
+    else
+        Region(-270, 62, 550, 72).xFromCenter()
     
-    val partySelectionArray = when (gameServer) {
-        is GameServer.Jp -> (0..14).map {
+    val partySelectionArray: List<Location> = (0..14).map {
+        val x = if (afterAnni9) {
             // Party 8 is on the center
-            val x = ((it - 7) * 50)
-
-            Location(x, 100).xFromCenter()
-        }
-
-        else -> (0..14).map {
+            ((it - 7) * 50)
+        } else {
             // Party indicators are center-aligned
             // Party 11-15 are going to be on party 10 just in case
-            val x = ((min(it, 9) - 4.5) * 50).roundToInt()
-
-            Location(x, 100).xFromCenter()
+            ((min(it, 9) - 4.5) * 50).roundToInt()
         }
+        Location(x, 100).xFromCenter()
     }
 
     val menuStorySkipRegion = Region(960, 20, 300, 120).xFromCenter()
