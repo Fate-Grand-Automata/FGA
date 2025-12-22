@@ -62,8 +62,6 @@ class Locations @Inject constructor(
             .xFromRight()
             .yFromBottom()
 
-    val menuStorySkipYesClick = Location(320, 1100).xFromCenter()
-
     val retryRegion = Region(20, 1000, 700, 300).xFromCenter()
 
     val staminaScreenRegion = Region(-680, 200, 300, 300).xFromCenter()
@@ -114,9 +112,6 @@ class Locations @Inject constructor(
         }
         Location(x, 100).xFromCenter()
     }
-
-    val menuStorySkipRegion = Region(960, 20, 300, 120).xFromCenter()
-    val menuStorySkipClick = Location(1080, 80).xFromCenter()
 
     val resultFriendRequestRegion = Region(600, 150, 100, 94).xFromCenter()
     val resultFriendRequestRejectClick = Location(-680, 1200).xFromCenter()
