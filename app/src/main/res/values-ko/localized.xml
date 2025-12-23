@@ -98,6 +98,12 @@
     <string name="p_battle_config_support_fallback_selection_mode">"실패시 선택 모드"</string>
     <string name="p_battle_config_support_pref_servants">"서번트 선호"</string>
     <string name="p_battle_config_support_max_ascended">"최종재림"</string>
+    <string name="p_battle_config_support_grand_servant">"그랜드 서번트"</string>
+    <string name="p_battle_config_support_bond_ce_effect_preference">"Bond CE effect preference"</string>
+    <string name="p_battle_config_support_require_both_normal_and_reward_match">"Match both free slot &amp; bonus-up (Bond/FP/QP/EXP) slot"</string>
+    <string name="bond_ce_effect_ignore">"Ignore"</string>
+    <string name="bond_ce_effect_default">"Default effects"</string>
+    <string name="bond_ce_effect_np">"NP charge"</string>
     <string name="p_battle_config_support_pref_ces">"개념예장 선호"</string>
     <string name="p_battle_config_support_mlb">"최대해방 / 풀돌"</string>
     <string name="p_battle_config_support_friend_names">"친구 이름"</string>
@@ -109,7 +115,6 @@
     <string name="p_game_server_auto_detect">"자동 감지"</string>
     <string name="p_spam_summary">"위험 모드는 자동 표적 활성화가 필요합니다"</string>
     <string name="p_auto_choose_target">"대상 자동 선택"</string>
-    <string name="p_story_skip">"스토리 스킵"</string>
     <string name="p_enable_withdraw">"퇴각 활성화"</string>
     <string name="p_stop_on_ce_get">"예장 획득시 정지"</string>
     <string name="p_stop_on_first_clear_rewards">"초회 클리어 보상 수령시 정지"</string>
@@ -378,7 +383,7 @@
 
 아래 버튼을 누르신 후 필터에서 \"최적화 안 함\" 대신 \"모든 앱\"을 선택 후 FGA를 눌러서 최적화 안 함을 선택해주세요."</string>
     <string name="p_battery_optimization_action">"배터리 최적화 비활성화"</string>
-    <string name="p_battery_optimization_dontkillmyapp">"간혹 어떤 기종의 장비에서는 추가적으로 다른 최적화들을 비활성해야할 수 있습니다. 관련 설명은 dontkillmyapp.com (영어)에서 확인하실 수 있습니다."</string>
+    <string name="p_battery_optimization_dontkillmyapp">"간혹 어떤 기종의 장비에서는 추가적으로 다른 최적화들을 비활성해야할 수 있습니다. 관련 설명은 %s (영어)에서 확인하실 수 있습니다."</string>
     <string name="p_youtube_guide">"유튜브 가이드 영상"</string>
     <string name="p_youtube_guide_description">"파밍 설정 방법을 알려드리는 유튜브 영상(영어)이 있으니 확인해보시는 걸 추천드립니다."</string>
     <string name="p_youtube_guide_action">"가이드 열기 (영어)"</string>

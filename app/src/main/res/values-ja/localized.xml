@@ -101,6 +101,12 @@
     <string name="p_battle_config_support_fallback_selection_mode">"フォールバック"</string>
     <string name="p_battle_config_support_pref_servants">"選択するサーヴァント"</string>
     <string name="p_battle_config_support_max_ascended">"最終再臨"</string>
+    <string name="p_battle_config_support_grand_servant">"グランドサーヴァント"</string>
+    <string name="p_battle_config_support_bond_ce_effect_preference">"選択する絆礼装の効果"</string>
+    <string name="p_battle_config_support_require_both_normal_and_reward_match">"通常礼装＆報酬アップ(絆/FP/QP/EXP)礼装の両方に一致"</string>
+    <string name="bond_ce_effect_ignore">"判定をスキップする"</string>
+    <string name="bond_ce_effect_default">"通常効果"</string>
+    <string name="bond_ce_effect_np">"NPチャージ"</string>
     <string name="p_battle_config_support_pref_ces">"選択する概念礼装"</string>
     <string name="p_battle_config_support_mlb">"最大進化"</string>
     <string name="p_battle_config_support_friend_names">"フレンド名"</string>
@@ -112,7 +118,6 @@
     <string name="p_game_server_auto_detect">"自動選択"</string>
     <string name="p_spam_summary">"DANGERモードはDANGERエネミー(サーヴァント&gt;DANGERエネミー)を自動選択します"</string>
     <string name="p_auto_choose_target">"ターゲットの自動選択"</string>
-    <string name="p_story_skip">"ストーリースキップ"</string>
     <string name="p_enable_withdraw">"全滅時に撤退"</string>
     <string name="p_stop_on_ce_get">"概念礼装を入手したら停止"</string>
     <string name="p_stop_on_first_clear_rewards">"初回クリア報酬を入手したら停止"</string>
@@ -335,6 +340,8 @@
     <string name="mat_golden_cauldron">"黄金釜"</string>
     <string name="mat_universal_cube">"ユニバーサルキューブ"</string>
     <string name="mat_moonlight_nucleus">"月光核"</string>
+    <string name="mat_divine_lens">"神彩のレンズ"</string>
+    <string name="mat_holy_water_of_destiny">"天命の聖水"</string>
     <string name="mat_monument_saber">"セイバー モニュメント"</string>
     <string name="mat_monument_archer">"アーチャー モニュメント"</string>
     <string name="mat_monument_lancer">"ランサー モニュメント"</string>
@@ -391,7 +398,7 @@
 
 ボタンを押した後、アプリフィルターを「最近開いたアプリ」から「すべてのアプリ」に切り替え、FGAを「制限なし」に設定してください。"</string>
     <string name="p_battery_optimization_action">"バッテリー使用最適化が無効"</string>
-    <string name="p_battery_optimization_dontkillmyapp">"また、お使いのデバイス固有の最適化を無効にする必要があるかもしれません。ガイドはdontkillmyapp.comでご覧いただけます。"</string>
+    <string name="p_battery_optimization_dontkillmyapp">"また、お使いのデバイス固有の最適化を無効にする必要があるかもしれません。ガイドは%sでご覧いただけます。"</string>
     <string name="p_youtube_guide">"Youtube ガイド"</string>
     <string name="p_youtube_guide_description">"Youtube ガイドを見ることをお勧めします。このビデオで設定方法を教えてくれます。"</string>
     <string name="p_youtube_guide_action">"ガイドを開く"</string>
@@ -404,33 +411,5 @@
     <string name="skill_maker_kukulkan_choice_2">"10個消費する"</string>
 
     <string name="p_battle_config_use_servant_priority">"サーヴァントの優先順位を設定する"</string>
-    <string name="reset_all"></string>
-    <string name="reset_to_default"></string>
-    <string name="p_choose_app_language"></string>
-    <string name="p_app_language"></string>
-    <string name="p_treat_support_like_own_servant"></string>
-    <string name="p_treat_support_like_own_servant_summary"></string>
-    <string name="skill_maker_main_delete_selected"></string>
-    <string name="skill_maker_main_wave"></string>
-    <string name="skill_maker_main_turn"></string>
-    <string name="p_screenshot_bond"></string>
-    <string name="p_screenshot_bond_summary"></string>
-    <string name="bond_level_up"></string>
-    <string name="servant_enhancement"></string>
-    <string name="servant_enhancement_no_embers_or_qp_left"></string>
-    <string name="servert_enhancement_warning_notice"></string>
-    <string name="servant_enhancement_redirect_ascension_question"></string>
-    <string name="servant_enhancement_perform_ascension_question"></string>
-    <string name="servant_enhancement_perform_ascension_warning"></string>
-    <string name="servant_enhancement_redirect_grail"></string>
-    <string name="servant_enhancement_redirect_ascension_success"></string>
-    <string name="servant_enhancement_redirect_grail_success"></string>
-    <string name="servant_enhancement_perform_ascension_failed"></string>
-    <string name="servant_enhancement_max_level"></string>
-    <string name="servant_enhancement_none_selected"></string>
-    <string name="servant_enhancement_aborted"></string>
-    <string name="note"></string>
-    <string name="p_hide_sq_in_resource"></string>
-    <string name="p_hide_sq_in_resource_summary"></string>
 
 </resources>

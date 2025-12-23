@@ -82,9 +82,6 @@ class AutoBattle @Inject constructor(
 
     private var isContinuing = false
 
-    // for tracking whether the story skip button could be visible in the current screen
-    private var storySkipPossible = true
-
     // for tracking whether to check for servant death and wave transition animations
     private var isInBattle = false
 
@@ -98,7 +95,7 @@ class AutoBattle @Inject constructor(
             loop()
         } catch (e: BattleExitException) {
             throw ExitException(e.reason, makeExitState())
-        } catch (e: ScriptAbortException) {
+        } catch (_: ScriptAbortException) {
             throw ExitException(ExitReason.Abort, makeExitState())
         } catch (e: Exception) {
             val reason = ExitReason.Unexpected(e)
@@ -177,7 +174,6 @@ class AutoBattle @Inject constructor(
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { battle.isIdle() } to {
-                storySkipPossible = false
                 isInBattle = true
                 battle.performBattle()
             },
@@ -192,7 +188,6 @@ class AutoBattle @Inject constructor(
             { isRepeatScreen() } to { repeatQuest() },
             { isInInterludeEndScreen() } to { locations.interludeCloseClick.click() },
             { withdraw.needsToWithdraw() } to { withdraw.withdraw() },
-            { needsToStorySkip() } to { skipStory() },
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() },
@@ -323,7 +318,6 @@ class AutoBattle @Inject constructor(
         locations.resultClick.click(
             times = if (prefs.screenshotBond) 5 else 15
         )
-        storySkipPossible = true
     }
 
     private fun isInDropsScreen() =
@@ -339,11 +333,12 @@ class AutoBattle @Inject constructor(
         locations.resultMatRewardsRegion.click()
     }
 
-    private fun isInOrdealCallOutOfPodsScreen(): Boolean {
-        // Lock the Ordeal Call for JP server
-        if (prefs.gameServer !is GameServer.Jp) return false
+    private fun isInOrdealCallConfirmPodUseScreen(): Boolean {
+        return findImage(locations.ordealCallConfirmPodUseRegion, Images.StartQuest)
+    }
 
-        return images[Images.Close] in locations.ordealCallOutOfPodsRegion
+    private fun isInOrdealCallOutOfPodsScreen(): Boolean {
+        return findImage(locations.ordealCallOutOfPodsRegion, Images.Close)
     }
 
     private fun ordealCallOutOfPods() {
@@ -369,7 +364,6 @@ class AutoBattle @Inject constructor(
     private fun repeatQuest() {
         // Needed to show we don't need to enter the "StartQuest" function
         isContinuing = true
-        storySkipPossible = false
 
         // Pressing Continue option after completing a quest, resetting the state as would occur in "Menu" function
         battle.resetState()
@@ -444,19 +438,6 @@ class AutoBattle @Inject constructor(
     }
 
     /**
-     * Checks if the SKIP button exists on the screen.
-     */
-    private fun needsToStorySkip() =
-        prefs.storySkip && storySkipPossible &&
-                locations.menuStorySkipRegion.exists(images[Images.StorySkip], similarity = 0.7)
-
-    private fun skipStory() {
-        locations.menuStorySkipClick.click()
-        0.5.seconds.wait()
-        locations.menuStorySkipYesClick.click()
-    }
-
-    /**
      * Checks if BetterFGO is running and an NP is starting.
      */
     private fun isStartingNp() =
@@ -483,7 +464,6 @@ class AutoBattle @Inject constructor(
      * Starts the quest after the support has already been selected. The following features are done optionally:
      * 1. The configured party is selected if it is set in the selected AutoSkill config
      * 2. A boost item is selected if [IPreferences.boostItemSelectionMode] is set (needed in some events)
-     * 3. The story is skipped if [IPreferences.storySkip] is activated
      */
     private
 
@@ -495,7 +475,6 @@ class AutoBattle @Inject constructor(
         2.seconds.wait()
 
         useBoostItem()
-        storySkipPossible = true
     }
 
     /**
@@ -520,15 +499,18 @@ class AutoBattle @Inject constructor(
 
         var closeScreen = false
         var inventoryFull = false
+        var confirmPodUsage = false
 
         useSameSnapIn {
             closeScreen = isInOrdealCallOutOfPodsScreen()
             inventoryFull = isInventoryFull()
+            confirmPodUsage = isInOrdealCallConfirmPodUseScreen()
         }
 
         when {
             closeScreen -> throw BattleExitException(ExitReason.LimitRuns(state.runs))
             inventoryFull -> throw BattleExitException(ExitReason.InventoryFull)
+            confirmPodUsage -> locations.ordealCallConfirmPodUseRegion.center.click()
         }
 
         refill.refill()

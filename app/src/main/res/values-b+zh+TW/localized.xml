@@ -98,6 +98,12 @@ Order Change"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"備用選取方式"</string>
     <string name="p_battle_config_support_pref_servants">"偏好從者"</string>
     <string name="p_battle_config_support_max_ascended">"最終再臨"</string>
+    <string name="p_battle_config_support_grand_servant">"冠位從者"</string>
+    <string name="p_battle_config_support_bond_ce_effect_preference">"Bond CE effect preference"</string>
+    <string name="p_battle_config_support_require_both_normal_and_reward_match">"Match both free slot &amp; bonus-up (Bond/FP/QP/EXP) slot"</string>
+    <string name="bond_ce_effect_ignore">"Ignore"</string>
+    <string name="bond_ce_effect_default">"Default effects"</string>
+    <string name="bond_ce_effect_np">"NP charge"</string>
     <string name="p_battle_config_support_pref_ces">"偏好禮裝"</string>
     <string name="p_battle_config_support_mlb">"滿破禮裝"</string>
     <string name="p_battle_config_support_friend_names">"好友名稱"</string>
@@ -109,7 +115,6 @@ Order Change"</string>
     <string name="p_game_server_auto_detect">"自動偵測"</string>
     <string name="p_spam_summary">"選擇 Danger 敵人時施放選項需開啟自動選取敵人"</string>
     <string name="p_auto_choose_target">"自動選取敵人"</string>
-    <string name="p_story_skip">"跳過劇情"</string>
     <string name="p_enable_withdraw">"啟用撤退"</string>
     <string name="p_stop_on_ce_get">"禮裝獲得自動停止"</string>
     <string name="p_stop_on_first_clear_rewards">"首次通關自動停止"</string>
@@ -381,7 +386,7 @@ Order Change"</string>
 
 點選按鈕後，請選擇 FGA 並將設定調整為「不進行最佳化」"</string>
     <string name="p_battery_optimization_action">"關閉電池效能最佳化（系統設定）"</string>
-    <string name="p_battery_optimization_dontkillmyapp">"您可能需要調整更多對於您裝置的效能最佳化選項。請參考 dontkillmyapp.com"</string>
+    <string name="p_battery_optimization_dontkillmyapp">"您可能需要調整更多對於您裝置的效能最佳化選項。請參考 %s"</string>
     <string name="p_youtube_guide">"Youtube 教學"</string>
     <string name="p_youtube_guide_description">"請參考此 Youtube 教學影片以認識如何新增自動腳本"</string>
     <string name="p_youtube_guide_action">"至 Youtube 觀看"</string>
@@ -390,32 +395,4 @@ Order Change"</string>
     <string name="p_max_gold_ember_total_count">"金種火最大領取數（總枚數）"</string>
     <string name="update_download_success">"更新已下載完成，於 5 秒鐘後重啟"</string>
     <string name="p_battle_config_use_servant_priority">"偏好從者"</string>
-    <string name="reset_all"></string>
-    <string name="reset_to_default"></string>
-    <string name="p_choose_app_language"></string>
-    <string name="p_app_language"></string>
-    <string name="p_treat_support_like_own_servant"></string>
-    <string name="p_treat_support_like_own_servant_summary"></string>
-    <string name="skill_maker_main_delete_selected"></string>
-    <string name="skill_maker_main_wave"></string>
-    <string name="skill_maker_main_turn"></string>
-    <string name="p_screenshot_bond"></string>
-    <string name="p_screenshot_bond_summary"></string>
-    <string name="bond_level_up"></string>
-    <string name="servant_enhancement"></string>
-    <string name="servant_enhancement_no_embers_or_qp_left"></string>
-    <string name="servert_enhancement_warning_notice"></string>
-    <string name="servant_enhancement_redirect_ascension_question"></string>
-    <string name="servant_enhancement_perform_ascension_question"></string>
-    <string name="servant_enhancement_perform_ascension_warning"></string>
-    <string name="servant_enhancement_redirect_grail"></string>
-    <string name="servant_enhancement_redirect_ascension_success"></string>
-    <string name="servant_enhancement_redirect_grail_success"></string>
-    <string name="servant_enhancement_perform_ascension_failed"></string>
-    <string name="servant_enhancement_max_level"></string>
-    <string name="servant_enhancement_none_selected"></string>
-    <string name="servant_enhancement_aborted"></string>
-    <string name="note"></string>
-    <string name="p_hide_sq_in_resource"></string>
-    <string name="p_hide_sq_in_resource_summary"></string>
-</resources>
+                                                                                                                </resources>

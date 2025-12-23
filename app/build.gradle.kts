@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
-
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -23,14 +21,17 @@ android {
         buildConfig = true
     }
 
-    kotlinOptions {
-        freeCompilerArgs += "-opt-in=androidx.compose.material.ExperimentalMaterialApi"
-        freeCompilerArgs += "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
-        freeCompilerArgs += "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi"
-        freeCompilerArgs += "-opt-in=androidx.compose.animation.ExperimentalAnimationApi"
-        freeCompilerArgs += "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi"
-        freeCompilerArgs += "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi"
-        freeCompilerArgs += "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi"
+    kotlin {
+        compilerOptions {
+            optIn.add("androidx.compose.material.ExperimentalMaterialApi")
+            optIn.add("androidx.compose.material.ExperimentalMaterialApi")
+            optIn.add("androidx.compose.material3.ExperimentalMaterial3Api")
+            optIn.add("androidx.compose.foundation.ExperimentalFoundationApi")
+            optIn.add("androidx.compose.animation.ExperimentalAnimationApi")
+            optIn.add("androidx.compose.ui.ExperimentalComposeUiApi")
+            optIn.add("androidx.compose.foundation.layout.ExperimentalLayoutApi")
+            optIn.add("androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi")
+        }
     }
 
     androidResources {
@@ -137,7 +138,6 @@ dependencies {
 
 
 
-    implementation(libs.accompanist.pager.indicators)
     implementation(libs.accompanist.permissions)
 
     implementation(libs.google.android.play.update.ktx)

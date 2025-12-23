@@ -101,6 +101,12 @@ Skills"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"Fallback"</string>
     <string name="p_battle_config_support_pref_servants">"Preferred Servants"</string>
     <string name="p_battle_config_support_max_ascended">"Max-ascended"</string>
+    <string name="p_battle_config_support_grand_servant">"Grand Servant"</string>
+    <string name="p_battle_config_support_bond_ce_effect_preference">"Bond CE effect preference"</string>
+    <string name="p_battle_config_support_require_both_normal_and_reward_match">"Match both free slot &amp; bonus-up (Bond/FP/QP/EXP) slot"</string>
+    <string name="bond_ce_effect_ignore">"Ignore"</string>
+    <string name="bond_ce_effect_default">"Default effects"</string>
+    <string name="bond_ce_effect_np">"NP charge"</string>
     <string name="p_battle_config_support_pref_ces">"Preferred CEs"</string>
     <string name="p_battle_config_support_mlb">"Max-limit broken"</string>
     <string name="p_battle_config_support_friend_names">"Friend names"</string>
@@ -112,7 +118,6 @@ Skills"</string>
     <string name="p_game_server_auto_detect">"Auto-detect"</string>
     <string name="p_spam_summary">"Danger mode requires Auto-targeting"</string>
     <string name="p_auto_choose_target">"Auto choose target"</string>
-    <string name="p_story_skip">"Story Skip"</string>
     <string name="p_enable_withdraw">"Enable Withdraw"</string>
     <string name="p_stop_on_ce_get">"Stop on CE GET"</string>
     <string name="p_stop_on_first_clear_rewards">"Stop on first-clear rewards"</string>
@@ -323,6 +328,8 @@ Please turn on accessibility for this app from System settings. If it is already
     <string name="mat_golden_cauldron">Golden Cauldron</string>
     <string name="mat_universal_cube">Universal Cube</string>
     <string name="mat_moonlight_nucleus">Moonlight Nucleus</string>
+    <string name="mat_divine_lens">Divine Lens</string>
+    <string name="mat_holy_water_of_destiny">Holy Water of Destiny</string>
     <string name="mat_monument_saber">"Saber Monument"</string>
     <string name="mat_monument_archer">"Archer Monument"</string>
     <string name="mat_monument_lancer">"Lancer Monument"</string>
@@ -379,7 +386,7 @@ Please turn on accessibility for this app from System settings. If it is already
 
 After pressing on the button, switch the app filter from \"Not optimized\" to \"All apps\" and set FGA to \"Do not optimize\"."</string>
     <string name="p_battery_optimization_action">"Disable battery optimization"</string>
-    <string name="p_battery_optimization_dontkillmyapp">"You may also need to disable more optimizations specific to your device. Guides are available on dontkillmyapp.com."</string>
+    <string name="p_battery_optimization_dontkillmyapp">"You may also need to disable more optimizations specific to your device. Guides are available on %s."</string>
     <string name="p_youtube_guide">"Youtube guide"</string>
     <string name="p_youtube_guide_description">"It's recommended to watch the Youtube guide as it will teach you how to set up farming configurations."</string>
     <string name="p_youtube_guide_action">"Open guide"</string>

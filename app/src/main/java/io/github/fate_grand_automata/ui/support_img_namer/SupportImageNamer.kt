@@ -55,7 +55,38 @@ private fun getSupportEntries(
         SupportImageKind.CE,
         frame.findViewById(R.id.support_img_ce_1)
     )
-
+    val ce2 = SupportImgEntry(
+        SupportImageMaker.getCeImgPath(
+            tempDir,
+            2
+        ),
+        SupportImageKind.CE,
+        frame.findViewById(R.id.support_img_ce_2)
+    )
+    val ce3 = SupportImgEntry(
+        SupportImageMaker.getCeImgPath(
+            tempDir,
+            3
+        ),
+        SupportImageKind.CE,
+        frame.findViewById(R.id.support_img_ce_3)
+    )
+    val ce4 = SupportImgEntry(
+        SupportImageMaker.getCeImgPath(
+            tempDir,
+            4
+        ),
+        SupportImageKind.CE,
+        frame.findViewById(R.id.support_img_ce_4)
+    )
+    val ce5 = SupportImgEntry(
+        SupportImageMaker.getCeImgPath(
+            tempDir,
+            5
+        ),
+        SupportImageKind.CE,
+        frame.findViewById(R.id.support_img_ce_5)
+    )
     val friend0 = SupportImgEntry(
         SupportImageMaker.getFriendImgPath(
             tempDir,
@@ -73,7 +104,7 @@ private fun getSupportEntries(
         frame.findViewById(R.id.support_img_friend_1)
     )
 
-    return listOf(servant0, servant1, ce0, ce1, friend0, friend1)
+    return listOf(servant0, servant1, ce0, ce1, ce2, ce3, ce4, ce5, friend0, friend1)
 }
 
 suspend fun showSupportImageNamer(context: Context, storageProvider: StorageProvider) = withContext(Dispatchers.Main) {
