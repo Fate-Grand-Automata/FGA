@@ -459,6 +459,12 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_treat_support_like_own_servant">Treat Support like own Servants</string>
     <string name="p_treat_support_like_own_servant_summary">Will do normal face card checks instead of looking for the "Support" icon on face cards. This solves problems with super-buffed Support Servants, but will break card priority if you have 2 of the same Servant in the party.</string>
 
+
+    <string name="p_script_mode_play_button_detection">Play Button Detection</string>
+    <string name="p_play_button_detection_explanation">Place the play button on the bottom left of the screen for optimal configuration</string>
+    <string name="p_ignore_play_button_detection_further_warning">Ignore further warning about play button\'s location.</string>
+    <string name="p_ignore_play_button_detection_warning">Ignore warning about play button\'s location.</string>
+
     <string name="p_screenshot_bond">"Screenshot Bond"</string>
     <string name="p_screenshot_bond_summary">"Experimental screenshot of bond level up regardless of level to 'bond' folder\nNote: Auto-click on another results screen might cause occasional missed screenshots, potentially skipping the bond level-up."</string>
     <string name="p_hide_sq_in_resource">Hide SQ in AP Resources</string>
@@ -480,4 +486,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
     <string name="servant_enhancement_aborted">Enhancement was aborted</string>
     <string name="note">"Note:"</string>
+
+
 </resources>
+

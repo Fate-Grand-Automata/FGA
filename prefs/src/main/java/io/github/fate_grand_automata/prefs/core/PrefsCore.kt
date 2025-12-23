@@ -6,6 +6,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.lib_automata.Location
+import io.github.lib_automata.Region
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -101,6 +102,26 @@ class PrefsCore @Inject constructor(
         },
         default = Location()
     )
+
+    val playButtonRegion = maker.serialized(
+        "play_button_region",
+        serializer = object : Serializer<Region> {
+            override fun deserialize(serialized: String) =
+                try {
+                    val split = serialized.split(',')
+
+                    Region(split[0].toInt(), split[1].toInt(), split[2].toInt(), split[3].toInt())
+                } catch (e: Exception) {
+                    Region(x = 0, y = 0, height = 1, width = 1)
+                }
+
+            override fun serialize(value: Region) =
+                "${value.x},${value.y},${value.width},${value.height}"
+        },
+        default = Region(x = 0, y = 0, height = 1, width = 1)
+    )
+
+    val ignorePlayButtonDetectionWarning = maker.bool("ignore_play_button_detection_warning")
 
     val gameAreaMode = maker.enum("game_area_mode", GameAreaMode.Default)
     val gameOffsetLeft = maker.int("game_offset_left", 0)

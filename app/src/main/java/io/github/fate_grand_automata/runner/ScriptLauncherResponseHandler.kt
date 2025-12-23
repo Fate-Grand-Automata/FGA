@@ -51,8 +51,13 @@ class ScriptLauncherResponseHandler @Inject constructor(
                 ScriptModeEnum.Battle
             }
 
+            is ScriptLauncherResponse.PlayButtonDetection -> {
+                ScriptModeEnum.PlayButtonDetection
+            }
+
             is ScriptLauncherResponse.ServantEnhancement -> {
                 ScriptModeEnum.ServantLevel
+
             }
         }
     }

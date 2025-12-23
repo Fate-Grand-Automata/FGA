@@ -17,4 +17,6 @@ interface ScriptEntryPoint {
     fun servantLevel(): AutoServantLevel
 
     fun autoDetect(): AutoDetect
+
+    fun playButtonDetection(): AutoNotifyError
 }
