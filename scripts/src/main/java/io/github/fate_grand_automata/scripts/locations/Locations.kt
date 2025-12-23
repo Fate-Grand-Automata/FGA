@@ -22,7 +22,8 @@ class Locations @Inject constructor(
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
     // 9th anniversary changes the repeat screen and extends to 15 parties
-    private val afterAnni9 = gameServer is GameServer.Jp || gameServer is GameServer.Cn
+    // don't forget to edit PartySelection.isSelectionExtended as well
+    private val afterAnni9 = gameServer is GameServer.Jp || gameServer is GameServer.Cn || gameServer is GameServer.En
 
     val continueRegion = if (afterAnni9)
         Region(120, 1100, 800, 200).xFromCenter()
@@ -32,6 +33,8 @@ class Locations @Inject constructor(
     val continueBoostClick = Location(-20, 1120).xFromCenter()
 
     val inventoryFullRegion = Region(-280, 860, 560, 190).xFromCenter()
+
+    val ordealCallConfirmPodUseRegion = Region(190, 1096, 420, 62).xFromCenter()
 
     val ordealCallOutOfPodsRegion = Region(-112, 1088, 219, 72).xFromCenter()
 
@@ -58,8 +61,6 @@ class Locations @Inject constructor(
         else Location(-160, -90))
             .xFromRight()
             .yFromBottom()
-
-    val menuStorySkipYesClick = Location(320, 1100).xFromCenter()
 
     val retryRegion = Region(20, 1000, 700, 300).xFromCenter()
 
@@ -111,9 +112,6 @@ class Locations @Inject constructor(
         }
         Location(x, 100).xFromCenter()
     }
-
-    val menuStorySkipRegion = Region(960, 20, 300, 120).xFromCenter()
-    val menuStorySkipClick = Location(1080, 80).xFromCenter()
 
     val resultFriendRequestRegion = Region(600, 150, 100, 94).xFromCenter()
     val resultFriendRequestRejectClick = Location(-680, 1200).xFromCenter()
