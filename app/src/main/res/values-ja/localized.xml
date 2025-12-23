@@ -101,6 +101,12 @@
     <string name="p_battle_config_support_fallback_selection_mode">"フォールバック"</string>
     <string name="p_battle_config_support_pref_servants">"選択するサーヴァント"</string>
     <string name="p_battle_config_support_max_ascended">"最終再臨"</string>
+    <string name="p_battle_config_support_grand_servant">"グランドサーヴァント"</string>
+    <string name="p_battle_config_support_bond_ce_effect_preference">"選択する絆礼装の効果"</string>
+    <string name="p_battle_config_support_require_both_normal_and_reward_match">"通常礼装＆報酬アップ(絆/FP/QP/EXP)礼装の両方に一致"</string>
+    <string name="bond_ce_effect_ignore">"判定をスキップする"</string>
+    <string name="bond_ce_effect_default">"通常効果"</string>
+    <string name="bond_ce_effect_np">"NPチャージ"</string>
     <string name="p_battle_config_support_pref_ces">"選択する概念礼装"</string>
     <string name="p_battle_config_support_mlb">"最大進化"</string>
     <string name="p_battle_config_support_friend_names">"フレンド名"</string>
@@ -112,7 +118,6 @@
     <string name="p_game_server_auto_detect">"自動選択"</string>
     <string name="p_spam_summary">"DANGERモードはDANGERエネミー(サーヴァント&gt;DANGERエネミー)を自動選択します"</string>
     <string name="p_auto_choose_target">"ターゲットの自動選択"</string>
-    <string name="p_story_skip">"ストーリースキップ"</string>
     <string name="p_enable_withdraw">"全滅時に撤退"</string>
     <string name="p_stop_on_ce_get">"概念礼装を入手したら停止"</string>
     <string name="p_stop_on_first_clear_rewards">"初回クリア報酬を入手したら停止"</string>
@@ -393,7 +398,7 @@
 
 ボタンを押した後、アプリフィルターを「最近開いたアプリ」から「すべてのアプリ」に切り替え、FGAを「制限なし」に設定してください。"</string>
     <string name="p_battery_optimization_action">"バッテリー使用最適化が無効"</string>
-    <string name="p_battery_optimization_dontkillmyapp">"また、お使いのデバイス固有の最適化を無効にする必要があるかもしれません。ガイドはdontkillmyapp.comでご覧いただけます。"</string>
+    <string name="p_battery_optimization_dontkillmyapp">"また、お使いのデバイス固有の最適化を無効にする必要があるかもしれません。ガイドは%sでご覧いただけます。"</string>
     <string name="p_youtube_guide">"Youtube ガイド"</string>
     <string name="p_youtube_guide_description">"Youtube ガイドを見ることをお勧めします。このビデオで設定方法を教えてくれます。"</string>
     <string name="p_youtube_guide_action">"ガイドを開く"</string>

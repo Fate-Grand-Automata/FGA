@@ -97,6 +97,12 @@ Master"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"Dự phòng"</string>
     <string name="p_battle_config_support_pref_servants">"Servants được ưu tiên"</string>
     <string name="p_battle_config_support_max_ascended">"Tăng tối đa"</string>
+    <string name="p_battle_config_support_grand_servant">"Grand Servant"</string>
+    <string name="p_battle_config_support_bond_ce_effect_preference">"Bond CE effect preference"</string>
+    <string name="p_battle_config_support_require_both_normal_and_reward_match">"Match both free slot &amp; bonus-up (Bond/FP/QP/EXP) slot"</string>
+    <string name="bond_ce_effect_ignore">"Ignore"</string>
+    <string name="bond_ce_effect_default">"Default effects"</string>
+    <string name="bond_ce_effect_np">"NP charge"</string>
     <string name="p_battle_config_support_pref_ces">"CEs được ưu tiên"</string>
     <string name="p_battle_config_support_mlb">"Giới hạn tối đa được phá vỡ"</string>
     <string name="p_battle_config_support_friend_names">"Tên của bạn bè"</string>
@@ -108,7 +114,6 @@ Master"</string>
     <string name="p_game_server_auto_detect">"Tự động nhận diện"</string>
     <string name="p_spam_summary">"Chế độ nguy hiểm yêu cầu Tự động nhắm mục tiêu"</string>
     <string name="p_auto_choose_target">"Luôn tự động chọn mục tiêu"</string>
-    <string name="p_story_skip">"Bỏ qua cốt truyện"</string>
     <string name="p_enable_withdraw">"Bật \"Đầu hàng\""</string>
     <string name="p_stop_on_ce_get">"Dừng lại khi lấy được CE"</string>
     <string name="p_stop_on_first_clear_rewards">"Dừng lại ở phần thưởng đầu tiên"</string>
@@ -379,7 +384,7 @@ Vui lòng bật khả năng truy cập cho ứng dụng này từ cài đặt H�
 
 Sau khi nhấn nút, hãy chuyển bộ lọc ứng dụng từ \"Không được tối ưu hóa\" sang \"Tất cả ứng dụng\" và đặt FGA thành \"Không tối ưu hóa\"."</string>
     <string name="p_battery_optimization_action">"Vô hiệu hóa tối ưu hóa pin"</string>
-    <string name="p_battery_optimization_dontkillmyapp">"Bạn cũng có thể cần phải tắt nhiều tối ưu hóa cụ thể hơn cho thiết bị của mình. Hướng dẫn có sẵn trên dontkillmyapp.com."</string>
+    <string name="p_battery_optimization_dontkillmyapp">"Bạn cũng có thể cần phải tắt nhiều tối ưu hóa cụ thể hơn cho thiết bị của mình. Hướng dẫn có sẵn trên %s."</string>
     <string name="p_youtube_guide">"Hướng dẫn trên Youtube"</string>
     <string name="p_youtube_guide_description">"Bạn nên xem hướng dẫn Youtube vì nó sẽ hướng dẫn bạn cách thiết lập cấu hình khi farm."</string>
     <string name="p_youtube_guide_action">"Mở hướng dẫn"</string>
