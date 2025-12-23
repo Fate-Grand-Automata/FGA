@@ -200,8 +200,7 @@ private fun BattleConfigContent(
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .weight(1f),
-                                    contentAlignment = Alignment.Center
+                                        .weight(1f)
                                 ) {
                                     config.materials.Materials()
                                 }
