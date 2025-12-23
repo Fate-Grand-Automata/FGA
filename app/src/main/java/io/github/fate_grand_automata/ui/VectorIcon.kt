@@ -23,7 +23,7 @@ sealed class VectorIcon {
     }
 }
 
-fun icon(DrawableRes res: Int) =
+fun icon(@DrawableRes res: Int) =
     VectorIcon.Drawable(res)
 
 fun icon(vector: ImageVector) =
