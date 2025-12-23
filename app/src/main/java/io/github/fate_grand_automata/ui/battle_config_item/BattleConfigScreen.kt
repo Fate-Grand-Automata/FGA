@@ -200,7 +200,8 @@ private fun BattleConfigContent(
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .weight(1f)
+                                        .weight(1f),
+                                    contentAlignment = Alignment.Center
                                 ) {
                                     config.materials.Materials()
                                 }
@@ -217,17 +218,9 @@ private fun BattleConfigContent(
                                         stringResource(R.string.p_spam_spam).uppercase(),
                                         style = MaterialTheme.typography.bodySmall,
                                         modifier = Modifier
-                                            .padding(16.dp, 5.dp)
+                                            .padding(8.dp, 5.dp)
                                     )
-                                }                            
-                            }
-
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .height(IntrinsicSize.Min)
-                            ) {
-                                RaidDelay(config=config)
+                                }
 
                                 VerticalDivider()
 
@@ -236,6 +229,10 @@ private fun BattleConfigContent(
                                 VerticalDivider()
 
                                 PartySelection(config)
+
+                                VerticalDivider()
+
+                                RaidDelay(config=config)
                             }
 
                             HorizontalDivider()

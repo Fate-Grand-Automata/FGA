@@ -163,7 +163,7 @@ fun RaidDelay(
             .clickable(
                 onClick = { dialog.show() }
             )
-            .padding(16.dp, 5.dp),
+            .padding(8.dp, 5.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
