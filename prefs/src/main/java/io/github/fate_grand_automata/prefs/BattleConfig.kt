@@ -44,6 +44,8 @@ internal class BattleConfig(
 
     override var spam by prefs.spam
 
+    override val storyIntroSkip by prefs.storyIntroSkip
+
     override fun export(): Map<String, *> = prefs.export()
 
     override fun import(map: Map<String, *>) =

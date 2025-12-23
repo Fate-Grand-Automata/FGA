@@ -185,4 +185,6 @@ class BattleConfigCore(
     val support = SupportPrefsCore(maker)
 
     val autoChooseTarget = maker.bool("auto_choose_target")
+
+    val storyIntroSkip = maker.bool("story_intro_skip")
 }

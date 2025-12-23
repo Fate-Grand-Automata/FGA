@@ -207,6 +207,18 @@ private fun BattleConfigContent(
 
                                 VerticalDivider()
 
+                                ServerSelection(config)
+
+                                VerticalDivider()
+
+                                PartySelection(config)
+                            }
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .height(IntrinsicSize.Min)
+                            ) {
                                 Box(
                                     modifier = Modifier
                                         .fillMaxHeight()
@@ -222,12 +234,8 @@ private fun BattleConfigContent(
                                 }
 
                                 VerticalDivider()
-
-                                ServerSelection(config)
-
-                                VerticalDivider()
-
-                                PartySelection(config)
+                                
+                                StoryIntro(config = config)
                             }
 
                             HorizontalDivider()

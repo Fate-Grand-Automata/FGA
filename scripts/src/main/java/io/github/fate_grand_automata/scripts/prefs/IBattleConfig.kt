@@ -28,6 +28,8 @@ interface IBattleConfig {
 
     val server: GameServer?
 
+    val storyIntroSkip : Boolean
+
     fun export(): Map<String, *>
 
     fun import(map: Map<String, *>)
