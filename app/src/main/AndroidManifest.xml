@@ -23,6 +23,23 @@
             android:label="Skill Maker"
             android:screenOrientation="sensorLandscape" />
 
+        <activity
+            android:name=".accessibility.tileFGAApp.FGATileMediaProjectionResultActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:exported="false" />
+
+        <service
+            android:name=".accessibility.tileFGAApp.FGATileService"
+            android:exported="true"
+            android:label="FGA Service"
+            android:icon="@drawable/ic_notification_icon"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            >
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
         <service
             android:name=".runner.ScriptRunnerService"
             android:foregroundServiceType="mediaProjection|specialUse">
