@@ -18,8 +18,8 @@ class DragSortAdapter<T>(
     private val viewConfigGrabber: (T) -> ItemViewConfig
 ) : RecyclerView.Adapter<DragSortAdapter.ViewHolder>(), IItemTouchHelperAdapter {
     class ItemViewConfig(
-        @ColorInt val foregroundColor: Int,
-        @ColorInt val backgroundColor: Int,
+        @param:ColorInt val foregroundColor: Int,
+        @param:ColorInt val backgroundColor: Int,
         val text: String
     )
 
