@@ -485,4 +485,12 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
     <string name="servant_enhancement_aborted">Enhancement was aborted</string>
     <string name="note">"Note:"</string>
+
+    <string name="p_battle_config_raid">"Raid"</string>
+    <string name="p_battle_config_raid_delay">"Raid Turn Delay"</string>
+    <string name="p_battle_config_raid_delay_message">This adds extra turn delay used for raids.</string>
+    <string name="state_on">On</string>
+    <string name="state_off">Off</string>
+    <string name="save">Save</string>
+    <string name="reset">Reset</string>
 </resources>

@@ -42,6 +42,10 @@ internal class BattleConfig(
         }
     )
 
+    override val addRaidTurnDelay by prefs.addRaidTurnDelay
+
+    override val raidTurnDelaySeconds by prefs.raidTurnDelaySeconds
+
     override var spam by prefs.spam
 
     override val storyIntroSkip by prefs.storyIntroSkip

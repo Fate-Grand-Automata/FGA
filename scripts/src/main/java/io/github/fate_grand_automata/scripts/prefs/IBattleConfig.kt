@@ -29,6 +29,8 @@ interface IBattleConfig {
     val server: GameServer?
 
     val storyIntroSkip : Boolean
+    val addRaidTurnDelay: Boolean
+    val raidTurnDelaySeconds : Int
 
     fun export(): Map<String, *>
 
