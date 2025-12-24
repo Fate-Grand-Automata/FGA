@@ -27,7 +27,7 @@ import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.prefs.remember
 
 @Composable
-fun StoryIntro(
+fun RaidAnimationIntro(
     modifier: Modifier = Modifier,
     config: BattleConfigCore
 ){

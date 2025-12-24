@@ -243,7 +243,7 @@ private fun BattleConfigContent(
                                 
                                 VerticalDivider()
                                 
-                                StoryIntro(config = config)
+                                RaidAnimationIntro(config = config)
                             }
 
                             HorizontalDivider()
