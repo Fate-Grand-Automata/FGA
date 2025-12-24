@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 @Singleton
 class DisplayHelper @Inject constructor(
-    @ApplicationContext val context: Context,
+    @param:ApplicationContext val context: Context,
     private val windowManager: WindowManager,
 ) {
     @Suppress("DEPRECATION")
