@@ -85,6 +85,8 @@ class AutoBattle @Inject constructor(
     // for tracking whether to check for servant death and wave transition animations
     private var isInBattle = false
 
+    // for skipping some intro before the quest starts
+    private var isIntroSkipped = false
 
     private var canScreenshotBondCE = false
 
@@ -175,6 +177,7 @@ class AutoBattle @Inject constructor(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { battle.isIdle() } to {
                 isInBattle = true
+                isIntroSkipped = false
                 battle.performBattle()
             },
             { isInMenu() } to { menu() },
@@ -188,6 +191,7 @@ class AutoBattle @Inject constructor(
             { isRepeatScreen() } to { repeatQuest() },
             { isInInterludeEndScreen() } to { locations.interludeCloseClick.click() },
             { withdraw.needsToWithdraw() } to { withdraw.withdraw() },
+            { shouldSkipStoryIntro() } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() },
@@ -320,6 +324,14 @@ class AutoBattle @Inject constructor(
         )
     }
 
+    /**
+     * There is some intro done before the quest starts for Raids
+     * Usually it is in-between Support Selection setup and story skip/battle quest start
+     *
+     * This is an Experimental feature to skip that
+     */
+    private fun shouldSkipStoryIntro() = prefs.selectedBattleConfig.storyIntroSkip && isIntroSkipped
+
     private fun isInDropsScreen() =
         images[Images.MatRewards] in locations.resultMatRewardsRegion
 
@@ -423,6 +435,7 @@ class AutoBattle @Inject constructor(
     // Selections Support option
     private fun support() {
         canScreenshotBondCE = false
+        isIntroSkipped = true
 
         support.selectSupport()
 

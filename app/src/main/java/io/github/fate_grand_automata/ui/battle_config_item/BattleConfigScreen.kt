@@ -220,18 +220,30 @@ private fun BattleConfigContent(
                                             .padding(8.dp, 5.dp)
                                     )
                                 }
+                            }
 
-                                VerticalDivider()
-
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .height(IntrinsicSize.Min)
+                            ) {
                                 ServerSelection(config)
 
                                 VerticalDivider()
 
-                                PartySelection(config)
-
-                                VerticalDivider()
-
+                                PartySelection(config)                                
+                            }
+                            
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .height(IntrinsicSize.Min)
+                            ) {
                                 RaidDelay(config=config)
+                                
+                                VerticalDivider()
+                                
+                                RaidAnimationIntro(config = config)
                             }
 
                             HorizontalDivider()

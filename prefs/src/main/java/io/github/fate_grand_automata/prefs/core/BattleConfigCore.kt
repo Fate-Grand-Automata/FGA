@@ -186,6 +186,7 @@ class BattleConfigCore(
 
     val autoChooseTarget = maker.bool("auto_choose_target")
 
+    val storyIntroSkip = maker.bool("story_intro_skip")
     val addRaidTurnDelay = maker.bool("add_raid_delay")
 
     val raidTurnDelaySeconds = maker.stringAsInt("raid_delay_seconds", 3)
