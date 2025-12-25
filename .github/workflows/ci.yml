@@ -102,7 +102,6 @@ jobs:
           artifacts: 'FGA-apk-${{ env.VERSION_CODE }}.zip'
           tag: 'v${{ env.VERSION_CODE }}'
           name: 'FGA ${{ env.VERSION_CODE }}'
-          prerelease: true
 
       - name: Add installation instructions to release
         uses: irongut/EditRelease@v1.2.0
