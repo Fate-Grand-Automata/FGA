@@ -118,6 +118,7 @@
     <string name="p_game_server_auto_detect">"自動選択"</string>
     <string name="p_spam_summary">"DANGERモードはDANGERエネミー(サーヴァント&gt;DANGERエネミー)を自動選択します"</string>
     <string name="p_auto_choose_target">"ターゲットの自動選択"</string>
+    <string name="p_story_skip">"ストーリースキップ"</string>
     <string name="p_enable_withdraw">"全滅時に撤退"</string>
     <string name="p_stop_on_ce_get">"概念礼装を入手したら停止"</string>
     <string name="p_stop_on_first_clear_rewards">"初回クリア報酬を入手したら停止"</string>
