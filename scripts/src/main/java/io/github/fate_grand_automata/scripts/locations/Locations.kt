@@ -169,4 +169,6 @@ class Locations @Inject constructor(
     val enhancementSkipRapidClick = Location(0, 1400).xFromCenter()
 
     val tempServantEnhancementLocation = Location(402, 1124).xFromCenter()
+
+    val animationSkipLocation = menuStorySkipClick - Location(200, 0)
 }
