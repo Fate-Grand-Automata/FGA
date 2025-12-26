@@ -55,6 +55,8 @@ class PrefsCore @Inject constructor(
     val limitFP = maker.int("fp_limit", 1)
     val receiveEmbersWhenGiftBoxFull = maker.bool("receive_embers_when_gift_box_full")
 
+    val lottoLongPressSeconds = maker.stringAsInt("lotto_long_press_seconds", 10)
+
     val supportSwipesPerUpdate = maker.int("support_swipes_per_update_x", 10)
     val supportMaxUpdates = maker.int("support_max_updates_x", 5)
 
@@ -93,7 +95,7 @@ class PrefsCore @Inject constructor(
                     val split = serialized.split(',')
 
                     Location(split[0].toInt(), split[1].toInt())
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     Location()
                 }
 
