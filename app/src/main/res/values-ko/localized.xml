@@ -125,6 +125,8 @@
     <string name="p_screenshot_drops_unmodified">"스크린샷을 수정하지 않고 저장"</string>
     <string name="p_screenshot_drops_unmodified_summary">"스크린샷을 저장할때 배율조정과 잘라내기가 적용되지 않은 전체화면 스크린샷을 사용"</string>
     <string name="p_boost_item">"부스트 아이템"</string>
+    <string name="p_servant_priority">"서번트 우선순위"</string>
+    <string name="p_chain_priority">"체인 우선순위"</string>
     <string name="p_brave_chains">"브레이브 체인"</string>
     <string name="p_rearrange_cards">"카드 재배열"</string>
     <string name="p_skip_servant_face_checks">"서번트 카드 아이콘 확인 생략"</string>
@@ -160,6 +162,8 @@
     <string name="p_fine_tune_min_similarity">"최소 유사도 (%)"</string>
     <string name="p_fine_tune_mlb_similarity">"최대해방 / 풀돌 유사도 (%)"</string>
     <string name="p_fine_tune_stage_counter_similarity">"스테이지 카운터 유사도 (%)"</string>
+    <string name="p_fine_tune_np_card_type_similarity">"보구랑 Buster/Arts/Quick 유사도 (%)"</string>
+    <string name="p_fine_tune_np_spam_card_detection_similarity">"반복 모드 보구랑 유사도 (%)"</string>
     <string name="p_fine_tune_clicks">"터치"</string>
     <string name="p_fine_tune_wait_after_clicking">"터치 후 딜레이 (ms)"</string>
     <string name="p_fine_tune_click_duration">"터치 지속 시간 (ms)"</string>
@@ -171,6 +175,7 @@
     <string name="p_fine_tune_wait">"딜레이"</string>
     <string name="p_fine_tune_skill_delay">"스킬 딜레이 (ms)"</string>
     <string name="p_fine_tune_wait_before_turn">"턴 시작 전 딜레이 (ms)"</string>
+    <string name="p_fine_tune_wait_after_order_change">"오더 체인지 후 딜레이 (ms)"</string>
     <string name="p_fine_tune_wait_before_cards">"카드 뜨기 전 딜레이 (ms)"</string>
     <string name="p_fine_tune_wait_multiplier">"딜레이 배율기 (%)"</string>
     <string name="troubleshoot">"문제 해결"</string>
@@ -183,7 +188,13 @@
     <string name="p_refill_type_sq">"성정석"</string>
     <string name="p_brave_chains_don_t_care">"상관 없음"</string>
     <string name="p_brave_chains_with_np">"보구랑 같이"</string>
+    <string name="p_brave_chains_always">"항상"</string>
     <string name="p_brave_chains_avoid">"자제"</string>
+    <string name="p_chain_type_quick">"Quick"</string>
+    <string name="p_chain_type_arts">"Arts"</string>
+    <string name="p_chain_type_buster">"Buster"</string>
+    <string name="p_chain_type_mighty">"Mighty"</string>
+    <string name="p_chain_type_avoid">"자제"</string>
     <string name="p_boost_item_disabled">"비활성화"</string>
     <string name="p_boost_item_skip">"스킵"</string>
     <string name="spam">"반복 모드"</string>
@@ -393,6 +404,7 @@
     <string name="p_max_gold_ember_total_count">"종화 획득 총량"</string>
     <string name="update_download_success">"다운로드가 완료되었습니다. 5초 내로 재시작됩니다."</string>
     <string name="p_battle_config_use_servant_priority">"서번트 우선순위 사용"</string>
+    <string name="p_battle_config_use_chain_priority">"체인 우선순위 사용"</string>
     <string name="reset_all">"모두 초기화"</string>
     <string name="reset_to_default">"기본값으로 초기화"</string>
     <string name="p_choose_app_language">"사용할 언어를 선택하세요"</string>
