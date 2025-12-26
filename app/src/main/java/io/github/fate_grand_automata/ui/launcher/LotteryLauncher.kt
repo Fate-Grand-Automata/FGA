@@ -22,7 +22,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
-import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.ui.Stepper
 
 @Composable
@@ -52,27 +51,25 @@ fun lotteryLauncher(
                 .padding(bottom = 16.dp)
         )
 
-        if (prefs.gameServer is GameServer.Jp) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    stringResource(R.string.p_lotto_long_press_duration),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Justify
-                )
-                Stepper(
-                    value = lottoLongPressSeconds,
-                    onValueChange = { lottoLongPressSeconds = it },
-                    valueRange = 10..30,
-                    valueRepresentation = { "${it}s" }
-                )
-            }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Text(
+                stringResource(R.string.p_lotto_long_press_duration),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier.weight(1f),
+                textAlign = TextAlign.Justify
+            )
+            Stepper(
+                value = lottoLongPressSeconds,
+                onValueChange = { lottoLongPressSeconds = it },
+                valueRange = 5..20,
+                valueRepresentation = { "${it}s" }
+            )
         }
 
         Row(

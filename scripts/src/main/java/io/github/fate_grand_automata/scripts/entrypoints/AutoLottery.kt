@@ -2,7 +2,6 @@ package io.github.fate_grand_automata.scripts.entrypoints
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
-import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.modules.ConnectionRetry
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
@@ -28,22 +27,8 @@ class AutoLottery @Inject constructor(
     class ExitException(val reason: ExitReason) : Exception()
 
     private fun spin() {
-        // Don't increase this too much or you'll regret when you're not able to stop the script
-        // And your phone won't let you press anything
-        locations.lottery.spinClick.click(20)
-    }
-
-    private fun spinLongClick() {
         locations.lottery.spinClick.longPress(prefs.lottoLongPressSeconds.seconds)
         1.seconds.wait()
-    }
-
-    /**
-     * Switch between the two different spin methods depending on the server
-     */
-    private fun spinGameServer() = when (prefs.gameServer) {
-        is GameServer.Jp, is GameServer.En -> spinLongClick()
-        else -> spin()
     }
 
     private fun presentBoxFull() {
@@ -106,7 +91,7 @@ class AutoLottery @Inject constructor(
                     .filter { (validator, _) -> validator() }
                     .map { (_, actor) -> actor }
                     .firstOrNull()
-            } ?: { spinGameServer() }
+            } ?: { spin() }
 
             actor.invoke()
         }
