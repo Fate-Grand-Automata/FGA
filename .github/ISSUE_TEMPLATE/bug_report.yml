@@ -37,7 +37,7 @@ body:
         The build number can be found on FGA's main screen at the top, it says BUILD:xxxx.
         
         Entering the number is enough.
-      placeholder: "2965"
+      placeholder: "3013"
     validations:
       required: true
   - type: textarea
