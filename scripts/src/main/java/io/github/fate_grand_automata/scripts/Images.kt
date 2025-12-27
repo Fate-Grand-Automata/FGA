@@ -16,6 +16,7 @@ enum class Images(val path: String) {
     LimitBroken("limitbroken.png"),
     SupportScreen("support_screen.png"),
     SupportConfirmSetupButton("support_region_tool.png"),
+    StorySkip("storyskip.png"),
     Menu("menu.png"),
     Stamina("stamina.png"),
     Result("result.png"),

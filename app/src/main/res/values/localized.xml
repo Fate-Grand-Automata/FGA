@@ -118,6 +118,8 @@ Skills"</string>
     <string name="p_game_server_auto_detect">"Auto-detect"</string>
     <string name="p_spam_summary">"Danger mode requires Auto-targeting"</string>
     <string name="p_auto_choose_target">"Auto choose target"</string>
+    <string name="p_story_skip">"Story Skip"</string>
+    <string name="p_story_skip_summary">"Skips the story automatically. This feature is very unstable and might cause FGA to break, use it at your own risk."</string>
     <string name="p_enable_withdraw">"Enable Withdraw"</string>
     <string name="p_stop_on_ce_get">"Stop on CE GET"</string>
     <string name="p_stop_on_first_clear_rewards">"Stop on first-clear rewards"</string>
@@ -480,4 +482,12 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
     <string name="servant_enhancement_aborted">Enhancement was aborted</string>
     <string name="note">"Note:"</string>
+
+    <string name="p_battle_config_raid">"Raid"</string>
+    <string name="p_battle_config_raid_delay">"Raid Turn Delay"</string>
+    <string name="p_battle_config_raid_delay_message">This adds extra turn delay used for raids.</string>
+    <string name="state_on">On</string>
+    <string name="state_off">Off</string>
+    <string name="save">Save</string>
+    <string name="reset">Reset</string>
 </resources>
