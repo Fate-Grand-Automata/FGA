@@ -11,7 +11,7 @@ sealed class VectorIcon {
     @Composable
     abstract fun asPainter(): Painter
 
-    class Drawable(@DrawableRes val res: Int): VectorIcon() {
+    class Drawable(@param:DrawableRes val res: Int): VectorIcon() {
         @Composable
         override fun asPainter() = painterResource(res)
     }

@@ -58,7 +58,7 @@ import kotlin.time.Duration.Companion.milliseconds
 @ServiceScoped
 class ScriptManager @Inject constructor(
     private val service: Service,
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val imageLoader: ImageLoader,
     private val preferences: IPreferences,
     private val prefsCore: PrefsCore,
@@ -67,7 +67,7 @@ class ScriptManager @Inject constructor(
     private val uiStateHolder: ScriptRunnerUIStateHolder,
     private val clipboardManager: ClipboardManager,
     private val messageBox: ScriptRunnerMessageBox,
-    @ServiceCoroutineScope private val scope: CoroutineScope,
+    @param:ServiceCoroutineScope private val scope: CoroutineScope,
     private val launcherResponseHandler: ScriptLauncherResponseHandler
 ) {
     var scriptState: ScriptState = ScriptState.Stopped
