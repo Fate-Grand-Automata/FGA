@@ -458,11 +458,15 @@ The Rearrange Cards feature orders the 3 strongest cards so the 2nd strongest is
 
 ![Face Cards](img/face-cards.jpg)
 
-If default card priority is used, FGA will pick these 3 cards:
+If default card priority is used, FGA will pick these 3 cards when Rearrange Cards option is enabled:
 - Jeanne Archer Buster (strongest card)
 - Castoria Buster (3rd strongest card)
 - Jeanne Archer Arts (2nd strongest card)
 
+instead of
+- Jeanne Archer Buster (strongest card)
+- Jeanne Archer Arts (2nd strongest card)
+- Castoria Buster (3rd strongest card)
 ___  
 
 ## Support Selection
