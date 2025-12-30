@@ -26,7 +26,7 @@ google_android_play_version = "2.1.0"
 activity_version = "1.10.1"
 mockk_version = "1.14.5"
 
-opencv_version = "4.11.0"
+opencv_version = "4.12.0"
 navigation_compose_version = "2.9.3"
 
 recyclerview_version = "1.4.0"
