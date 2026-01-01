@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.ui.prefs.StatusWrapper
+import kotlin.math.sign
 
 @Composable
 private fun DeltaButton(
@@ -41,8 +42,8 @@ private fun DeltaButton(
                 text,
                 modifier = Modifier
                     .holdRepeatClickable(
-                        onRepeat = {
-                            onCurrentValueChange((currentValue + delta).coerceIn(valueRange))
+                        onRepeat = { increment ->
+                            onCurrentValueChange((currentValue + delta + delta.sign * increment).coerceIn(valueRange))
                         },
                         onEnd = onCommit,
                         enabled = isEnabled

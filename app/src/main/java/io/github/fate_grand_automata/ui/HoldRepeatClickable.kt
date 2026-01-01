@@ -16,10 +16,12 @@ import androidx.compose.ui.input.pointer.pointerInput
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.pow
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 fun Modifier.holdRepeatClickable(
-    onRepeat: () -> Unit,
+    onRepeat: (Int) -> Unit,
     onEnd: () -> Unit,
     enabled: Boolean = true
 ) = composed {
@@ -45,22 +47,39 @@ fun Modifier.holdRepeatClickable(
                         val currentJob = scope.launch {
                             var first = false
 
+                            var increment = 0
+                            var totalRepeatInterval = 0.milliseconds
+                            var lastIncrementTime = 0.milliseconds
+                            val adjustmentFactor = 1.5
+
                             try {
                                 delay(longPressTimeout)
                                 var repeatInterval = 100.milliseconds
 
                                 while (rememberedIsEnabled) {
-                                    rememberedOnRepeat()
+                                    rememberedOnRepeat(increment)
                                     first = true
 
                                     delay(repeatInterval)
+
+                                    totalRepeatInterval += repeatInterval
+
+                                    if (totalRepeatInterval >= 1.seconds && totalRepeatInterval - lastIncrementTime >= 1.seconds) {
+                                        val factor = if (totalRepeatInterval > 3.seconds) 3 else 1
+                                        increment = (totalRepeatInterval.inWholeSeconds
+                                            .toFloat()
+                                            .pow(2) * factor * adjustmentFactor).toInt()
+                                        lastIncrementTime = totalRepeatInterval
+                                    } else {
+                                        increment = 0
+                                    }
 
                                     repeatInterval = (repeatInterval - repeatIntervalDelta)
                                         .coerceAtLeast(minRepeatInterval)
                                 }
                             } finally {
                                 if (!first) {
-                                    rememberedOnRepeat()
+                                    rememberedOnRepeat(0)
                                 }
                             }
                         }
