@@ -186,10 +186,10 @@ class AutoBattle @Inject constructor(
             { isInBondScreen() } to { handleBondScreen() },
             { isInResult() } to { result() },
             { isInDropsScreen() } to { dropScreen() },
-            { isInOrdealCallOutOfPodsScreen() } to { ordealCallOutOfPods() },
             { isInQuestRewardScreen() } to { questReward() },
             { isInSupport() } to { support() },
             { isRepeatScreen() } to { repeatQuest() },
+            { isInOrdealCallOutOfPodsScreen() } to { ordealCallOutOfPods() },
             { isInInterludeEndScreen() } to { locations.interludeCloseClick.click() },
             { withdraw.needsToWithdraw() } to { withdraw.withdraw() },
             { needsToStorySkip() } to { skipStory() },
@@ -470,11 +470,11 @@ class AutoBattle @Inject constructor(
         isInBattle && locations.npStartedRegion.isBlack()
 
     /**
-     * Taps in the bottom right a few times to trigger NP skip in BetterFGO.
+     * Taps in the center a few times to trigger NP skip in BetterFGO.
      */
     private fun skipNp() {
         0.6.seconds.wait()
-        locations.battle.extraInfoWindowCloseClick.click(5)
+        locations.battle.battleSafeMiddleOfScreenClick.click(10)
     }
 
     private fun isRankUp() =
