@@ -25,10 +25,7 @@ class Locations @Inject constructor(
     // don't forget to edit PartySelection.isSelectionExtended as well
     private val afterAnni9 = gameServer is GameServer.Jp || gameServer is GameServer.Cn || gameServer is GameServer.En
 
-    val continueRegion = if (afterAnni9)
-        Region(120, 1100, 800, 200).xFromCenter()
-    else
-        Region(120, 1000, 800, 200).xFromCenter()
+    val continueRegion = Region(120, 1000, 800, 300).xFromCenter()
 
     val continueBoostClick = Location(-20, 1120).xFromCenter()
 
