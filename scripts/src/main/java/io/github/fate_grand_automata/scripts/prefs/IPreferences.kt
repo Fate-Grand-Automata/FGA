@@ -37,6 +37,9 @@ interface IPreferences {
     var limitFP: Int
     var receiveEmbersWhenGiftBoxFull: Boolean
 
+    // Duration for long-press actions in the lottery script, expressed in seconds
+    var lottoLongPressSeconds: Int
+
     val stageCounterSimilarity: Double
     val stageCounterNew: Boolean
     val waitBeforeTurn: Duration
