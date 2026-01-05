@@ -19,6 +19,8 @@ class SupportSelectionLoop @Inject constructor(
         var onAllList = false
         val alsoCheckAll = supportClassPicker.shouldAlsoCheckAll()
         refresher.waitForSupportScreenToLoad()
+        // Delay to prevent early refresh in the first search
+        screen.delay(0.5.seconds)
 
         var result: SupportSelectionResult? = null
         while (true) {
