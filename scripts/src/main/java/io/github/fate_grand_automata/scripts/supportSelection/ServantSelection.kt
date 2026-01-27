@@ -49,6 +49,18 @@ class ServantSelection @Inject constructor(
                 !skillCheckNeeded || checkMaxedSkills(needMaxedSkills, whichSkillsAreMaxed(bounds.region))
             }
 
+            .filter {
+                val needStrengthenedSkills = listOf(
+                    supportPrefs.skill1Strengthened,
+                    supportPrefs.skill2Strengthened,
+                    supportPrefs.skill3Strengthened
+                )
+
+                val skillStrengthenedCheckNeeded = needStrengthenedSkills.any { it > 0}
+
+                !skillStrengthenedCheckNeeded || checkStrengthenedSkills(bounds.region, needStrengthenedSkills).all{ it }
+            }
+
         return matched.isNotEmpty()
     }
 
@@ -102,7 +114,7 @@ class ServantSelection @Inject constructor(
                 skillRegion.exists(images[Images.SkillTen], similarity = 0.68)
             }
     }
-
+    
     private fun checkMaxedSkills(expectedSkills: List<Boolean>, actualSkills: List<Boolean>): Boolean {
         val result = expectedSkills
             .zip(actualSkills) { expected, actual ->
@@ -117,5 +129,30 @@ class ServantSelection @Inject constructor(
         )
 
         return result.all { it }
+    }
+    
+    /**
+     * Check if the skill is strengthened(rank-up quest cleared)
+     * Currently restricted to level 2 (2 rank-up quests) for each skill, can modify in UI [PreferredSupportScreen.kt] to allow more
+     */
+    private fun checkStrengthenedSkills(bounds: Region, needStrengthenedSkills: List<Int>): List<Boolean> {
+        val y = bounds.y + 325 + 28
+        val x = bounds.x + 1610 + 41
+        val skillMargin = 90
+        val rankUpMargin = 18
+
+        return needStrengthenedSkills.mapIndexed { index, requirement ->
+            if (requirement > 0) {
+                val loc = Location(
+                    x + index * skillMargin,
+                    y - (requirement - 1) * rankUpMargin
+                )
+                val skillRegion = Region(loc, Size(24, 24))
+                skillRegion.exists(images[Images.SkillStrengthened], similarity = 0.68)
+            } else {
+                // If requirement is 0, this skill passes automatically
+                true
+            }
+        }
     }
 }

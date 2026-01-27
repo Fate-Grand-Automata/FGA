@@ -114,6 +114,7 @@ Skills"</string>
     <string name="p_battle_config_support_friend_name_hint">"Friend name images can be added using 'Support Image Maker' script"</string>
     <string name="p_battle_config_support_also_check_all">"Also check All"</string>
     <string name="p_max_skills">"Max Skills"</string>
+    <string name="p_strengthened_skills">"Strengthened Skills"</string>
     <string name="p_game_server">"Game Server"</string>
     <string name="p_game_server_auto_detect">"Auto-detect"</string>
     <string name="p_spam_summary">"Danger mode requires Auto-targeting"</string>

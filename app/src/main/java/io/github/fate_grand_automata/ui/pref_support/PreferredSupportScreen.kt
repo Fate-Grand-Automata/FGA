@@ -124,6 +124,24 @@ private fun PreferredSupport(
                                 )
                             )
                         }
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Text(
+//                              // todo: need localized versions?
+                                stringResource(R.string.p_strengthened_skills),
+                                modifier = Modifier.weight(1f)
+                            )
+
+                            StrengthenedSkills(
+                                skills = listOf(
+                                    config.skill1Strengthened,
+                                    config.skill2Strengthened,
+                                    config.skill3Strengthened
+                                )
+                            )
+                        }
                     }
                 }
             }
@@ -285,6 +303,39 @@ private fun MaxSkills(
                         .size(40.dp)
                 ) {
                     Text(skillText(max))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun StrengthenedSkills(
+    skills: List<Pref<Int>>
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        skills.forEachIndexed { index, pref ->
+            if (index != 0) {
+                Text("/", modifier = Modifier.padding(horizontal = 8.dp))
+            }
+
+            var rankUp by pref.remember()
+
+            Card(
+                elevation = cardElevation(5.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = if (rankUp > 0) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = if (rankUp > 0) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+//                    change to '(rankUp + 1) % 4' in future if there's 3 rank up quests on the same skill
+                    modifier = Modifier
+                        .clickable { rankUp = (rankUp + 1) % 3 }
+                        .size(40.dp)
+                ) {
+                    Text(rankUp.toString())
                 }
             }
         }
