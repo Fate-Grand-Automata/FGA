@@ -34,6 +34,7 @@ class ServantSelection @Inject constructor(
                 }
             }
             .filter {
+                println("Servant found at: ${it.region}") // todo [TESTING]
                 !supportPrefs.maxAscended || isMaxAscended(it.region)
             }
             .filter {
@@ -58,7 +59,7 @@ class ServantSelection @Inject constructor(
 
                 val skillStrengthenedCheckNeeded = needStrengthenedSkills.any { it > 0}
 
-                !skillStrengthenedCheckNeeded || checkStrengthenedSkills(bounds.region, needStrengthenedSkills).all{ it }
+                !skillStrengthenedCheckNeeded || checkStrengthenedSkills(it.region, needStrengthenedSkills).all{ it }
             }
 
         return matched.isNotEmpty()
@@ -84,7 +85,7 @@ class ServantSelection @Inject constructor(
     private fun isMaxAscended(servant: Region): Boolean {
         val maxAscendedRegion = locations.support.maxAscendedRegion
             .copy(y = servant.y)
-
+        println("Max Ascended Region: ${maxAscendedRegion}") //todo [TESTING]
         return starChecker.isStarPresent(maxAscendedRegion)
     }
 
@@ -135,20 +136,19 @@ class ServantSelection @Inject constructor(
      * Check if the skill is strengthened(rank-up quest cleared)
      * Currently restricted to level 2 (2 rank-up quests) for each skill, can modify in UI [PreferredSupportScreen.kt] to allow more
      */
-    private fun checkStrengthenedSkills(bounds: Region, needStrengthenedSkills: List<Int>): List<Boolean> {
-        val y = bounds.y + 325 + 28
-        val x = bounds.x + 1610 + 41
+    private fun checkStrengthenedSkills(servant: Region, needStrengthenedSkills: List<Int>): List<Boolean> {
+        val strengthenedSkillRegion = locations.support.strengthenedSkillRegion
         val skillMargin = 90
         val rankUpMargin = 18
 
         return needStrengthenedSkills.mapIndexed { index, requirement ->
             if (requirement > 0) {
-                val loc = Location(
-                    x + index * skillMargin,
-                    y - (requirement - 1) * rankUpMargin
+                val strengthenedSkillLocation = Location(
+                    servant.x + index * skillMargin,
+                    servant.y - (requirement - 1) * rankUpMargin
                 )
-                val skillRegion = Region(loc, Size(24, 24))
-                skillRegion.exists(images[Images.SkillStrengthened], similarity = 0.68)
+                println("Strengthened Skill Region: ${strengthenedSkillRegion + strengthenedSkillLocation}")
+                (strengthenedSkillRegion + strengthenedSkillLocation).exists(images[Images.SkillStrengthened], similarity = 0.68)
             } else {
                 // If requirement is 0, this skill passes automatically
                 true
