@@ -95,4 +95,5 @@ enum class Images(val path: String) {
     BondCeEffectDefault("bond_ce_effect_default.png"),
     BondCeEffectNP("bond_ce_effect_np.png"),
     SkillStrengthened("skill_strengthened.png"),
+    SkillUnstrengthened("skill_unstrengthened.png"),
 }

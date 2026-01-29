@@ -5,6 +5,7 @@ import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.ScriptLog
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferences
+import io.github.fate_grand_automata.scripts.entrypoints.AutoBattle
 import io.github.lib_automata.Location
 import io.github.lib_automata.Pattern
 import io.github.lib_automata.Region
@@ -34,7 +35,6 @@ class ServantSelection @Inject constructor(
                 }
             }
             .filter {
-                println("Servant found at: ${it.region}") // todo [TESTING]
                 !supportPrefs.maxAscended || isMaxAscended(it.region)
             }
             .filter {
@@ -52,13 +52,12 @@ class ServantSelection @Inject constructor(
 
             .filter {
                 val needStrengthenedSkills = listOf(
-                    supportPrefs.skill1Strengthened,
-                    supportPrefs.skill2Strengthened,
-                    supportPrefs.skill3Strengthened
+                    supportPrefs.skill1Strengthened.coerceIn(0..2),
+                    supportPrefs.skill2Strengthened.coerceIn(0..2),
+                    supportPrefs.skill3Strengthened.coerceIn(0..2)
                 )
 
                 val skillStrengthenedCheckNeeded = needStrengthenedSkills.any { it > 0}
-
                 !skillStrengthenedCheckNeeded || checkStrengthenedSkills(it.region, needStrengthenedSkills).all{ it }
             }
 
@@ -85,7 +84,7 @@ class ServantSelection @Inject constructor(
     private fun isMaxAscended(servant: Region): Boolean {
         val maxAscendedRegion = locations.support.maxAscendedRegion
             .copy(y = servant.y)
-        println("Max Ascended Region: ${maxAscendedRegion}") //todo [TESTING]
+
         return starChecker.isStarPresent(maxAscendedRegion)
     }
 
@@ -141,14 +140,31 @@ class ServantSelection @Inject constructor(
         val skillMargin = 90
         val rankUpMargin = 18
 
+        /*
+        When the servant is found near the bottom of the screen, return false to skip detection to avoid exception
+        todo: might need to tune the value of y and add to support locations
+         */
+        if (servant.y > 1000) {
+            return List(needStrengthenedSkills.size) { false }
+        }
         return needStrengthenedSkills.mapIndexed { index, requirement ->
             if (requirement > 0) {
                 val strengthenedSkillLocation = Location(
                     servant.x + index * skillMargin,
                     servant.y - (requirement - 1) * rankUpMargin
                 )
-                println("Strengthened Skill Region: ${strengthenedSkillRegion + strengthenedSkillLocation}")
-                (strengthenedSkillRegion + strengthenedSkillLocation).exists(images[Images.SkillStrengthened], similarity = 0.68)
+                if((strengthenedSkillRegion + strengthenedSkillLocation).exists(images[Images.SkillStrengthened], similarity = 0.68)) {
+                    true
+                } else {
+                    if((strengthenedSkillRegion + strengthenedSkillLocation).exists(images[Images.SkillUnstrengthened], similarity = 0.68)) {
+                        false
+                    } else {
+                        // Unstrengthened template not found, exit script
+                        throw AutoBattle.BattleExitException(
+                            AutoBattle.ExitReason.StrengthenedSkillEmpty(index + 1, requirement)
+                        )
+                    }
+                }
             } else {
                 // If requirement is 0, this skill passes automatically
                 true

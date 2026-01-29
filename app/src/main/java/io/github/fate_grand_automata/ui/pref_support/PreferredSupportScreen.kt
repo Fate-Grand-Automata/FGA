@@ -76,7 +76,7 @@ private fun PreferredSupport(
     val prefServants by config.preferredServants.remember()
     val prefCEs by config.preferredCEs.remember()
 
-    //
+    // todo: remove this note later when the feature is working fine on all servers
     var showStrengthenedNote by androidx.compose.runtime.remember { mutableStateOf(false) }
     if (showStrengthenedNote) {
         AlertDialog(
@@ -86,8 +86,8 @@ private fun PreferredSupport(
                     Text(stringResource(android.R.string.ok))
                 }
             },
-            title = { Text("Strengthened Skills") },
-            text = { Text("This feature has been tested on JP server and NA server. Contact Github/Discord if it is not working on your server.") }
+//            title = { Text(stringResource(R.string.note)) },
+            text = { Text(stringResource(R.string.p_strengthened_skills_note)) }
         )
     }
 
@@ -165,7 +165,7 @@ private fun PreferredSupport(
                             }
 
                             StrengthenedSkills(
-                                skills = listOf(
+                                strengthenedSkills = listOf(
                                     config.skill1Strengthened,
                                     config.skill2Strengthened,
                                     config.skill3Strengthened
@@ -341,31 +341,31 @@ private fun MaxSkills(
 
 @Composable
 private fun StrengthenedSkills(
-    skills: List<Pref<Int>>
+    strengthenedSkills: List<Pref<Int>>
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        skills.forEachIndexed { index, pref ->
+        strengthenedSkills.forEachIndexed { index, pref ->
             if (index != 0) {
                 Text("/", modifier = Modifier.padding(horizontal = 8.dp))
             }
 
-            var rankUp by pref.remember()
+            var strengthened by pref.remember()
 
             Card(
                 elevation = cardElevation(5.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = if (rankUp > 0) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = if (rankUp > 0) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurfaceVariant
+                    containerColor = if (strengthened > 0) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = if (strengthened > 0) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
 //                    change to '(rankUp + 1) % 4' in future if there's 3 rank up quests on the same skill
                     modifier = Modifier
-                        .clickable { rankUp = (rankUp + 1) % 3 }
+                        .clickable { strengthened = (strengthened + 1) % 3 }
                         .size(40.dp)
                 ) {
-                    Text(rankUp.toString())
+                    Text(strengthened.toString())
                 }
             }
         }
