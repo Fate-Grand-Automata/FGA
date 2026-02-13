@@ -115,7 +115,7 @@ Skills"</string>
     <string name="p_battle_config_support_also_check_all">"Also check All"</string>
     <string name="p_max_skills">"Max Skills"</string>
     <string name="p_strengthened_skills">"Strengthened Skills"</string>
-    <string name="p_strengthened_skills_note">"This feature has been tested on JP and NA server. Contact Github/Discord if it is not working on your server."</string>
+    <string name="p_strengthened_skills_note">"This feature has been tested on JP and NA servers. Contact GitHub/Discord if it is not working on your server."</string>
     <string name="strengthened_skill_empty">"Strengthening %2$d may not be available for Skill %1$d. Please check your configuration."</string>
     <string name="p_game_server">"Game Server"</string>
     <string name="p_game_server_auto_detect">"Auto-detect"</string>
