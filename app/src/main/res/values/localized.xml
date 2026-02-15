@@ -332,6 +332,7 @@ Please turn on accessibility for this app from System settings. If it is already
     <string name="mat_moonlight_nucleus">Moonlight Nucleus</string>
     <string name="mat_divine_lens">Divine Lens</string>
     <string name="mat_holy_water_of_destiny">Holy Water of Destiny</string>
+    <string name="mat_reliquary_of_departed_soul">"Reliquary of Departed Soul"</string>
     <string name="mat_monument_saber">"Saber Monument"</string>
     <string name="mat_monument_archer">"Archer Monument"</string>
     <string name="mat_monument_lancer">"Lancer Monument"</string>
