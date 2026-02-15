@@ -118,6 +118,8 @@ Skills"</string>
     <string name="p_game_server_auto_detect">"Auto-detect"</string>
     <string name="p_spam_summary">"Danger mode requires Auto-targeting"</string>
     <string name="p_auto_choose_target">"Auto choose target"</string>
+    <string name="p_story_skip">"Story Skip"</string>
+    <string name="p_story_skip_summary">"Skips the story automatically. This feature is very unstable and might cause FGA to break, use it at your own risk."</string>
     <string name="p_enable_withdraw">"Enable Withdraw"</string>
     <string name="p_stop_on_ce_get">"Stop on CE GET"</string>
     <string name="p_stop_on_first_clear_rewards">"Stop on first-clear rewards"</string>
@@ -330,6 +332,7 @@ Please turn on accessibility for this app from System settings. If it is already
     <string name="mat_moonlight_nucleus">Moonlight Nucleus</string>
     <string name="mat_divine_lens">Divine Lens</string>
     <string name="mat_holy_water_of_destiny">Holy Water of Destiny</string>
+    <string name="mat_reliquary_of_departed_soul">"Reliquary of Departed Soul"</string>
     <string name="mat_monument_saber">"Saber Monument"</string>
     <string name="mat_monument_archer">"Archer Monument"</string>
     <string name="mat_monument_lancer">"Lancer Monument"</string>
@@ -465,4 +468,12 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="skill_maker_dante_alighieri">"Dante Alighieri"</string>
     <string name="skill_maker_dante_alighieri_choice_1">"Paradise (Arts Up)"</string>
     <string name="skill_maker_dante_alighieri_choice_2">Inferno (Buster Up)</string>
+  
+    <string name="p_battle_config_raid">"Raid"</string>
+    <string name="p_battle_config_raid_delay">"Raid Turn Delay"</string>
+    <string name="p_battle_config_raid_delay_message">This adds extra turn delay used for raids.</string>
+    <string name="state_on">On</string>
+    <string name="state_off">Off</string>
+    <string name="save">Save</string>
+    <string name="reset">Reset</string>
 </resources>

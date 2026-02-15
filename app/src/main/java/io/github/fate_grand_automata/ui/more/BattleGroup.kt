@@ -35,6 +35,14 @@ fun LazyListScope.battleGroup(
     }
 
     item {
+        prefs.storySkip.SwitchPreference(
+            title = stringResource(R.string.p_story_skip),
+            summary = stringResource(R.string.p_story_skip_summary),
+            icon = icon(Icons.Default.FastForward)
+        )
+    }
+
+    item {
         prefs.withdrawEnabled.SwitchPreference(
             title = stringResource(R.string.p_enable_withdraw),
             icon = icon(R.drawable.ic_exit_run)

@@ -181,6 +181,7 @@ val MaterialEnum.drawable
         MaterialEnum.DemonFlameLantern -> R.drawable.mat_demon_lantern
         MaterialEnum.GoldenCauldron -> R.drawable.mat_golden_cauldron
         MaterialEnum.MoonlightNucleus -> R.drawable.mat_moonlight_nucleus
+        MaterialEnum.ReliquaryOfDepartedSoul -> R.drawable.mat_reliquary
 
         MaterialEnum.MonumentSaber -> R.drawable.mat_monument_saber
         MaterialEnum.MonumentArcher -> R.drawable.mat_monument_archer
