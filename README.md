@@ -1,6 +1,6 @@
 # Fate/Grand Automata
 
-[![CI](https://github.com/Fate-Grand-Automata/FGA/workflows/CI/badge.svg?branch=master&event=push)](https://github.com/Fate-Grand-Automata/FGA/actions)
+[![CI](https://github.com/Fate-Grand-Automata/FGA/actions/workflows/ci.yml/badge.svg)](https://github.com/Fate-Grand-Automata/FGA/actions/workflows/ci.yml)
 
 [![Discord Banner 2](https://discordapp.com/api/guilds/1117873862500163684/widget.png?style=banner2)](https://tinyurl.com/2z2d6wuz)
 
