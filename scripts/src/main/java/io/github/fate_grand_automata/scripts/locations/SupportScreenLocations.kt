@@ -66,7 +66,7 @@ class SupportScreenLocations @Inject constructor(
     val listSwipeStart = Location(-59, if (canLongSwipe) 1000 else 1190) + supportOffset
     val listSwipeEnd = Location(-89, if (canLongSwipe) 300 else 660) + supportOffset
 
-    val strengthenedSkillRegion = Region(1495, 216, 24, 24) + supportOffset
+    val strengthenedSkillRegion = Region(0, 0, 24, 24) + supportOffset
 
     fun locate(supportClass: SupportClass) = when (supportClass) {
         SupportClass.None -> 0

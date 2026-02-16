@@ -58,7 +58,7 @@ class ServantSelection @Inject constructor(
                 )
 
                 val skillStrengthenedCheckNeeded = needStrengthenedSkills.any { it > 0}
-                !skillStrengthenedCheckNeeded || checkStrengthenedSkills(it.region, needStrengthenedSkills).all{ it }
+                !skillStrengthenedCheckNeeded || checkStrengthenedSkills(bounds.region, needStrengthenedSkills).all{ it }
             }
 
         return matched.isNotEmpty()
@@ -135,28 +135,29 @@ class ServantSelection @Inject constructor(
      * Check if the skill is strengthened(rank-up quest cleared)
      * Currently restricted to level 2 (2 rank-up quests) for each skill, can modify in UI [PreferredSupportScreen.kt] to allow more
      */
-    private fun checkStrengthenedSkills(servant: Region, needStrengthenedSkills: List<Int>): List<Boolean> {
-        val strengthenedSkillRegion = locations.support.strengthenedSkillRegion
+    private fun checkStrengthenedSkills(bounds: Region, needStrengthenedSkills: List<Int>): List<Boolean> {
         val skillMargin = 90
         val rankUpMargin = 18
 
         /*
-        When the servant is found near the bottom of the screen, return false to skip detection to avoid exception
-        todo: might need to tune the value of y and add to support locations
+        When the servant is found near the bottom of the screen,
+        return false to skip detection of 'Images.SkillUnstrengthened'
+        to avoid false exception
          */
-        if (servant.y > 1000) {
+        if (bounds.y > 1000) {
             return List(needStrengthenedSkills.size) { false }
         }
         return needStrengthenedSkills.mapIndexed { index, requirement ->
             if (requirement > 0) {
                 val strengthenedSkillLocation = Location(
-                    servant.x + index * skillMargin,
-                    servant.y - (requirement - 1) * rankUpMargin
+                    bounds.x + 1651 + index * skillMargin,
+                    bounds.y + 351 - (requirement - 1) * rankUpMargin
                 )
-                if((strengthenedSkillRegion + strengthenedSkillLocation).exists(images[Images.SkillStrengthened], similarity = 0.68)) {
+                val strengthenedSkillRegion = locations.support.strengthenedSkillRegion.copy(x = strengthenedSkillLocation.x, y = strengthenedSkillLocation.y)
+                if(strengthenedSkillRegion.exists(images[Images.SkillStrengthened], similarity = 0.68)) {
                     true
                 } else {
-                    if((strengthenedSkillRegion + strengthenedSkillLocation).exists(images[Images.SkillUnstrengthened], similarity = 0.68)) {
+                    if(strengthenedSkillRegion.exists(images[Images.SkillUnstrengthened], similarity = 0.68)) {
                         false
                     } else {
                         // Unstrengthened template not found, exit script
