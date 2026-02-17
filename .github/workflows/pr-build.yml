@@ -75,7 +75,7 @@ jobs:
           mv app/build/outputs/apk/ci/app-x86_64-ci.apk fga-x86_64-pr-$build_name.apk
           mv app/build/outputs/apk/ci/app-x86-ci.apk fga-x86-pr-$build_name.apk
 
-          mv app/build/outputs/mapping/ci/mapping.txt app/build/outputs/apk/ci/fga-mapping-$build_name.txt
+          mv app/build/outputs/mapping/ci/mapping.txt fga-mapping-$build_name.txt
 
           echo "FGA_BUILD_NAME=$build_name" >>${GITHUB_ENV}
 
@@ -83,31 +83,35 @@ jobs:
           echo "FGA_MAPPING_ARTIFACT_NAME=FGA-mapping-PR-$build_name" >>${GITHUB_ENV}
 
       - name: Upload APK
-        id: upload-apk
+        id: upload-apk-universal
         uses: actions/upload-artifact@v6
         with:
           name: ${{ env.FGA_APK_ARTIFACT_NAME }}-universal
           path: fga-universal-pr-${{ env.FGA_BUILD_NAME }}.apk
       
       - name: Upload APK (arm64-v8a)
+        id: upload-apk-arm64-v8a
         uses: actions/upload-artifact@v6
         with:
           name: ${{ env.FGA_APK_ARTIFACT_NAME }}-arm64-v8a
           path: fga-arm64-v8a-pr-${{ env.FGA_BUILD_NAME }}.apk
 
       - name: Upload APK (armeabi-v7a)
+        id: upload-apk-armeabi-v7a
         uses: actions/upload-artifact@v6
         with:
           name: ${{ env.FGA_APK_ARTIFACT_NAME }}-armeabi-v7a
           path: fga-armeabi-v7a-pr-${{ env.FGA_BUILD_NAME }}.apk
       
       - name: Upload APK (x86_64)
+        id: upload-apk-x86_64
         uses: actions/upload-artifact@v6
         with:
           name: ${{ env.FGA_APK_ARTIFACT_NAME }}-x86_64
           path: fga-x86_64-pr-${{ env.FGA_BUILD_NAME }}.apk
       
       - name: Upload APK (x86)
+        id: upload-apk-x86
         uses: actions/upload-artifact@v6
         with:
           name: ${{ env.FGA_APK_ARTIFACT_NAME }}-x86
@@ -117,7 +121,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: ${{ env.FGA_MAPPING_ARTIFACT_NAME }}
-          path: ${{ env.FGA_MAPPING_PATH }}
+          path: fga-mapping-${{ env.FGA_BUILD_NAME }}.txt
       
       - name: Comment the APK
         if: ${{ github.event_name != 'workflow_dispatch' && github.actor != 'renovate[bot]' }}
@@ -127,7 +131,17 @@ jobs:
           message: |
             # [Build ${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
-            Download the latest APK for testing [here](${{ steps.upload-apk.outputs.artifact-url }})
+            Download the latest APKs for testing:
+            
+            Universal APK: [here](${{ steps.upload-apk-universal.outputs.artifact-url }})
+
+            Arm64-v8a: [here](${{ steps.upload-apk-arm64-v8a.outputs.artifact-url }})
+
+            Armeabi-v7a: [here](${{ steps.upload-apk-armeabi-v7a.outputs.artifact-url }})
+
+            x86_64: [here](${{ steps.upload-apk-x86_64.outputs.artifact-url }})
+
+            x86: [here](${{ steps.upload-apk-x86.outputs.artifact-url }})
 
             > [!NOTE] 
             > You need a GitHub account to download the APK.
