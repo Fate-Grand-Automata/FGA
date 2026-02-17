@@ -79,48 +79,45 @@ jobs:
 
           echo "FGA_BUILD_NAME=$build_name" >>${GITHUB_ENV}
 
-          echo "FGA_APK_ARTIFACT_NAME=FGA-apk-PR-$build_name" >>${GITHUB_ENV}
-          echo "FGA_MAPPING_ARTIFACT_NAME=FGA-mapping-PR-$build_name" >>${GITHUB_ENV}
-
       - name: Upload APK
         id: upload-apk-universal
         uses: actions/upload-artifact@v6
         with:
-          name: ${{ env.FGA_APK_ARTIFACT_NAME }}-universal
+          name: fga-pr-universal-${{ env.FGA_BUILD_NAME }}
           path: fga-universal-pr-${{ env.FGA_BUILD_NAME }}.apk
       
       - name: Upload APK (arm64-v8a)
         id: upload-apk-arm64-v8a
         uses: actions/upload-artifact@v6
         with:
-          name: ${{ env.FGA_APK_ARTIFACT_NAME }}-arm64-v8a
+          name: fga-pr-arm64-v8a-${{ env.FGA_BUILD_NAME }}
           path: fga-arm64-v8a-pr-${{ env.FGA_BUILD_NAME }}.apk
 
       - name: Upload APK (armeabi-v7a)
         id: upload-apk-armeabi-v7a
         uses: actions/upload-artifact@v6
         with:
-          name: ${{ env.FGA_APK_ARTIFACT_NAME }}-armeabi-v7a
+          name: fga-pr-armeabi-v7a-${{ env.FGA_BUILD_NAME }}
           path: fga-armeabi-v7a-pr-${{ env.FGA_BUILD_NAME }}.apk
       
       - name: Upload APK (x86_64)
         id: upload-apk-x86_64
         uses: actions/upload-artifact@v6
         with:
-          name: ${{ env.FGA_APK_ARTIFACT_NAME }}-x86_64
+          name: fga-pr-x86_64-${{ env.FGA_BUILD_NAME }}
           path: fga-x86_64-pr-${{ env.FGA_BUILD_NAME }}.apk
       
       - name: Upload APK (x86)
         id: upload-apk-x86
         uses: actions/upload-artifact@v6
         with:
-          name: ${{ env.FGA_APK_ARTIFACT_NAME }}-x86
+          name: fga-pr-x86-${{ env.FGA_BUILD_NAME }}
           path: fga-x86-pr-${{ env.FGA_BUILD_NAME }}.apk
 
       - name: Upload De-obfuscation mapping file
         uses: actions/upload-artifact@v6
         with:
-          name: ${{ env.FGA_MAPPING_ARTIFACT_NAME }}
+          name: fga-pr-mapping-${{ env.FGA_BUILD_NAME }}
           path: fga-mapping-${{ env.FGA_BUILD_NAME }}.txt
       
       - name: Comment the APK
