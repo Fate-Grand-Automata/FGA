@@ -24,9 +24,13 @@ env:
 
 jobs:
   build:
-    runs-on: macos-15
+    runs-on: macos-latest
     permissions: 
       pull-requests: write 
+    env:
+      FGA_VERSION_CODE: 0
+      FGA_VERSION_NAME: 0
+      FGA_BUILD_NAME: ''
     steps:
       # get the PR from the event as JSON
       - uses: actions/github-script@v8
