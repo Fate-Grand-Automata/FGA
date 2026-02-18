@@ -133,42 +133,34 @@ class ServantSelection @Inject constructor(
     
     /**
      * Check if the skill is strengthened(rank-up quest cleared)
-     * Currently restricted to level 2 (2 rank-up quests) for each skill, can modify in UI [PreferredSupportScreen.kt] to allow more
+     * Currently restricted to level 2 (2 rank-up quests) for each skill, can modify in UI to allow more
      */
     private fun checkStrengthenedSkills(bounds: Region, needStrengthenedSkills: List<Int>): List<Boolean> {
         val skillMargin = 90
         val rankUpMargin = 18
 
-        /*
-        When the servant is found near the bottom of the screen,
-        return false to skip detection of 'Images.SkillUnstrengthened'
-        to avoid false exception
-         */
-        if (bounds.y > 1000) {
-            return List(needStrengthenedSkills.size) { false }
-        }
+        /**
+        * When the servant portrait is found near the bottom of the screen
+        * return false to skip detection of 'Images.SkillUnstrengthened'
+        * to avoid false exception
+        */
+        if (bounds.y > 1000) return List(needStrengthenedSkills.size) { false }
+
         return needStrengthenedSkills.mapIndexed { index, requirement ->
-            if (requirement > 0) {
-                val strengthenedSkillLocation = Location(
-                    bounds.x + 1651 + index * skillMargin,
-                    bounds.y + 351 - (requirement - 1) * rankUpMargin
+            if (requirement <= 0) return@mapIndexed true
+
+            val strengthenedSkillLocation = Location(
+                bounds.x + 1650 + index * skillMargin,
+                bounds.y + 351 - (requirement - 1) * rankUpMargin
+            )
+            val strengthenedSkillRegion = locations.support.strengthenedSkillRegion.copy(x = strengthenedSkillLocation.x, y = strengthenedSkillLocation.y)
+            when{
+                strengthenedSkillRegion.exists(images[Images.SkillStrengthened], similarity = 0.68) -> true
+                strengthenedSkillRegion.exists(images[Images.SkillUnstrengthened], similarity = 0.68) -> false
+                else -> throw AutoBattle.BattleExitException(
+                    // 'Images.SkillUnstrengthened' not found, exit script and prompt user to check configuration
+                    AutoBattle.ExitReason.StrengthenedSkillEmpty(index + 1, requirement)
                 )
-                val strengthenedSkillRegion = locations.support.strengthenedSkillRegion.copy(x = strengthenedSkillLocation.x, y = strengthenedSkillLocation.y)
-                if(strengthenedSkillRegion.exists(images[Images.SkillStrengthened], similarity = 0.68)) {
-                    true
-                } else {
-                    if(strengthenedSkillRegion.exists(images[Images.SkillUnstrengthened], similarity = 0.68)) {
-                        false
-                    } else {
-                        // Unstrengthened template not found, exit script
-                        throw AutoBattle.BattleExitException(
-                            AutoBattle.ExitReason.StrengthenedSkillEmpty(index + 1, requirement)
-                        )
-                    }
-                }
-            } else {
-                // If requirement is 0, this skill passes automatically
-                true
             }
         }
     }
