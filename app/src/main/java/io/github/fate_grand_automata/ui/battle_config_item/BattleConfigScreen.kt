@@ -160,6 +160,10 @@ private fun BattleConfigContent(
                             config.notes.EditTextPreference(
                                 title = stringResource(R.string.p_battle_config_notes)
                             )
+                            // todo: remove this after UI implementation
+                            config.customCardSelectionRaw.EditTextPreference(
+                                title = "Custom Card Selection"
+                            )
                         }
                     }
                 }
