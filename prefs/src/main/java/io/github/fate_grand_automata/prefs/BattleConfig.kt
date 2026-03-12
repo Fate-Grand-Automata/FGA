@@ -49,9 +49,7 @@ internal class BattleConfig(
 
     override var spam by prefs.spam
 
-//     todo: replace this after UI implementation
-//    override val customCardSelection by prefs.customCardSelection
-    override val customCardSelectionRaw by prefs.customCardSelectionRaw
+    override val customCardSelection by prefs.customCardSelection
 
     override fun export(): Map<String, *> = prefs.export()
 

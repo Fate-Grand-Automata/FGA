@@ -55,6 +55,6 @@ class PreferencesModule {
     @ScriptScope
     @Provides
     fun provideCustomCardSelection(battleConfig: IBattleConfig): CustomCardSelectionPerTurn =
-        CustomCardSelectionPerTurn.of(battleConfig.customCardSelectionRaw)
-//    todo:replace String config after UI implementation
+        battleConfig.customCardSelection
+
 }

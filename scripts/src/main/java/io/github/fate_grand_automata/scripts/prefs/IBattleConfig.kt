@@ -32,8 +32,8 @@ interface IBattleConfig {
     val addRaidTurnDelay: Boolean
     val raidTurnDelaySeconds : Int
 
-//    val customCardSelection: CustomCardSelectionPerTurn
-    val customCardSelectionRaw: String
+    val customCardSelection: CustomCardSelectionPerTurn
+
     fun export(): Map<String, *>
 
     fun import(map: Map<String, *>)

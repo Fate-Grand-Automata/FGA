@@ -23,7 +23,7 @@ class CustomCardSelectionPerTurn private constructor(
     companion object {
         private const val separator = ","
 
-        val empty = CustomCardSelectionPerTurn(emptyList())
+        val empty = CustomCardSelectionPerTurn(listOf(CustomCardSelection.empty))
 
         fun from(selectionsPerTurn: List<CustomCardSelection>) =
             CustomCardSelectionPerTurn(selectionsPerTurn)

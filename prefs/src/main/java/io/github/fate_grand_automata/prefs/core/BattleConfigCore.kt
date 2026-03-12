@@ -14,7 +14,7 @@ import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantSpamConfig
-//import io.github.fate_grand_automata.scripts.models.CustomCardSelectionPerTurn
+import io.github.fate_grand_automata.scripts.models.CustomCardSelectionPerTurn
 
 class BattleConfigCore(
     val id: String,
@@ -191,17 +191,15 @@ class BattleConfigCore(
 
     val raidTurnDelaySeconds = maker.stringAsInt("raid_delay_seconds", 3)
 
-//    val customCardSelection = maker.serialized(
-//        "custom_card_selection",
-//        serializer = object : Serializer<CustomCardSelectionPerTurn> {
-//            override fun deserialize(serialized: String) =
-//                CustomCardSelectionPerTurn.of(serialized)
-//
-//            override fun serialize(value: CustomCardSelectionPerTurn) =
-//                value.toString()
-//        },
-//        default = CustomCardSelectionPerTurn.empty
-//    )
-//    todo: replace this after UI implementation
-    var customCardSelectionRaw = maker.string("custom_card_selection_raw")
+    val customCardSelection = maker.serialized(
+        "custom_card_selection",
+        serializer = object : Serializer<CustomCardSelectionPerTurn> {
+            override fun deserialize(serialized: String) =
+                CustomCardSelectionPerTurn.of(serialized)
+
+            override fun serialize(value: CustomCardSelectionPerTurn) =
+                value.toString()
+        },
+        default = CustomCardSelectionPerTurn.empty
+    )
 }

@@ -6,7 +6,7 @@ import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 class CustomCardSelection(
     private val cards: List<CustomCard>
 ) : List<CustomCard> by cards {
-    override fun toString() = joinToString()
+    override fun toString() = joinToString(separator = "")
 
 
     companion object {
