@@ -257,7 +257,7 @@ private fun BattleConfigContent(
                             
                             customCardSelection?.let {
                                 Preference(
-                                    title = { Text("Custom Card Selection") },
+                                    title = { Text(stringResource(R.string.p_custom_card_selection)) },
                                     summary = { CustomCardSelectionSummary(it) },
                                     onClick = { navigate(BattleConfigDestination.CustomCardSelection) }
                                 )
