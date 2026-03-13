@@ -87,6 +87,16 @@ android {
     lint {
         abortOnError = false
     }
+    
+    splits {
+        abi {
+            isEnable = true
+            isUniversalApk = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+        }
+    }
+
     namespace = "io.github.fate_grand_automata"
 }
 
