@@ -24,7 +24,6 @@ class SkillSpam @Inject constructor(
     companion object {
         val skillSpamDelay = 0.25.seconds
         val skillReadyRecheckDelay = 0.1.seconds
-        const val skillReadySimilarity = 0.9
         val cooldownRegex = Regex("""\d+""")
     }
 
@@ -75,10 +74,7 @@ class SkillSpam @Inject constructor(
 
     private fun isReadyForSpam(skill: io.github.fate_grand_automata.scripts.models.Skill.Servant, skillImage: Pattern): Boolean {
         val isReady = useSameSnapIn {
-            locations.battle.imageRegion(skill).exists(
-                image = skillImage,
-                similarity = skillReadySimilarity
-            ) && !hasCooldownText(skill)
+            skillImage in locations.battle.imageRegion(skill) && !hasCooldownText(skill)
         }
 
         if (!isReady) {
@@ -88,10 +84,7 @@ class SkillSpam @Inject constructor(
         skillReadyRecheckDelay.wait()
 
         return useSameSnapIn {
-            locations.battle.imageRegion(skill).exists(
-                image = skillImage,
-                similarity = skillReadySimilarity
-            ) && !hasCooldownText(skill)
+            skillImage in locations.battle.imageRegion(skill) && !hasCooldownText(skill)
         }
     }
 
