@@ -8,6 +8,7 @@ import io.github.fate_grand_automata.scripts.models.SkillSpamTarget
 import io.github.fate_grand_automata.scripts.models.SpamConfigPerTeamSlot
 import io.github.fate_grand_automata.scripts.models.battle.BattleState
 import io.github.fate_grand_automata.scripts.models.skills
+import io.github.lib_automata.Pattern
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
@@ -22,6 +23,9 @@ class SkillSpam @Inject constructor(
 ) : IFgoAutomataApi by api {
     companion object {
         val skillSpamDelay = 0.25.seconds
+        val skillReadyRecheckDelay = 0.1.seconds
+        const val skillReadySimilarity = 0.9
+        val cooldownRegex = Regex("""\d+""")
     }
 
     fun spamSkills() {
@@ -42,7 +46,7 @@ class SkillSpam @Inject constructor(
                         // Some delay for skill icon to be loaded
                         skillSpamDelay.wait()
 
-                        if (skillImage in locations.battle.imageRegion(skill)) {
+                        if (isReadyForSpam(skill, skillImage)) {
                             val target = skillSpamConfig.determineTarget(servantSlot)
 
                             caster.castServantSkill(skill, target)
@@ -68,4 +72,42 @@ class SkillSpam @Inject constructor(
             SkillSpamTarget.Left -> ServantTarget.Left
             SkillSpamTarget.Right -> ServantTarget.Right
         }
+
+    private fun isReadyForSpam(skill: io.github.fate_grand_automata.scripts.models.Skill.Servant, skillImage: Pattern): Boolean {
+        val isReady = useSameSnapIn {
+            locations.battle.imageRegion(skill).exists(
+                image = skillImage,
+                similarity = skillReadySimilarity
+            ) && !hasCooldownText(skill)
+        }
+
+        if (!isReady) {
+            return false
+        }
+
+        skillReadyRecheckDelay.wait()
+
+        return useSameSnapIn {
+            locations.battle.imageRegion(skill).exists(
+                image = skillImage,
+                similarity = skillReadySimilarity
+            ) && !hasCooldownText(skill)
+        }
+    }
+
+    private fun hasCooldownText(skill: io.github.fate_grand_automata.scripts.models.Skill.Servant): Boolean {
+        val text = locations.battle.cooldownTextRegion(skill)
+            .detectText(outlinedText = true)
+            .replace('O', '0')
+            .replace('o', '0')
+            .replace('I', '1')
+            .replace('l', '1')
+
+        val cooldown = cooldownRegex
+            .find(text)
+            ?.value
+            ?.toIntOrNull()
+
+        return cooldown != null && cooldown > 0
+    }
 }
