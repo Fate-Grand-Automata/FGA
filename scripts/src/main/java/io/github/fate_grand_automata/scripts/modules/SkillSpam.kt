@@ -6,6 +6,7 @@ import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.scripts.models.SkillSpamConfig
 import io.github.fate_grand_automata.scripts.models.SkillSpamTarget
 import io.github.fate_grand_automata.scripts.models.SpamConfigPerTeamSlot
+import io.github.fate_grand_automata.scripts.models.Skill
 import io.github.fate_grand_automata.scripts.models.battle.BattleState
 import io.github.fate_grand_automata.scripts.models.skills
 import io.github.lib_automata.Pattern
@@ -72,23 +73,19 @@ class SkillSpam @Inject constructor(
             SkillSpamTarget.Right -> ServantTarget.Right
         }
 
-    private fun isReadyForSpam(skill: io.github.fate_grand_automata.scripts.models.Skill.Servant, skillImage: Pattern): Boolean {
-        val isReady = useSameSnapIn {
-            skillImage in locations.battle.imageRegion(skill) && !hasCooldownText(skill)
-        }
+    private fun isReadyForSpam(skill: Skill.Servant, skillImage: Pattern): Boolean {
+        fun checkReady() = skillImage in locations.battle.imageRegion(skill) && !hasCooldownText(skill)
 
-        if (!isReady) {
+        if (!useSameSnapIn { checkReady() }) {
             return false
         }
 
         skillReadyRecheckDelay.wait()
 
-        return useSameSnapIn {
-            skillImage in locations.battle.imageRegion(skill) && !hasCooldownText(skill)
-        }
+        return useSameSnapIn { checkReady() }
     }
 
-    private fun hasCooldownText(skill: io.github.fate_grand_automata.scripts.models.Skill.Servant): Boolean {
+    private fun hasCooldownText(skill: Skill.Servant): Boolean {
         val text = locations.battle.cooldownTextRegion(skill)
             .detectText(outlinedText = true)
             .replace('O', '0')
