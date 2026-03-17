@@ -117,7 +117,7 @@ class BattleScreenLocations @Inject constructor(
         Region(22, 28, 30, 30) + locate(skill)
 
     fun cooldownTextRegion(skill: Skill.Servant) =
-        Region(8, 108, 96, 48) + locate(skill)
+        Region(-5, 40, 100, 55) + locate(skill)
 
     val servantDetailsInfoClick = Location(-660, 110).xFromCenter()
     
