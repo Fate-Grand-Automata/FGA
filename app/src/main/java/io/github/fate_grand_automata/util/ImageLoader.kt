@@ -94,6 +94,9 @@ class ImageLoader @Inject constructor(
 
     private fun fileLoader(kind: SupportImageKind, name: String): List<Pattern> {
         val inputStreams = storageProvider.readSupportImage(kind, name)
+        if (inputStreams.isEmpty()) {
+            throw SupportImageNotFoundException(kind, name)
+        }
         return inputStreams.withIndex().map { (i, stream) ->
             stream.use {
                 DroidCvPattern(it, colorManager.isColor, "$name:$i")
@@ -115,6 +118,9 @@ class ImageLoader @Inject constructor(
             )
         }
 }
+
+class SupportImageNotFoundException(kind: SupportImageKind, name: String) : 
+    Exception("Support image not found for kind: $kind, name: $name")
 
 val MaterialEnum.drawable
     get() = when (this) {
