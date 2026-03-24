@@ -120,7 +120,7 @@ class BattleScreenLocations @Inject constructor(
     
     val servantDetailsFaceCardRegion = when (gameServer) {
         // FGO JP 2024-04-12 updated the UI resulting in the bricking of the face card detection
-        is GameServer.Jp, GameServer.Cn, is GameServer.Kr, is GameServer.Na -> Region(-685, 410, 110, 60).xFromCenter()
+        is GameServer.Jp, GameServer.Cn, is GameServer.Kr, is GameServer.En -> Region(-685, 410, 110, 60).xFromCenter()
         else -> Region(-685, 330, 110, 60).xFromCenter()
     }
 
