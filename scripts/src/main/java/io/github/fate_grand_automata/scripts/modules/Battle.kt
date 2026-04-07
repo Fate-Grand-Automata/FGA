@@ -11,6 +11,7 @@ import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.TimeSource
 
 @ScriptScope
 class Battle @Inject constructor(
@@ -92,7 +93,7 @@ class Battle @Inject constructor(
 
     private fun updateBetterFGONPSkip() {
         if (!prefs.gameServer.betterFgo) return
-        
+
         val currentTime = TimeSource.Monotonic.markNow()
         val targetTime = currentTime + 5.seconds
 
