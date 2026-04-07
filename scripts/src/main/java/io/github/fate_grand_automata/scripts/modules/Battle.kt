@@ -86,6 +86,27 @@ class Battle @Inject constructor(
         card.clickCommandCards(cards, npUsage)
 
         0.5.seconds.wait()
+
+        updateBetterFGONPSkip()
+    }
+
+    private fun updateBetterFGONPSkip() {
+        if (!prefs.gameServer.betterFgo) return
+        
+        val currentTime = TimeSource.Monotonic.markNow()
+        val targetTime = currentTime + 5.seconds
+
+        while (true) {
+            if (targetTime.hasPassedNow()) {
+                break
+            }
+            if (locations.npStartedRegion.isWhite()) {
+                0.6.seconds.wait()
+                locations.battle.battleSafeMiddleOfScreenClick.click(10)
+                break
+            }
+            330.milliseconds.wait()
+        }
     }
 
     private fun shouldShuffle(cards: List<ParsedCard>, npUsage: NPUsage): Boolean {
