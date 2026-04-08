@@ -89,10 +89,10 @@ class Battle @Inject constructor(
 
         0.5.seconds.wait()
 
-        updateBetterFGONPSkip()
+        checkForBetterFGONPSkip()
     }
 
-    private fun updateBetterFGONPSkip() {
+    private fun checkForBetterFGONPSkip() {
         if (!prefs.gameServer.betterFgo) return
 
         val currentTime = TimeSource.Monotonic.markNow()
