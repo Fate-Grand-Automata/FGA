@@ -39,6 +39,11 @@ interface AutomataApi {
         similarity: Double? = null
     ): Match? = patterns.firstNotNullOfOrNull { find(it, similarity) }
 
+    fun Pattern.find(
+        pattern: Pattern,
+        similarity: Double? = null
+    ): Match? = this.findMatches(pattern, similarity ?: 0.0).firstOrNull()
+
     fun Region.exists(
         image: Pattern,
         timeout: Duration = Duration.ZERO,
