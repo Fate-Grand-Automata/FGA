@@ -27,9 +27,8 @@ class AutoLottery @Inject constructor(
     class ExitException(val reason: ExitReason) : Exception()
 
     private fun spin() {
-        // Don't increase this too much or you'll regret when you're not able to stop the script
-        // And your phone won't let you press anything
-        locations.lottery.spinClick.click(20)
+        locations.lottery.spinClick.longPress(prefs.lottoLongPressSeconds.seconds)
+        1.seconds.wait()
     }
 
     private fun presentBoxFull() {

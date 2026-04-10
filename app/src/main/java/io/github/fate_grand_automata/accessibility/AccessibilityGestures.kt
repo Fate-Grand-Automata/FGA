@@ -15,6 +15,8 @@ import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.math.*
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * Class to perform gestures using Android's [AccessibilityService].
@@ -160,6 +162,37 @@ class AccessibilityGestures @Inject constructor(
         }
 
         TapperService.instance?.dispatchGesture(gestureDesc, callback, null)
+    }
+
+    override fun longPress(location: Location, duration: Duration) = runBlocking {
+        val longPressPath = Path().moveTo(location)
+
+        val longPressDuration = duration.inWholeMilliseconds
+        var gestureDelay = 0L
+        val dragReleaseDuration = 50L
+
+        Timber.d("long pressed $location started")
+
+        val lastStroke = GestureDescription.StrokeDescription(
+            longPressPath,
+            0L,
+            longPressDuration,
+            true
+        ).also {
+            performGesture(it)
+            gestureDelay += longPressDuration
+        }
+
+        lastStroke.continueStroke(
+            longPressPath,
+            gestureDelay,
+            dragReleaseDuration,
+            false
+        ).also {
+            performGesture(it)
+        }
+
+        Timber.d("long pressed $location stopped")
     }
 
     override fun close() {}

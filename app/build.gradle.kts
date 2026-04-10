@@ -40,7 +40,7 @@ android {
 
     defaultConfig {
         applicationId = "io.github.fate_grand_automata"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 35
         versionCode = System.getenv("FGA_VERSION_CODE")?.toInt() ?: 1
         versionName = System.getenv("FGA_VERSION_NAME") ?: System.getenv("FGA_VERSION_CODE") ?: "0.1.0"
