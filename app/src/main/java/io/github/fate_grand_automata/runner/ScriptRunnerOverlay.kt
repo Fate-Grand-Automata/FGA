@@ -8,15 +8,12 @@ import android.view.Gravity
 import android.view.WindowManager
 import androidx.compose.ui.platform.ComposeView
 import dagger.hilt.android.scopes.ServiceScoped
-import io.github.fate_grand_automata.di.script.ScriptComponentBuilder
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.ui.highlight.HighlightManager
 import io.github.fate_grand_automata.ui.runner.ScriptRunnerUI
-import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIAction
 import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIStateHolder
 import io.github.fate_grand_automata.util.DisplayHelper
 import io.github.fate_grand_automata.util.FakedComposeView
-import io.github.fate_grand_automata.util.ScriptState
 import io.github.fate_grand_automata.util.overlayType
 import io.github.lib_automata.Location
 import javax.inject.Inject
@@ -31,8 +28,6 @@ class ScriptRunnerOverlay @Inject constructor(
     private val prefsCore: PrefsCore,
     private val uiStateHolder: ScriptRunnerUIStateHolder,
     private val scriptManager: ScriptManager,
-    private val screenshotServiceHolder: ScreenshotServiceHolder,
-    private val scriptComponentBuilder: ScriptComponentBuilder
 ) {
     private val layout: ComposeView
 
@@ -56,8 +51,8 @@ class ScriptRunnerOverlay @Inject constructor(
         layout = FakedComposeView(service) {
             ScriptRunnerUI(
                 state = uiStateHolder.uiState,
+                manager = scriptManager,
                 prefsCore = prefsCore,
-                updateState = { act(it) },
                 isRecording = uiStateHolder.isRecording,
                 enabled = uiStateHolder.isPlayButtonEnabled,
                 onDrag = { x, y -> onDrag(x, y) }
@@ -134,31 +129,5 @@ class ScriptRunnerOverlay @Inject constructor(
         val y = m.heightPixels - layout.measuredHeight
 
         return Location(x, y)
-    }
-
-    private fun act(action: ScriptRunnerUIAction) {
-        when (action) {
-            ScriptRunnerUIAction.Pause, ScriptRunnerUIAction.Resume -> {
-                scriptManager.pause(ScriptManager.PauseAction.Toggle)
-            }
-
-            ScriptRunnerUIAction.Start -> {
-                if (scriptManager.scriptState is ScriptState.Stopped) {
-                    screenshotServiceHolder.screenshotService?.let {
-                        scriptManager.startScript(service, it, scriptComponentBuilder)
-                    }
-                }
-            }
-
-            ScriptRunnerUIAction.Stop -> {
-                if (scriptManager.scriptState is ScriptState.Started) {
-                    scriptManager.stopScript()
-                }
-            }
-
-            is ScriptRunnerUIAction.Status -> {
-                scriptManager.showStatus(action.status)
-            }
-        }
     }
 }
