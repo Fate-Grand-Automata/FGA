@@ -25,7 +25,7 @@ import kotlin.time.Duration.Companion.seconds
 @ServiceScoped
 class ScriptRunnerServiceController @Inject constructor(
     private val service: Service,
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val scriptManager: ScriptManager,
     private val screenshotServiceHolder: ScreenshotServiceHolder,
     private val imageLoader: ImageLoader,
@@ -36,7 +36,7 @@ class ScriptRunnerServiceController @Inject constructor(
     private val displayHelper: DisplayHelper,
     private val messages: ScriptMessages,
     private val messageBox: ScriptRunnerMessageBox,
-    @ServiceCoroutineScope private val scope: CoroutineScope
+    @param:ServiceCoroutineScope private val scope: CoroutineScope
 ) {
     private val screenOffReceiver = ScreenOffReceiver()
 
