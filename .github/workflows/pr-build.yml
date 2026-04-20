@@ -5,6 +5,7 @@ on:
     paths-ignore:
       - '.idea/**'
       - '.github/ISSUE_TEMPLATE/**'
+      - '.github/prompts/**'
       - '.gitattributes'
       - '.gitignore'
       - '*.md'
