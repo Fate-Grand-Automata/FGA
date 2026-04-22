@@ -96,6 +96,7 @@
     <string name="p_battle_config_server">"区服"</string>
     <string name="p_battle_config_card_priority">"指令卡优先级"</string>
     <string name="p_battle_config_use_servant_priority">"使用从者优先级"</string>
+    <string name="p_battle_config_use_chain_priority">"使用追击连携先级"</string>
     <string name="p_battle_config_support">"助战从者"</string>
     <string name="p_battle_config_support_selection_mode">"助战从者选取方式"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"备用选取方式"</string>
@@ -128,6 +129,8 @@
     <string name="p_screenshot_drops_unmodified">"保存未修改的截图"</string>
     <string name="p_screenshot_drops_unmodified_summary">"保存未修改的全屏截图，而非裁剪和重新缩放的截图"</string>
     <string name="p_boost_item">"加速道具"</string>
+    <string name="p_servant_priority">"从者优先级"</string>
+    <string name="p_chain_priority">"追击连携优先级"</string>
     <string name="p_brave_chains">"追击连携"</string>
     <string name="p_rearrange_cards">"调换顺序（优先级高的卡后出）"</string>
     <string name="p_skip_servant_face_checks">"跳过从者头像检查"</string>
@@ -163,6 +166,8 @@
     <string name="p_fine_tune_min_similarity">"全局识别阈值（%）"</string>
     <string name="p_fine_tune_mlb_similarity">"满破星识别阈值（%）"</string>
     <string name="p_fine_tune_stage_counter_similarity">"战斗场次识别阈值（%）"</string>
+    <string name="p_fine_tune_np_card_type_similarity">"宝具类型识别阈值（%）"</string>
+    <string name="p_fine_tune_np_spam_card_detection_similarity">"宝具瞎打模式识别阈值（%）"</string>
     <string name="p_fine_tune_clicks">"点击"</string>
     <string name="p_fine_tune_wait_after_clicking">"点击后暂停（ms）"</string>
     <string name="p_fine_tune_click_duration">"点击时间（ms）"</string>
@@ -174,6 +179,7 @@
     <string name="p_fine_tune_wait">"等待时间"</string>
     <string name="p_fine_tune_skill_delay">"施放技能后等待时间（ms）"</string>
     <string name="p_fine_tune_wait_before_turn">"回合间等待时间（ms）"</string>
+    <string name="p_fine_tune_wait_after_order_change">"换人（Order Change）后等待时间（ms）"</string>
     <string name="p_fine_tune_wait_before_cards">"选择指令卡前等待时间（ms）"</string>
     <string name="p_fine_tune_wait_multiplier">"等待时间加乘（%）"</string>
     <string name="troubleshoot">"FGA有问题请先点这（GitHub链接）"</string>
@@ -186,7 +192,13 @@
     <string name="p_refill_type_sq">"圣晶石"</string>
     <string name="p_brave_chains_don_t_care">"无偏好"</string>
     <string name="p_brave_chains_with_np">"宝具施放后"</string>
+    <string name="p_brave_chains_always">"始终追求链接"</string>
     <string name="p_brave_chains_avoid">"避免追击连携"</string>
+    <string name="p_chain_type_quick">"迅击"</string>
+    <string name="p_chain_type_arts">"技击"</string>
+    <string name="p_chain_type_buster">"力击"</string>
+    <string name="p_chain_type_mighty">"Mighty"</string>
+    <string name="p_chain_type_avoid">"避免"</string>
     <string name="p_boost_item_disabled">"关闭"</string>
     <string name="p_boost_item_skip">"跳过"</string>
     <string name="spam">"瞎打模式"</string>
