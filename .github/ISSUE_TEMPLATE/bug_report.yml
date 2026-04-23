@@ -9,7 +9,7 @@ body:
       label: Preparation
       description: "Before you open a bug report, you should check the following:"
       options:
-        - label: I tested the [latest release](https://github.com/Fate-Grand-Automata/FGA/releases/tag/canary)
+        - label: I tested the [latest release](https://github.com/Fate-Grand-Automata/FGA/releases/latest)
           required: true
         - label: I looked at other issues (even the [closed ones](https://github.com/Fate-Grand-Automata/FGA/issues?q=is%3Aissue+is%3Aclosed))
           required: true
@@ -37,13 +37,20 @@ body:
         The build number can be found on FGA's main screen at the top, it says BUILD:xxxx.
         
         Entering the number is enough.
-      placeholder: "1023"
+      placeholder: "3013"
     validations:
       required: true
   - type: textarea
     id: description
     attributes:
       label: Describe the bug
+      placeholder: |
+        <Describe the bug here>
+
+        Steps to reproduce.
+        1.
+        2.
+        3.
       description: |
         A clear and concise description of what the bug is.
         
@@ -66,7 +73,8 @@ body:
       required: true
   - type: markdown
     attributes:
-      value: "Now please tell us about your device"
+      value: |
+        ## Now please tell us about your device
   - type: input
     id: device-model
     attributes:
@@ -105,6 +113,10 @@ body:
     attributes:
       label: RAM
       placeholder: 3GB
+      description: |
+        As of 2024-06-25, the minimum ram for FGO to run is 3GB. 
+        Ensure that your ram is equal or higher than the minimum RAM specification to ensure the best experience.
+        https://webview.fate-go.us/iframe/2024/0519_supported_env/
   - type: markdown
     attributes:
       value: "If you open unnecessary/dumb issues, you'll be rewarded with appropriate tags."
