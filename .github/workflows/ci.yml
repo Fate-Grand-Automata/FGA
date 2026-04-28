@@ -18,7 +18,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-ci
   cancel-in-progress: true
 
 env:
@@ -89,27 +89,17 @@ jobs:
           SUPPLY_JSON_KEY_DATA: ${{ secrets.SERVICE_ACCOUNT_NEW_APP }}
       - name: zip APK
         run: zip FGA-apk-${VERSION_CODE}.zip *.apk
-      - name: Create tag
-        uses: mathieudutour/github-tag-action@va22cf08638b34d5badda920f9daf6e72c477b07b
-        with:
-          custom_tag: ${{ env.VERSION_CODE }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
+      
       - name: Create release
-        uses: ncipollo/release-action@v339a81892b84b4eeb0f6e744e4574d79d0d9b8dd
-        id: github-release
+        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          generateReleaseNotes: true
-          artifacts: 'FGA-apk-${{ env.VERSION_CODE }}.zip'
-          tag: 'v${{ env.VERSION_CODE }}'
-          name: 'FGA ${{ env.VERSION_CODE }}'
-
-      - name: Add installation instructions to release
-        uses: irongut/EditRelease@v1.2.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          id: ${{ steps.github-release.outputs.id }}
-          replacebody: false
+          tag_name: v${{ env.VERSION_CODE }}
+          name: FGA ${{ env.VERSION_CODE }}
           body: |
             > [!NOTE] 
             > Use the [APKMirror Installer](https://play.google.com/store/apps/details?id=com.apkmirror.helper.prod) to install the app on Android 14+, otherwise Accessibility can't be enabled.
+          files: |
+            FGA-apk-${{ env.VERSION_CODE }}.zip
+          generate_release_notes: true
