@@ -7,7 +7,7 @@ jobs:
     if: >-
           github.event.issue.user.id != 10654537 && github.event.issue.user.id != 12360257 &&
           join(github.event.issue.labels) == ''
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - name: Close Issue
         uses: peter-evans/close-issue@05dff7ca07116e5707cfb3a3cd4af7bb5e43524c
