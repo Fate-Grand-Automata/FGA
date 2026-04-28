@@ -1,7 +1,7 @@
 name: PR Build
 
 on:
-  pull_request_target:
+  pull_request:
     paths-ignore:
       - '.idea/**'
       - '.github/ISSUE_TEMPLATE/**'
@@ -92,7 +92,11 @@ jobs:
           path: ${{ env.FGA_MAPPING_PATH }}
       
       - name: Comment the APK
-        if: ${{ github.event_name != 'workflow_dispatch' && github.actor != 'renovate[bot]' }}
+        if: ${{ 
+            github.event_name != 'workflow_dispatch' &&
+            github.actor != 'renovate[bot]' &&
+            github.repository == 'Fate-Grand-Automata/FGA'
+          }}
         uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b
         with:
           comment-tag: apk
