@@ -91,7 +91,7 @@ fun CardPriorityWaveSelector(
             }
 
             AnimatedVisibility(
-                items.size < 3,
+                items.size < MAX_WAVES,
                 enter = slideInHorizontally(initialOffsetX = { it * 2 }),
                 exit = slideOutHorizontally(targetOffsetX = { it * 2 })
             ) {
@@ -103,7 +103,7 @@ fun CardPriorityWaveSelector(
                         )
                         .clip(CircleShape)
                         .clickable {
-                            if (items.size < 3) {
+                            if (items.size < MAX_WAVES) {
                                 items.add(
                                     CardPriorityListItem(
                                         items[0].scores.toMutableList(),
@@ -125,3 +125,5 @@ fun CardPriorityWaveSelector(
         }
     }
 }
+
+private const val MAX_WAVES = 4
