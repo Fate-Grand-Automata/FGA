@@ -10,11 +10,12 @@ import kotlin.time.Duration.Companion.seconds
 @ScriptScope
 class SupportClassPicker @Inject constructor(
     private val screen: SupportScreen,
-    private val supportPrefs: ISupportPreferences
+    private val supportPrefs: ISupportPreferences,
 ) {
     fun selectSupportClass(supportClass: SupportClass = supportPrefs.supportClass) {
-        if (supportClass == SupportClass.None)
+        if (supportClass == SupportClass.None) {
             return
+        }
 
         screen.click(supportClass)
 

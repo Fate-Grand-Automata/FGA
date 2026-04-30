@@ -2,7 +2,14 @@ package io.github.fate_grand_automata.di.script
 
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
-import io.github.fate_grand_automata.scripts.entrypoints.*
+import io.github.fate_grand_automata.scripts.entrypoints.AutoBattle
+import io.github.fate_grand_automata.scripts.entrypoints.AutoCEBomb
+import io.github.fate_grand_automata.scripts.entrypoints.AutoDetect
+import io.github.fate_grand_automata.scripts.entrypoints.AutoFriendGacha
+import io.github.fate_grand_automata.scripts.entrypoints.AutoGiftBox
+import io.github.fate_grand_automata.scripts.entrypoints.AutoLottery
+import io.github.fate_grand_automata.scripts.entrypoints.AutoServantLevel
+import io.github.fate_grand_automata.scripts.entrypoints.SupportImageMaker
 
 @EntryPoint
 @InstallIn(ScriptComponent::class)

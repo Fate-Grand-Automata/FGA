@@ -17,7 +17,7 @@ fun VerticalDivider(
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.12f),
     thickness: Dp = 1.dp,
-    startIndent: Dp = 0.dp
+    startIndent: Dp = 0.dp,
 ) {
     val indentMod = if (startIndent.value != 0f) {
         Modifier.padding(start = startIndent)
@@ -30,6 +30,6 @@ fun VerticalDivider(
             .then(indentMod)
             .fillMaxHeight()
             .width(thickness)
-            .background(color = color)
+            .background(color = color),
     )
 }

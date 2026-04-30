@@ -5,5 +5,5 @@ enum class RefillResourceEnum {
     Bronze,
     Silver,
     Gold,
-    SQ
+    SQ,
 }

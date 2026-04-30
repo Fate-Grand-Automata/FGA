@@ -9,4 +9,3 @@ interface IItemTouchHelperViewHolder {
 
     fun onItemClear()
 }
-

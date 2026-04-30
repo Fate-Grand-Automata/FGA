@@ -12,12 +12,11 @@ import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
-
 @ScriptScope
 class AutoServantLevel @Inject constructor(
     private val connectionRetry: ConnectionRetry,
     exitManager: ExitManager,
-    api: IFgoAutomataApi
+    api: IFgoAutomataApi,
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
 
     /**
@@ -76,7 +75,6 @@ class AutoServantLevel @Inject constructor(
     class ServantUpgradeException(val reason: ExitReason) : Exception()
 
     class ExitException(val reason: ExitReason) : Exception()
-
 
     override fun script(): Nothing {
         try {
@@ -222,9 +220,9 @@ class AutoServantLevel @Inject constructor(
                 locations.enhancementClick.click()
                 confirmationVisible = mapOf(
                     images[Images.Ok] to locations.servant.finalConfirmRegion,
-                    images[Images.Execute] to locations.tempServantEnhancementRegion
+                    images[Images.Execute] to locations.tempServantEnhancementRegion,
                 ).exists(
-                    timeout = 3.seconds
+                    timeout = 3.seconds,
                 )
 
                 if (confirmationVisible) {
@@ -246,7 +244,7 @@ class AutoServantLevel @Inject constructor(
      * This function will check if the script is in the ascension menu.
      */
     private fun isInAscensionMenu() = images[Images.ServantAscensionBanner] in
-            locations.enhancementBannerRegion
+        locations.enhancementBannerRegion
 
     /**
      * This function will handle the return to enhancement menu.
@@ -272,16 +270,15 @@ class AutoServantLevel @Inject constructor(
             0.5.seconds.wait()
             val exist = mapOf(
                 images[Images.Ok] to locations.servant.finalConfirmRegion,
-                images[Images.Execute] to locations.tempServantEnhancementRegion
+                images[Images.Execute] to locations.tempServantEnhancementRegion,
             ).exists(
-                timeout = 3.seconds
+                timeout = 3.seconds,
             )
             if (!exist) {
                 throw ServantUpgradeException(ExitReason.NoEmbersOrQPLeft)
             }
             return
-        }
-        else {
+        } else {
             locations.servant.servantAutoSelectRegion.click()
         }
     }
@@ -326,8 +323,6 @@ class AutoServantLevel @Inject constructor(
         0.5.seconds.wait()
     }
 
-
-
     /**
      * This function will confirm the enhancement.
      * This is the function that will be called when the final confirmation dialog is visible.
@@ -337,7 +332,6 @@ class AutoServantLevel @Inject constructor(
     private fun confirmEnhancement() {
         locations.servant.finalConfirmRegion.click()
         1.0.seconds.wait()
-
     }
 
     /**
@@ -360,7 +354,7 @@ class AutoServantLevel @Inject constructor(
      * This function will check if the auto select is visible to start the selection of embers.
      */
     private fun isAutoSelectVisible(): Boolean = images[Images.ServantAutoSelect] in
-            locations.servant.servantAutoSelectRegion
+        locations.servant.servantAutoSelectRegion
 
     /**
      * This function will check if the ember selection dialog is visible.
@@ -372,14 +366,13 @@ class AutoServantLevel @Inject constructor(
         }
         return pattern in locations.servant.emberConfirmationDialogRegion
     }
-            
 
     /**
      * This function will check if the empty ember or QP dialog is visible.
      */
     private fun isEmptyEmberOrQPDialogVisible() =
         images[Images.Close] in locations.servant.emptyEmberOrQPDialogRegion
-    
+
     /**
      * This function will handle the prompt dialog.
      *
@@ -433,25 +426,24 @@ class AutoServantLevel @Inject constructor(
     private fun isAutoSelectMinimumEmberForLowQP(gameServer: GameServer) =
         okButtonPatterns(gameServer) in locations.servant.autoSelectMinEmberLowQPRegion
 
-
     /**
      * This function is for the temporary servants as they cannot do palingenesis and
      * thus needed another way to check if they are max level at FA.
      */
     private fun isAutoSelectOff() = images[Images.ServantAutoSelectOff] in
-            locations.servant.servantAutoSelectRegion
+        locations.servant.servantAutoSelectRegion
 
     /**
      * This function will check if the servant can redirect to the grail menu.
      */
     private fun isRedirectGrailVisible() = images[Images.ServantGrailRedirectFromMenu] in
-            locations.servant.servantRedirectCheckRegion(prefs.gameServer)
+        locations.servant.servantRedirectCheckRegion(prefs.gameServer)
 
     /**
      * This function will check if the servant can redirect to the ascension menu.
      */
     private fun isRedirectAscensionVisible() = images[Images.ServantAscensionRedirectFromMenu] in
-            locations.servant.servantRedirectCheckRegion(prefs.gameServer)
+        locations.servant.servantRedirectCheckRegion(prefs.gameServer)
 
     /**
      * This function will wait until the grail menu is visible.
@@ -459,7 +451,7 @@ class AutoServantLevel @Inject constructor(
     private fun waitUntilGrailVisible() = locations.enhancementBannerRegion.exists(
         images[Images.ServantGrailBanner],
         similarity = 0.7,
-        timeout = 5.seconds
+        timeout = 5.seconds,
     )
 
     /**
@@ -468,7 +460,7 @@ class AutoServantLevel @Inject constructor(
     private fun waitUntilAscensionVisible() = locations.enhancementBannerRegion.exists(
         images[Images.ServantAscensionBanner],
         similarity = 0.7,
-        timeout = 5.seconds
+        timeout = 5.seconds,
     )
 
     /**
@@ -479,7 +471,7 @@ class AutoServantLevel @Inject constructor(
     private fun waitUntilServantMenuVisible() = locations.servant.servantAutoSelectRegion.exists(
         images[Images.ServantAutoSelect],
         similarity = 0.7,
-        timeout = 5.seconds
+        timeout = 5.seconds,
     )
 
     /**
@@ -487,7 +479,7 @@ class AutoServantLevel @Inject constructor(
      * This will check if the script would return to the enhancement menu.
      */
     private fun isReturnToLevel() = images[Images.ServantAscensionReturnToLevel] in
-            locations.servant.ascensionReturnToLevelRegion
+        locations.servant.ascensionReturnToLevelRegion
 
     private fun okButtonPatterns(gameServer: GameServer) = when (gameServer) {
         // KR has 2 OK buttons

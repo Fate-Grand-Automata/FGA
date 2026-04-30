@@ -22,7 +22,7 @@ fun RowScope.SkillButton(
     skill: Skill,
     color: Color,
     onClick: () -> Unit,
-    onDoubleClick: () -> Unit
+    onDoubleClick: () -> Unit,
 ) {
     Surface(
         color = color,
@@ -35,14 +35,14 @@ fun RowScope.SkillButton(
             .weight(1f, false)
             .combinedClickable(
                 onClick = onClick,
-                onDoubleClick = onDoubleClick
+                onDoubleClick = onDoubleClick,
             ),
     ) {
         Box {
             Text(
                 skill.autoSkillCode.toString(),
                 color = Color.White,
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center),
             )
         }
     }

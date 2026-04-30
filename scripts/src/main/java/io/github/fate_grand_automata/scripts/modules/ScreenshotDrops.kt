@@ -13,11 +13,12 @@ import kotlin.time.Duration.Companion.seconds
 class ScreenshotDrops @Inject constructor(
     api: IFgoAutomataApi,
     private val screenshotService: ScreenshotService,
-    private val storageProvider: IStorageProvider
+    private val storageProvider: IStorageProvider,
 ) : IFgoAutomataApi by api {
     fun screenshotDrops() {
-        if (!prefs.screenshotDrops)
+        if (!prefs.screenshotDrops) {
             return
+        }
 
         val drops = mutableListOf<Pattern>()
 
@@ -34,14 +35,16 @@ class ScreenshotDrops @Inject constructor(
             if (i == 0 && images[Images.DropScrollbar] in locations.resultDropScrollbarRegion) {
                 // scroll to end
                 locations.resultDropScrollEndClick.click()
-            } else break
+            } else {
+                break
+            }
         }
 
         storageProvider.dropScreenshot(drops)
     }
 
-    fun screenshotBond(){
-        if (!prefs.screenshotBond){
+    fun screenshotBond() {
+        if (!prefs.screenshotBond) {
             return
         }
 
@@ -52,8 +55,7 @@ class ScreenshotDrops @Inject constructor(
                 val pattern = screenshotService.takeScreenshot()
 
                 storageProvider.dropBondScreenShot(pattern, server = prefs.gameServer)
-            }
-            finally {
+            } finally {
                 prefs.hidePlayButton = false
             }
         }

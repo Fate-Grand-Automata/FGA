@@ -11,13 +11,13 @@ import androidx.compose.ui.Modifier
 fun DimmedIcon(
     icon: VectorIcon,
     modifier: Modifier = Modifier,
-    contentDescription: String = "icon"
+    contentDescription: String = "icon",
 ) {
     CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant) {
         Icon(
             icon.asPainter(),
             contentDescription = contentDescription,
-            modifier = modifier
+            modifier = modifier,
         )
     }
 }

@@ -14,7 +14,9 @@ class StartMediaProjection : ActivityResultContract<Unit, Intent?>() {
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?) =
-        if (resultCode != Activity.RESULT_OK)
+        if (resultCode != Activity.RESULT_OK) {
             null
-        else intent
+        } else {
+            intent
+        }
 }

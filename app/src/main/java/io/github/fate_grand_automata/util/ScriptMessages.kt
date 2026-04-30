@@ -20,7 +20,7 @@ import kotlin.time.DurationUnit
 class ScriptMessages @Inject constructor(
     service: Service,
     private val notification: ScriptRunnerNotification,
-    private val prefs: IPreferences
+    private val prefs: IPreferences,
 ) : IScriptMessages {
     private val context: Context = service
 
@@ -61,7 +61,7 @@ class ScriptMessages @Inject constructor(
                                 success -> "10"
                                 else -> "f"
                             }
-                        }
+                        },
                 )
             }
 
@@ -119,13 +119,13 @@ class ScriptMessages @Inject constructor(
 
             is ScriptNotify.SupportListUpdatingIn -> {
                 toast(
-                    context.getString(R.string.support_list_updated_in, action.time.toString(DurationUnit.SECONDS, 2))
+                    context.getString(R.string.support_list_updated_in, action.time.toString(DurationUnit.SECONDS, 2)),
                 )
             }
 
             is ScriptNotify.WaitForAPRegen -> {
                 toast(
-                    context.getString(R.string.wait_ap_regen_toast_message, action.minutes)
+                    context.getString(R.string.wait_ap_regen_toast_message, action.minutes),
                 )
             }
 
@@ -133,14 +133,14 @@ class ScriptMessages @Inject constructor(
                 val msg = makeRefillAndRunsMessage(
                     timesRefilled = action.refills,
                     timesRan = action.runs,
-                    ceDropCount = action.ceDrops
+                    ceDropCount = action.ceDrops,
                 )
 
                 toast(msg)
             }
             is ScriptNotify.BondLevelUp -> {
                 notify(
-                    context.getString(R.string.bond_level_up)
+                    context.getString(R.string.bond_level_up),
                 )
             }
         }
@@ -148,23 +148,23 @@ class ScriptMessages @Inject constructor(
     private fun makeRefillAndRunsMessage(
         timesRan: Int,
         timesRefilled: Int,
-        ceDropCount: Int
+        ceDropCount: Int,
     ) = buildString {
         val perServerConfigPref = prefs.selectedServerConfigPref
 
         if (perServerConfigPref.shouldLimitRuns && perServerConfigPref.limitRuns > 0) {
             appendLine(
-                context.getString(R.string.times_ran_out_of, timesRan, perServerConfigPref.limitRuns)
+                context.getString(R.string.times_ran_out_of, timesRan, perServerConfigPref.limitRuns),
             )
         } else if (timesRan > 0) {
             appendLine(
-                context.getString(R.string.times_ran, timesRan)
+                context.getString(R.string.times_ran, timesRan),
             )
         }
 
         if (ceDropCount > 0) {
             appendLine(
-                context.getString(R.string.ces_dropped, ceDropCount)
+                context.getString(R.string.ces_dropped, ceDropCount),
             )
         }
 
@@ -172,7 +172,7 @@ class ScriptMessages @Inject constructor(
             val refillRepetitions = perServerConfigPref.currentAppleCount
             if (refillRepetitions > 0) {
                 appendLine(
-                    context.getString(R.string.refills_used_out_of, timesRefilled, refillRepetitions)
+                    context.getString(R.string.refills_used_out_of, timesRefilled, refillRepetitions),
                 )
             }
         }

@@ -18,25 +18,25 @@ class SupportImageMaker @Inject constructor(
     storageProvider: IStorageProvider,
     exitManager: ExitManager,
     api: IFgoAutomataApi,
-    private val grandChecker: SupportSelectionGrandChecker
+    private val grandChecker: SupportSelectionGrandChecker,
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     companion object {
         fun getServantImgPath(dir: File, Index: Int): File {
-            return File(dir, "servant_${Index}.png")
+            return File(dir, "servant_$Index.png")
         }
 
         fun getCeImgPath(dir: File, Index: Int): File {
-            return File(dir, "ce_${Index}.png")
+            return File(dir, "ce_$Index.png")
         }
 
         fun getFriendImgPath(dir: File, Index: Int): File {
-            return File(dir, "friend_${Index}.png")
+            return File(dir, "friend_$Index.png")
         }
     }
 
     sealed class ExitReason {
-        object Success: ExitReason()
-        object NotFound: ExitReason()
+        object Success : ExitReason()
+        object NotFound : ExitReason()
     }
 
     class ExitException(val reason: ExitReason) : Exception()
@@ -52,7 +52,7 @@ class SupportImageMaker @Inject constructor(
         val regionArray = locations.scriptArea
             .findAll(
                 images[Images.SupportConfirmSetupButton],
-                Support.supportRegionToolSimilarity
+                Support.SUPPORT_REGION_TOOL_SIMILARITY,
             )
             .map {
                 Region(
@@ -60,7 +60,7 @@ class SupportImageMaker @Inject constructor(
                     // in the friend screen, the "Confirm Support Setup" button is higher
                     if (isInSupport) 66 else 82,
                     284,
-                    220
+                    220,
                 ) + it.region.location
             }
             .filter { it in locations.scriptArea }
@@ -76,7 +76,7 @@ class SupportImageMaker @Inject constructor(
                     extractGrandCeImage(region, i)
                     extractGrandFriendNameImage(region, i)
                 } else {
-                    extractCeImage(it, i*3)
+                    extractCeImage(it, i * 3)
                     extractFriendNameImage(region, isInSupport, i)
                 }
             }
@@ -124,7 +124,7 @@ class SupportImageMaker @Inject constructor(
         clipRegion.getPattern().use {
             val bounds = listOf(
                 Region(0, 0, 142, 25),
-                Region(0, 92, 142, 25)
+                Region(0, 92, 142, 25),
             )
             for ((j, bound) in bounds.withIndex()) {
                 val ce = it.crop(bound)
@@ -133,7 +133,7 @@ class SupportImageMaker @Inject constructor(
         }
     }
 
-    private  fun extractGrandFriendNameImage(supportBound: Region, i: Int) {
+    private fun extractGrandFriendNameImage(supportBound: Region, i: Int) {
         val friendBound = Region(supportBound.x + 662, supportBound.y - 95, 400, 110)
         val friendPattern = friendBound.getPattern()
         friendPattern.save(getFriendImgPath(dir, i))

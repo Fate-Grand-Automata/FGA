@@ -1,7 +1,11 @@
 package io.github.fate_grand_automata.runner
 
 import android.Manifest.permission.POST_NOTIFICATIONS
-import android.app.*
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -26,19 +30,19 @@ import kotlin.time.Duration.Companion.milliseconds
 @ServiceScoped
 class ScriptRunnerNotification @Inject constructor(
     private val service: Service,
-    private val vibrator: Vibrator
+    private val vibrator: Vibrator,
 ) {
 
     private object Channels {
-        const val service = "service"
-        const val old = "fategrandautomata-notifications"
-        const val message = "message"
+        const val SERVICE = "service"
+        const val OLD = "fategrandautomata-notifications"
+        const val MESSAGE = "message"
     }
 
     private object Ids {
-        const val foregroundNotification = 1
+        const val FOREGROUND_NOTIFICATION = 1
 
-        const val messageNotification = 2
+        const val MESSAGE_NOTIFICATION = 2
     }
 
     init {
@@ -46,9 +50,9 @@ class ScriptRunnerNotification @Inject constructor(
             val notifyManager = NotificationManagerCompat.from(service)
 
             NotificationChannel(
-                Channels.service,
+                Channels.SERVICE,
                 "Service Running",
-                NotificationManager.IMPORTANCE_LOW
+                NotificationManager.IMPORTANCE_LOW,
             ).apply {
                 description = "Ongoing notification that the service is running in the background"
 
@@ -57,9 +61,9 @@ class ScriptRunnerNotification @Inject constructor(
             }
 
             NotificationChannel(
-                Channels.message,
+                Channels.MESSAGE,
                 "Messages",
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_DEFAULT,
             ).apply {
                 description = "Plays sound on Script exit and other events"
 
@@ -69,7 +73,7 @@ class ScriptRunnerNotification @Inject constructor(
 
             try {
                 // Delete the old channel
-                notifyManager.deleteNotificationChannel(Channels.old)
+                notifyManager.deleteNotificationChannel(Channels.OLD)
             } catch (e: Exception) {
             }
         }
@@ -81,31 +85,33 @@ class ScriptRunnerNotification @Inject constructor(
                 service,
                 0,
                 Intent(service, MainActivity::class.java),
-                PendingIntent.FLAG_IMMUTABLE
+                PendingIntent.FLAG_IMMUTABLE,
             )
 
         val stopIntent = PendingIntent.getBroadcast(
             service,
             1,
             Intent(service, NotificationReceiver::class.java).apply {
-                putExtra(keyAction, actionStop)
+                putExtra(KEY_ACTION, ACTION_STOP)
             },
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
 
         val stopAction = NotificationCompat.Action.Builder(
             R.drawable.ic_close,
             service.getString(R.string.notification_stop),
-            stopIntent
+            stopIntent,
         ).build()
 
-        return NotificationCompat.Builder(service, Channels.service)
+        return NotificationCompat.Builder(service, Channels.SERVICE)
             .setOngoing(true)
             .setContentTitle(service.getString(R.string.app_name))
             .setContentText(service.getString(R.string.overlay_notification_text))
             // show full message on expand
-            .setStyle(NotificationCompat.BigTextStyle()
-                .bigText(service.getString(R.string.overlay_notification_text)))
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(service.getString(R.string.overlay_notification_text)),
+            )
             .setSmallIcon(R.mipmap.notification_icon)
             .setColor(service.getColor(R.color.colorBusterWeak))
             .setPriority(NotificationManager.IMPORTANCE_LOW)
@@ -123,20 +129,20 @@ class ScriptRunnerNotification @Inject constructor(
             }
 
             service.startForeground(
-                Ids.foregroundNotification,
+                Ids.FOREGROUND_NOTIFICATION,
                 builder.build(),
-                foregroundServiceType
+                foregroundServiceType,
             )
         } else {
             service.startForeground(
-                Ids.foregroundNotification,
-                builder.build()
+                Ids.FOREGROUND_NOTIFICATION,
+                builder.build(),
             )
         }
     }
 
     fun message(msg: String) {
-        val notification = NotificationCompat.Builder(service, Channels.message)
+        val notification = NotificationCompat.Builder(service, Channels.MESSAGE)
             .setContentTitle(service.getString(R.string.app_name))
             .setContentText(msg)
             .setSmallIcon(R.mipmap.notification_icon)
@@ -145,11 +151,11 @@ class ScriptRunnerNotification @Inject constructor(
             .build()
 
         // Android 13+ needs a notification permission
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
-            || ContextCompat.checkSelfPermission(service, POST_NOTIFICATIONS) == PERMISSION_GRANTED
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+            ContextCompat.checkSelfPermission(service, POST_NOTIFICATIONS) == PERMISSION_GRANTED
         ) {
             // only show notification if allowed
-            NotificationManagerCompat.from(service).notify(Ids.messageNotification, notification)
+            NotificationManagerCompat.from(service).notify(Ids.MESSAGE_NOTIFICATION, notification)
         }
 
         vibrate(100.milliseconds)
@@ -160,8 +166,8 @@ class ScriptRunnerNotification @Inject constructor(
             vibrator.vibrate(
                 VibrationEffect.createOneShot(
                     duration.inWholeMilliseconds,
-                    VibrationEffect.DEFAULT_AMPLITUDE
-                )
+                    VibrationEffect.DEFAULT_AMPLITUDE,
+                ),
             )
         } else {
             @Suppress("DEPRECATION")
@@ -171,12 +177,12 @@ class ScriptRunnerNotification @Inject constructor(
 
     fun hideMessage() {
         NotificationManagerCompat.from(service)
-            .cancel(Ids.messageNotification)
+            .cancel(Ids.MESSAGE_NOTIFICATION)
     }
 
     companion object {
-        const val actionStop = "ACTION_STOP"
-        const val keyAction = "action"
+        const val ACTION_STOP = "ACTION_STOP"
+        const val KEY_ACTION = "action"
     }
 
     @AndroidEntryPoint
@@ -189,8 +195,8 @@ class ScriptRunnerNotification @Inject constructor(
         lateinit var prefs: IPreferences
 
         override fun onReceive(context: Context, intent: Intent) {
-            when (intent.getStringExtra(keyAction)) {
-                actionStop -> ScriptRunnerService.stopService(context)
+            when (intent.getStringExtra(KEY_ACTION)) {
+                ACTION_STOP -> ScriptRunnerService.stopService(context)
             }
         }
     }

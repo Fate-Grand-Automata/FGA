@@ -24,7 +24,7 @@ import javax.inject.Inject
 class MainScreenViewModel @Inject constructor(
     val prefsCore: PrefsCore,
     val prefs: IPreferences,
-    val storageProvider: StorageProvider
+    val storageProvider: StorageProvider,
 ) : ViewModel() {
 
     init {
@@ -40,9 +40,9 @@ class MainScreenViewModel @Inject constructor(
 
     val autoStartService
         get() =
-            prefsCore.autoStartService.get()
-                    && oncePerActivityStart.getAndSet(false)
-                    && !ScriptRunnerService.serviceStarted.value
+            prefsCore.autoStartService.get() &&
+                oncePerActivityStart.getAndSet(false) &&
+                !ScriptRunnerService.serviceStarted.value
 
     private val oncePerActivityStart = AtomicBoolean(false)
     fun activityStarted() = oncePerActivityStart.set(true)

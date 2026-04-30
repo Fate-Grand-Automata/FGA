@@ -23,6 +23,6 @@ interface IStorageProvider {
      * For debugging images
      */
     fun dump(name: String, image: Pattern)
-    
+
     fun createNoMediaFile()
 }

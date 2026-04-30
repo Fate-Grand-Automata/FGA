@@ -10,5 +10,5 @@ data class SkillMakerSavedState(
     val wave: Int = 1,
     val turn: Int = 1,
     val currentSkill: Char = '0',
-    val currentIndex: Int = 0
+    val currentIndex: Int = 0,
 ) : Parcelable

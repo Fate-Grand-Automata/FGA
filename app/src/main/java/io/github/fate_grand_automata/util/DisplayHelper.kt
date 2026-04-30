@@ -7,13 +7,13 @@ import javax.inject.Singleton
 
 @Singleton
 class DisplayHelper @Inject constructor(
-    windowManager: WindowManager
+    windowManager: WindowManager,
 ) {
     private val display = windowManager.defaultDisplay
 
     val metrics: DisplayMetrics
         get() =
-        DisplayMetrics().also { display.getRealMetrics(it) }
+            DisplayMetrics().also { display.getRealMetrics(it) }
 
     val rotation get() = display.rotation
 }

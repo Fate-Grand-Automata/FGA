@@ -40,7 +40,6 @@ class PreferencesImpl @Inject constructor(
         }
         set(value) {
             lastPerServerConfigPref = value
-
         }
 
     private var lastConfig: IBattleConfig? = null
@@ -52,7 +51,9 @@ class PreferencesImpl @Inject constructor(
 
                 if (it != null && it.id == currentSelectedKey) {
                     it
-                } else forBattleConfig(currentSelectedKey)
+                } else {
+                    forBattleConfig(currentSelectedKey)
+                }
             }
 
             lastConfig = config
@@ -123,7 +124,7 @@ class PreferencesImpl @Inject constructor(
         autoSkillMap.getOrPut(id) {
             BattleConfig(
                 id,
-                prefs
+                prefs,
             )
         }
 
@@ -144,7 +145,6 @@ class PreferencesImpl @Inject constructor(
             .toMutableSet()
             .apply { remove(id) }
 
-
         serverPrefsMap.values.forEach {
             if (it.selectedAutoSkillKey == id) {
                 it.selectedAutoSkillKey = ""
@@ -158,7 +158,7 @@ class PreferencesImpl @Inject constructor(
         serverPrefsMap.getOrPut(server.simple) {
             PerServerConfigPrefs(
                 GameServer.deserialize(server.simple)!!,
-                prefs
+                prefs,
             )
         }
 

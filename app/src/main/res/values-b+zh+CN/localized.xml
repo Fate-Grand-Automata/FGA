@@ -459,7 +459,7 @@
     <string name="p_app_language">"语言"</string>
     <string name="p_treat_support_like_own_servant">"助战从者视为自有从者"</string>
     <string name="p_treat_support_like_own_servant_summary">"从者头像检查时将不再匹配助战图标。该功能可解决助战从者带有过多buff时引发的识别问题。但当队伍中有两名相同从者时，该功能可能会破坏指令卡优先级的设定。"</string>
-    
+
     <string name="p_screenshot_bond">"截取牵绊提升界面"</string>
     <string name="p_screenshot_bond_summary">"实验性功能。牵绊提升时，将截图保存至 'bond' 文件夹。\n注意：其他结算界面的自动点击可能导致偶发的截图遗漏，使牵绊提升界面被跳过。"</string>
     <string name="p_hide_sq_in_resource">"在体力资源中隐藏“圣晶石”选项"</string>

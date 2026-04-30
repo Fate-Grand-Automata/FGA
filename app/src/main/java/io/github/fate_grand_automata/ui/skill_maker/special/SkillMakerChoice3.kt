@@ -34,11 +34,10 @@ import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.FGATitle
 import io.github.fate_grand_automata.ui.skill_maker.SkillSlot
 
-
 @Composable
 fun SkillMakerChoice3(
     slot: SkillSlot,
-    onSkillTarget: (ServantTarget) -> Unit
+    onSkillTarget: (ServantTarget) -> Unit,
 ) {
     val entries by remember {
         derivedStateOf {
@@ -52,10 +51,10 @@ fun SkillMakerChoice3(
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         FGATitle(
-            stringResource(choice3Type.stringRes)
+            stringResource(choice3Type.stringRes),
         )
 
         Row(
@@ -63,43 +62,43 @@ fun SkillMakerChoice3(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .weight(1f)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             TargetButton(
                 onClick = { onSkillTarget(ServantTarget.SpecialTarget.Choice3OptionA) },
                 color = colorResource(R.color.colorQuickResist),
-                text = stringResource(choice3Type.choice1StringRes)
+                text = stringResource(choice3Type.choice1StringRes),
             )
 
             TargetButton(
                 onClick = { onSkillTarget(ServantTarget.SpecialTarget.Choice3OptionB) },
                 color = colorResource(R.color.colorArtsResist),
-                text = stringResource(choice3Type.choice2StringRes)
+                text = stringResource(choice3Type.choice2StringRes),
             )
 
             TargetButton(
                 onClick = { onSkillTarget(ServantTarget.SpecialTarget.Choice3OptionC) },
                 color = colorResource(R.color.colorBuster),
-                text = stringResource(choice3Type.choice3StringRes)
+                text = stringResource(choice3Type.choice3StringRes),
             )
         }
 
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Text(
                 stringResource(R.string.skill_maker_update_button_labels).uppercase(),
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
-                textDecoration = TextDecoration.Underline
+                textDecoration = TextDecoration.Underline,
             )
         }
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             entries.forEach { entry ->
                 val containerColor by animateColorAsState(
@@ -108,7 +107,7 @@ fun SkillMakerChoice3(
                     } else {
                         MaterialTheme.colorScheme.primary
                     },
-                    label = "Container Color, if ${entry.name} is selected"
+                    label = "Container Color, if ${entry.name} is selected",
                 )
                 val contentColor by animateColorAsState(
                     targetValue = if (choice3Type == entry) {
@@ -116,7 +115,7 @@ fun SkillMakerChoice3(
                     } else {
                         MaterialTheme.colorScheme.onPrimary
                     },
-                    label = "Container Color, if ${entry.name} is selected"
+                    label = "Container Color, if ${entry.name} is selected",
                 )
                 Button(
                     onClick = {
@@ -131,17 +130,18 @@ fun SkillMakerChoice3(
                             width = Dp.Hairline,
                             color = MaterialTheme.colorScheme.primary,
                         )
-                    } else null,
+                    } else {
+                        null
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = containerColor,
-                        contentColor = contentColor
-                    )
+                        contentColor = contentColor,
+                    ),
                 ) {
                     Text(stringResource(entry.stringRes))
                 }
             }
         }
-
     }
 }
 
@@ -152,7 +152,7 @@ fun TestChoice3Slot1() {
     FGATheme {
         SkillMakerChoice3(
             slot = SkillSlot.First,
-            onSkillTarget = { }
+            onSkillTarget = { },
         )
     }
 }
@@ -163,16 +163,17 @@ fun TestChoice3Slot3() {
     FGATheme {
         SkillMakerChoice3(
             slot = SkillSlot.Third,
-            onSkillTarget = { }
+            onSkillTarget = { },
         )
     }
 }
 
-
 private enum class Choice3Type(val slot: SkillSlot) {
     Generic(SkillSlot.ANY),
+
     // First slot
     VanGogh(SkillSlot.First),
+
     // Third slot
     Hakuno(SkillSlot.Third),
     Soujuurou(SkillSlot.Third),

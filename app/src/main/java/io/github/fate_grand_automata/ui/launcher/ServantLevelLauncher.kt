@@ -27,11 +27,10 @@ import io.github.fate_grand_automata.prefs.core.ServantEnhancementPrefsCore
 import io.github.fate_grand_automata.ui.VerticalDivider
 import io.github.fate_grand_automata.ui.prefs.remember
 
-
 @Composable
 fun servantLevelLauncher(
     servantEnhancementPrefsCore: ServantEnhancementPrefsCore,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ): ScriptLauncherResponseBuilder {
     var shouldRedirectAscension by servantEnhancementPrefsCore.shouldRedirectAscension.remember()
 
@@ -42,19 +41,19 @@ fun servantLevelLauncher(
     LazyColumn(
         modifier = modifier
             .padding(horizontal = 16.dp)
-            .padding(top = 5.dp)
+            .padding(top = 5.dp),
     ) {
         stickyHeader {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        color = MaterialTheme.colorScheme.background
-                    )
+                        color = MaterialTheme.colorScheme.background,
+                    ),
             ) {
                 Text(
                     text = stringResource(id = R.string.servant_enhancement),
-                    style = MaterialTheme.typography.headlineSmall
+                    style = MaterialTheme.typography.headlineSmall,
                 )
                 HorizontalDivider()
             }
@@ -63,14 +62,14 @@ fun servantLevelLauncher(
             Text(
                 text = stringResource(R.string.note),
                 style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         }
         item {
             Text(
                 text = stringResource(id = R.string.servert_enhancement_warning_notice),
                 style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Justify
+                textAlign = TextAlign.Justify,
             )
         }
         item {
@@ -81,15 +80,15 @@ fun servantLevelLauncher(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ){
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
                 RowTextCheckBox(
                     modifier = Modifier.weight(1f),
                     text = stringResource(R.string.servant_enhancement_redirect_ascension_question),
                     status = shouldRedirectAscension,
                     onStatusChange = {
                         shouldRedirectAscension = it
-                    }
+                    },
                 )
                 VerticalDivider()
 
@@ -98,54 +97,53 @@ fun servantLevelLauncher(
                         .weight(1f),
                     verticalArrangement = Arrangement.Center,
 
-                    ) {
+                ) {
                     RowTextCheckBox(
                         text = stringResource(R.string.servant_enhancement_perform_ascension_question),
                         status = shouldPerformAscension,
                         onStatusChange = {
                             shouldPerformAscension = it
-                        }
+                        },
                     )
                     Text(
                         stringResource(R.string.servant_enhancement_perform_ascension_warning),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.secondary
+                        color = MaterialTheme.colorScheme.secondary,
                     )
                 }
             }
         }
         item {
             HorizontalDivider(
-                modifier = Modifier.padding(vertical = 5.dp)
+                modifier = Modifier.padding(vertical = 5.dp),
             )
         }
         item {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ){
-                    RowTextCheckBox(
-                        modifier = Modifier
-                            .weight(1f),
-                        text = stringResource(R.string.servant_enhancement_redirect_grail),
-                        status = shouldRedirectGrail,
-                        onStatusChange = {
-                            shouldRedirectGrail = it
-                        }
-                    )
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                RowTextCheckBox(
+                    modifier = Modifier
+                        .weight(1f),
+                    text = stringResource(R.string.servant_enhancement_redirect_grail),
+                    status = shouldRedirectGrail,
+                    onStatusChange = {
+                        shouldRedirectGrail = it
+                    },
+                )
                 VerticalDivider()
                 Spacer(modifier = Modifier.weight(1f))
             }
         }
     }
 
-
     return ScriptLauncherResponseBuilder(
         canBuild = { true },
         build = {
             ScriptLauncherResponse.ServantEnhancement
-        }
+        },
     )
 }
 
@@ -160,19 +158,19 @@ private fun RowTextCheckBox(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = modifier
-            .clickable { onStatusChange(!status) }
+            .clickable { onStatusChange(!status) },
     ) {
         Text(
             text,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.secondary,
             textAlign = TextAlign.Justify,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         )
 
         Checkbox(
             checked = status,
-            onCheckedChange = { onStatusChange(it) }
+            onCheckedChange = { onStatusChange(it) },
         )
     }
 }

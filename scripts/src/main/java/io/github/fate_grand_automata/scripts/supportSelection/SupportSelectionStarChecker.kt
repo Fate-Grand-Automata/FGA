@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 @ScriptScope
 class SupportSelectionStarChecker @Inject constructor(
-    api: IFgoAutomataApi
-): IFgoAutomataApi by api {
+    api: IFgoAutomataApi,
+) : IFgoAutomataApi by api {
     fun isStarPresent(region: Region): Boolean {
         val mlbSimilarity = prefs.support.mlbSimilarity
         return region.exists(images[Images.LimitBroken], similarity = mlbSimilarity)

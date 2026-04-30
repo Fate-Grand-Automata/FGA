@@ -12,7 +12,7 @@ import kotlin.time.Duration.Companion.seconds
 @ScriptScope
 class PartySelection @Inject constructor(
     api: IFgoAutomataApi,
-    private val battleConfig: IBattleConfig
+    private val battleConfig: IBattleConfig,
 ) : IFgoAutomataApi by api {
     private var partySelected = false
 
@@ -40,7 +40,7 @@ class PartySelection @Inject constructor(
                 }
 
             messages.log(
-                ScriptLog.CurrentParty(currentParty)
+                ScriptLog.CurrentParty(currentParty),
             )
 
             /* If the currently selected party cannot be detected, we need to switch to a party

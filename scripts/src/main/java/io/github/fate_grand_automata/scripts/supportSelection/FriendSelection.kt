@@ -7,11 +7,12 @@ import javax.inject.Inject
 
 @ScriptScope
 class FriendSelection @Inject constructor(
-    api: IFgoAutomataApi
+    api: IFgoAutomataApi,
 ) : IFgoAutomataApi by api {
     fun check(friendNames: List<String>, bounds: SupportBounds): Boolean {
-        if (friendNames.isEmpty())
+        if (friendNames.isEmpty()) {
             return true
+        }
 
         val searchRegion = bounds.region.clip(locations.support.friendsRegion)
 

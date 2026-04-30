@@ -8,7 +8,7 @@ import io.github.fate_grand_automata.scripts.prefs.IPerServerConfigPrefs
 
 internal class PerServerConfigPrefs(
     override val server: GameServer,
-    prefsCore: PrefsCore
+    prefsCore: PrefsCore,
 ) : IPerServerConfigPrefs {
 
     val prefs = prefsCore.forPerServerConfigPrefs(server)
@@ -20,7 +20,6 @@ internal class PerServerConfigPrefs(
     override var silverApple by prefs.silverAppleCount
     override var blueApple by prefs.blueAppleCount
     override var copperApple by prefs.copperAppleCount
-
 
     override var waitForAPRegen by prefs.waitAPRegen
 

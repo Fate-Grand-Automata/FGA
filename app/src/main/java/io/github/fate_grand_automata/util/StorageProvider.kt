@@ -25,7 +25,7 @@ import javax.inject.Singleton
 @Singleton
 class StorageProvider @Inject constructor(
     val prefsCore: PrefsCore,
-    @ApplicationContext val context: Context
+    @ApplicationContext val context: Context,
 ) : IStorageProvider {
     fun DocumentFile?.getOrCreateDir(name: String) =
         this?.findFile(name)?.takeIf { it.isDirectory }
@@ -133,14 +133,14 @@ class StorageProvider @Inject constructor(
 
         return resolver.openOutputStream(resolved.uri)
             ?: throw KnownException(
-                KnownException.Reason.CouldNotOpenSupportFileForWriting(kind, name)
+                KnownException.Reason.CouldNotOpenSupportFileForWriting(kind, name),
             )
     }
 
     override fun readSupportImage(kind: SupportImageKind, name: String): List<InputStream> {
         val file = kind.imageFolder.findFile(name)
             ?: throw KnownException(
-                KnownException.Reason.CouldNotOpenSupportFileForReading(kind, name)
+                KnownException.Reason.CouldNotOpenSupportFileForReading(kind, name),
             )
 
         val files: List<DocumentFile> = if (file.isDirectory) {
@@ -148,12 +148,14 @@ class StorageProvider @Inject constructor(
                 .takeUnless { it.isEmpty() }
                 ?.filter { it.name != null && !it.name!!.lowercase().contains("nomedia") }
                 ?: throw KnownException(KnownException.Reason.SupportFolderIsEmpty(kind, name))
-        } else listOf(file)
+        } else {
+            listOf(file)
+        }
 
         return files.map {
             resolver.openInputStream(it.uri)
                 ?: throw KnownException(
-                    KnownException.Reason.CouldNotOpenSupportFileForReading(kind, name)
+                    KnownException.Reason.CouldNotOpenSupportFileForReading(kind, name),
                 )
         }
     }
@@ -171,7 +173,7 @@ class StorageProvider @Inject constructor(
         val timeString = sdf.format(Date())
 
         for ((i, pattern) in patterns.withIndex()) {
-            val dropFileName = "${timeString}.${i}.png"
+            val dropFileName = "$timeString.$i.png"
 
             pattern.use {
                 val file = dropsFolder.createFile(mimePng, dropFileName)
@@ -191,7 +193,7 @@ class StorageProvider @Inject constructor(
         val sdf = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss", Locale.getDefault())
         val timeString = sdf.format(Date())
 
-        val dropFileName = "bond-${server.simple.uppercase()}-${timeString}.png"
+        val dropFileName = "bond-${server.simple.uppercase()}-$timeString.png"
 
         pattern.use {
             val file = bondFolder.createFile(mimePng, dropFileName)

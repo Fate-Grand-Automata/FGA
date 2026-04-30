@@ -29,25 +29,25 @@ fun ShuffleCardsGroup(config: BattleConfigCore) {
             .padding(bottom = 16.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        ),
     ) {
         Column(
             modifier = Modifier
-                .padding(bottom = 16.dp)
+                .padding(bottom = 16.dp),
         ) {
             PreferenceGroupHeader(
-                title = stringResource(R.string.p_shuffle_cards)
+                title = stringResource(R.string.p_shuffle_cards),
             )
 
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 config.shuffleCards.ListPreference(
                     title = stringResource(R.string.p_shuffle_cards_when),
                     entries = ShuffleCardsEnum.entries
                         .associateWith { stringResource(it.stringRes) },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 )
 
                 val shuffleType by config.shuffleCards.remember()
@@ -56,7 +56,7 @@ fun ShuffleCardsGroup(config: BattleConfigCore) {
                     config.shuffleCardsWave.StepperPreference(
                         title = stringResource(R.string.p_shuffle_cards_wave),
                         valueRange = 1..3,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                 }
             }

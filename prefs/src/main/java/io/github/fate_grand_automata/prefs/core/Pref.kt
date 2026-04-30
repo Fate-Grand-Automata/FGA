@@ -29,20 +29,20 @@ internal fun <T, V> ReadWriteProperty<Any, T>.map(func: (T) -> V): ReadOnlyPrope
 fun <T, R> Pref<T>.map(
     defaultValue: R,
     convert: (T) -> R,
-    reverse: (R) -> T
+    reverse: (R) -> T,
 ): Pref<R> =
     MappedPref(
         this,
         defaultValue,
         convert,
-        reverse
+        reverse,
     )
 
 internal class MappedPref<T, R>(
     private val pref: Pref<T>,
     override val defaultValue: R,
     private val convert: (T) -> R,
-    private val reverse: (R) -> T
+    private val reverse: (R) -> T,
 ) : Pref<R> {
     override fun getValue(thisRef: Any, property: KProperty<*>) = get()
     override fun setValue(thisRef: Any, property: KProperty<*>, value: R) = set(value)

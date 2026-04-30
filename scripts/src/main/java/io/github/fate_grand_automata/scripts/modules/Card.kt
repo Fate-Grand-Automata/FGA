@@ -23,7 +23,7 @@ class Card @Inject constructor(
     private val parser: CardParser,
     private val priority: FaceCardPriority,
     private val braveChains: ApplyBraveChains,
-    private val battleConfig: IBattleConfig
+    private val battleConfig: IBattleConfig,
 ) : IFgoAutomataApi by api {
 
     fun readCommandCards(): List<ParsedCard> = useSameSnapIn {
@@ -37,22 +37,26 @@ class Card @Inject constructor(
                     val teamSlot = servantTracker.deployed[servantSlot] ?: return@mapNotNull null
                     val npSpamConfig = spamConfig[teamSlot].np
 
-                    if (caster.canSpam(npSpamConfig.spam) && (state.stage + 1) in npSpamConfig.waves)
+                    if (caster.canSpam(npSpamConfig.spam) && (state.stage + 1) in npSpamConfig.waves) {
                         np
-                    else null
+                    } else {
+                        null
+                    }
                 }
                 .toSet()
 
     private fun pickCards(
         cards: List<ParsedCard>,
-        npUsage: NPUsage
+        npUsage: NPUsage,
     ): List<CommandCard.Face> {
         val cardsOrderedByPriority = priority.sort(cards, state.stage)
 
         fun <T> List<T>.inCurrentWave(default: T) =
-            if (isNotEmpty())
+            if (isNotEmpty()) {
                 this[state.stage.coerceIn(indices)]
-            else default
+            } else {
+                default
+            }
 
         val braveChainsPerWave = battleConfig.braveChains
         val rearrangeCardsPerWave = battleConfig.rearrangeCards
@@ -61,13 +65,13 @@ class Card @Inject constructor(
             cards = cardsOrderedByPriority,
             npUsage = npUsage,
             braveChains = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
-            rearrange = rearrangeCardsPerWave.inCurrentWave(false)
+            rearrange = rearrangeCardsPerWave.inCurrentWave(false),
         ).map { it.card }
     }
 
     fun clickCommandCards(
         cards: List<ParsedCard>,
-        npUsage: NPUsage
+        npUsage: NPUsage,
     ) {
         val pickedCards = pickCards(cards, npUsage)
             .take(3)

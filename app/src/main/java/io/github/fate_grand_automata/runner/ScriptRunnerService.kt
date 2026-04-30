@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ScriptRunnerService: Service() {
+class ScriptRunnerService : Service() {
     companion object {
         private val mServiceStarted = mutableStateOf(false)
         val serviceStarted: State<Boolean> = mServiceStarted

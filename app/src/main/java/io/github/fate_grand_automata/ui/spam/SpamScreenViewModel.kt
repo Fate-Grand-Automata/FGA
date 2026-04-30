@@ -16,24 +16,24 @@ import javax.inject.Inject
 @HiltViewModel
 class SpamScreenViewModel @Inject constructor(
     val battleConfig: IBattleConfig,
-    val battleConfigCore: BattleConfigCore
+    val battleConfigCore: BattleConfigCore,
 ) : ViewModel() {
     private val spamConfig = battleConfig.spam
 
     data class NpSpamState(
         val spamMode: MutableState<SpamEnum>,
-        val waves: MutableState<Set<Int>>
+        val waves: MutableState<Set<Int>>,
     )
 
     data class SkillSpamState(
         val spamMode: MutableState<SpamEnum>,
         val target: MutableState<SkillSpamTarget>,
-        val waves: MutableState<Set<Int>>
+        val waves: MutableState<Set<Int>>,
     )
 
     data class SpamState(
         val np: NpSpamState,
-        val skills: List<SkillSpamState>
+        val skills: List<SkillSpamState>,
     )
 
     val spamStates = spamConfig
@@ -41,15 +41,15 @@ class SpamScreenViewModel @Inject constructor(
             SpamState(
                 np = NpSpamState(
                     mutableStateOf(it.np.spam),
-                    mutableStateOf(it.np.waves)
+                    mutableStateOf(it.np.waves),
                 ),
                 skills = it.skills.map { skill ->
                     SkillSpamState(
                         spamMode = mutableStateOf(skill.spam),
                         target = mutableStateOf(skill.target),
-                        waves = mutableStateOf(skill.waves)
+                        waves = mutableStateOf(skill.waves),
                     )
-                }
+                },
             )
         }
 
@@ -80,7 +80,7 @@ class SpamScreenViewModel @Inject constructor(
         },
         SpamPreset("NO SPAM") {
             applyPreset(it, SpamEnum.None)
-        }
+        },
     )
 
     fun save() {
@@ -88,15 +88,15 @@ class SpamScreenViewModel @Inject constructor(
             ServantSpamConfig(
                 np = NpSpamConfig(
                     spam = it.np.spamMode.value,
-                    waves = it.np.waves.value
+                    waves = it.np.waves.value,
                 ),
                 skills = it.skills.map { skill ->
                     SkillSpamConfig(
                         spam = skill.spamMode.value,
                         target = skill.target.value,
-                        waves = skill.waves.value
+                        waves = skill.waves.value,
                     )
-                }
+                },
             )
         }
     }

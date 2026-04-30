@@ -13,7 +13,7 @@ class ShuffleChecker @Inject constructor() {
     fun shouldShuffle(
         mode: ShuffleCardsEnum,
         cards: List<ParsedCard>,
-        npUsage: NPUsage
+        npUsage: NPUsage,
     ): Boolean = when (mode) {
         ShuffleCardsEnum.None -> false
         ShuffleCardsEnum.NoEffective -> {

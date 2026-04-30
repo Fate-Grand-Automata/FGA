@@ -30,7 +30,7 @@ private fun OnLifecycle(predicate: (Lifecycle.Event) -> Boolean, callback: () ->
 fun OnResume(callback: () -> Unit) {
     OnLifecycle(
         predicate = { it.targetState == Lifecycle.State.RESUMED },
-        callback = callback
+        callback = callback,
     )
 }
 
@@ -38,6 +38,6 @@ fun OnResume(callback: () -> Unit) {
 fun OnPause(callback: () -> Unit) {
     OnLifecycle(
         predicate = { it == Lifecycle.Event.ON_PAUSE },
-        callback = callback
+        callback = callback,
     )
 }

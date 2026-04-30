@@ -14,20 +14,20 @@ import io.github.fate_grand_automata.ui.main.NavConstants
 @InstallIn(ViewModelComponent::class)
 class ViewModelProvidesModule {
     val SavedStateHandle.configKey: String get() =
-        this[NavConstants.battleConfigIdKey]
+        this[NavConstants.BATTLE_CONFIG_ID_KEY]
             ?: throw kotlin.Exception("Couldn't get Battle Config key")
 
     @ViewModelScoped
     @Provides
     fun provideBattleConfig(
         prefs: IPreferences,
-        savedState: SavedStateHandle
+        savedState: SavedStateHandle,
     ) = prefs.forBattleConfig(savedState.configKey)
 
     @ViewModelScoped
     @Provides
     fun provideBattleConfigCore(
         prefs: PrefsCore,
-        savedState: SavedStateHandle
+        savedState: SavedStateHandle,
     ) = prefs.forBattleConfig(savedState.configKey)
 }

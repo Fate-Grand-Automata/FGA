@@ -22,7 +22,7 @@ class MediaProjectionScreenshotService(
     private val imageSize: Size,
     private val screenDensity: Int,
     private val storageProvider: StorageProvider,
-    private val colorManager: ColorManager
+    private val colorManager: ColorManager,
 ) : ScreenshotService {
     private val bufferMat = Mat()
     private val grayscaleMat = Mat()
@@ -33,15 +33,23 @@ class MediaProjectionScreenshotService(
     @SuppressLint("WrongConstant")
     private val imageReader = ImageReader.newInstance(imageSize.width, imageSize.height, PixelFormat.RGBA_8888, 2)
     private val virtualDisplay: VirtualDisplay? = mediaProjection.apply {
-        this.registerCallback(object : MediaProjection.Callback() {
-            override fun onStop() {
-                close()
-            }
-        }, null)
+        this.registerCallback(
+            object : MediaProjection.Callback() {
+                override fun onStop() {
+                    close()
+                }
+            },
+            null,
+        )
     }.createVirtualDisplay(
         "ScreenCapture",
-        imageSize.width, imageSize.height, screenDensity,
-        0, imageReader.surface, null, null
+        imageSize.width,
+        imageSize.height,
+        screenDensity,
+        0,
+        imageReader.surface,
+        null,
+        null,
     )
 
     override fun takeScreenshot(): Pattern {

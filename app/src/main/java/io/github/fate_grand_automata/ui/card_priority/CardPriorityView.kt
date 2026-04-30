@@ -31,19 +31,19 @@ import kotlinx.coroutines.launch
 @Composable
 fun CardPriorityView(
     items: SnapshotStateList<CardPriorityListItem>,
-    useServantPriority: Pref<Boolean>
+    useServantPriority: Pref<Boolean>,
 ) {
-    val pagerState = rememberPagerState(pageCount = {items.size},)
+    val pagerState = rememberPagerState(pageCount = { items.size })
     val scope = rememberCoroutineScope()
 
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
         ) {
             Heading(stringResource(R.string.card_priority))
 
@@ -51,7 +51,7 @@ fun CardPriorityView(
             useServantPriority.SwitchPreference(
                 title = stringResource(R.string.p_battle_config_use_servant_priority),
                 modifier = Modifier
-                    .padding(bottom = 16.dp)
+                    .padding(bottom = 16.dp),
             )
 
             CardPriorityWaveSelector(
@@ -66,7 +66,7 @@ fun CardPriorityView(
                 state = pagerState,
                 verticalAlignment = Alignment.Top,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             ) {
                 Column {
                     Row(
@@ -74,14 +74,14 @@ fun CardPriorityView(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp, 5.dp)
-                            .padding(top = 11.dp)
+                            .padding(top = 11.dp),
                     ) {
                         Text(stringResource(R.string.card_priority_high))
                         Text(stringResource(R.string.card_priority_low))
                     }
 
                     items.getOrNull(it)?.Render(
-                        useServantPriority = servantPriority
+                        useServantPriority = servantPriority,
                     )
                 }
             }
