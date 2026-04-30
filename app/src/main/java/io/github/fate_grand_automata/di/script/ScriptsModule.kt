@@ -28,7 +28,7 @@ abstract class ScriptsModule {
         fun provideGameAreaManager(platformImpl: PlatformImpl): GameAreaManager =
             FgoGameAreaManager(
                 gameSizeWithBorders = platformImpl.windowRegion.size,
-                offset = { platformImpl.windowRegion.location }
+                offset = { platformImpl.windowRegion.location },
             )
     }
 

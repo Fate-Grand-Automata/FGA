@@ -12,7 +12,9 @@ val overlayType: Int
         @Suppress("DEPRECATION")
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-        } else WindowManager.LayoutParams.TYPE_PHONE
+        } else {
+            WindowManager.LayoutParams.TYPE_PHONE
+        }
     }
 
 fun Context.dayNightThemed() = ContextThemeWrapper(this, androidx.appcompat.R.style.Theme_AppCompat_DayNight_Dialog)
@@ -33,10 +35,10 @@ fun showOverlayDialog(context: Context, builder: AlertDialog.Builder.() -> Unit)
  * since the frame size can't be changed during a projection.
  */
 fun DisplayMetrics.makeLandscape() = apply {
-        // Retrieve images in Landscape
-        if (heightPixels > widthPixels) {
-            val temp = widthPixels
-            widthPixels = heightPixels
-            heightPixels = temp
-        }
+    // Retrieve images in Landscape
+    if (heightPixels > widthPixels) {
+        val temp = widthPixels
+        widthPixels = heightPixels
+        heightPixels = temp
     }
+}

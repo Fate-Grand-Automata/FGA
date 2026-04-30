@@ -10,7 +10,7 @@ fun Context.openLinkIntent(linkResource: Int) =
 fun Context.openLinkIntent(link: String) {
     val intent = Intent(
         Intent.ACTION_VIEW,
-        Uri.parse(link)
+        Uri.parse(link),
     )
     startActivity(intent)
 }

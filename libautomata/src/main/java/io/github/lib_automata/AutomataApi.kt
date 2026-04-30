@@ -31,29 +31,29 @@ interface AutomataApi {
 
     fun Region.find(
         pattern: Pattern,
-        similarity: Double? = null
+        similarity: Double? = null,
     ): Match? = findAll(pattern, similarity).firstOrNull()
 
     fun Region.find(
         patterns: Collection<Pattern>,
-        similarity: Double? = null
+        similarity: Double? = null,
     ): Match? = patterns.firstNotNullOfOrNull { find(it, similarity) }
 
     fun Region.exists(
         image: Pattern,
         timeout: Duration = Duration.ZERO,
-        similarity: Double? = null
+        similarity: Double? = null,
     ): Boolean
 
     fun Region.waitVanish(
         image: Pattern,
         timeout: Duration,
-        similarity: Double? = null
+        similarity: Double? = null,
     ): Boolean
 
     fun Region.findAll(
         pattern: Pattern,
-        similarity: Double? = null
+        similarity: Double? = null,
     ): Sequence<Match>
 
     fun Region.isWhite(): Boolean
@@ -65,6 +65,6 @@ interface AutomataApi {
     fun Map<Pattern, Region>.exists(
         timeout: Duration = Duration.ZERO,
         similarity: Double? = null,
-        requireAll: Boolean = false
+        requireAll: Boolean = false,
     ): Boolean
 }

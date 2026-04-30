@@ -10,10 +10,10 @@ import javax.inject.Inject
 class Support @Inject constructor(
     private val decider: SupportModeDecider,
     private val loop: SupportSelectionLoop,
-    private val supportPrefs: ISupportPreferences
+    private val supportPrefs: ISupportPreferences,
 ) {
     companion object {
-        const val supportRegionToolSimilarity = 0.75
+        const val SUPPORT_REGION_TOOL_SIMILARITY = 0.75
     }
 
     fun selectSupport(selectionMode: SupportSelectionModeEnum = supportPrefs.selectionMode) {

@@ -12,7 +12,7 @@ import javax.inject.Inject
 class MaterialsTracker @Inject constructor(
     api: IFgoAutomataApi,
     private val battleConfig: IBattleConfig,
-    private val state: BattleState
+    private val state: BattleState,
 ) : IFgoAutomataApi by api {
     // Set all Materials to 0
     private var matsGot =

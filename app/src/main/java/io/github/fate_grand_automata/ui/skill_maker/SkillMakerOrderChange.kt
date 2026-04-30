@@ -32,7 +32,7 @@ import io.github.fate_grand_automata.ui.FGATitle
 @Composable
 fun SkillMakerOrderChange(
     onCommit: (starting: OrderChangeMember.Starting, sub: OrderChangeMember.Sub) -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
 ) {
     var starting by rememberSaveable { mutableStateOf(1) }
     var sub by rememberSaveable { mutableStateOf(1) }
@@ -40,10 +40,10 @@ fun SkillMakerOrderChange(
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         FGATitle(
-            stringResource(R.string.skill_maker_order_change_header)
+            stringResource(R.string.skill_maker_order_change_header),
         )
 
         Row(
@@ -51,7 +51,7 @@ fun SkillMakerOrderChange(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .weight(1f)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Column {
                 Text(stringResource(R.string.skill_maker_order_change_starting_member))
@@ -69,7 +69,7 @@ fun SkillMakerOrderChange(
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Button(onClick = onCancel) {
                 Text(stringResource(android.R.string.cancel))
@@ -79,9 +79,9 @@ fun SkillMakerOrderChange(
                 onClick = {
                     onCommit(
                         OrderChangeMember.Starting.list[starting - 1],
-                        OrderChangeMember.Sub.list[sub - 1]
+                        OrderChangeMember.Sub.list[sub - 1],
                     )
-                }
+                },
             ) {
                 Text(stringResource(android.R.string.ok))
             }
@@ -92,7 +92,7 @@ fun SkillMakerOrderChange(
 @Composable
 fun OrderChangeSide(
     selected: Int,
-    onSelectedChange: (Int) -> Unit
+    onSelectedChange: (Int) -> Unit,
 ) {
     Row {
         (1..3).map {
@@ -109,21 +109,25 @@ fun OrderChangeSide(
                 tonalElevation = 5.dp,
                 shape = MaterialTheme.shapes.medium,
                 color =
-                if (isSelected)
+                if (isSelected) {
                     colorResource(selectedColor)
-                else MaterialTheme.colorScheme.surfaceVariant,
+                } else {
+                    MaterialTheme.colorScheme.surfaceVariant
+                },
                 modifier = Modifier
                     .padding(5.dp),
-                onClick = { onSelectedChange(it) }
+                onClick = { onSelectedChange(it) },
             ) {
                 Text(
                     stringResource(R.string.skill_maker_order_change_servant, it),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(16.dp),
                     color =
-                    if (isSelected)
+                    if (isSelected) {
                         Color.White
-                    else Color.Unspecified
+                    } else {
+                        Color.Unspecified
+                    },
                 )
             }
         }

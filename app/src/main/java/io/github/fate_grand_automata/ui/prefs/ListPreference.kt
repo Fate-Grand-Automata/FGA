@@ -15,7 +15,7 @@ fun <T> listDialog(
     selected: T,
     onSelectedChange: (T) -> Unit,
     entries: Map<T, String>,
-    title: String
+    title: String,
 ): FgaDialog {
     val dialog = FgaDialog()
 
@@ -28,7 +28,7 @@ fun <T> listDialog(
                 onSelectedChange(it)
                 hide()
             },
-            items = entries.keys.toList()
+            items = entries.keys.toList(),
         ) {
             Text(entries[it] ?: "--")
         }
@@ -45,7 +45,7 @@ fun <T> Pref<T>.ListPreference(
     summary: String = "",
     singleLineTitle: Boolean = false,
     icon: VectorIcon? = null,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     var selected by remember()
 
@@ -53,7 +53,7 @@ fun <T> Pref<T>.ListPreference(
         selected = selected,
         onSelectedChange = { selected = it },
         entries = entries,
-        title = title
+        title = title,
     )
 
     Preference(
@@ -63,6 +63,6 @@ fun <T> Pref<T>.ListPreference(
         icon = icon,
         enabled = enabled,
         onClick = { dialog.show() },
-        modifier = modifier
+        modifier = modifier,
     )
 }

@@ -34,7 +34,7 @@ import io.github.fate_grand_automata.ui.prefs.remember
 @Composable
 fun RaidDelay(
     modifier: Modifier = Modifier,
-    config: BattleConfigCore
+    config: BattleConfigCore,
 ) {
     var addRaidTurnDelay by config.addRaidTurnDelay.remember()
 
@@ -43,7 +43,7 @@ fun RaidDelay(
     val dialog = FgaDialog()
 
     dialog.build(
-        color = MaterialTheme.colorScheme.background
+        color = MaterialTheme.colorScheme.background,
     ) {
         var currentAddRaidTurnDelay by remember(addRaidTurnDelay) { mutableStateOf(addRaidTurnDelay) }
         var currentRaidTurnDelaySeconds by remember(raidTurnDelaySeconds) { mutableStateOf(raidTurnDelaySeconds) }
@@ -52,7 +52,7 @@ fun RaidDelay(
             Box(
                 modifier = Modifier
                     .weight(1f)
-                    .alignByBaseline()
+                    .alignByBaseline(),
             ) {
                 title(stringResource(R.string.p_battle_config_raid_delay))
             }
@@ -67,7 +67,7 @@ fun RaidDelay(
                     .alignByBaseline(),
             ) {
                 Text(
-                    stringResource(id = R.string.reset).uppercase()
+                    stringResource(id = R.string.reset).uppercase(),
                 )
             }
         }
@@ -78,7 +78,7 @@ fun RaidDelay(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp),
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -87,15 +87,18 @@ fun RaidDelay(
                     shape = RoundedCornerShape(25),
                     colors = CardDefaults.cardColors(
                         containerColor =
-                        if (currentAddRaidTurnDelay) MaterialTheme.colorScheme.primaryContainer
-                        else MaterialTheme.colorScheme.surfaceVariant
+                        if (currentAddRaidTurnDelay) {
+                            MaterialTheme.colorScheme.primaryContainer
+                        } else {
+                            MaterialTheme.colorScheme.surfaceVariant
+                        },
                     ),
                     onClick = {
                         currentAddRaidTurnDelay = true
                     },
                     modifier = Modifier
                         .weight(1f)
-                        .padding(horizontal = 2.dp)
+                        .padding(horizontal = 2.dp),
                 ) {
                     Text(
                         text = stringResource(R.string.state_on).uppercase(),
@@ -104,22 +107,25 @@ fun RaidDelay(
                             .fillMaxWidth()
                             .padding(vertical = 4.dp),
                         textAlign = TextAlign.Center,
-                        fontWeight = if (currentAddRaidTurnDelay) FontWeight.Bold else null
+                        fontWeight = if (currentAddRaidTurnDelay) FontWeight.Bold else null,
                     )
                 }
                 Card(
                     shape = RoundedCornerShape(25),
                     colors = CardDefaults.cardColors(
                         containerColor =
-                        if (!currentAddRaidTurnDelay) MaterialTheme.colorScheme.primaryContainer
-                        else MaterialTheme.colorScheme.surfaceVariant
+                        if (!currentAddRaidTurnDelay) {
+                            MaterialTheme.colorScheme.primaryContainer
+                        } else {
+                            MaterialTheme.colorScheme.surfaceVariant
+                        },
                     ),
                     onClick = {
                         currentAddRaidTurnDelay = false
                     },
                     modifier = Modifier
                         .weight(1f)
-                        .padding(horizontal = 2.dp)
+                        .padding(horizontal = 2.dp),
                 ) {
                     Text(
                         text = stringResource(R.string.state_off).uppercase(),
@@ -128,7 +134,7 @@ fun RaidDelay(
                             .fillMaxWidth()
                             .padding(vertical = 4.dp),
                         textAlign = TextAlign.Center,
-                        fontWeight = if (!currentAddRaidTurnDelay) FontWeight.Bold else null
+                        fontWeight = if (!currentAddRaidTurnDelay) FontWeight.Bold else null,
                     )
                 }
             }
@@ -142,7 +148,7 @@ fun RaidDelay(
                     valueRange = 1..10,
                     valueRepresentation = {
                         "${it}s"
-                    }
+                    },
                 )
             }
             buttons(
@@ -153,23 +159,21 @@ fun RaidDelay(
                 okLabel = stringResource(R.string.save),
             )
         }
-
-
     }
 
     Column(
         modifier = modifier
             .fillMaxHeight()
             .clickable(
-                onClick = { dialog.show() }
+                onClick = { dialog.show() },
             )
             .padding(8.dp, 5.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Text(
             stringResource(R.string.p_battle_config_raid).uppercase(),
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
         )
 
         Text(
@@ -177,7 +181,7 @@ fun RaidDelay(
                 true -> "${raidTurnDelaySeconds}s"
                 false -> stringResource(R.string.state_off).uppercase()
             },
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
         )
     }
 }

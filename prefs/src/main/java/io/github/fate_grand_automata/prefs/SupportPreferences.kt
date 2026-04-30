@@ -5,7 +5,7 @@ import io.github.fate_grand_automata.prefs.core.map
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferences
 
 internal class SupportPreferences(
-    val prefs: SupportPrefsCore
+    val prefs: SupportPrefsCore,
 ) : ISupportPreferences {
     override val friendNames by prefs.friendNames
         .map { it.toList() }

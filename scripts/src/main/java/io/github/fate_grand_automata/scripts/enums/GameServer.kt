@@ -15,14 +15,14 @@ sealed class GameServer constructor(val simple: String, val betterFgo: Boolean =
     object Tw : GameServer("Tw")
     object Kr : GameServer("Kr")
 
-    fun serialize(): String = simple + (if (betterFgo) betterFgoSuffix else "")
+    fun serialize(): String = simple + (if (betterFgo) BETTER_FGO_SUFFIX else "")
 
     override fun toString(): String = serialize()
 
     companion object {
         val default = En.Original as GameServer
 
-        private const val betterFgoSuffix = " BFGO"
+        private const val BETTER_FGO_SUFFIX = " BFGO"
 
         /**
          * Maps an APK package name to the corresponding [GameServer].
@@ -34,7 +34,9 @@ sealed class GameServer constructor(val simple: String, val betterFgo: Boolean =
             En.BetterFGO,
             Jp.Original,
             Jp.BetterFGO,
-            Cn, Tw, Kr
+            Cn,
+            Tw,
+            Kr,
         )
 
         val packageNames = mapOf(
@@ -46,7 +48,7 @@ sealed class GameServer constructor(val simple: String, val betterFgo: Boolean =
             "com.bilibili.fatego.sharejoy" to Cn,
             "com.komoe.fgomycard" to Tw,
             "com.xiaomeng.fategrandorder" to Tw,
-            "com.netmarble.fgok" to Kr
+            "com.netmarble.fgok" to Kr,
         )
 
         private val serializedValues by lazy {

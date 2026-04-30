@@ -19,7 +19,7 @@ fun PreferenceGroupHeader(title: String) {
         modifier = Modifier.padding(
             start = 16.dp,
             top = 24.dp,
-            bottom = 8.dp
-        )
+            bottom = 8.dp,
+        ),
     )
 }

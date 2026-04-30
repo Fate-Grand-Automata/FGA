@@ -20,8 +20,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -63,7 +63,7 @@ import io.github.fate_grand_automata.util.OpenDocTreePersistable
 @OptIn(ExperimentalPermissionsApi::class)
 fun MainScreen(
     vm: MainScreenViewModel = viewModel(),
-    navigate: (MainScreenDestinations) -> Unit
+    navigate: (MainScreenDestinations) -> Unit,
 ) {
     var dirPicker: ActivityResultLauncher<Uri?>? by remember { mutableStateOf(null) }
     val permissionState = rememberPermissionState(permission = POST_NOTIFICATIONS)
@@ -80,7 +80,7 @@ fun MainScreen(
             onSubmit = {
                 navigate(MainScreenDestinations.AccessibilitySettings)
                 toggling = true
-            }
+            },
         )
     }
 
@@ -94,7 +94,7 @@ fun MainScreen(
             onSubmit = {
                 navigate(MainScreenDestinations.OverlaySettings)
                 toggling = true
-            }
+            },
         )
     }
 
@@ -107,8 +107,8 @@ fun MainScreen(
     val pickDirectory: () -> Unit = { dirPicker?.launch(Uri.EMPTY) }
 
     val requestNotifications: () -> Unit = {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-            && !permissionState.status.isGranted
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            !permissionState.status.isGranted
         ) {
             permissionState.launchPermissionRequest()
         }
@@ -124,7 +124,7 @@ fun MainScreen(
             requestNotifications = requestNotifications,
             showOverlayDisabled = { overlayDisabledDialog.show() },
             showAccessibilityDisabled = { accessibilityDisabledDialog.show() },
-            startMediaProjection = { startMediaProjection.launch() }
+            startMediaProjection = { startMediaProjection.launch() },
         )
     }
 
@@ -151,7 +151,9 @@ fun MainScreen(
                 if (vm.ensureRootDir(context, pickDirectory)) {
                     navigate(it)
                 }
-            } else navigate(it)
+            } else {
+                navigate(it)
+            }
         },
         overlayServiceStarted = overlayServiceStarted,
         toggleOverlayService = { toggleOverlayService() },
@@ -163,7 +165,7 @@ fun MainScreen(
                 navigate(MainScreenDestinations.AccessibilitySettings)
             }
         },
-        languagePref = LanguagePref()
+        languagePref = LanguagePref(),
     )
 }
 
@@ -174,7 +176,7 @@ private fun toggleOverlayService(
     requestNotifications: () -> Unit,
     showOverlayDisabled: () -> Unit,
     showAccessibilityDisabled: () -> Unit,
-    startMediaProjection: () -> Unit
+    startMediaProjection: () -> Unit,
 ) {
     if (!Settings.canDrawOverlays(context)) {
         showOverlayDisabled()
@@ -225,39 +227,37 @@ private fun MainScreenContent(
     toggleOverlayService: () -> Unit,
     accessibilityServiceStarted: Boolean,
     toggleAccessibilityService: () -> Unit,
-    languagePref: LanguagePref
+    languagePref: LanguagePref,
 ) {
     Box {
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             item {
                 Heading(stringResource(R.string.app_name)) {
                     HeadingButton(
                         text = "Build: ${BuildConfig.VERSION_CODE}",
-                        onClick = { navigate(MainScreenDestinations.Releases) }
+                        onClick = { navigate(MainScreenDestinations.Releases) },
                     )
 
                     HeadingButton(
                         text = stringResource(R.string.troubleshoot),
-                        onClick = { navigate(MainScreenDestinations.TroubleshootingGuide) }
+                        onClick = { navigate(MainScreenDestinations.TroubleshootingGuide) },
                     )
 
                     HeadingButton(
                         text = stringResource(R.string.discord),
                         icon = icon(R.drawable.ic_discord),
-                        onClick = { navigate(MainScreenDestinations.Discord) }
+                        onClick = { navigate(MainScreenDestinations.Discord) },
                     )
 
                     HeadingButton(
                         text = stringResource(R.string.donate),
                         icon = icon(R.drawable.ic_donate),
-                        onClick = { navigate(MainScreenDestinations.Donate) }
+                        onClick = { navigate(MainScreenDestinations.Donate) },
                     )
-
                 }
-
             }
 
             item {
@@ -266,15 +266,15 @@ private fun MainScreenContent(
                         .padding(16.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    ),
                 ) {
                     Column {
                         Preference(
                             title = stringResource(R.string.p_battle_config),
                             summary = stringResource(R.string.p_battle_config_summary),
                             icon = icon(R.drawable.ic_formation),
-                            onClick = { navigate(MainScreenDestinations.BattleConfigs) }
+                            onClick = { navigate(MainScreenDestinations.BattleConfigs) },
                         )
 
                         HorizontalDivider()
@@ -282,7 +282,7 @@ private fun MainScreenContent(
                         languagePref.ListPreference(
                             title = stringResource(R.string.p_app_language),
                             icon = icon(Icons.Default.Language),
-                            entries = LanguagePref.availableLanguages()
+                            entries = LanguagePref.availableLanguages(),
                         )
 
                         HorizontalDivider()
@@ -290,7 +290,7 @@ private fun MainScreenContent(
                         Preference(
                             title = stringResource(R.string.p_more_options),
                             icon = icon(R.drawable.ic_dots_horizontal),
-                            onClick = { navigate(MainScreenDestinations.MoreOptions) }
+                            onClick = { navigate(MainScreenDestinations.MoreOptions) },
                         )
                     }
                 }
@@ -300,7 +300,7 @@ private fun MainScreenContent(
                 AccessibilityServiceBlock(
                     serviceStarted = accessibilityServiceStarted,
                     toggleService = toggleAccessibilityService,
-                    overlayServiceStarted = overlayServiceStarted
+                    overlayServiceStarted = overlayServiceStarted,
                 )
             }
         }
@@ -309,7 +309,7 @@ private fun MainScreenContent(
             serviceStarted = overlayServiceStarted,
             toggleService = toggleOverlayService,
             modifier = Modifier
-                .align(Alignment.BottomEnd)
+                .align(Alignment.BottomEnd),
         )
     }
 }
@@ -318,24 +318,28 @@ private fun MainScreenContent(
 private fun OverlayServiceToggleButton(
     serviceStarted: Boolean,
     toggleService: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val backgroundColor by animateColorAsState(
-        if (serviceStarted)
+        if (serviceStarted) {
             MaterialTheme.colorScheme.error
-        else MaterialTheme.colorScheme.secondary
+        } else {
+            MaterialTheme.colorScheme.secondary
+        },
     )
 
     val foregroundColor =
-        if (serviceStarted)
+        if (serviceStarted) {
             MaterialTheme.colorScheme.onError
-        else MaterialTheme.colorScheme.onSecondary
+        } else {
+            MaterialTheme.colorScheme.onSecondary
+        }
 
     ExtendedFloatingActionButton(
         text = {
             Text(
                 stringResource(if (serviceStarted) R.string.stop_service else R.string.start_service),
-                color = foregroundColor
+                color = foregroundColor,
             )
         },
         onClick = toggleService,
@@ -343,12 +347,12 @@ private fun OverlayServiceToggleButton(
             Icon(
                 painterResource(if (serviceStarted) R.drawable.ic_close else R.drawable.ic_launch),
                 contentDescription = "Toggle service",
-                tint = foregroundColor
+                tint = foregroundColor,
             )
         },
         containerColor = backgroundColor,
         modifier = modifier
-            .padding(16.dp)
+            .padding(16.dp),
     )
 }
 
@@ -356,7 +360,7 @@ private fun OverlayServiceToggleButton(
 private fun AccessibilityServiceBlock(
     serviceStarted: Boolean,
     toggleService: () -> Unit,
-    overlayServiceStarted: Boolean
+    overlayServiceStarted: Boolean,
 ) {
     Card(
         modifier = Modifier
@@ -364,32 +368,44 @@ private fun AccessibilityServiceBlock(
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        ),
     ) {
         Column(
             modifier = Modifier
-                .padding(16.dp, 5.dp)
+                .padding(16.dp, 5.dp),
         ) {
             Row {
                 Text(stringResource(R.string.accessibility_service))
 
                 Text(
-                    stringResource(if (serviceStarted) R.string.accessibility_enabled else R.string.accessibility_disabled),
+                    stringResource(
+                        if (serviceStarted) {
+                            R.string.accessibility_enabled
+                        } else {
+                            R.string.accessibility_disabled
+                        },
+                    ),
                     modifier = Modifier
                         .padding(start = 5.dp),
                     color = colorResource(if (serviceStarted) R.color.colorQuickResist else R.color.colorBusterResist),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
                 )
             }
 
             TextButton(
                 onClick = toggleService,
                 // Don't allow (at least from the UI) turning OFF accessibility service when overlay service is running
-                enabled = !serviceStarted || !overlayServiceStarted
+                enabled = !serviceStarted || !overlayServiceStarted,
             ) {
                 Text(
-                    stringResource(if (serviceStarted) R.string.accessibility_disable else R.string.accessibility_enable_in_settings)
+                    stringResource(
+                        if (serviceStarted) {
+                            R.string.accessibility_disable
+                        } else {
+                            R.string.accessibility_enable_in_settings
+                        },
+                    ),
                 )
             }
         }

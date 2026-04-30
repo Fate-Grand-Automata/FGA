@@ -21,7 +21,7 @@ class ImageLoader @Inject constructor(
     val storageProvider: IStorageProvider,
     val prefs: IPreferences,
     @ApplicationContext val context: Context,
-    private val colorManager: ColorManager
+    private val colorManager: ColorManager,
 ) : IImageLoader {
     private fun createPattern(gameServer: GameServer, FileName: String): Pattern {
         val gameServerPath = gameServer.simple
@@ -32,9 +32,11 @@ class ImageLoader @Inject constructor(
         // load image from En by default or from current game server if a custom image exists
         val gameServerWithImage = if (assets.list(gameServerPath)?.contains(FileName) == true) {
             gameServerPath
-        } else GameServer.default.simple
+        } else {
+            GameServer.default.simple
+        }
 
-        val inputStream = assets.open("$gameServerWithImage/${FileName}")
+        val inputStream = assets.open("$gameServerWithImage/$FileName")
 
         inputStream.use {
             return DroidCvPattern(it, colorManager.isColor, filePath)
@@ -104,7 +106,9 @@ class ImageLoader @Inject constructor(
         }
     }
 
-    override fun loadSupportPattern(kind: SupportImageKind, name: String): List<Pattern> = synchronized(supportCachedPatterns) {
+    override fun loadSupportPattern(kind: SupportImageKind, name: String): List<Pattern> = synchronized(
+        supportCachedPatterns,
+    ) {
         return supportCachedPatterns.getOrPut(key("$kind:$name")) {
             fileLoader(kind, name)
         }
@@ -114,12 +118,12 @@ class ImageLoader @Inject constructor(
         regionCachedPatterns.getOrPut(key("materials/$material")) {
             DroidCvPattern(
                 Utils.loadResource(context, material.drawable, Imgcodecs.IMREAD_GRAYSCALE),
-                tag = "MAT:$material"
+                tag = "MAT:$material",
             )
         }
 }
 
-class SupportImageNotFoundException(kind: SupportImageKind, name: String) : 
+class SupportImageNotFoundException(kind: SupportImageKind, name: String) :
     Exception("Support image not found for kind: $kind, name: $name")
 
 val MaterialEnum.drawable

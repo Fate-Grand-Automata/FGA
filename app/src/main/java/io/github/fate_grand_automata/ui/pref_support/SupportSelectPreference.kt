@@ -16,7 +16,7 @@ import io.github.fate_grand_automata.ui.prefs.remember
 fun Pref<Set<String>>.SupportSelectPreference(
     title: String,
     entries: Map<String, String>,
-    icon: VectorIcon? = null
+    icon: VectorIcon? = null,
 ) {
     val value by remember()
 
@@ -25,18 +25,20 @@ fun Pref<Set<String>>.SupportSelectPreference(
         entries = entries,
         icon = icon,
         summary = {
-            if (it.isEmpty())
+            if (it.isEmpty()) {
                 stringResource(R.string.p_not_set)
-            else it.joinToString()
-        }
+            } else {
+                it.joinToString()
+            }
+        },
     ) {
         if (value.isNotEmpty()) {
             IconButton(
-                onClick = { resetToDefault() }
+                onClick = { resetToDefault() },
             ) {
                 DimmedIcon(
                     icon(R.drawable.ic_close),
-                    contentDescription = "Clear"
+                    contentDescription = "Clear",
                 )
             }
         }

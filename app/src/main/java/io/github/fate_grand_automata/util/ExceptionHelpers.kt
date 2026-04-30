@@ -12,13 +12,13 @@ val Exception.messageAndStackTrace
         val sw = StringWriter()
         val pw = PrintWriter(sw)
         printStackTrace(pw)
-        return "${message}\n\n${sw}"
+        return "${message}\n\n$sw"
     }
 
 fun ClipboardManager.set(context: Context, e: Exception) {
     val clipData = ClipData.newPlainText(
         context.getString(R.string.unexpected_error),
-        e.messageAndStackTrace
+        e.messageAndStackTrace,
     )
 
     setPrimaryClip(clipData)

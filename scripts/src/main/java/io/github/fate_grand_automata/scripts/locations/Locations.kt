@@ -23,7 +23,9 @@ class Locations @Inject constructor(
 
     // 9th anniversary changes the repeat screen and extends to 15 parties
     // don't forget to edit PartySelection.isSelectionExtended as well
-    private val afterAnni9 = gameServer is GameServer.Jp || gameServer is GameServer.Cn || gameServer is GameServer.En || gameServer is GameServer.Kr
+    private val afterAnni9 =
+        gameServer is GameServer.Jp || gameServer is GameServer.Cn || gameServer is GameServer.En ||
+            gameServer is GameServer.Kr
 
     val continueRegion = Region(120, 1000, 800, 300).xFromCenter()
 
@@ -41,21 +43,33 @@ class Locations @Inject constructor(
     val interludeEndScreenClose = Region(-515, 1080, 230, 90).xFromCenter()
 
     val menuScreenRegion =
-        (if (isWide)
-            Region(-600, 1200, 600, 240)
-        else Region(-460, 1200, 460, 240))
+        (
+            if (isWide) {
+                Region(-600, 1200, 600, 240)
+            } else {
+                Region(-460, 1200, 460, 240)
+            }
+            )
             .xFromRight()
 
     val menuSelectQuestClick =
-        (if (isWide)
-            Location(-460, 440)
-        else Location(-270, 440))
+        (
+            if (isWide) {
+                Location(-460, 440)
+            } else {
+                Location(-270, 440)
+            }
+            )
             .xFromRight()
 
     val menuStartQuestClick =
-        (if (isWide)
-            Location(-350, -160)
-        else Location(-160, -90))
+        (
+            if (isWide) {
+                Location(-350, -160)
+            } else {
+                Location(-160, -90)
+            }
+            )
             .xFromRight()
             .yFromBottom()
 
@@ -72,7 +86,7 @@ class Locations @Inject constructor(
     val withdrawCloseClick = Location(-10, 1140).xFromCenter()
 
     fun locate(refillResource: RefillResourceEnum): List<Location> {
-        //scroll bar click location
+        // scroll bar click location
         val scrollBarLoc = when (refillResource) {
             RefillResourceEnum.Copper -> 1040
             else -> 300
@@ -95,11 +109,12 @@ class Locations @Inject constructor(
         BoostItem.Enabled.BoostItem3 -> Location(1280, 1000)
     }.xFromCenter()
 
-    val selectedPartyRegion = if (afterAnni9)
+    val selectedPartyRegion = if (afterAnni9) {
         Region(-370, 62, 740, 72).xFromCenter()
-    else
+    } else {
         Region(-270, 62, 550, 72).xFromCenter()
-    
+    }
+
     val partySelectionArray: List<Location> = (0..14).map {
         val x = if (afterAnni9) {
             // Party 8 is on the center
@@ -151,7 +166,7 @@ class Locations @Inject constructor(
      * The following region are used for the various enhancement screen listed below:
      * Skill Upgrade, Ascension, Append Upgrade and Grail
      */
-    val enhancementBannerRegion = when(isWide) {
+    val enhancementBannerRegion = when (isWide) {
         true -> Region(-412, 282, 241, 37).xFromCenter()
         false -> Region(-413, 324, 241, 37).xFromCenter()
     }

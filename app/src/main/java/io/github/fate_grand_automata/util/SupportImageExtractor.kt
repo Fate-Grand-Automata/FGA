@@ -13,7 +13,7 @@ import java.security.MessageDigest
 
 class SupportImageExtractor(
     val context: Context,
-    val storageProvider: IStorageProvider
+    val storageProvider: IStorageProvider,
 ) {
     private val SupportImageKind.assetFolder
         get() = "Support/" + when (this) {
@@ -27,20 +27,20 @@ class SupportImageExtractor(
         val assets = context.assets
 
         for (assetFileName in assets.list(assetFolder)!!) {
-            val assetPath = "${assetFolder}/$assetFileName"
+            val assetPath = "$assetFolder/$assetFileName"
             val subFiles = assets.list(assetPath) ?: emptyArray()
 
             // This is a folder
             if (subFiles.isNotEmpty()) {
                 for (subFileName in subFiles) {
-                    val subAssetPath = "${assetPath}/$subFileName"
+                    val subAssetPath = "$assetPath/$subFileName"
                     val subOutName = "$assetFileName/$subFileName"
 
                     copyAssetToFile(
                         assets,
                         subAssetPath,
                         kind,
-                        subOutName
+                        subOutName,
                     )
                 }
             } else {
@@ -48,7 +48,7 @@ class SupportImageExtractor(
                     assets,
                     assetPath,
                     kind,
-                    assetFileName
+                    assetFileName,
                 )
             }
         }
@@ -73,7 +73,6 @@ class SupportImageExtractor(
                 Timber.w("Digests were not equal")
             }
         } while (!MessageDigest.isEqual(originalDigest.digest(), copiedFileDigest.digest()))
-
     }
 
     suspend fun extract() =

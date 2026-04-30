@@ -12,7 +12,7 @@ data class Location(val x: Int = 0, val y: Int = 0) : Comparable<Location> {
     operator fun times(scale: Double): Location {
         return Location(
             (x * scale).roundToInt(),
-            (y * scale).roundToInt()
+            (y * scale).roundToInt(),
         )
     }
 

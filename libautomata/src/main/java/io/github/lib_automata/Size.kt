@@ -17,7 +17,7 @@ data class Size(val width: Int, val height: Int) {
     operator fun times(scale: Double): Size {
         return Size(
             (width * scale).roundToInt(),
-            (height * scale).roundToInt()
+            (height * scale).roundToInt(),
         )
     }
 }

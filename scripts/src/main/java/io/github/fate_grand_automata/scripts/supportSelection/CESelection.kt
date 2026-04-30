@@ -14,7 +14,7 @@ class CESelection @Inject constructor(
     api: IFgoAutomataApi,
     private val supportPrefs: ISupportPreferences,
     private val starChecker: SupportSelectionStarChecker,
-    private val grandChecker: SupportSelectionGrandChecker
+    private val grandChecker: SupportSelectionGrandChecker,
 ) : IFgoAutomataApi by api {
     fun check(ces: List<String>, bounds: SupportBounds): Boolean {
         // TODO: Only check the lower part (excluding Servant)
@@ -36,8 +36,14 @@ class CESelection @Inject constructor(
                     !supportPrefs.mlb || isGrandLimitBroken(it.region)
                 }
 
-            val grandCeRegion1 = locations.support.grandCeRegion1.copy(y = searchRegion.y + locations.support.grandCeRegion1.y)
-            val grandCeRegion3 = locations.support.grandCeRegion3.copy(y = searchRegion.y + locations.support.grandCeRegion3.y)
+            val grandCeRegion1 = locations.support.grandCeRegion1.copy(
+                y =
+                searchRegion.y + locations.support.grandCeRegion1.y,
+            )
+            val grandCeRegion3 = locations.support.grandCeRegion3.copy(
+                y =
+                searchRegion.y + locations.support.grandCeRegion3.y,
+            )
             val bondRegion = locations.support.bondCeRegion.copy(y = searchRegion.y + locations.support.bondCeRegion.y)
 
             val normalMatch = matched.any { grandCeRegion1.contains(it.region) }
@@ -71,9 +77,9 @@ class CESelection @Inject constructor(
                 .filter {
                     !supportPrefs.mlb || isLimitBroken(it.region)
                 }
-            return matched.isNotEmpty()
-                && !supportPrefs.requireBothNormalAndRewardMatch
-                && supportPrefs.bondCEEffect == BondCEEffectEnum.Ignore
+            return matched.isNotEmpty() &&
+                !supportPrefs.requireBothNormalAndRewardMatch &&
+                supportPrefs.bondCEEffect == BondCEEffectEnum.Ignore
         }
     }
 
@@ -97,5 +103,4 @@ class CESelection @Inject constructor(
 
         return starChecker.isStarPresent(limitBreakRegion)
     }
-
 }

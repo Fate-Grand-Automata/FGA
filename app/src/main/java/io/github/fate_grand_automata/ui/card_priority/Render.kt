@@ -9,8 +9,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -30,10 +30,10 @@ import io.github.fate_grand_automata.util.stringRes
 
 @Composable
 fun CardPriorityListItem.Render(
-    useServantPriority: Boolean
+    useServantPriority: Boolean,
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CardPriorityDragSort(scores)
 
@@ -42,11 +42,11 @@ fun CardPriorityListItem.Render(
                 .padding(16.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            ),
         ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 var braveChains by braveChains
 
@@ -55,7 +55,7 @@ fun CardPriorityListItem.Render(
                     onSelectedChange = { braveChains = it },
                     entries = BraveChainEnum.entries
                         .associateWith { stringResource(it.stringRes) },
-                    title = stringResource(R.string.p_brave_chains)
+                    title = stringResource(R.string.p_brave_chains),
                 )
 
                 ListItem(
@@ -64,7 +64,7 @@ fun CardPriorityListItem.Render(
                         .clickable { braveChainDialog.show() },
                     headlineContent = { Text(stringResource(R.string.p_brave_chains)) },
                     supportingContent = { Text(stringResource(braveChains.stringRes)) },
-                    colors = FGAListItemColors()
+                    colors = FGAListItemColors(),
                 )
 
                 var rearrange by rearrangeCards
@@ -77,17 +77,17 @@ fun CardPriorityListItem.Render(
                     trailingContent = {
                         Checkbox(
                             checked = rearrange,
-                            onCheckedChange = { rearrange = it }
+                            onCheckedChange = { rearrange = it },
                         )
                     },
-                    colors = FGAListItemColors()
+                    colors = FGAListItemColors(),
                 )
             }
         }
 
         if (useServantPriority) {
             ServantPriority(
-                priorities = servantPriority
+                priorities = servantPriority,
             )
         }
     }
@@ -95,12 +95,12 @@ fun CardPriorityListItem.Render(
 
 @Composable
 private fun ServantPriority(
-    priorities: MutableList<TeamSlot>
+    priorities: MutableList<TeamSlot>,
 ) {
     Text(
         "Servant Priority".uppercase(),
         modifier = Modifier
-            .padding(bottom = 5.dp, top = 16.dp)
+            .padding(bottom = 5.dp, top = 16.dp),
     )
 
     val context = LocalContext.current
@@ -118,8 +118,8 @@ private fun ServantPriority(
                     5 -> R.color.colorQuickResist
                     else -> R.color.colorBusterResist
                 }.let { res -> context.getColor(res) },
-                text = "  ${it.position}  "
+                text = "  ${it.position}  ",
             )
-        }
+        },
     )
 }

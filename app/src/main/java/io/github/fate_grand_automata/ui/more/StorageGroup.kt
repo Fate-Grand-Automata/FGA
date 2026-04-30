@@ -13,19 +13,19 @@ fun StorageGroup(
     directoryName: String,
     onPickDirectory: () -> Unit,
     extractSupportImages: () -> Unit,
-    extractSummary: String
+    extractSummary: String,
 ) {
     Preference(
         title = stringResource(R.string.p_folder),
         summary = directoryName,
         icon = icon(R.drawable.ic_folder_edit),
-        onClick = onPickDirectory
+        onClick = onPickDirectory,
     )
 
     Preference(
         title = stringResource(R.string.support_menu_extract_default_support_images),
         icon = icon(Icons.Default.Image),
         onClick = extractSupportImages,
-        summary = extractSummary
+        summary = extractSummary,
     )
 }

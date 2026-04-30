@@ -10,5 +10,5 @@ class FgoAutomataApi @Inject constructor(
     override val prefs: IPreferences,
     override val images: IImageLoader,
     override val locations: Locations,
-    override val messages: IScriptMessages
+    override val messages: IScriptMessages,
 ) : IFgoAutomataApi, AutomataApi by automataApi

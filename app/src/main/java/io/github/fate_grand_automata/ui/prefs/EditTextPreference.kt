@@ -43,14 +43,14 @@ fun PreferenceTextEditor(
     onCancel: () -> Unit,
     modifier: Modifier = Modifier,
     validate: (String) -> Boolean = { true },
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     var textFieldValue by remember(prefill) {
         mutableStateOf(
             TextFieldValue(
                 prefill,
-                selection = TextRange(prefill.length)
-            )
+                selection = TextRange(prefill.length),
+            ),
         )
     }
     val valid = remember(textFieldValue) { validate(textFieldValue.text) }
@@ -77,11 +77,11 @@ fun PreferenceTextEditor(
                 if (valid) {
                     onSubmit(textFieldValue.text)
                 }
-            }
+            },
         ),
         trailingIcon = {
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 IconButton(
                     onClick = onCancel,
@@ -89,23 +89,23 @@ fun PreferenceTextEditor(
                     Icon(
                         painterResource(R.drawable.ic_close),
                         contentDescription = stringResource(android.R.string.cancel),
-                        tint = MaterialTheme.colorScheme.error
+                        tint = MaterialTheme.colorScheme.error,
                     )
                 }
 
                 IconButton(
                     onClick = { onSubmit(textFieldValue.text) },
-                    enabled = valid
+                    enabled = valid,
                 ) {
                     StatusWrapper(enabled = valid) {
                         Icon(
                             rememberVectorPainter(Icons.Default.Check),
-                            contentDescription = stringResource(android.R.string.ok)
+                            contentDescription = stringResource(android.R.string.ok),
                         )
                     }
                 }
             }
-        }
+        },
     )
 
     SideEffect {
@@ -122,13 +122,13 @@ fun Pref<String>.EditTextPreference(
     icon: VectorIcon? = null,
     enabled: Boolean = true,
     summary: (String) -> String = { it },
-    validate: (String) -> Boolean = { true }
+    validate: (String) -> Boolean = { true },
 ) {
     var state by remember()
     var editing by remember { mutableStateOf(false) }
 
     val keyboardOptions = KeyboardOptions(
-        imeAction = if (singleLine) ImeAction.Done else ImeAction.Default
+        imeAction = if (singleLine) ImeAction.Done else ImeAction.Default,
     )
 
     if (editing) {
@@ -142,7 +142,7 @@ fun Pref<String>.EditTextPreference(
             },
             onCancel = { editing = false },
             keyboardOptions = keyboardOptions,
-            modifier = modifier
+            modifier = modifier,
         )
     } else {
         Preference(
@@ -152,7 +152,7 @@ fun Pref<String>.EditTextPreference(
             icon = icon,
             enabled = enabled,
             onClick = { editing = true },
-            modifier = modifier
+            modifier = modifier,
         )
     }
 }

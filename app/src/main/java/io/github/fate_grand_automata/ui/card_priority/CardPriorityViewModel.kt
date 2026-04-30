@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CardPriorityViewModel @Inject constructor(
     val prefsCore: PrefsCore,
-    val battleConfig: BattleConfigCore
+    val battleConfig: BattleConfigCore,
 ) : ViewModel() {
     val cardPriorityItems: SnapshotStateList<CardPriorityListItem> by lazy {
         val cardPriority = battleConfig.cardPriority.get()
@@ -34,7 +34,7 @@ class CardPriorityViewModel @Inject constructor(
                     it.value,
                     servantPriority.atWave(it.index).toMutableList(),
                     mutableStateOf(rearrangeCards.getOrElse(it.index) { false }),
-                    mutableStateOf(braveChains.getOrElse(it.index) { BraveChainEnum.None })
+                    mutableStateOf(braveChains.getOrElse(it.index) { BraveChainEnum.None }),
                 )
             }
             .toMutableStateList()
@@ -45,14 +45,14 @@ class CardPriorityViewModel @Inject constructor(
     fun save() {
         battleConfig.cardPriority.set(
             CardPriorityPerWave.from(
-                cardPriorityItems.map { CardPriority.from(it.scores) }
-            )
+                cardPriorityItems.map { CardPriority.from(it.scores) },
+            ),
         )
 
         battleConfig.servantPriority.set(
             ServantPriorityPerWave.from(
-                cardPriorityItems.map { it.servantPriority }
-            )
+                cardPriorityItems.map { it.servantPriority },
+            ),
         )
 
         battleConfig.rearrangeCards.set(cardPriorityItems.map { it.rearrangeCards.value })

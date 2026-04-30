@@ -50,7 +50,7 @@ private class FakeLifecycleOwner : SavedStateRegistryOwner {
 
 class FakedComposeView(
     private val context: Context,
-    private val content: @Composable () -> Unit
+    private val content: @Composable () -> Unit,
 ) : AutoCloseable {
     private val viewModelStore = ViewModelStore()
     val viewModelStoreOwner = object : ViewModelStoreOwner {

@@ -14,7 +14,7 @@ class MediaProjectionRecording(
     mediaProjection: MediaProjection,
     imageSize: Size,
     screenDensity: Int,
-    storageProvider: StorageProvider
+    storageProvider: StorageProvider,
 ) : AutoCloseable {
     private val mediaRecorder = MediaRecorder().apply {
         setVideoSource(MediaRecorder.VideoSource.SURFACE)
@@ -33,8 +33,13 @@ class MediaProjectionRecording(
 
     private val virtualDisplay: VirtualDisplay = mediaProjection.createVirtualDisplay(
         "ScreenRecord",
-        imageSize.width, imageSize.height, screenDensity,
-        0, mediaRecorder.surface, null, null
+        imageSize.width,
+        imageSize.height,
+        screenDensity,
+        0,
+        mediaRecorder.surface,
+        null,
+        null,
     )
 
     init {

@@ -23,7 +23,7 @@ import kotlin.time.Duration.Companion.seconds
 @ScriptScope
 class AutoCEBomb @Inject constructor(
     exitManager: ExitManager,
-    api: IFgoAutomataApi
+    api: IFgoAutomataApi,
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason {
         object NoSuitableTargetCEFound : ExitReason()
@@ -35,7 +35,7 @@ class AutoCEBomb @Inject constructor(
             Images.CEAwakeningLv1,
             Images.CEBarrierLv1,
             Images.CELinkageLv1,
-            Images.CECombatLv1
+            Images.CECombatLv1,
         )
 
         2 -> listOf(
@@ -43,7 +43,7 @@ class AutoCEBomb @Inject constructor(
             Images.CESynchronizationLv1,
             Images.CEDeceptionLv1,
             Images.CEProsperityLv1,
-            Images.CEMercyLv1
+            Images.CEMercyLv1,
         )
 
         else -> emptyList()

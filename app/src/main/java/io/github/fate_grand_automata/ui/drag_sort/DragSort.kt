@@ -10,7 +10,7 @@ import io.github.fate_grand_automata.util.ItemTouchHelperCallback
 @Composable
 fun <T> DragSort(
     items: MutableList<T>,
-    viewConfigGrabber: (T) -> DragSortAdapter.ItemViewConfig
+    viewConfigGrabber: (T) -> DragSortAdapter.ItemViewConfig,
 ) {
     AndroidView(
         factory = { context ->
@@ -23,7 +23,7 @@ fun <T> DragSort(
         update = {
             it.adapter = DragSortAdapter(
                 items,
-                viewConfigGrabber
+                viewConfigGrabber,
             ).also { adapter ->
                 val callback = ItemTouchHelperCallback(adapter)
                 val itemTouchHelper = ItemTouchHelper(callback)
@@ -31,6 +31,6 @@ fun <T> DragSort(
 
                 adapter.itemTouchHelper = itemTouchHelper
             }
-        }
+        },
     )
 }

@@ -14,7 +14,7 @@ import javax.inject.Inject
 @ScriptScope
 class CardParser @Inject constructor(
     api: IFgoAutomataApi,
-    private val servantTracker: ServantTracker
+    private val servantTracker: ServantTracker,
 ) : IFgoAutomataApi by api {
 
     private fun CommandCard.Face.affinity(): CardAffinityEnum {
@@ -35,7 +35,7 @@ class CardParser @Inject constructor(
         val stunRegion = locations.attack.typeRegion(this).copy(
             y = 930,
             width = 248,
-            height = 188
+            height = 188,
         )
 
         return listOf(
@@ -71,12 +71,16 @@ class CardParser @Inject constructor(
         val cards = CommandCard.Face.list
             .map {
                 val stunned = it.isStunned()
-                val type = if (stunned)
+                val type = if (stunned) {
                     CardTypeEnum.Unknown
-                else it.type()
-                val affinity = if (type == CardTypeEnum.Unknown)
+                } else {
+                    it.type()
+                }
+                val affinity = if (type == CardTypeEnum.Unknown) {
                     CardAffinityEnum.Normal // Couldn't detect card type, so don't care about affinity
-                else it.affinity()
+                } else {
+                    it.affinity()
+                }
 
                 val servant = cardsGroupedByServant
                     .filterValues { cards -> it in cards }
@@ -95,7 +99,7 @@ class CardParser @Inject constructor(
                     type = type,
                     affinity = affinity,
                     servant = servant,
-                    fieldSlot = fieldSlot
+                    fieldSlot = fieldSlot,
                 )
             }
 
@@ -122,7 +126,7 @@ class CardParser @Inject constructor(
 
         if (failedToDetermine.isNotEmpty()) {
             messages.notify(
-                ScriptNotify.FailedToDetermineCards(failedToDetermine, unknownCardTypes, unknownServants)
+                ScriptNotify.FailedToDetermineCards(failedToDetermine, unknownCardTypes, unknownServants),
             )
         }
 

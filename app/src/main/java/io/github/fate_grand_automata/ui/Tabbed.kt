@@ -21,9 +21,9 @@ fun <T> Tabbed(
     items: List<T>,
     heading: @Composable (T) -> Unit,
     content: @Composable (T) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    val pagerState = rememberPagerState(pageCount = {items.size})
+    val pagerState = rememberPagerState(pageCount = { items.size })
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(items.size) {
@@ -33,12 +33,12 @@ fun <T> Tabbed(
     }
 
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
         ScrollableTabRow(
             selectedTabIndex = pagerState.currentPage,
             edgePadding = 0.dp,
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
         ) {
             // Add tabs for all of our pages
             items.forEachIndexed { index, it ->
@@ -59,7 +59,7 @@ fun <T> Tabbed(
             pageContent = { content(items[it]) },
             verticalAlignment = Alignment.Top,
             modifier = Modifier
-                .weight(1f)
+                .weight(1f),
         )
     }
 }

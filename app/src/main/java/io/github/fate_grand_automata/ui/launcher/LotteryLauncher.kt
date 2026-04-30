@@ -25,7 +25,7 @@ import io.github.fate_grand_automata.scripts.prefs.IPreferences
 @Composable
 fun lotteryLauncher(
     prefs: IPreferences,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ): ScriptLauncherResponseBuilder {
     var receiveEmbers by remember { mutableStateOf(prefs.receiveEmbersWhenGiftBoxFull) }
     var maxGoldEmberStackSize by remember { mutableStateOf(prefs.maxGoldEmberStackSize) }
@@ -34,17 +34,17 @@ fun lotteryLauncher(
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp)
-            .padding(top = 5.dp)
+            .padding(top = 5.dp),
     ) {
         Text(
             stringResource(R.string.p_script_mode_lottery),
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
         )
 
         HorizontalDivider(
             modifier = Modifier
                 .padding(5.dp)
-                .padding(bottom = 16.dp)
+                .padding(bottom = 16.dp),
         )
 
         Row(
@@ -53,17 +53,17 @@ fun lotteryLauncher(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 5.dp)
-                .clickable { receiveEmbers = !receiveEmbers }
+                .clickable { receiveEmbers = !receiveEmbers },
         ) {
             Text(
                 stringResource(R.string.p_receive_embers),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.secondary,
             )
 
             Switch(
                 checked = receiveEmbers,
-                onCheckedChange = { receiveEmbers = it }
+                onCheckedChange = { receiveEmbers = it },
             )
         }
 
@@ -72,7 +72,7 @@ fun lotteryLauncher(
                 maxGoldEmberStackSize = maxGoldEmberStackSize,
                 changeMaxGoldEmberStackSize = { maxGoldEmberStackSize = it },
                 maxGoldEmberTotalCount = maxGoldEmberTotalCount,
-                changeMaxGoldEmberTotalCount = { maxGoldEmberTotalCount = it }
+                changeMaxGoldEmberTotalCount = { maxGoldEmberTotalCount = it },
             )
         }
     }
@@ -83,8 +83,10 @@ fun lotteryLauncher(
             ScriptLauncherResponse.Lottery(
                 if (receiveEmbers) {
                     ScriptLauncherResponse.GiftBox(maxGoldEmberStackSize, maxGoldEmberTotalCount)
-                } else null
+                } else {
+                    null
+                },
             )
-        }
+        },
     )
 }

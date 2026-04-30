@@ -3,7 +3,6 @@ package io.github.fate_grand_automata.scripts.prefs
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 
-
 interface IPerServerConfigPrefs {
     val server: GameServer
     var selectedAutoSkillKey: String

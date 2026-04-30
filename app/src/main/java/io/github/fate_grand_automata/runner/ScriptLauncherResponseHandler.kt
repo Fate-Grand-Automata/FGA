@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 @ServiceScoped
 class ScriptLauncherResponseHandler @Inject constructor(
-    private val prefs: IPreferences
+    private val prefs: IPreferences,
 ) {
     private fun handleGiftBoxResponse(resp: ScriptLauncherResponse.GiftBox) {
         prefs.maxGoldEmberStackSize = resp.maxGoldEmberStackSize

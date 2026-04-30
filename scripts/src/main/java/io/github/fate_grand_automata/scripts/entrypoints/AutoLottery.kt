@@ -17,7 +17,7 @@ class AutoLottery @Inject constructor(
     exitManager: ExitManager,
     api: IFgoAutomataApi,
     private val giftBox: AutoGiftBox,
-    private val connectionRetry: ConnectionRetry
+    private val connectionRetry: ConnectionRetry,
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason {
         object RanOutOfCurrency : ExitReason()
@@ -48,10 +48,9 @@ class AutoLottery @Inject constructor(
 
     private fun isTransition() = images[Images.LotteryTransition] in locations.lottery.transitionRegion
 
-
     private fun isLotteryDone() = locations.lottery.doneRegion.exists(
         images[Images.LotteryBoxFinished],
-        similarity = 0.85
+        similarity = 0.85,
     )
 
     private fun confirmIfLotteryDone() {
@@ -64,7 +63,7 @@ class AutoLottery @Inject constructor(
                 val falseDetection = locations.lottery.doneRegion.waitVanish(
                     images[Images.LotteryBoxFinished],
                     timeout = 5.seconds,
-                    similarity = 0.85
+                    similarity = 0.85,
                 )
                 if (falseDetection) {
                     return@verify
@@ -82,7 +81,7 @@ class AutoLottery @Inject constructor(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { images[Images.PresentBoxFull] in locations.lottery.fullPresentBoxRegion } to { presentBoxFull() },
             { isLotteryDone() } to { confirmIfLotteryDone() },
-            { isTransition() } to { locations.lottery.transitionRegion.click() }
+            { isTransition() } to { locations.lottery.transitionRegion.click() },
         )
 
         while (true) {

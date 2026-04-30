@@ -32,7 +32,7 @@ class ScriptRunnerOverlay @Inject constructor(
     private val uiStateHolder: ScriptRunnerUIStateHolder,
     private val scriptManager: ScriptManager,
     private val screenshotServiceHolder: ScreenshotServiceHolder,
-    private val scriptComponentBuilder: ScriptComponentBuilder
+    private val scriptComponentBuilder: ScriptComponentBuilder,
 ) {
     private val layout: ComposeView
 
@@ -60,7 +60,7 @@ class ScriptRunnerOverlay @Inject constructor(
                 updateState = { act(it) },
                 isRecording = uiStateHolder.isRecording,
                 enabled = uiStateHolder.isPlayButtonEnabled,
-                onDrag = { x, y -> onDrag(x, y) }
+                onDrag = { x, y -> onDrag(x, y) },
             )
         }.view
 
@@ -96,7 +96,7 @@ class ScriptRunnerOverlay @Inject constructor(
 
     private fun savePlayButtonLocation() {
         prefsCore.playBtnLocation.set(
-            Location(scriptCtrlBtnLayoutParams.x, scriptCtrlBtnLayoutParams.y)
+            Location(scriptCtrlBtnLayoutParams.x, scriptCtrlBtnLayoutParams.y),
         )
     }
 

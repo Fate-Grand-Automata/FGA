@@ -8,7 +8,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
 class FirstSupportSelection @Inject constructor(
-    api: IFgoAutomataApi
+    api: IFgoAutomataApi,
 ) : SupportSelectionProvider, IFgoAutomataApi by api {
     override fun select(): SupportSelectionResult {
         0.5.seconds.wait()
@@ -19,11 +19,13 @@ class FirstSupportSelection @Inject constructor(
         val supportPicked = locations.support.screenCheckRegion.waitVanish(
             images[Images.SupportScreen],
             similarity = 0.85,
-            timeout = 10.seconds
+            timeout = 10.seconds,
         )
 
-        return if (supportPicked)
+        return if (supportPicked) {
             SupportSelectionResult.Done
-        else SupportSelectionResult.Refresh
+        } else {
+            SupportSelectionResult.Refresh
+        }
     }
 }

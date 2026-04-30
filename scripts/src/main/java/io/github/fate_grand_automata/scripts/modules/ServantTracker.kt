@@ -15,7 +15,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @ScriptScope
 class ServantTracker @Inject constructor(
-    api: IFgoAutomataApi
+    api: IFgoAutomataApi,
 ) : IFgoAutomataApi by api, AutoCloseable {
 
     private val servantQueue = mutableListOf<TeamSlot>()
@@ -25,7 +25,7 @@ class ServantTracker @Inject constructor(
     fun nextRun() {
         servantQueue.clear()
         servantQueue.addAll(
-            listOf(TeamSlot.D, TeamSlot.E, TeamSlot.F)
+            listOf(TeamSlot.D, TeamSlot.E, TeamSlot.F),
         )
 
         _deployed.clear()
@@ -33,8 +33,8 @@ class ServantTracker @Inject constructor(
             mapOf(
                 FieldSlot.A to TeamSlot.A,
                 FieldSlot.B to TeamSlot.B,
-                FieldSlot.C to TeamSlot.C
-            )
+                FieldSlot.C to TeamSlot.C,
+            ),
         )
     }
 
@@ -44,7 +44,7 @@ class ServantTracker @Inject constructor(
 
     data class TeamSlotData(
         val checkImage: MutableList<Pattern>,
-        val skills: List<Pattern>
+        val skills: List<Pattern>,
     ) : AutoCloseable {
         override fun close() {
             checkImage.forEach { it.close() }
@@ -67,8 +67,8 @@ class ServantTracker @Inject constructor(
         messages.log(
             ScriptLog.ServantEnteredSlot(
                 servant = teamSlot,
-                slot = slot
-            )
+                slot = slot,
+            ),
         )
 
         var isSupport = false
@@ -80,12 +80,12 @@ class ServantTracker @Inject constructor(
                 checkImages[teamSlot] = TeamSlotData(
                     checkImage = mutableListOf(
                         locations.battle.servantChangeCheckRegion(slot)
-                            .getPattern("Servant $teamSlot")
+                            .getPattern("Servant $teamSlot"),
                     ),
                     skills = slot.skills().mapIndexed { index, it ->
                         locations.battle.imageRegion(it)
                             .getPattern("Servant $teamSlot S${index + 1}")
-                    }
+                    },
                 )
             }
         }
@@ -99,8 +99,9 @@ class ServantTracker @Inject constructor(
     }
 
     private fun initFaceCard(teamSlot: TeamSlot, slot: FieldSlot, addAnotherImage: Boolean = false) {
-        if (prefs.skipServantFaceCardCheck || (!addAnotherImage && teamSlot in faceCardImages))
+        if (prefs.skipServantFaceCardCheck || (!addAnotherImage && teamSlot in faceCardImages)) {
             return
+        }
 
         // Open details dialog and click on INFO
         locations.battle.servantOpenDetailsClick(slot).click()
@@ -159,8 +160,8 @@ class ServantTracker @Inject constructor(
                 messages.log(
                     ScriptLog.ServantEnteredSlot(
                         servant = TeamSlot.Unknown,
-                        slot = slot
-                    )
+                        slot = slot,
+                    ),
                 )
             }
         }
@@ -233,8 +234,8 @@ class ServantTracker @Inject constructor(
                 ScriptLog.CardsBelongToServant(
                     cards,
                     servant,
-                    isSupport = servant == supportSlot
-                )
+                    isSupport = servant == supportSlot,
+                ),
             )
         }
 
@@ -251,7 +252,7 @@ class ServantTracker @Inject constructor(
         if (teamSlotData != null && teamSlotData.checkImage.size == 1) {
             teamSlotData.checkImage.add(
                 locations.battle.servantChangeCheckRegion(fieldSlot)
-                    .getPattern("Melusine Asc3")
+                    .getPattern("Melusine Asc3"),
             )
 
             initFaceCard(teamSlot, fieldSlot, addAnotherImage = true)
@@ -262,5 +263,5 @@ class ServantTracker @Inject constructor(
      * Checks if the given [slot] is a Support Servant. Will always return `false` if "Treat Support like own Servant" is enabled.
      */
     private fun isSupport(slot: FieldSlot) = !prefs.treatSupportLikeOwnServant &&
-            images[Images.ServantCheckSupport] in locations.battle.servantChangeSupportCheckRegion(slot)
+        images[Images.ServantCheckSupport] in locations.battle.servantChangeSupportCheckRegion(slot)
 }

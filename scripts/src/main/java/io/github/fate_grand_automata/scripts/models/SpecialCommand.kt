@@ -2,7 +2,7 @@ package io.github.fate_grand_automata.scripts.models
 
 sealed class SpecialCommand(
     val autoSkillCode: Char,
-){
+) {
     /**
      * The "t" character that represents the enemy target.
      * This followed by a number that represents the enemy target.

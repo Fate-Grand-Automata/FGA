@@ -11,12 +11,12 @@ import javax.inject.Inject
 @ScriptScope
 class FaceCardPriority @Inject constructor(
     private val cardPriority: CardPriorityPerWave,
-    private val servantPriority: ServantPriorityPerWave?
+    private val servantPriority: ServantPriorityPerWave?,
 ) {
 
     private fun applyCardPriority(
         cards: List<ParsedCard>,
-        stage: Int
+        stage: Int,
     ): List<ParsedCard> {
         val groupedByScore = cards.groupBy { CardScore(it.type, it.affinity) }
 
@@ -29,7 +29,7 @@ class FaceCardPriority @Inject constructor(
     private fun applyServantPriority(
         cards: List<ParsedCard>,
         priority: ServantPriorityPerWave,
-        stage: Int
+        stage: Int,
     ): List<ParsedCard> {
         val groupedByServant = cards.groupBy { it.servant }
 
@@ -40,7 +40,7 @@ class FaceCardPriority @Inject constructor(
                 applyCardPriority(
                     // Stunned cards at the end
                     cards = servantCards.filter { it.type != CardTypeEnum.Unknown },
-                    stage = stage
+                    stage = stage,
                 )
             }
             .flatten()
@@ -54,7 +54,7 @@ class FaceCardPriority @Inject constructor(
 
     fun sort(
         cards: List<ParsedCard>,
-        stage: Int
+        stage: Int,
     ): List<ParsedCard> =
         servantPriority
             ?.let { applyServantPriority(cards, it, stage) }

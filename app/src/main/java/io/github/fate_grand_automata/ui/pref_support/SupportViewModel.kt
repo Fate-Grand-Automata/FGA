@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SupportViewModel @Inject constructor(
-    val storageProvider: StorageProvider
+    val storageProvider: StorageProvider,
 ) : ViewModel() {
     var servants: Map<String, String> by mutableStateOf(emptyMap())
         private set
@@ -32,7 +32,7 @@ class SupportViewModel @Inject constructor(
 
     private suspend fun getSupportImages(
         context: Context,
-        kind: SupportImageKind
+        kind: SupportImageKind,
     ) = try {
         withContext(Dispatchers.IO) {
             storageProvider.list(kind)

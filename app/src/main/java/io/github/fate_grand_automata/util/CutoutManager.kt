@@ -46,7 +46,7 @@ class CutoutManager @Inject constructor(
             displayCutout.safeInsetLeft,
             displayCutout.safeInsetTop,
             displayCutout.safeInsetRight,
-            displayCutout.safeInsetBottom
+            displayCutout.safeInsetBottom,
         )
 
         // Check if there is a cutout
