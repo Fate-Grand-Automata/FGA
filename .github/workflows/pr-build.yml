@@ -29,7 +29,7 @@ jobs:
       pull-requests: write 
     steps:
       # get the PR from the event as JSON
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@v9
         id: pr
         with:
           script: |
@@ -80,13 +80,13 @@ jobs:
 
       - name: Upload APK
         id: upload-apk
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.FGA_APK_ARTIFACT_NAME }}
           path: ${{ env.FGA_APK_PATH }}
 
       - name: Upload De-obfuscation mapping file
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.FGA_MAPPING_ARTIFACT_NAME }}
           path: ${{ env.FGA_MAPPING_PATH }}
