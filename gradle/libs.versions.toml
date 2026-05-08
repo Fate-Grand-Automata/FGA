@@ -14,6 +14,7 @@ gson_version = "2.13.1"
 
 kotlin_version = "2.2.10"
 ksp_version = "2.2.10-2.0.2"
+serialization = "1.11.0"
 
 gradle_version = "8.10.0"
 
@@ -50,6 +51,8 @@ ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devto
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin_version" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx_coroutines_core_version" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
+
+kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
 fredporciuncula-flow-preferences = { module = "com.fredporciuncula:flow-preferences", version.ref = "flow_preferences_version" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk_version" }
@@ -113,3 +116,5 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp_version" }
 
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin_version" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_version" }
+
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin_version" }
