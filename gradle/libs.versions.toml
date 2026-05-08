@@ -30,6 +30,9 @@ mockk_version = "1.14.5"
 opencv_version = "4.11.0"
 navigation_compose_version = "2.9.3"
 
+nav3 = "1.1.1"
+lifecycle_viewmodel_nav3 = "2.11.0-beta01"
+
 recyclerview_version = "1.4.0"
 tesseract4android_version = "4.9.0"
 
@@ -71,6 +74,11 @@ dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", vers
 # Navigation
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt_navigation_compose_version" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation_compose_version" }
+
+# Core Navigation 3 libraries
+androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3" }
+androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3" }
+androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycle_viewmodel_nav3" }
 
 # Gson
 google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson_version" }
