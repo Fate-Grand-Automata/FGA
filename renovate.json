@@ -6,7 +6,7 @@
     ":prHourlyLimit2"
   ],
   "timezone": "Europe/Berlin",
-  "semanticCommits": false,
+  "semanticCommits": "disabled",
   "gradle": {
     "extends": [
       "schedule:monthly"
