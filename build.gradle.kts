@@ -24,6 +24,7 @@ plugins {
     alias(libs.plugins.ben.manes.versions)
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
 }
 
 

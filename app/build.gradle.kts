@@ -5,6 +5,7 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("com.google.devtools.ksp")
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -97,6 +98,7 @@ dependencies {
 
 
     implementation(libs.kotlin.stdlib)
+    implementation(libs.kotlin.serialization)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
@@ -136,6 +138,9 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
 
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
 
 
     implementation(libs.accompanist.permissions)

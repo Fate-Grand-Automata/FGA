@@ -14,6 +14,7 @@ gson_version = "2.13.1"
 
 kotlin_version = "2.2.10"
 ksp_version = "2.2.10-2.0.2"
+serialization = "1.11.0"
 
 gradle_version = "8.10.0"
 
@@ -28,6 +29,9 @@ mockk_version = "1.14.5"
 
 opencv_version = "4.11.0"
 navigation_compose_version = "2.9.3"
+
+nav3 = "1.1.1"
+lifecycle_viewmodel_nav3 = "2.11.0-beta01"
 
 recyclerview_version = "1.4.0"
 tesseract4android_version = "4.9.0"
@@ -51,6 +55,8 @@ kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", v
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx_coroutines_core_version" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
 
+kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+
 fredporciuncula-flow-preferences = { module = "com.fredporciuncula:flow-preferences", version.ref = "flow_preferences_version" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk_version" }
 willowtreeapps-assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk_version" }
@@ -68,6 +74,11 @@ dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", vers
 # Navigation
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt_navigation_compose_version" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation_compose_version" }
+
+# Core Navigation 3 libraries
+androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3" }
+androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3" }
+androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycle_viewmodel_nav3" }
 
 # Gson
 google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson_version" }
@@ -113,3 +124,5 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp_version" }
 
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin_version" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_version" }
+
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin_version" }
