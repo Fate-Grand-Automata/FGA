@@ -40,6 +40,7 @@
     - [Servant Priority](#servant-priority)
     - [Rearrange Cards](#rearrange-cards)
     - [Brave Chain](#brave-chain)
+  - [Custom Card Selection](#custom-card-selection)
   - [Support Selection](#support-selection)
     - [Class Selection](#class-selection)
     - [Support Selection Options](#support-selection-options)
@@ -467,6 +468,35 @@ instead of
 - Jeanne Archer Buster (strongest card)
 - Jeanne Archer Arts (2nd strongest card)
 - Castoria Buster (3rd strongest card)
+
+___
+
+## Custom Card Selection
+
+Custom card selection allows selecting specific face cards in certain turns, which would be helpful while farming with servants like Ciel and U-Olga Marie.
+
+![Custom Card Selection](https://i.imgur.com/YtLcVGj.png)
+
+Cards are defined by the types and the positions of the servants on the field. It's not affected by [order change](#master-skills---plugsuit).
+
+![Battle Configs - FGA Command | Servant skills - targetable](https://i.imgur.com/CSwxJbX.jpeg )  
+![Cards](https://i.imgur.com/oMLvvlA.png)
+
+Similar to [Card Priority](#card-priority-optional), you can define different card selection for each turn.
+
+You don't have to select any cards for turns where you don't have any requirement, in which case FGA would select cards using card priority.
+
+![Custom Card Selection - Turn-based](https://i.imgur.com/CGosnSn.png)
+
+Up to 3 cards can be selected per turn.
+- The cards would be clicked in the exact same order as defined.
+- The selection could work together with [Cards Before NP](#cards-before-np) setting.
+- When NP(s) is used in the same turn, the selected card(s) would be discarded **from the end**. (e.g. Q1 in following picture would be ignored if 1 NP is used)
+- You can select only 1/2 cards. When necessary, more cards would be selected from the rest automatically.
+- In the case where one or more cards from the selection setting are not in current hand, the **entire selection would be discarded** and FGA would select cards using card priority.
+
+![Custom Card Selection - Up to 3 cards per selection](https://i.imgur.com/w7mLk0Q.png)
+
 ___  
 
 ## Support Selection

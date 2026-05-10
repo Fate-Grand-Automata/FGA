@@ -7,6 +7,7 @@ import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantSpamConfig
+import io.github.fate_grand_automata.scripts.models.CustomCardSelectionPerTurn
 
 interface IBattleConfig {
     val id: String
@@ -30,6 +31,8 @@ interface IBattleConfig {
 
     val addRaidTurnDelay: Boolean
     val raidTurnDelaySeconds : Int
+
+    val customCardSelection: CustomCardSelectionPerTurn
 
     fun export(): Map<String, *>
 
