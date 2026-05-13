@@ -36,6 +36,10 @@ class SupportPrefsCore(
     val skill2Max = maker.bool("support_skill_max_2")
     val skill3Max = maker.bool("support_skill_max_3")
 
+    val skill1Strengthened = maker.int("support_skill_strengthened_1")
+    val skill2Strengthened = maker.int("support_skill_strengthened_2")
+    val skill3Strengthened = maker.int("support_skill_strengthened_3")
+
     val grandServant = maker.bool("support_grand_servant")
     val bondCEEffect = maker.enum(
         "support_bond_ce_effect",
