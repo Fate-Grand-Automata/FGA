@@ -68,7 +68,8 @@ jobs:
               return;
             }
 
-            core.setOutput('artifact_url', apk.archive_download_url);
+            const artifactUrl = `https://github.com/${owner}/${repo}/actions/runs/${run_id}/artifacts/${apk.id}`;
+            core.setOutput('artifact_url', artifactUrl);
 
       - name: Find Build APK Comment
         if: steps.pr.outputs.skip != 'true'
