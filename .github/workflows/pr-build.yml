@@ -91,12 +91,14 @@ jobs:
           name: ${{ env.FGA_MAPPING_ARTIFACT_NAME }}
           path: ${{ env.FGA_MAPPING_PATH }}
       
-      - name: Comment the APK
+      - name: Comment the Build APK
         if: ${{ github.event_name != 'workflow_dispatch' && github.actor != 'renovate[bot]' }}
-        uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9
         with:
-          comment-tag: apk
-          message: |
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-id: apk
+          edit-mode: replace
+          body: |
             # [Build ${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
             Download the latest APK for testing [here](${{ steps.upload-apk.outputs.artifact-url }})
