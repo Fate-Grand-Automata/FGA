@@ -66,7 +66,7 @@ jobs:
 
       - name: Find Build APK Comment
         if: steps.pr.outputs.skip != 'true'
-        uses: peter-evans/find-comment@3eae4d37d5b8281d66034ec3c5d91e95aaf02418
+        uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad
         id: find-comment
         with:
           issue-number: ${{ steps.pr.outputs.number }}
