@@ -28,9 +28,15 @@ jobs:
               core.setFailed('No PR associated with this workflow_run');
               return;
             }
-            const pr = prs[0];
+            const prNumber = prs[0].number;
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+            });
+
             // Only comment on PRs from branches in this repo, not forks
-            if (pr.head.repo.full_name !== context.repo.owner + '/' + context.repo.repo) {
+            if (pr.head.repo.fork) {
               core.notice('PR is from a fork, skipping comment');
               core.setOutput('skip', 'true');
               return;
