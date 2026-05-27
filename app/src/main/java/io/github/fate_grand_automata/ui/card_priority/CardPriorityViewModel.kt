@@ -11,6 +11,7 @@ import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.models.CardPriority
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantPriorityPerWave
+import io.github.fate_grand_automata.scripts.models.battle.ChainPriorityPerWave
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,6 +22,7 @@ class CardPriorityViewModel @Inject constructor(
     val cardPriorityItems: SnapshotStateList<CardPriorityListItem> by lazy {
         val cardPriority = battleConfig.cardPriority.get()
         val servantPriority = battleConfig.servantPriority.get()
+        val chainPriority = battleConfig.chainPriority.get()
 
         val rearrangeCards = battleConfig.rearrangeCards.get()
         val braveChains = battleConfig.braveChains.get()
@@ -33,6 +35,7 @@ class CardPriorityViewModel @Inject constructor(
                 CardPriorityListItem(
                     it.value,
                     servantPriority.atWave(it.index).toMutableList(),
+                    chainPriority.atWave(it.index).toMutableList(),
                     mutableStateOf(rearrangeCards.getOrElse(it.index) { false }),
                     mutableStateOf(braveChains.getOrElse(it.index) { BraveChainEnum.None })
                 )
@@ -41,6 +44,7 @@ class CardPriorityViewModel @Inject constructor(
     }
 
     val useServantPriority = battleConfig.useServantPriority
+    val useChainPriority = battleConfig.useChainPriority
 
     fun save() {
         battleConfig.cardPriority.set(
@@ -52,6 +56,12 @@ class CardPriorityViewModel @Inject constructor(
         battleConfig.servantPriority.set(
             ServantPriorityPerWave.from(
                 cardPriorityItems.map { it.servantPriority }
+            )
+        )
+
+        battleConfig.chainPriority.set(
+            ChainPriorityPerWave.from(
+                cardPriorityItems.map { it.chainPriority }
             )
         )
 

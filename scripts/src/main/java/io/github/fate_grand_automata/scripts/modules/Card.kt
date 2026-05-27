@@ -3,15 +3,20 @@ package io.github.fate_grand_automata.scripts.modules
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.ScriptLog
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.SpamConfigPerTeamSlot
+import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.scripts.models.battle.BattleState
+import io.github.fate_grand_automata.scripts.models.toFieldSlot
+import io.github.fate_grand_automata.scripts.modules.attack.AttackPriorityHandler
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 
 @ScriptScope
 class Card @Inject constructor(
@@ -22,7 +27,6 @@ class Card @Inject constructor(
     private val caster: Caster,
     private val parser: CardParser,
     private val priority: FaceCardPriority,
-    private val braveChains: ApplyBraveChains,
     private val battleConfig: IBattleConfig
 ) : IFgoAutomataApi by api {
 
@@ -57,11 +61,27 @@ class Card @Inject constructor(
         val braveChainsPerWave = battleConfig.braveChains
         val rearrangeCardsPerWave = battleConfig.rearrangeCards
 
-        return braveChains.pick(
+        val useChainPriority = battleConfig.useChainPriority
+        if (useChainPriority) {
+            val npUsageToUse = NPUsage(npUsage.nps + spamNps.detected(), npUsage.cardsBeforeNP)
+
+            val npTypes = npUsageToUse.nps.associate { it.toFieldSlot() to it.type() }
+            val chainPriority = battleConfig.chainPriority.atWave(state.stage)
+            return AttackPriorityHandler.pick(
+                cards = cardsOrderedByPriority,
+                npUsage = npUsageToUse,
+                braveChainEnum = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
+                chainPriority = chainPriority,
+                rearrange = rearrangeCardsPerWave.inCurrentWave(false),
+                npTypes = npTypes,
+            ).map { it.card }
+        }
+
+        return ApplyBraveChains.pick(
             cards = cardsOrderedByPriority,
             npUsage = npUsage,
             braveChains = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
-            rearrange = rearrangeCardsPerWave.inCurrentWave(false)
+            rearrange = rearrangeCardsPerWave.inCurrentWave(false),
         ).map { it.card }
     }
 
@@ -91,5 +111,24 @@ class Card @Inject constructor(
             .drop(npUsage.cardsBeforeNP)
             .also { messages.log(ScriptLog.ClickingCards(it)) }
             .forEach { caster.use(it) }
+    }
+
+    fun CommandCard.NP.type(): CardTypeEnum {
+        val fieldSlot = this.toFieldSlot()
+        val teamSlot = servantTracker.deployed[fieldSlot] ?: return CardTypeEnum.Unknown
+        if (teamSlot is TeamSlot.Unknown) return CardTypeEnum.Unknown
+        return servantTracker.getNpCardType(teamSlot)
+    }
+
+    fun NPUsage.detected (): NPUsage {
+        val validNPs = (this.nps + spamNps).detected()
+        return NPUsage(validNPs, this.cardsBeforeNP)
+    }
+
+    fun Set<CommandCard.NP>.detected (): Set<CommandCard.NP> {
+        val npCardsDetected = servantTracker.npCardsDetectedUsingServantFaces()
+        return this
+            .filter { it in npCardsDetected }
+            .toSet()
     }
 }

@@ -3,11 +3,13 @@ package io.github.fate_grand_automata.util
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class ItemTouchHelperCallback(private val Adapter: IItemTouchHelperAdapter,
-    private val DragFlags: Int = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) : ItemTouchHelper.Callback() {
+class ItemTouchHelperCallback(
+    private val adapter: IItemTouchHelperAdapter,
+    private val dragFlags: Int = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT,
+) : ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-        return makeMovementFlags(DragFlags, 0)
+        return makeMovementFlags(dragFlags, 0)
     }
 
     override fun isLongPressDragEnabled() = true
@@ -15,7 +17,12 @@ class ItemTouchHelperCallback(private val Adapter: IItemTouchHelperAdapter,
     override fun isItemViewSwipeEnabled() = false
 
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-        Adapter.onItemMove(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
+        adapter.onItemMove(
+            viewHolder.bindingAdapterPosition,
+            target.bindingAdapterPosition,
+            viewHolder.itemView,
+            target.itemView
+        )
         return true
     }
 

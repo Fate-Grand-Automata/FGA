@@ -15,7 +15,8 @@ import io.github.fate_grand_automata.util.IItemTouchHelperViewHolder
 
 class DragSortAdapter<T>(
     private val items: MutableList<T>,
-    private val viewConfigGrabber: (T) -> ItemViewConfig
+    private val viewConfigGrabber: (T) -> ItemViewConfig,
+    val updateBackgroundColorOnMove: Boolean = false,
 ) : RecyclerView.Adapter<DragSortAdapter.ViewHolder>(), IItemTouchHelperAdapter {
     class ItemViewConfig(
         @ColorInt val foregroundColor: Int,
@@ -59,11 +60,24 @@ class DragSortAdapter<T>(
         holder.textView.setTextColor(viewConfig.foregroundColor)
     }
 
-    override fun onItemMove(From: Int, To: Int) {
-        val temp = items[From]
-        items[From] = items[To]
-        items[To] = temp
+    override fun onItemMove(from: Int, to: Int, origin: View?, target: View?) {
+        val temp = items[from]
+        items[from] = items[to]
+        items[to] = temp
 
-        notifyItemMoved(From, To)
+        // Swap views since the items also swapped
+        val views = listOf(target, origin)
+        for ((index, pos) in listOf(from, to).withIndex()) {
+            val currentItem = items[pos]
+            val viewConfig = viewConfigGrabber(currentItem)
+            val view = views[index]
+            if (updateBackgroundColorOnMove && view != null) {
+                view.setBackgroundColor(viewConfig.backgroundColor)
+                val textView: TextView = view.findViewById(R.id.drag_sort_text)
+                textView.setTextColor(viewConfig.foregroundColor)
+            }
+        }
+
+        notifyItemMoved(from, to)
     }
 }
