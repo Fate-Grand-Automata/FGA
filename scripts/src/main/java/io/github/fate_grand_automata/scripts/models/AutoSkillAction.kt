@@ -27,6 +27,11 @@ sealed class AutoSkillAction {
 
     class TargetEnemy(val enemy: EnemyTarget) : AutoSkillAction()
 
+    class CommandSpell(
+        val skill: Skill.CommandSpell,
+        val target: ServantTarget?
+    ) : AutoSkillAction()
+
     class OrderChange(
         val starting: OrderChangeMember.Starting,
         val sub: OrderChangeMember.Sub
