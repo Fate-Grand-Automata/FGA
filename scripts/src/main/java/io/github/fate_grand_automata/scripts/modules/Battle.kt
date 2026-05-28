@@ -10,7 +10,9 @@ import io.github.fate_grand_automata.scripts.models.battle.BattleState
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.TimeSource
 
 @ScriptScope
 class Battle @Inject constructor(
@@ -86,6 +88,27 @@ class Battle @Inject constructor(
         card.clickCommandCards(cards, npUsage)
 
         0.5.seconds.wait()
+
+        checkForBetterFGONPSkip()
+    }
+
+    private fun checkForBetterFGONPSkip() {
+        if (!prefs.gameServer.betterFgo) return
+
+        val currentTime = TimeSource.Monotonic.markNow()
+        val targetTime = currentTime + 5.seconds
+
+        while (true) {
+            if (targetTime.hasPassedNow()) {
+                break
+            }
+            if (locations.npStartedRegion.isWhite()) {
+                0.6.seconds.wait()
+                locations.battle.battleSafeMiddleOfScreenClick.click(10)
+                break
+            }
+            330.milliseconds.wait()
+        }
     }
 
     private fun shouldShuffle(cards: List<ParsedCard>, npUsage: NPUsage): Boolean {
