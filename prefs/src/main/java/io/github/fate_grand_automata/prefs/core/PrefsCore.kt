@@ -32,6 +32,7 @@ class PrefsCore @Inject constructor(
 
     val battleConfigList = maker.stringSet("autoskill_list")
 
+    val storySkip = maker.bool("story_skip")
     val withdrawEnabled = maker.bool("withdraw_enabled")
 
     val stopOnCEGet = maker.bool("stop_on_ce_get")

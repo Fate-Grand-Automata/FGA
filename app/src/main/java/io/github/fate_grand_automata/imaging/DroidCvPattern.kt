@@ -154,7 +154,7 @@ class DroidCvPattern(
 
     override fun save(stream: OutputStream) {
         asBitmap().use { bmp ->
-            bmp.compress(Bitmap.CompressFormat.PNG, 90, stream)
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream)
         }
     }
 

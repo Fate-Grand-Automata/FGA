@@ -115,6 +115,7 @@ Order Change"</string>
     <string name="p_game_server_auto_detect">"自動偵測"</string>
     <string name="p_spam_summary">"選擇 Danger 敵人時施放選項需開啟自動選取敵人"</string>
     <string name="p_auto_choose_target">"自動選取敵人"</string>
+    <string name="p_story_skip">"跳過劇情"</string>
     <string name="p_enable_withdraw">"啟用撤退"</string>
     <string name="p_stop_on_ce_get">"禮裝獲得自動停止"</string>
     <string name="p_stop_on_first_clear_rewards">"首次通關自動停止"</string>
