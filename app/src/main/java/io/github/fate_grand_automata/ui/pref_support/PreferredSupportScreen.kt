@@ -8,18 +8,23 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardDefaults.cardElevation
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -71,6 +76,21 @@ private fun PreferredSupport(
     val prefServants by config.preferredServants.remember()
     val prefCEs by config.preferredCEs.remember()
 
+    // todo: remove this note later when the feature is working fine on all servers
+    var showStrengthenedNote by androidx.compose.runtime.remember { mutableStateOf(false) }
+    if (showStrengthenedNote) {
+        AlertDialog(
+            onDismissRequest = { showStrengthenedNote = false },
+            confirmButton = {
+                TextButton(onClick = { showStrengthenedNote = false }) {
+                    Text(stringResource(android.R.string.ok))
+                }
+            },
+//            title = { Text(stringResource(R.string.note)) },
+            text = { Text(stringResource(R.string.p_strengthened_skills_note)) }
+        )
+    }
+
     LazyColumn {
         item {
             Heading(stringResource(R.string.p_support_mode_preferred))
@@ -121,6 +141,34 @@ private fun PreferredSupport(
                                     config.skill1Max,
                                     config.skill2Max,
                                     config.skill3Max
+                                )
+                            )
+                        }
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text(stringResource(R.string.p_strengthened_skills))
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_info),
+                                    contentDescription = "Info",
+                                    modifier = Modifier
+                                        .padding(start = 8.dp)
+                                        .size(20.dp)
+                                        .clickable { showStrengthenedNote = true },
+                                    tint = MaterialTheme.colorScheme.secondary
+                                )
+                            }
+
+                            StrengthenedSkills(
+                                strengthenedSkills = listOf(
+                                    config.skill1Strengthened,
+                                    config.skill2Strengthened,
+                                    config.skill3Strengthened
                                 )
                             )
                         }
@@ -285,6 +333,39 @@ private fun MaxSkills(
                         .size(40.dp)
                 ) {
                     Text(skillText(max))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun StrengthenedSkills(
+    strengthenedSkills: List<Pref<Int>>
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        strengthenedSkills.forEachIndexed { index, pref ->
+            if (index != 0) {
+                Text("/", modifier = Modifier.padding(horizontal = 8.dp))
+            }
+
+            var strengthened by pref.remember()
+
+            Card(
+                elevation = cardElevation(5.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = if (strengthened > 0) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = if (strengthened > 0) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+//                    change to '(rankUp + 1) % 4' in future if there's 3 rank up quests on the same skill
+                    modifier = Modifier
+                        .clickable { strengthened = (strengthened + 1) % 3 }
+                        .size(40.dp)
+                ) {
+                    Text(strengthened.toString())
                 }
             }
         }

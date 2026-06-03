@@ -34,6 +34,10 @@ internal class SupportPreferences(
     override val skill2Max by prefs.skill2Max
     override val skill3Max by prefs.skill3Max
 
+    override val skill1Strengthened by prefs.skill1Strengthened
+    override val skill2Strengthened by prefs.skill2Strengthened
+    override val skill3Strengthened by prefs.skill3Strengthened
+
     override val grandServant by prefs.grandServant
     override val bondCEEffect by prefs.bondCEEffect
     override val requireBothNormalAndRewardMatch by prefs.requireBothNormalAndRewardMatch

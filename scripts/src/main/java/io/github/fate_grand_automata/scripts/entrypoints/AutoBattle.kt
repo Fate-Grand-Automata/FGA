@@ -74,6 +74,8 @@ class AutoBattle @Inject constructor(
         class CardPriorityParseError(val msg: String) : ExitReason()
         data object Paused : ExitReason()
         data object StopAfterThisRun : ExitReason()
+        // Inside sealed class ExitReason
+        class StrengthenedSkillEmpty(val skill: Int, val requirement: Int) : ExitReason()
     }
 
     internal class BattleExitException(val reason: ExitReason) : Exception(reason.cause)

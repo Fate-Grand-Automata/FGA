@@ -21,6 +21,10 @@ interface ISupportPreferences {
     val skill2Max: Boolean
     val skill3Max: Boolean
 
+    val skill1Strengthened: Int
+    val skill2Strengthened: Int
+    val skill3Strengthened: Int
+
     val grandServant: Boolean
     val bondCEEffect: BondCEEffectEnum
     val requireBothNormalAndRewardMatch: Boolean

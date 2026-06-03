@@ -5,6 +5,7 @@ import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.ScriptLog
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferences
+import io.github.fate_grand_automata.scripts.entrypoints.AutoBattle
 import io.github.lib_automata.Location
 import io.github.lib_automata.Pattern
 import io.github.lib_automata.Region
@@ -47,6 +48,17 @@ class ServantSelection @Inject constructor(
                 )
                 val skillCheckNeeded = needMaxedSkills.any { it }
                 !skillCheckNeeded || checkMaxedSkills(needMaxedSkills, whichSkillsAreMaxed(bounds.region))
+            }
+
+            .filter {
+                val needStrengthenedSkills = listOf(
+                    supportPrefs.skill1Strengthened.coerceIn(0..2),
+                    supportPrefs.skill2Strengthened.coerceIn(0..2),
+                    supportPrefs.skill3Strengthened.coerceIn(0..2)
+                )
+
+                val skillStrengthenedCheckNeeded = needStrengthenedSkills.any { it > 0}
+                !skillStrengthenedCheckNeeded || checkStrengthenedSkills(bounds.region, needStrengthenedSkills).all{ it }
             }
 
         return matched.isNotEmpty()
@@ -102,7 +114,7 @@ class ServantSelection @Inject constructor(
                 skillRegion.exists(images[Images.SkillTen], similarity = 0.68)
             }
     }
-
+    
     private fun checkMaxedSkills(expectedSkills: List<Boolean>, actualSkills: List<Boolean>): Boolean {
         val result = expectedSkills
             .zip(actualSkills) { expected, actual ->
@@ -117,5 +129,39 @@ class ServantSelection @Inject constructor(
         )
 
         return result.all { it }
+    }
+    
+    /**
+     * Check if the skill is strengthened(rank-up quest cleared)
+     * Currently restricted to level 2 (2 rank-up quests) for each skill, can modify in UI to allow more
+     */
+    private fun checkStrengthenedSkills(bounds: Region, needStrengthenedSkills: List<Int>): List<Boolean> {
+        val skillMargin = 90
+        val rankUpMargin = 18
+
+        /**
+        * When the servant portrait is found near the bottom of the screen
+        * return false to skip detection of 'Images.SkillUnstrengthened'
+        * to avoid false exception
+        */
+        if (bounds.y > 1000) return List(needStrengthenedSkills.size) { false }
+
+        return needStrengthenedSkills.mapIndexed { index, requirement ->
+            if (requirement <= 0) return@mapIndexed true
+
+            val strengthenedSkillLocation = Location(
+                bounds.x + 1650 + index * skillMargin,
+                bounds.y + 351 - (requirement - 1) * rankUpMargin
+            )
+            val strengthenedSkillRegion = locations.support.strengthenedSkillRegion.copy(x = strengthenedSkillLocation.x, y = strengthenedSkillLocation.y)
+            when{
+                strengthenedSkillRegion.exists(images[Images.SkillStrengthened], similarity = 0.68) -> true
+                strengthenedSkillRegion.exists(images[Images.SkillUnstrengthened], similarity = 0.68) -> false
+                else -> throw AutoBattle.BattleExitException(
+                    // 'Images.SkillUnstrengthened' not found, exit script and prompt user to check configuration
+                    AutoBattle.ExitReason.StrengthenedSkillEmpty(index + 1, requirement)
+                )
+            }
+        }
     }
 }
