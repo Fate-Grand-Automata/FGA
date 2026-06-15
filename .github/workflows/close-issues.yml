@@ -7,10 +7,10 @@ jobs:
     if: >-
           github.event.issue.user.id != 10654537 && github.event.issue.user.id != 12360257 &&
           join(github.event.issue.labels) == ''
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - name: Close Issue
-        uses: peter-evans/close-issue@v3
+        uses: peter-evans/close-issue@05dff7ca07116e5707cfb3a3cd4af7bb5e43524c
         with:
           comment: |
             It seems like you have not used one of the issue templates when creating this issue.
@@ -19,11 +19,11 @@ jobs:
             
             This action was performed automatically.
       - name: Lock Issue
-        uses: OSDKDev/lock-issues@v1.2
+        uses: OSDKDev/lock-issues@bc750a3e24b4ee73f3d4c445957dadf019e428de
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
       - name: Label Issue
-        uses: actions-ecosystem/action-add-labels@v1
+        uses: actions-ecosystem/action-add-labels@bd52874380e3909a1ac983768df6976535ece7f8
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: insufficient info

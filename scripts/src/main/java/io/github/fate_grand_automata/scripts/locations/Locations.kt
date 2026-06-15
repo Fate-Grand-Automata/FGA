@@ -1,14 +1,11 @@
 package io.github.fate_grand_automata.scripts.locations
 
-import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 import io.github.fate_grand_automata.scripts.models.BoostItem
 import io.github.lib_automata.Location
 import io.github.lib_automata.Region
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.math.min
-import kotlin.math.roundToInt
 
 @ScriptScope
 class Locations @Inject constructor(
@@ -20,10 +17,6 @@ class Locations @Inject constructor(
     val battle: BattleScreenLocations,
     val servant: ServantLevelLocations,
 ) : IScriptAreaTransforms by scriptAreaTransforms {
-
-    // 9th anniversary changes the repeat screen and extends to 15 parties
-    // don't forget to edit PartySelection.isSelectionExtended as well
-    private val afterAnni9 = gameServer is GameServer.Jp || gameServer is GameServer.Cn || gameServer is GameServer.En || gameServer is GameServer.Kr
 
     val continueRegion = Region(120, 1000, 800, 300).xFromCenter()
 
@@ -95,21 +88,11 @@ class Locations @Inject constructor(
         BoostItem.Enabled.BoostItem3 -> Location(1280, 1000)
     }.xFromCenter()
 
-    val selectedPartyRegion = if (afterAnni9)
-        Region(-370, 62, 740, 72).xFromCenter()
-    else
-        Region(-270, 62, 550, 72).xFromCenter()
+    val selectedPartyRegion = Region(-370, 62, 740, 72).xFromCenter()
     
     val partySelectionArray: List<Location> = (0..14).map {
-        val x = if (afterAnni9) {
-            // Party 8 is on the center
-            ((it - 7) * 50)
-        } else {
-            // Party indicators are center-aligned
-            // Party 11-15 are going to be on party 10 just in case
-            ((min(it, 9) - 4.5) * 50).roundToInt()
-        }
-        Location(x, 100).xFromCenter()
+        // Party 8 is on the center
+        Location(((it - 7) * 50), 100).xFromCenter()
     }
 
     val menuStorySkipRegion = Region(960, 20, 300, 120).xFromCenter()
