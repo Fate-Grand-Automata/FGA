@@ -98,7 +98,7 @@ class AutoBattle @Inject constructor(
             loop()
         } catch (e: BattleExitException) {
             throw ExitException(e.reason, makeExitState())
-        } catch (e: ScriptAbortException) {
+        } catch (_: ScriptAbortException) {
             throw ExitException(ExitReason.Abort, makeExitState())
         } catch (e: Exception) {
             val reason = ExitReason.Unexpected(e)
@@ -186,10 +186,10 @@ class AutoBattle @Inject constructor(
             { isInBondScreen() } to { handleBondScreen() },
             { isInResult() } to { result() },
             { isInDropsScreen() } to { dropScreen() },
-            { isInOrdealCallOutOfPodsScreen() } to { ordealCallOutOfPods() },
             { isInQuestRewardScreen() } to { questReward() },
             { isInSupport() } to { support() },
             { isRepeatScreen() } to { repeatQuest() },
+            { isInOrdealCallOutOfPodsScreen() } to { ordealCallOutOfPods() },
             { isInInterludeEndScreen() } to { locations.interludeCloseClick.click() },
             { withdraw.needsToWithdraw() } to { withdraw.withdraw() },
             { needsToStorySkip() } to { skipStory() },
@@ -339,11 +339,12 @@ class AutoBattle @Inject constructor(
         locations.resultMatRewardsRegion.click()
     }
 
-    private fun isInOrdealCallOutOfPodsScreen(): Boolean {
-        // Lock the Ordeal Call for JP server
-        if (prefs.gameServer !is GameServer.Jp) return false
+    private fun isInOrdealCallConfirmPodUseScreen(): Boolean {
+        return findImage(locations.ordealCallConfirmPodUseRegion, Images.StartQuest)
+    }
 
-        return images[Images.Close] in locations.closeLowerMiddleScreenRegion
+    private fun isInOrdealCallOutOfPodsScreen(): Boolean {
+        return findImage(locations.ordealCallOutOfPodsRegion, Images.Close)
     }
 
     private fun ordealCallOutOfPods() {
@@ -469,11 +470,11 @@ class AutoBattle @Inject constructor(
         isInBattle && locations.npStartedRegion.isBlack()
 
     /**
-     * Taps in the bottom right a few times to trigger NP skip in BetterFGO.
+     * Taps in the center a few times to trigger NP skip in BetterFGO.
      */
     private fun skipNp() {
         0.6.seconds.wait()
-        locations.battle.extraInfoWindowCloseClick.click(5)
+        locations.battle.battleSafeMiddleOfScreenClick.click(10)
     }
 
     private fun isRankUp() =
@@ -520,15 +521,18 @@ class AutoBattle @Inject constructor(
 
         var closeScreen = false
         var inventoryFull = false
+        var confirmPodUsage = false
 
         useSameSnapIn {
             closeScreen = isInOrdealCallOutOfPodsScreen()
             inventoryFull = isInventoryFull()
+            confirmPodUsage = isInOrdealCallConfirmPodUseScreen()
         }
 
         when {
             closeScreen -> throw BattleExitException(ExitReason.LimitRuns(state.runs))
             inventoryFull -> throw BattleExitException(ExitReason.InventoryFull)
+            confirmPodUsage -> locations.ordealCallConfirmPodUseRegion.center.click()
         }
 
         refill.refill()

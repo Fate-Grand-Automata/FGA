@@ -37,6 +37,7 @@ fun LazyListScope.battleGroup(
     item {
         prefs.storySkip.SwitchPreference(
             title = stringResource(R.string.p_story_skip),
+            summary = stringResource(R.string.p_story_skip_summary),
             icon = icon(Icons.Default.FastForward)
         )
     }

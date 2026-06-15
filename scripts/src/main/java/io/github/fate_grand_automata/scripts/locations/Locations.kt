@@ -1,14 +1,11 @@
 package io.github.fate_grand_automata.scripts.locations
 
-import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 import io.github.fate_grand_automata.scripts.models.BoostItem
 import io.github.lib_automata.Location
 import io.github.lib_automata.Region
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.math.min
-import kotlin.math.roundToInt
 
 @ScriptScope
 class Locations @Inject constructor(
@@ -21,10 +18,8 @@ class Locations @Inject constructor(
     val servant: ServantLevelLocations,
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
-    val continueRegion = when (gameServer) {
-        is GameServer.Jp -> Region(120, 1100, 800, 200).xFromCenter()
-        else -> Region(120, 1000, 800, 200).xFromCenter()
-    }
+    val continueRegion = Region(120, 1000, 800, 300).xFromCenter()
+
     val continueBoostClick = Location(-20, 1120).xFromCenter()
 
     val inventoryFullRegion = Region(-280, 860, 560, 190).xFromCenter()
@@ -34,6 +29,9 @@ class Locations @Inject constructor(
         // JP and TW Option
         else -> Region(-112, 1088, 219, 72).xFromCenter()
     }
+    val ordealCallConfirmPodUseRegion = Region(190, 1096, 420, 62).xFromCenter()
+
+    val ordealCallOutOfPodsRegion = Region(-112, 1088, 219, 72).xFromCenter()
 
     val ordealCallOutOfPodsClick = Location(-2, 1124).xFromCenter()
 
@@ -95,27 +93,11 @@ class Locations @Inject constructor(
         BoostItem.Enabled.BoostItem3 -> Location(1280, 1000)
     }.xFromCenter()
 
-    val selectedPartyRegion = when (gameServer) {
-        // JP have 15 max party slots
-        is GameServer.Jp -> Region(-370, 62, 740, 72).xFromCenter()
-        else -> Region(-270, 62, 550, 72).xFromCenter()
-    }
+    val selectedPartyRegion = Region(-370, 62, 740, 72).xFromCenter()
     
-    val partySelectionArray = when (gameServer) {
-        is GameServer.Jp -> (0..14).map {
-            // Party 8 is on the center
-            val x = ((it - 7) * 50)
-
-            Location(x, 100).xFromCenter()
-        }
-
-        else -> (0..14).map {
-            // Party indicators are center-aligned
-            // Party 11-15 are going to be on party 10 just in case
-            val x = ((min(it, 9) - 4.5) * 50).roundToInt()
-
-            Location(x, 100).xFromCenter()
-        }
+    val partySelectionArray: List<Location> = (0..14).map {
+        // Party 8 is on the center
+        Location(((it - 7) * 50), 100).xFromCenter()
     }
 
     val menuStorySkipRegion = Region(960, 20, 300, 120).xFromCenter()

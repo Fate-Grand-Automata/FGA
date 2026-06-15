@@ -82,6 +82,41 @@
         app:layout_constraintTop_toBottomOf="@id/support_img_ce_0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+    <include
+        android:id="@+id/support_img_ce_2"
+        layout="@layout/support_img_namer_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/support_img_ce_1" />
+
+    <include
+        android:id="@+id/support_img_ce_3"
+        layout="@layout/support_img_namer_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/support_img_ce_2" />
+
+    <include
+        android:id="@+id/support_img_ce_4"
+        layout="@layout/support_img_namer_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/support_img_ce_3" />
+
+    <include
+        android:id="@+id/support_img_ce_5"
+        layout="@layout/support_img_namer_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/support_img_ce_4" />
 
     <!-- Friend Header -->
     <TextView
@@ -92,7 +127,7 @@
         android:text="@string/support_img_namer_friend_names"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/support_img_ce_1" />
+        app:layout_constraintTop_toBottomOf="@id/support_img_ce_5" />
 
     <!-- Friend 0 -->
     <include
