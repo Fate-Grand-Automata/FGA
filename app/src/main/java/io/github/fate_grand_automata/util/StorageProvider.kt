@@ -25,7 +25,7 @@ import javax.inject.Singleton
 @Singleton
 class StorageProvider @Inject constructor(
     val prefsCore: PrefsCore,
-    @ApplicationContext val context: Context
+    @param:ApplicationContext val context: Context
 ) : IStorageProvider {
     fun DocumentFile?.getOrCreateDir(name: String) =
         this?.findFile(name)?.takeIf { it.isDirectory }
