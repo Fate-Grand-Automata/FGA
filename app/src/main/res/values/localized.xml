@@ -491,4 +491,53 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="state_off">Off</string>
     <string name="save">Save</string>
     <string name="reset">Reset</string>
+
+    <!-- Default Servant Names -->
+    <string name="servant_name_arcueid">Arcueid</string>
+    <string name="servant_name_artoria_caster">Artoria (Caster)</string>
+    <string name="servant_name_bb_dubai">BB Dubai</string>
+    <string name="servant_name_chloe_avenger">Chloe (Avenger)</string>
+    <string name="servant_name_ciel">Ciel</string>
+    <string name="servant_name_douman">Douman</string>
+    <string name="servant_name_flora">Flora</string>
+    <string name="servant_name_jalter">Jalter</string>
+    <string name="servant_name_koyanskaya">Koyanskaya</string>
+    <string name="servant_name_koyanskaya_of_the_darkness_foreigner">Koyanskaya of the Darkness (Foreigner)</string>
+    <string name="servant_name_lady_avalon">Lady Avalon</string>
+    <string name="servant_name_mash">Mash</string>
+    <string name="servant_name_merlin">Merlin</string>
+    <string name="servant_name_nero_bride">Nero (Bride)</string>
+    <string name="servant_name_oberon">Oberon</string>
+    <string name="servant_name_omii_san">Omii-san</string>
+    <string name="servant_name_sima_yi_reines">Sima Yi (Reines)</string>
+    <string name="servant_name_skadi">Skadi</string>
+    <string name="servant_name_skadi_ruler">Skadi (Ruler)</string>
+    <string name="servant_name_tamamo">Tamamo</string>
+    <string name="servant_name_tiamat_summer">Tiamat Summer</string>
+    <string name="servant_name_u_olga_marie">U-Olga Marie</string>
+    <string name="servant_name_waver">Waver</string>
+
+    <!-- Default CE Names -->
+    <string name="ce_name_aerial_drive">Aerial Drive</string>
+    <string name="ce_name_bella_lisa">Bella Lisa</string>
+    <string name="ce_name_black_grail">Black Grail</string>
+    <string name="ce_name_blessed_bride">Blessed Bride</string>
+    <string name="ce_name_chaldea_lunchtime">Chaldea Lunchtime</string>
+    <string name="ce_name_chaldea_morning">Chaldea Morning</string>
+    <string name="ce_name_chaldea_teatime">Chaldea Teatime</string>
+    <string name="ce_name_foreign_god">Foreign God</string>
+    <string name="ce_name_from_nff_with_love">From NFF with Love</string>
+    <string name="ce_name_golden_sumo">Golden Sumo</string>
+    <string name="ce_name_great_library_of_memories">Great Library of Memories</string>
+    <string name="ce_name_gudaguda_poster_girl">GudaGuda Poster Girl</string>
+    <string name="ce_name_holy_night_supper">Holy Night Supper</string>
+    <string name="ce_name_kaleidoscope">Kaleidoscope</string>
+    <string name="ce_name_marshal_of_the_sorcerors">Marshal of the Sorcerors</string>
+    <string name="ce_name_mona_lisa">Mona Lisa</string>
+    <string name="ce_name_needle_of_sincerity">Needle of Sincerity</string>
+    <string name="ce_name_painting_summer">Painting Summer</string>
+    <string name="ce_name_report_check">Report Check</string>
+    <string name="ce_name_secret_mission">Secret Mission</string>
+    <string name="ce_name_the_chaldean">The Chaldean</string>
+    <string name="ce_name_wings_of_manuscript">Wings of Manuscript</string>
 </resources>
