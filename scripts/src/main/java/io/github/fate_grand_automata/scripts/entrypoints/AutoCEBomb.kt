@@ -52,6 +52,10 @@ class AutoCEBomb @Inject constructor(
     class ExitException(val reason: ExitReason) : Exception()
 
     private fun findBaseCE(): Match {
+        // Scroll to top
+        Location(2040, 400).click()
+        2.seconds.wait()
+        
         for (img in imagesForSelectedRarity()) {
             val matches = locations.levelOneCERegion
                 .findAll(images[img])
