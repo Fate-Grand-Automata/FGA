@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -54,6 +55,8 @@ import io.github.fate_grand_automata.ui.prefs.PreferenceGroupHeader
 import io.github.fate_grand_automata.ui.prefs.SingleSelectChipPreference
 import io.github.fate_grand_automata.ui.prefs.SwitchPreference
 import io.github.fate_grand_automata.ui.prefs.remember
+import io.github.fate_grand_automata.util.SupportNameResources.getLocalizedCEName
+import io.github.fate_grand_automata.util.SupportNameResources.getLocalizedServantName
 import io.github.fate_grand_automata.util.stringRes
 import java.io.File
 
@@ -244,6 +247,8 @@ fun PreferredSummary(
     ces: Set<String>,
     friendNames: Set<String>
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .padding(vertical = 5.dp)
@@ -259,7 +264,7 @@ fun PreferredSummary(
             )
 
             val text = if (servants.isNotEmpty())
-                servants.joinToString()
+                servants.joinToString { getLocalizedServantName(context, it) }
             else stringResource(R.string.battle_config_support_any)
 
             Text(
@@ -298,7 +303,7 @@ fun PreferredSummary(
             )
 
             val text = if (ces.isNotEmpty())
-                ces.joinToString()
+                ces.joinToString { getLocalizedCEName(context, it) }
             else stringResource(R.string.battle_config_support_any)
 
             Text(

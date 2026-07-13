@@ -414,4 +414,52 @@
 
     <string name="p_battle_config_use_servant_priority">"サーヴァントの優先順位を設定する"</string>
 
+    <!-- Default Servant Names -->
+    <string name="servant_name_arcueid">アーキタイプ：アース</string>
+    <string name="servant_name_artoria_caster">アルトリア・キャスター(キャスター)</string>
+    <string name="servant_name_bb_dubai">"BBドバイ"</string>
+    <string name="servant_name_chloe_avenger">クロエ・フォン・アインツベルン(アヴェンジャー)</string>
+    <string name="servant_name_ciel">謎の代行者C.I.E.L</string>
+    <string name="servant_name_douman">蘆屋道満</string>
+    <string name="servant_name_flora">"フローラ"</string>
+    <string name="servant_name_jalter">ジャンヌ・ダルク〔オルタ〕</string>
+    <string name="servant_name_koyanskaya">光のコヤンスカヤ</string>
+    <string name="servant_name_koyanskaya_of_the_darkness_foreigner">闇のコヤンスカヤ</string>
+    <string name="servant_name_lady_avalon">"レディ・アヴァロン"</string>
+    <string name="servant_name_mash">マシュ・キリエライト</string>
+    <string name="servant_name_merlin">"マーリン"</string>
+    <string name="servant_name_nero_bride">ネロ・クラウディウス〔ブライド〕</string>
+    <string name="servant_name_oberon">"オベロン"</string>
+    <string name="servant_name_omii_san">蛇女房</string>
+    <string name="servant_name_sima_yi_reines">"司馬懿(ライネス)"</string>
+    <string name="servant_name_skadi">"スカサハ＝スカディ"</string>
+    <string name="servant_name_skadi_ruler">"スカサハ＝スカディ(ルーラー)"</string>
+    <string name="servant_name_tamamo">"玉藻の前"</string>
+    <string name="servant_name_tiamat_summer">"ティアマト(サマー)"</string>
+    <string name="servant_name_u_olga_marie">"U-オルガマリー"</string>
+    <string name="servant_name_waver">諸葛孔明〔エルメロイⅡ世〕</string>
+
+    <!-- Default CE Names -->
+    <string name="ce_name_aerial_drive">エアリアル・ドライブ</string>
+    <string name="ce_name_bella_lisa">"ベラ・リザ"</string>
+    <string name="ce_name_black_grail">"黒の聖杯"</string>
+    <string name="ce_name_blessed_bride">幸せな花嫁へ</string>
+    <string name="ce_name_chaldea_lunchtime">"カルデア・ランチタイム"</string>
+    <string name="ce_name_chaldea_morning">"カルデア・モーニング"</string>
+    <string name="ce_name_chaldea_teatime">"カルデア・ティータイム"</string>
+    <string name="ce_name_foreign_god">"異星の神"</string>
+    <string name="ce_name_from_nff_with_love">ＮＦＦから愛をこめて</string>
+    <string name="ce_name_golden_sumo">ゴールデン相撲～岩場所～</string>
+    <string name="ce_name_great_library_of_memories">記憶の大図書館</string>
+    <string name="ce_name_gudaguda_poster_girl">"ぐだぐだ看板娘"</string>
+    <string name="ce_name_holy_night_supper">"聖夜の晩餐"</string>
+    <string name="ce_name_kaleidoscope">"カレイドスコープ"</string>
+    <string name="ce_name_marshal_of_the_sorcerors">"魔道元帥"</string>
+    <string name="ce_name_mona_lisa">"モナ・リザ"</string>
+    <string name="ce_name_needle_of_sincerity">至誠の一針</string>
+    <string name="ce_name_painting_summer">ペインティング・サマー</string>
+    <string name="ce_name_report_check">"レポートチェック"</string>
+    <string name="ce_name_secret_mission">シークレット・ミッション</string>
+    <string name="ce_name_the_chaldean">カルデアの者</string>
+    <string name="ce_name_wings_of_manuscript">手稿の翼</string>
 </resources>

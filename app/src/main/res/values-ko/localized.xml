@@ -429,4 +429,8 @@
 
     <!-- NOTE: '황금 가마' is not official translation (from community) -->
     <string name="mat_golden_cauldron">"황금 가마"</string>
+
+    <!-- Default Servant Names -->
+
+    <!-- Default CE Names -->
 </resources>

@@ -36,6 +36,8 @@ import io.github.fate_grand_automata.ui.prefs.Preference
 import io.github.fate_grand_automata.ui.prefs.PreferenceGroupHeader
 import io.github.fate_grand_automata.ui.prefs.SwitchPreference
 import io.github.fate_grand_automata.ui.prefs.remember
+import io.github.fate_grand_automata.util.SupportNameResources.getLocalizedCEName
+import io.github.fate_grand_automata.util.SupportNameResources.getLocalizedServantName
 import io.github.fate_grand_automata.util.stringRes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -71,6 +73,8 @@ private fun PreferredSupport(
     val prefServants by config.preferredServants.remember()
     val prefCEs by config.preferredCEs.remember()
 
+    val context = LocalContext.current
+
     LazyColumn {
         item {
             Heading(stringResource(R.string.p_support_mode_preferred))
@@ -95,7 +99,9 @@ private fun PreferredSupport(
 
                     config.preferredServants.SupportSelectPreference(
                         title = stringResource(R.string.p_battle_config_support_pref_servants),
-                        entries = vm.servants
+                        entries = vm.servants.mapValues { (name, _) ->
+                            getLocalizedServantName(context, name)
+                        }
                     )
 
                     if (prefServants.isNotEmpty()) {
@@ -148,7 +154,9 @@ private fun PreferredSupport(
 
                     config.preferredCEs.SupportSelectPreference(
                         title = stringResource(R.string.p_battle_config_support_pref_ces),
-                        entries = vm.ces
+                        entries = vm.ces.mapValues { (_, displayName) ->
+                            getLocalizedCEName(context, displayName)
+                        }
                     )
 
                     if (prefCEs.isNotEmpty()) {
