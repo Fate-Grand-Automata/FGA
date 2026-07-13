@@ -1,6 +1,5 @@
 package io.github.fate_grand_automata.runner
 
-import android.annotation.SuppressLint
 import android.app.Service
 import android.content.ClipboardManager
 import android.content.Context
@@ -103,8 +102,6 @@ class ScriptManager @Inject constructor(
         }
     }
 
-    // TODO remove suppression when AutoGiftBox exit message is localized
-    @SuppressLint("StringFormatMatches")
     private fun onScriptExit(e: Exception) = scope.launch {
         uiStateHolder.uiState = ScriptRunnerUIState.Idle
         uiStateHolder.isPlayButtonEnabled = false
