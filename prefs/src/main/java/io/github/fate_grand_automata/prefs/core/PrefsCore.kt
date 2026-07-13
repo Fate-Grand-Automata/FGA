@@ -56,7 +56,7 @@ class PrefsCore @Inject constructor(
     val receiveEmbersWhenGiftBoxFull = maker.bool("receive_embers_when_gift_box_full")
 
     val supportSwipesPerUpdate = maker.int("support_swipes_per_update_x", 10)
-    val supportMaxUpdates = maker.int("support_max_updates_x", 5)
+    val supportMaxUpdates = maker.int("support_max_updates_x", 20)
 
     val minSimilarity = maker.int("min_similarity", 80)
     val mlbSimilarity = maker.int("mlb_similarity", 70)
