@@ -120,5 +120,10 @@ class BattleScreenLocations @Inject constructor(
     
     val servantDetailsFaceCardRegion = Region(-685, 410, 110, 60).xFromCenter()
 
+    val servantNpCardTypeRegion = when (gameServer) {
+        is GameServer.Jp, GameServer.Cn -> 410
+        else -> 330
+    }.let { y -> Region(-735, y + 350, 100, 50) }.xFromCenter()
+
     val battleSafeMiddleOfScreenClick = Location(0, 550).xFromCenter()
 }

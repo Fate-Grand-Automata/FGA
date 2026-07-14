@@ -3,14 +3,19 @@ package io.github.fate_grand_automata.scripts.modules
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.ScriptLog
+import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.OrderChangeMember
 import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.scripts.models.skills
+import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.lib_automata.Pattern
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.mapValues
 import kotlin.time.Duration.Companion.milliseconds
 
 @ScriptScope
@@ -57,11 +62,29 @@ class ServantTracker @Inject constructor(
 
     private val faceCardImages = mutableMapOf<TeamSlot, MutableList<Pattern>>()
 
+    /**
+     * NP card type handling
+     */
+    private val npCardImages = mutableMapOf<TeamSlot, MutableList<Pattern>>()
+    private val npSplashImages = mapOf(
+        CardTypeEnum.Buster to images[Images.NpBuster],
+        CardTypeEnum.Arts to images[Images.NpArts],
+        CardTypeEnum.Quick to images[Images.NpQuick],
+    )
+    val npCardTypes = mutableMapOf<TeamSlot, CardTypeEnum>()
+
+    fun getNpCardType(teamSlot: TeamSlot): CardTypeEnum {
+        return npCardTypes.getOrElse(teamSlot) { CardTypeEnum.Unknown }
+    }
+
+
     override fun close() {
         checkImages.values.forEach { it.close() }
         faceCardImages.values.flatten().forEach { it.close() }
+        npCardImages.values.flatten().forEach { it.close() }
         checkImages.clear()
     }
+
 
     private fun init(teamSlot: TeamSlot, slot: FieldSlot) {
         messages.log(
@@ -92,9 +115,30 @@ class ServantTracker @Inject constructor(
 
         if (supportSlot == null && isSupport) {
             supportSlot = teamSlot
-        } else if (!isSupport) {
-            // Don't useSameSnapIn here, since we open a dialog
-            initFaceCard(teamSlot, slot)
+        }
+
+        // We now always want to init the face card, so that we can check the npType
+        // Don't useSameSnapIn here, since we open a dialog
+        initFaceCard(teamSlot, slot)
+
+        // After initFaceCard, we need to check npType for servant here
+        if (npCardImages.contains(teamSlot)) {
+            val patternList = npCardImages[teamSlot]
+            val scores = npSplashImages
+                .mapValues {
+                    (_, image) -> patternList?.maxOf {
+                        pattern -> pattern.find(image, prefs.npCardTypeSimilarity)?.score ?: 0.0
+                    } ?: 0.0
+                }
+            // Get type by comparing the patterns we have with the splash arts
+            val type = scores
+                .filterValues { it > 0.0 }
+                .maxByOrNull { it.value }
+                ?.key
+
+            if (type != null) {
+                npCardTypes.put(teamSlot, type)
+            }
         }
     }
 
@@ -109,12 +153,15 @@ class ServantTracker @Inject constructor(
         250.milliseconds.wait()
 
         val image = locations.battle.servantDetailsFaceCardRegion.getPattern("Face $teamSlot")
+        val npImage = locations.battle.servantNpCardTypeRegion.getPattern("NP type $teamSlot")
 
         // Close dialog
         locations.battle.extraInfoWindowCloseClick.click()
 
         faceCardImages.getOrPut(teamSlot) { mutableListOf() }
             .add(image)
+        npCardImages.getOrPut(teamSlot) { mutableListOf() }
+            .add(npImage)
 
         250.milliseconds.wait()
     }
@@ -208,8 +255,12 @@ class ServantTracker @Inject constructor(
             }
         }
 
+        // Fallback for if the support servant is not found
+        val currentSupportSlot = supportSlot
+        val isSupportFound = if (currentSupportSlot != null) (result.getOrElse(currentSupportSlot) { emptySet() }).isNotEmpty() else false
+
         val ownedServants = faceCardImages
-            .filterKeys { it != supportSlot && it in deployed.values }
+            .filterKeys { (isSupportFound || it != supportSlot) && it in deployed.values }
         cardsRemaining
             .groupBy { card ->
                 // find the best matching Servant which isn't the support
@@ -241,6 +292,37 @@ class ServantTracker @Inject constructor(
         return result
     }
 
+    fun npCardsDetectedUsingServantFaces(): Set<CommandCard.NP> {
+        if (prefs.skipServantFaceCardCheck) {
+            return emptySet()
+        }
+
+        val npCards = CommandCard.NP.list.toSet()
+        val deployedServants = faceCardImages
+            .filterKeys { it in deployed.values }
+
+        val scores = npCards
+            .map { npCard ->
+                npCard to deployedServants
+                    .filterKeys { it.toFieldSlot() == npCard.toFieldSlot() }
+                    .mapValues { (_, images) ->
+                        images.maxOf { image ->
+                            locations.attack.servantNPMatchRegion(npCard)
+                                .find(image, 0.4)?.score ?: 0.0
+                        }
+                    }
+                    .values
+            }
+        val result = scores
+            .filter { (_, values) ->
+                values.filter { it > prefs.npSpamCardDetectionSimilarity }.maxByOrNull { it } != null
+            }
+            .map { it.first }
+            .toSet()
+
+        return result
+    }
+
     /**
      * Adds the 3rd Ascension Melusine image to the existing 1st/2nd Ascension
      * image so both are detected as the same Servant.
@@ -263,4 +345,11 @@ class ServantTracker @Inject constructor(
      */
     private fun isSupport(slot: FieldSlot) = !prefs.treatSupportLikeOwnServant &&
             images[Images.ServantCheckSupport] in locations.battle.servantChangeSupportCheckRegion(slot)
+
+    fun TeamSlot.toFieldSlot(): FieldSlot? {
+        return deployed
+            .entries
+            .firstOrNull { (_, teamSlot) -> teamSlot == this }
+            ?.key
+    }
 }
