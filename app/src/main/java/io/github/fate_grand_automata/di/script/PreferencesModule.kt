@@ -12,6 +12,7 @@ import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferences
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferencesCommon
 import io.github.lib_automata.dagger.ScriptScope
+import io.github.fate_grand_automata.scripts.models.CustomCardSelectionPerTurn
 
 @Module
 @InstallIn(ScriptComponent::class)
@@ -50,4 +51,10 @@ class PreferencesModule {
     @Provides
     fun provideServantPriority(battleConfig: IBattleConfig): ServantPriorityPerWave? =
         if (battleConfig.useServantPriority) battleConfig.servantPriority else null
+
+    @ScriptScope
+    @Provides
+    fun provideCustomCardSelection(battleConfig: IBattleConfig): CustomCardSelectionPerTurn =
+        battleConfig.customCardSelection
+
 }
