@@ -77,6 +77,7 @@ private fun AutoBattle.ExitReason.text(): String = when (this) {
     AutoBattle.ExitReason.FirstClearRewards -> stringResource(R.string.first_clear_rewards)
     AutoBattle.ExitReason.Paused -> stringResource(R.string.script_paused)
     AutoBattle.ExitReason.StopAfterThisRun -> stringResource(R.string.stop_after_this_run)
+    is AutoBattle.ExitReason.StrengthenedSkillEmpty -> stringResource(R.string.strengthened_skill_empty, skill, requirement)
 }
 
 @Composable
