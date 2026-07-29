@@ -11,7 +11,7 @@ class ServantLevelLocations @Inject constructor(
 
     val emberConfirmationDialogRegion = when (gameServer) {
         is GameServer.Jp -> Region(321, 1209, 160, 100).xFromCenter()
-        else -> Region(341, 1229, 120, 60).xFromCenter()
+        else -> Region(338, 1229, 130, 70).xFromCenter()
     }
 
     val emberConfirmationDialogLocation = when (isWide) {
