@@ -22,6 +22,18 @@ class PreferredSupportSelection @Inject constructor(
     private val ces = supportPrefs.preferredCEs
     private val friendNames = supportPrefs.friendNames
 
+    private data class ScrollBarState(
+        val topScrollbar = false
+        val movedSrollBar = false
+        val bottomScrollbar = false
+    ) {
+        fun resultWhenNoMatch(): SupportSelectionResult = when {
+            topScrollbar -> SupportSelectionResult.ScrollDown
+            movedSrollBar && !bottomScrollbar -> SupportSelectionResult.ScrollDown
+            else -> SupportSelectionResult.EarlyRefresh
+        }
+    }
+
     override fun select(): SupportSelectionResult {
         if (servants.isEmpty() && ces.isEmpty()) {
             throw AutoBattle.BattleExitException(AutoBattle.ExitReason.SupportSelectionPreferredNotSet)
@@ -41,24 +53,21 @@ class PreferredSupportSelection @Inject constructor(
                 matched.click()
                 SupportSelectionResult.Done
             } else {
-                var topScrollbar = false
-                var movedSrollBar = false
-                var bottomScrollbar = false
-                useSameSnapIn {
-                    topScrollbar = images[Images.SupportScrollBarTop] in locations.support.topScrollbarRegion
-                    if (!topScrollbar) {
-                        movedSrollBar = images[Images.SupportScrollBarMoved] in locations.support.topScrollbarRegion
-                        bottomScrollbar = images[Images.SupportScrollBarBottom] in
-                                locations.support.bottomScrollbarRegion
-                    }
-                }
-                when {
-                    topScrollbar -> SupportSelectionResult.ScrollDown
-                    movedSrollBar && !bottomScrollbar -> SupportSelectionResult.ScrollDown
-                    else -> SupportSelectionResult.EarlyRefresh
-                }
+                val scrollBarState = readScrollBarState()
+                scrollBarState.resultWhenNoMatch()
             }
         }
+    }
+
+    private fun readScrollBarState(): ScrollBarState {
+        val topScrollbar = images[Images.SupportScrollBarTop] in locations.support.topScrollbarRegion
+
+        if (topScrollbar) return ScrollBarState(topScrollbar = true)
+
+        return ScrollBarState(
+            movedSrollBar = images[Images.SupportScrollBarMoved] in locations.support.topScrollbarRegion,
+            bottomScrollbar = images[Images.SupportScrollBarBottom] in locations.support.bottomScrollbarRegion
+        )
     }
 
     private fun isMatch(bounds: SupportBounds): Region? {
