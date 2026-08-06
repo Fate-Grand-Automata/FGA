@@ -23,9 +23,9 @@ class PreferredSupportSelection @Inject constructor(
     private val friendNames = supportPrefs.friendNames
 
     private data class ScrollBarState(
-        val topScrollbar = false
-        val movedSrollBar = false
-        val bottomScrollbar = false
+        val topScrollbar: Boolean = false
+        val movedSrollBar: Boolean = false
+        val bottomScrollbar: Boolean = false
     ) {
         fun resultWhenNoMatch(): SupportSelectionResult = when {
             topScrollbar -> SupportSelectionResult.ScrollDown
