@@ -217,7 +217,7 @@ private fun BattleConfigContent(
                                         stringResource(R.string.p_spam_spam).uppercase(),
                                         style = MaterialTheme.typography.bodySmall,
                                         modifier = Modifier
-                                            .padding(16.dp, 5.dp)
+                                            .padding(8.dp, 5.dp)
                                     )
                                 }
 
@@ -228,6 +228,10 @@ private fun BattleConfigContent(
                                 VerticalDivider()
 
                                 PartySelection(config)
+
+                                VerticalDivider()
+
+                                RaidDelay(config=config)
                             }
 
                             HorizontalDivider()

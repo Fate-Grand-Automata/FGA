@@ -76,9 +76,9 @@ class DroidCvPattern(
     }
 
     private fun match(template: Pattern): Mat? {
-        val result = Mat()
         if (template is DroidCvPattern) {
             if (template.width <= width && template.height <= height) {
+                val result = Mat()
                 Imgproc.matchTemplate(
                     mat,
                     template.mat,
@@ -154,7 +154,7 @@ class DroidCvPattern(
 
     override fun save(stream: OutputStream) {
         asBitmap().use { bmp ->
-            bmp.compress(Bitmap.CompressFormat.PNG, 90, stream)
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream)
         }
     }
 

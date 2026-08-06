@@ -38,7 +38,14 @@ class SupportScreenLocations @Inject constructor(
         } else Location(94, 0)
 
     val listRegion = Region(-24, 332, 378, 1091) + supportOffset
-
+    val grandCeListRegion = Region(335, 332,342, 1091) + supportOffset
+    val bondCeRegion = Region(348, 192, 53, 55) + supportOffset
+    val grandCeLabelRegion = Region(335, 0,  60, 60) + supportOffset
+    val grandCeRegion1 = Region(346, 100, 320, 94) + supportOffset
+    val grandCeRegion2 = Region(346, 192, 320, 94) + supportOffset
+    val grandCeRegion3 = Region(346, 284, 320, 94) + supportOffset
+    val grandCeClipRegion = Region(354, -34, 284, 270) + supportOffset
+    val grandLimitBreakRegion = Region(611, 0, 40, 90) + supportOffset
     val friendRegion = Region(
         2140,
         listRegion.y,
@@ -48,7 +55,7 @@ class SupportScreenLocations @Inject constructor(
 
     val friendsRegion = Region(354, 332, 1210, 1091) + supportOffset
 
-    val maxAscendedRegion = Region(270, 0, 40, 120) + supportOffset
+    val maxAscendedRegion = Region(270, 0, 40, 170) + supportOffset
     val limitBreakRegion = Region(270, 0, 40, 90) + supportOffset
 
     val confirmSetupButtonRegion = Region(2006, 0, 370, 1440) + supportOffset

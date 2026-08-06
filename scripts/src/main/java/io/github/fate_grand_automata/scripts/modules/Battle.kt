@@ -69,6 +69,11 @@ class Battle @Inject constructor(
         prefs.waitBeforeTurn.wait()
 
         onTurnStarted()
+
+        if (battleConfig.addRaidTurnDelay){
+            battleConfig.raidTurnDelaySeconds.seconds.wait()
+        }
+
         servantTracker.beginTurn()
 
         val npUsage = autoSkill.execute(state.stage, state.turn)

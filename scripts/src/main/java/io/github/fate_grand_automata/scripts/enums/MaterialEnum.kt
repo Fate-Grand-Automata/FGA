@@ -64,6 +64,7 @@ enum class MaterialEnum {
     GoldenCauldron,
     MoonlightNucleus,
     HolyWaterOfDestiny,
+    ReliquaryOfDepartedSoul,
 
     MonumentSaber,
     MonumentArcher,

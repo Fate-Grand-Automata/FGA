@@ -1,11 +1,13 @@
 {
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    "helpers:pinGitHubActionDigests"
   ],
   "ignorePresets": [
     ":prHourlyLimit2"
   ],
   "timezone": "Europe/Berlin",
+  "semanticCommits": "disabled",
   "gradle": {
     "extends": [
       "schedule:monthly"
@@ -14,7 +16,6 @@
   },
   "github-actions": {
     "enabled": true,
-    "automerge": true,
     "groupName": "github-actions"
   },
   "packageRules": [
@@ -25,6 +26,19 @@
         "/^com.google.devtools.ksp/",
         "/^androidx.compose.compiler/"
       ]
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "addLabels": ["renovate::major"],
+      "prPriority": -1
+    },
+    {
+      "matchUpdateTypes": ["minor"],
+      "addLabels": ["renovate::minor"]
+    },
+    {
+      "matchUpdateTypes": ["patch"],
+      "addLabels": ["renovate::patch"]
     }
   ]
 }

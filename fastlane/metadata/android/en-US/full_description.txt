@@ -3,4 +3,4 @@ Don't give up on your life grinding FGO. Automate your farming battles with this
 This app uses an Android Accessibility Service to simulate touch screen inputs for the Fate/Grand Order app. Please only install the app if you're okay with that.
 
 Tutorial: https://www.youtube.com/watch?v=JOwupZ4W8AQ
-Discord: https://discord.gg/H99eUMYuH7
+Discord: https://tinyurl.com/2z2d6wuz

@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.util
 
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.GameAreaMode
+import io.github.fate_grand_automata.scripts.enums.BondCEEffectEnum
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
@@ -54,6 +55,13 @@ val SupportSelectionModeEnum.stringRes
         SupportSelectionModeEnum.First -> R.string.p_support_mode_first
         SupportSelectionModeEnum.Manual -> R.string.p_support_mode_manual
         SupportSelectionModeEnum.Preferred -> R.string.p_support_mode_preferred
+    }
+
+val BondCEEffectEnum.stringRes
+    get() = when (this) {
+        BondCEEffectEnum.Ignore -> R.string.bond_ce_effect_ignore
+        BondCEEffectEnum.Default -> R.string.bond_ce_effect_default
+        BondCEEffectEnum.NP -> R.string.bond_ce_effect_np
     }
 
 val ShuffleCardsEnum.stringRes
@@ -126,6 +134,7 @@ val MaterialEnum.stringRes: Int
         MaterialEnum.MoonlightNucleus -> R.string.mat_moonlight_nucleus
         MaterialEnum.DivineLens -> R.string.mat_divine_lens
         MaterialEnum.HolyWaterOfDestiny -> R.string.mat_holy_water_of_destiny
+        MaterialEnum.ReliquaryOfDepartedSoul -> R.string.mat_reliquary_of_departed_soul
 
         MaterialEnum.MonumentSaber -> R.string.mat_monument_saber
         MaterialEnum.MonumentArcher -> R.string.mat_monument_archer

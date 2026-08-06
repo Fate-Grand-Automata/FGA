@@ -185,4 +185,8 @@ class BattleConfigCore(
     val support = SupportPrefsCore(maker)
 
     val autoChooseTarget = maker.bool("auto_choose_target")
+
+    val addRaidTurnDelay = maker.bool("add_raid_delay")
+
+    val raidTurnDelaySeconds = maker.stringAsInt("raid_delay_seconds", 3)
 }

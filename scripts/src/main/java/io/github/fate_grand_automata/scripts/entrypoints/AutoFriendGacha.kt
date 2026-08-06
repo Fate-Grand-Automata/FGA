@@ -25,6 +25,8 @@ class AutoFriendGacha @Inject constructor(
     class ExitException(val reason: ExitReason) : Exception()
 
     private var count = 0
+    private var isInLoop = false
+    private var initialScreen = false
 
     private fun countNext() {
         if (prefs.shouldLimitFP && count >= prefs.limitFP) {
@@ -35,35 +37,66 @@ class AutoFriendGacha @Inject constructor(
     }
 
     override fun script(): Nothing {
-        val initialClickLocation: Location? = if (images[Images.FriendSummon] in locations.fp.initialSummonCheck) {
-            locations.fp.initialSummonClick
-        } else if (!isSummonButtonVisible()) {
-            locations.fp.first10SummonClick
-        } else null
-
-        initialClickLocation?.let {
-            it.click()
-            0.3.seconds.wait()
-            locations.fp.okClick.click()
-
-            countNext()
-        }
-
-        while (true) {
-            if (isInventoryFull()) {
+        val screens: Map<() -> Boolean, () -> Unit> = mapOf(
+            { isInventoryFull() } to {
                 throw ExitException(ExitReason.InventoryFull)
-            }
-
-            if (isSummonButtonVisible()) {
-                countNext()
-
-                locations.fp.continueSummonClick.click()
+            },
+            { isFirstSummon() } to {
+                // First 10x or 100x Summon
+                locations.fp.first10SummonClick.click()
                 0.3.seconds.wait()
                 locations.fp.okClick.click()
-                3.seconds.wait()
-            } else locations.fp.skipRapidClick.click(15)
+
+                initialScreen = true
+            },
+            { isDailyFree() } to {
+                // Daily Free Summon
+                locations.fp.initialSummonClick.click()
+                0.3.seconds.wait()
+                locations.fp.initialSummonContinueClick.click()
+
+                initialScreen = true
+            },
+            { isSummonButtonVisible() } to { rollFPAgain() }
+        )
+
+        while (true) {
+            val actor = useSameSnapIn {
+                screens
+                    .asSequence()
+                    .filter { (validator, _) -> validator() }
+                    .map { (_, actor) -> actor }
+                    .firstOrNull()
+            } ?: { locations.fp.skipRapidClick.click(15) }
+            actor.invoke()
+            0.5.seconds.wait()
         }
     }
 
+    private fun rollFPAgain() {
+        if (!isInLoop && initialScreen) {
+            countNext()
+            isInLoop = true
+        }
+        countNext()
+
+        locations.fp.continueSummonClick.click()
+        0.3.seconds.wait()
+        locations.fp.okClick.click()
+        3.seconds.wait()
+    }
+
     private fun isSummonButtonVisible() = findImage(locations.fp.continueSummonRegion, Images.FPSummonContinue)
+
+    private fun isFirstSummon(): Boolean {
+        if (isInLoop) return false
+
+        return images[Images.FriendSummon] in locations.fp.summonCheck
+    }
+
+    private fun isDailyFree(): Boolean {
+        if (isInLoop) return false
+
+        return images[Images.FriendSummon] in locations.fp.initialSummonCheck
+    }
 }

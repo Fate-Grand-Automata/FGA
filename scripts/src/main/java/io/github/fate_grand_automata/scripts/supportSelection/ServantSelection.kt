@@ -16,7 +16,8 @@ import javax.inject.Inject
 class ServantSelection @Inject constructor(
     api: IFgoAutomataApi,
     private val supportPrefs: ISupportPreferences,
-    private val starChecker: SupportSelectionStarChecker
+    private val starChecker: SupportSelectionStarChecker,
+    private val grandChecker: SupportSelectionGrandChecker
 ) : IFgoAutomataApi by api {
     fun check(servants: List<String>, bounds: SupportBounds): Boolean {
         // TODO: Only check the upper part (excluding CE)
@@ -34,6 +35,9 @@ class ServantSelection @Inject constructor(
             }
             .filter {
                 !supportPrefs.maxAscended || isMaxAscended(it.region)
+            }
+            .filter {
+                !supportPrefs.grandServant || isGrandServant(it.region)
             }
             .filter {
                 val needMaxedSkills = listOf(
@@ -70,6 +74,13 @@ class ServantSelection @Inject constructor(
             .copy(y = servant.y)
 
         return starChecker.isStarPresent(maxAscendedRegion)
+    }
+
+    private fun isGrandServant(servant: Region): Boolean {
+        val grandCeLabelRegion = locations.support.grandCeLabelRegion
+            .copy(y = servant.y - 98)
+
+        return grandChecker.isGrandPresent(grandCeLabelRegion)
     }
 
     private fun whichSkillsAreMaxed(bounds: Region): List<Boolean> {
