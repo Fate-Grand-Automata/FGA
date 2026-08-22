@@ -18,6 +18,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!--
+            Android 16 (targetSdk 36) ignores android:screenOrientation, resizeableActivity
+            and aspect-ratio restrictions on displays >= 600dp. This property opts out and
+            keeps SkillMakerActivity landscape-locked there.
+            TODO: this opt-out is ignored at targetSdk 37 - make Skill Maker work in
+            portrait / freely resized windows before bumping targetSdk again.
+        -->
+        <property
+            android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY"
+            android:value="true" />
+
         <activity
             android:name=".ui.skill_maker.SkillMakerActivity"
             android:label="Skill Maker"

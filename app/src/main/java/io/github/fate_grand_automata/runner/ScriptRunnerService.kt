@@ -58,6 +58,15 @@ class ScriptRunnerService: Service() {
 
     override fun onBind(intent: Intent?): IBinder? = null
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        // Never let the system re-create this service on its own after the process dies.
+        // The MediaProjection consent token lives in this process and cannot be recovered,
+        // so a restarted service can't do anything useful - and on Android 14+ it crashes
+        // outright, because startForeground() with the mediaProjection type throws a
+        // SecurityException once the android:project_media app-op is gone.
+        return START_NOT_STICKY
+    }
+
     override fun onCreate() {
         super.onCreate()
         instance = this
@@ -65,6 +74,8 @@ class ScriptRunnerService: Service() {
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
         controller.onScreenConfigChanged()
     }
 }

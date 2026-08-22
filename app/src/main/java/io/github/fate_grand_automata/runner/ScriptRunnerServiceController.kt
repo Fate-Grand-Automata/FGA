@@ -56,7 +56,18 @@ class ScriptRunnerServiceController @Inject constructor(
 
     fun onCreate() {
         Timber.i("Script runner service created")
-        notification.show(prefs.useRootForScreenshots)
+
+        // Only claim the mediaProjection FGS type while we actually hold consent for it,
+        // otherwise Android 14+ throws a SecurityException out of Service.onCreate().
+        val hasMediaProjectionToken = ScriptRunnerService.mediaProjectionToken != null
+
+        if (!notification.show(withMediaProjection = hasMediaProjectionToken)) {
+            // We're not allowed to be a foreground service, and the system kills us within
+            // 5s if we stay up without one. Go away quietly instead.
+            Timber.e("Stopping the service because it couldn't be promoted to the foreground")
+            service.stopSelf()
+            return
+        }
 
         screenOffReceiver.register(service) {
             Timber.v("SCREEN OFF")
@@ -74,8 +85,7 @@ class ScriptRunnerServiceController @Inject constructor(
             }
         }
 
-        val willAskForToken = prefs.wantsMediaProjectionToken
-                && ScriptRunnerService.mediaProjectionToken == null
+        val willAskForToken = prefs.wantsMediaProjectionToken && !hasMediaProjectionToken
 
         if (!willAskForToken) {
             if (shouldDisplayPlayButton()) {
@@ -117,6 +127,15 @@ class ScriptRunnerServiceController @Inject constructor(
     }
 
     fun onNewMediaProjectionToken() {
+        // We came up without a token, so the service is only running as specialUse. Android 14+
+        // wants the mediaProjection type active before getMediaProjection() is called, and now
+        // that consent has been granted we're allowed to add it.
+        if (!notification.show(withMediaProjection = true)) {
+            Timber.e("Stopping the service because the mediaProjection type was rejected")
+            service.stopSelf()
+            return
+        }
+
         screenshotServiceHolder.prepareScreenshotService()
 
         if (shouldDisplayPlayButton()) {
