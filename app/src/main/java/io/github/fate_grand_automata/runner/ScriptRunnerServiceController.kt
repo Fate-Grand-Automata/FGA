@@ -44,6 +44,8 @@ class ScriptRunnerServiceController @Inject constructor(
         Timber.i("Script runner service destroyed")
 
         scriptManager.stopScript()
+        // onScriptExit runs on `scope`, which is cancelled below, so free the OCR engine here
+        scriptManager.releaseOcrService()
         screenshotServiceHolder.close()
 
         imageLoader.clearImageCache()
