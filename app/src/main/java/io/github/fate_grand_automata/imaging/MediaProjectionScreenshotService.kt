@@ -1,7 +1,7 @@
 package io.github.fate_grand_automata.imaging
 
-import android.content.Context
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.PixelFormat
 import android.hardware.display.VirtualDisplay
 import android.media.ImageReader
@@ -34,12 +34,16 @@ class MediaProjectionScreenshotService(
 
     @SuppressLint("WrongConstant")
     private val imageReader = ImageReader.newInstance(imageSize.width, imageSize.height, PixelFormat.RGBA_8888, 2)
+    private var closed = false
+
+    private val mediaProjectionCallback = object : MediaProjection.Callback() {
+        override fun onStop() {
+            close()
+        }
+    }
+
     private val virtualDisplay: VirtualDisplay? = mediaProjection.apply {
-        this.registerCallback(object : MediaProjection.Callback() {
-            override fun onStop() {
-                close()
-            }
-        }, null)
+        this.registerCallback(mediaProjectionCallback, null)
     }.createVirtualDisplay(
         "ScreenCapture",
         imageSize.width, imageSize.height, screenDensity,
@@ -76,9 +80,14 @@ class MediaProjectionScreenshotService(
     }
 
     override fun close() {
-        if (virtualDisplay == null) {
+        // stop() below makes the projection call onStop(), which lands right back here. Unregistering
+        // first isn't enough on its own, because close() is also reached *from* onStop() when the
+        // user revokes the projection.
+        if (closed) {
             return
         }
+        closed = true
+
         bufferMat.release()
         grayscaleMat.release()
         grayscalePattern.close()
@@ -89,6 +98,7 @@ class MediaProjectionScreenshotService(
 
         imageReader.close()
 
+        mediaProjection.unregisterCallback(mediaProjectionCallback)
         mediaProjection.stop()
     }
 
