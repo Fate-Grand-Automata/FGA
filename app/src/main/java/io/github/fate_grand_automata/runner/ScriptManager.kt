@@ -365,9 +365,28 @@ class ScriptManager @Inject constructor(
         releaseOcrService()
         ocrService = hiltEntryPoint.ocrService()
 
-        val detectedMode = hiltEntryPoint.autoDetect().get()
-
         scope.launch {
+            /*
+             * Screen detection needs a screenshot, which can fail when the projection never
+             * delivered a frame. Don't let that take the whole app down.
+             */
+            val detectedMode = try {
+                hiltEntryPoint.autoDetect().get()
+            } catch (e: Exception) {
+                Timber.e(e, "Screen detection failed")
+
+                val msg = if (e is KnownException)
+                    e.reason.msg
+                else "${context.getString(R.string.unexpected_error)}: ${e.message}"
+
+                uiStateHolder.isPlayButtonEnabled = true
+                releaseOcrService()
+
+                messageBox.show(context.getString(R.string.unexpected_error), msg)
+
+                return@launch
+            }
+
             val resp = scriptPicker(context, detectedMode)
 
             uiStateHolder.isPlayButtonEnabled = true
