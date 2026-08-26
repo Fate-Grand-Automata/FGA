@@ -31,7 +31,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun CardPriorityView(
     items: SnapshotStateList<CardPriorityListItem>,
-    useServantPriority: Pref<Boolean>
+    useServantPriority: Pref<Boolean>,
+    useChainPriority: Pref<Boolean>
 ) {
     val pagerState = rememberPagerState(pageCount = {items.size},)
     val scope = rememberCoroutineScope()
@@ -50,6 +51,13 @@ fun CardPriorityView(
             val servantPriority by useServantPriority.remember()
             useServantPriority.SwitchPreference(
                 title = stringResource(R.string.p_battle_config_use_servant_priority),
+                modifier = Modifier
+                    .padding(bottom = 4.dp)
+            )
+
+            val chainPriority by useChainPriority.remember()
+            useChainPriority.SwitchPreference(
+                title = stringResource(R.string.p_battle_config_use_chain_priority),
                 modifier = Modifier
                     .padding(bottom = 16.dp)
             )
@@ -81,7 +89,8 @@ fun CardPriorityView(
                     }
 
                     items.getOrNull(it)?.Render(
-                        useServantPriority = servantPriority
+                        useServantPriority = servantPriority,
+                        useChainPriority = chainPriority
                     )
                 }
             }

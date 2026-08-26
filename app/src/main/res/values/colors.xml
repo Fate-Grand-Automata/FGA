@@ -2,6 +2,8 @@
 <resources>
     <color name="colorPrimaryDark">#1B3147</color>
     <color name="colorAccent">#3498db</color>
+    <color name="colorDisabledBackground">#efefef</color>
+    <color name="colorDisabledText">#909090</color>
 
     <color name="colorEnemyTarget">#2e7d32</color>
     <color name="colorMasterSkill">#006064</color>
@@ -21,6 +23,8 @@
     <color name="colorQuickWeak">#006755</color>
     <color name="colorQuick">#2e7d32</color>
     <color name="colorQuickResist">#7cb342</color>
+
+    <color name="colorAvoid">#808080</color>
 
     <color name="system_ui_scrim_light">#B3FFFFFF</color> <!-- 70% white -->
     <color name="system_ui_scrim_dark">#30000000</color> <!-- 19% black -->

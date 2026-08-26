@@ -21,6 +21,9 @@ internal class BattleConfig(
     override val servantPriority by prefs.servantPriority
     override val useServantPriority by prefs.useServantPriority
 
+    override val chainPriority by prefs.chainPriority
+    override val useChainPriority by prefs.useChainPriority
+
     override val party by prefs.party
     override val materials by prefs.materials
 
