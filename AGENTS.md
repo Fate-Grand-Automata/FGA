@@ -19,12 +19,26 @@ Fate/Grand Automata (FGA) — an Android app that automates farming in the game 
 ```
 
 - Everything builds on **JDK 21**: the root `subprojects` block pins a Java toolchain of 21 for all modules, so it doesn't matter which JVM launches Gradle (Studio's JBR, a system JDK, CI's temurin 21).
-- **Emitted bytecode stays at Java 11** — `sourceCompatibility`/`targetCompatibility` per module plus `jvmTarget` in the root `subprojects` block. The toolchain and the bytecode target are separate knobs; raising the latter means checking D8 desugaring against minSdk 24.
+- **Emitted bytecode stays at Java 11** in every module. For `libautomata`/`scripts` that comes from `jvmTarget` in the root `subprojects` block; for `app`/`prefs` AGP derives it from their `compileOptions`. The toolchain and the bytecode target are separate knobs; raising the latter means checking D8 desugaring against minSdk 24.
+- **AGP 9 compiles Kotlin itself.** `app` and `prefs` must *not* apply `org.jetbrains.kotlin.android` — AGP 9 rejects it outright. Their Kotlin output lands in `build/intermediates/built_in_kotlinc/`, not `build/tmp/kotlin-classes/`, and the root block's `tasks.withType<KotlinCompile>` no longer reaches them: per-module compiler settings belong in that module's `android { kotlin { compilerOptions { } } }`.
+- `compileSdk` is **37** while `targetSdk` stays **36** — recent androidx libraries force the compile level, but nothing opts into new runtime behavior. Keep the two decoupled; bumping `targetSdk` is a separate, user-visible decision.
 - Android Studio periodically offers to generate `gradle/gradle-daemon-jvm.properties` (`updateDaemonJvm`). Don't accept it — the toolchain above is the pin, and that file instead forces a ~525 MB JBR download that drifts from the CI JDK.
 - Dependencies live in `gradle/libs.versions.toml` — always add/bump there, never inline coordinates.
 - `versionCode`/`versionName` come from the `FGA_VERSION_CODE`/`FGA_VERSION_NAME` env vars (default 1 / "0.1.0"). When installing a debug build over a store install, set `FGA_VERSION_CODE` to at least the installed version — Android refuses downgrades.
 - `release` builds need `app/fgautomata.keystore` (GPG-decrypted in CI) and `KEYSTORE_PASS`. Release/Play Store deploys go through `fastlane` (`fastlane/Fastfile`, lanes `deploy` and `download_apk`) and are CI-only.
 - Build types: `debug`, `release`, and `ci` (`initWith(release)`, debug-signed, ARM-only ABIs). The `ci` type must exist in every Android module (`app`, `prefs`).
+
+## Bumping dependencies
+
+Renovate opens one PR per bump, but the Android ones are interlocked, so a `renovate::minor` label can hide an AGP migration. Constraints found while collecting the 2026-08 batch:
+
+- Gradle **>= 9.6** requires AGP 9 — 9.6 removed `InternalProblems`, which AGP 8.x used.
+- Hilt **>= 2.59** refuses AGP < 9, and Hilt <= 2.58 cannot read Kotlin 2.4 metadata. Hilt and Kotlin therefore have to move together.
+- `core-ktx` 1.19, `lifecycle` 2.11 and `hilt-navigation-compose` 1.4 require **AGP 9.1 + compileSdk 37**.
+- Coil 3.5 pulls `kotlin-stdlib` 2.4, which drags the Hilt/Kotlin constraint above in with it.
+- AGP 8.13.2 is the last 8.x, so none of the above can be satisfied by staying on AGP 8.
+
+When a bump fails, read the `checkAarMetadata` output first — it names the required AGP version and compileSdk directly, which is much faster than bisecting versions. Dependabot PRs here only touch `Gemfile.lock` (fastlane) and are often already behind `master`; check before applying one.
 
 ## Module layout and dependency direction
 
@@ -73,7 +87,7 @@ Mix in `IFgoAutomataApi` (delegating to an injected `FgoAutomataApi`) to get `pr
 
 `app/src/main/assets/{En,Jp,Cn,Tw,Kr}/` hold per-server template images, named by `Images` enum entries (`scripts/.../Images.kt`). `ImageLoader` looks up the current server's folder and **falls back to `En`** when the file is absent, so only add a server-specific copy when the art actually differs. `IFgoAutomataApi.findImage` additionally tries the `En` image on JP to support TranslateFGO. `assets/Support/` holds user-provided servant/CE images; `assets/tessdata/` the OCR data.
 
-Localization is done externally via POEditor — edit `app/src/main/res/values/strings.xml` (English source) only; the translated `values-*` folders are synced from there.
+Localization is done externally via POEditor — edit `app/src/main/res/values/strings.xml` (English source) only; the translated `values-*` folders are synced from there. A consequence: `lint` reports ~73 `MissingTranslation` **errors** on `app`. That is the expected steady state, not a regression — don't try to fix them in-repo.
 
 ## Repo conventions
 
