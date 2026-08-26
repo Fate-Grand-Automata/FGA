@@ -1,6 +1,5 @@
 plugins {
     id("com.android.application")
-    id("kotlin-android")
     id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
     id("com.google.devtools.ksp")
@@ -8,7 +7,7 @@ plugins {
 }
 
 android {
-    compileSdk = 36
+    compileSdk = 37
     ndkVersion = "21.3.6528147"
 
     compileOptions {
@@ -23,8 +22,6 @@ android {
 
     kotlin {
         compilerOptions {
-            optIn.add("androidx.compose.material.ExperimentalMaterialApi")
-            optIn.add("androidx.compose.material.ExperimentalMaterialApi")
             optIn.add("androidx.compose.material3.ExperimentalMaterial3Api")
             optIn.add("androidx.compose.foundation.ExperimentalFoundationApi")
             optIn.add("androidx.compose.animation.ExperimentalAnimationApi")
@@ -135,6 +132,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.lifecycle.viewmodel.compose)
 
 
 
