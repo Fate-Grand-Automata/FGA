@@ -55,7 +55,7 @@ jobs:
 
       - uses: ruby/setup-ruby@d45b1a4e94b71acab930e56e79c6aa188764e7f9
         with:
-          ruby-version: '4.0.5'
+          ruby-version: '4.0.6'
           bundler-cache: true
 
       - name: Deploy to Play Store
@@ -91,7 +91,7 @@ jobs:
         run: zip FGA-apk-${VERSION_CODE}.zip *.apk
       
       - name: Create release
-        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
+        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
