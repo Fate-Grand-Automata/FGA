@@ -27,7 +27,7 @@ activity_version = "1.13.0"
 mockk_version = "1.14.11"
 
 opencv_version = "4.14.0"
-navigation_compose_version = "2.9.8"
+navigation_compose_version = "2.10.0"
 
 recyclerview_version = "1.4.0"
 tesseract4android_version = "4.9.0"
