@@ -1,3 +1,6 @@
+import org.gradle.api.attributes.java.TargetJvmVersion
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("java-library")
     id("kotlin")
@@ -29,4 +32,28 @@ java {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+// Unit tests run on the Gradle toolchain JVM (21) and never reach Android, so they may target a
+// newer bytecode level than the library itself, which stays at 11 for `app`. JUnit >= 6 ships
+// Java 17 bytecode, and Gradle's variant resolution rejects it against a Java 11 test compilation.
+tasks.compileTestKotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
+    }
+}
+
+// Kotlin refuses to compile when the paired Java task disagrees, even with no Java test sources.
+tasks.compileTestJava {
+    sourceCompatibility = JavaVersion.VERSION_17.toString()
+    targetCompatibility = JavaVersion.VERSION_17.toString()
+    options.release.set(17)
+}
+
+listOf(configurations.testCompileClasspath, configurations.testRuntimeClasspath).forEach { config ->
+    config.configure {
+        attributes {
+            attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, 17)
+        }
+    }
 }
