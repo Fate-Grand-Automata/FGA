@@ -77,7 +77,7 @@ Localization is done externally via POEditor — edit `app/src/main/res/values/s
 
 ## Repo conventions
 
-- Kotlin official code style; `-opt-in=kotlin.time.ExperimentalTime` is on for all modules, so `kotlin.time.Duration` is used everywhere for waits.
+- Kotlin official code style; `kotlin.time.Duration` is used everywhere for waits.
 - Hilt + KSP for DI; Compose (BOM-managed) with several `ExperimentalX` opt-ins already enabled in `app/build.gradle.kts`.
 - `wiki/` is the source of the GitHub wiki (published by `.github/workflows/publish-wiki.yml`) — user-facing docs go there, not in the README.
 - Renovate manages dependency bumps (Gradle monthly, grouped Kotlin/KSP).
