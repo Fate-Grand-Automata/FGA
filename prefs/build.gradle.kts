@@ -1,11 +1,10 @@
 plugins {
     id("com.android.library")
-    id("kotlin-android")
     id("com.google.devtools.ksp")
 }
 
 android {
-    compileSdk = 35
+    compileSdk = 37
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

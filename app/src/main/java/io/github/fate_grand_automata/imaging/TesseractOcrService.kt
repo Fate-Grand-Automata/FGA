@@ -17,27 +17,53 @@ import javax.inject.Inject
 class TesseractOcrService @Inject constructor(
     @ApplicationContext val context: Context
 ) : OcrService {
-    private val tessApi = TessBaseAPI()
+    private val lock = Any()
 
-    init {
-        extractTesseractTrainingData()
-        tessApi.init(context.filesDir.absolutePath, "eng")
-    }
+    /**
+     * Only created on the first [detectText] call.
+     */
+    private var tessApi: TessBaseAPI? = null
+
+    private fun api(): TessBaseAPI =
+        tessApi ?: TessBaseAPI().also { api ->
+            try {
+                extractTesseractTrainingData()
+                api.init(context.filesDir.absolutePath, "eng")
+            } catch (e: Throwable) {
+                api.recycle()
+                throw e
+            }
+
+            tessApi = api
+        }
 
     override fun detectText(pattern: Pattern): String {
-        synchronized(tessApi) {
+        synchronized(lock) {
+            val api = api()
+
             (pattern as DroidCvPattern).asBitmap().use { bmp ->
-                tessApi.setImage(bmp)
-                tessApi.getHOCRText(0)
-                val text = tessApi.utF8Text
-                tessApi.clear()
+                api.setImage(bmp)
+                api.getHOCRText(0)
+                val text = api.utF8Text
+                api.clear()
                 return text
             }
         }
     }
 
+    /**
+     * Releases the native Tesseract context. Idempotent, and a no-op if OCR was never used.
+     */
+    override fun close() {
+        synchronized(lock) {
+            tessApi?.recycle()
+            tessApi = null
+        }
+    }
+
     protected fun finalize() {
-        tessApi.recycle()
+        // Safety net for any path that doesn't reach close()
+        close()
     }
 
     private fun extractTesseractTrainingData() {

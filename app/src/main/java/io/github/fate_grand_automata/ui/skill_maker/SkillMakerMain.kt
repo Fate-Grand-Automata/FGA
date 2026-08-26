@@ -183,7 +183,7 @@ fun ColumnScope.SkillButtons(
                 skill = skill,
                 color = color,
                 onClick = { onSkill(skill) },
-                onDoubleClick = { onSkillNoTarget(skill) }
+                onLongClick = { onSkillNoTarget(skill) }
             )
         }
     }
