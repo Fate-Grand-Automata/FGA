@@ -11,6 +11,7 @@ on:
       - 'LICENSE'
       - 'custom-game-area/**'
       - 'wiki/**'
+      - 'AGENTS.md'
   workflow_dispatch:
 
 concurrency:
