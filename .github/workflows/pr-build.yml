@@ -5,13 +5,17 @@ on:
     paths-ignore:
       - '.idea/**'
       - '.github/ISSUE_TEMPLATE/**'
+      - '.github/instructions/**'
+      - '.github/copilot-instructions.md'
       - '.gitattributes'
       - '.gitignore'
       - '*.md'
       - 'LICENSE'
       - 'custom-game-area/**'
       - 'wiki/**'
-      - 'AGENTS.md'
+      - 'docs/**'
+      - '.claude/**'
+      - '**/AGENTS.md'
   workflow_dispatch:
 
 concurrency:

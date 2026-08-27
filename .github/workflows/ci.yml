@@ -15,7 +15,9 @@ on:
       - 'custom-game-area/**'
       - 'FUNDING.yml'
       - 'wiki/**'
-      - 'AGENTS.md'
+      - 'docs/**'
+      - '.claude/**'
+      - '**/AGENTS.md'
   workflow_dispatch:
 
 concurrency:
