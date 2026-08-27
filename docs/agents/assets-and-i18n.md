@@ -14,3 +14,19 @@ string — add and edit them there, in the source tree. `values/strings.xml` is 
 The translated `values-*/localized.xml` files are synced from POEditor, so translations are
 normally *not* edited in-repo; touch them only as a deliberate exception. The
 `MissingTranslation` lint errors that follow are the expected steady state.
+
+## The POEditor sync
+
+POEditor exchanges strings with the repo through the dedicated **`translations` branch** —
+never with `master` directly. Only the GitHub user **reconman** can trigger an import or an
+export from the POEditor website.
+
+Both directions follow the same rules:
+
+1. Bring `translations` up to date with `master` first, so POEditor sees the current source
+   strings and the export cannot revert unrelated changes.
+2. Trigger the import (source strings from the repo into POEditor) or the export
+   (translations from POEditor back into the repo) on the POEditor website.
+3. **Review every export for lost translations before merging** — the export is lossy in
+   practice. Pay particular attention to `<string-array>` entries, which are the most
+   frequent casualty.
