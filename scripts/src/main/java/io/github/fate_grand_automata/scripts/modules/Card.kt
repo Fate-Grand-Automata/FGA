@@ -4,6 +4,8 @@ import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.ScriptLog
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
+import io.github.fate_grand_automata.scripts.models.CustomCardSelection
+import io.github.fate_grand_automata.scripts.models.CustomCardSelectionPerTurn
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
@@ -23,7 +25,8 @@ class Card @Inject constructor(
     private val parser: CardParser,
     private val priority: FaceCardPriority,
     private val braveChains: ApplyBraveChains,
-    private val battleConfig: IBattleConfig
+    private val battleConfig: IBattleConfig,
+    private val selection: ApplyCustomCardSelection
 ) : IFgoAutomataApi by api {
 
     fun readCommandCards(): List<ParsedCard> = useSameSnapIn {
@@ -47,6 +50,9 @@ class Card @Inject constructor(
         cards: List<ParsedCard>,
         npUsage: NPUsage
     ): List<CommandCard.Face> {
+        val customSelected = selection.pick(cards, state.currentTurn)?.map { it.card }
+        if (customSelected != null) return customSelected // Overrides priority order
+
         val cardsOrderedByPriority = priority.sort(cards, state.stage)
 
         fun <T> List<T>.inCurrentWave(default: T) =

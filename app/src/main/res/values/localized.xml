@@ -491,4 +491,8 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="state_off">Off</string>
     <string name="save">Save</string>
     <string name="reset">Reset</string>
+
+    <string name="p_custom_card_selection">Custom Card Selection</string>
+    <string name="p_custom_card_selection_dialog_message">Define specific cards to use for each turn of the battle.\n\nIf the cards selected are present in available cards, the script will click them in the exact order as defined.\n\nIf even one of your required cards is missing from the hand, the script will ignore the custom selection and fall back to Card Priority settings.\n\nIf selected cards are less than 3, more cards would be picked from rest automatically.</string>
+    <string name="p_custom_card_selection_card_picker_title">Select Command Card</string>
 </resources>

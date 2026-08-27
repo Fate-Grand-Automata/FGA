@@ -14,6 +14,7 @@ import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantSpamConfig
+import io.github.fate_grand_automata.scripts.models.CustomCardSelectionPerTurn
 
 class BattleConfigCore(
     val id: String,
@@ -189,4 +190,16 @@ class BattleConfigCore(
     val addRaidTurnDelay = maker.bool("add_raid_delay")
 
     val raidTurnDelaySeconds = maker.stringAsInt("raid_delay_seconds", 3)
+
+    val customCardSelection = maker.serialized(
+        "custom_card_selection",
+        serializer = object : Serializer<CustomCardSelectionPerTurn> {
+            override fun deserialize(serialized: String) =
+                CustomCardSelectionPerTurn.of(serialized)
+
+            override fun serialize(value: CustomCardSelectionPerTurn) =
+                value.toString()
+        },
+        default = CustomCardSelectionPerTurn.empty
+    )
 }

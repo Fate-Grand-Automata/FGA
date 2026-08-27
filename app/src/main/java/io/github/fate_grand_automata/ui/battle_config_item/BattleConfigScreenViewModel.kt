@@ -29,6 +29,10 @@ class BattleConfigScreenViewModel @Inject constructor(
         battleConfigCore.cardPriority
             .asFlow()
 
+    val customCardSelection =
+        battleConfigCore.customCardSelection
+            .asFlow()
+
     val skillCommand =
         battleConfigCore.skillCommand
             .asFlow()

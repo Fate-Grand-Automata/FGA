@@ -15,6 +15,7 @@ internal class BattleConfig(
     override var skillCommand by prefs.skillCommand
 
     override var cardPriority by prefs.cardPriority
+
     override val rearrangeCards by prefs.rearrangeCards
     override val braveChains by prefs.braveChains
 
@@ -47,6 +48,8 @@ internal class BattleConfig(
     override val raidTurnDelaySeconds by prefs.raidTurnDelaySeconds
 
     override var spam by prefs.spam
+
+    override val customCardSelection by prefs.customCardSelection
 
     override fun export(): Map<String, *> = prefs.export()
 

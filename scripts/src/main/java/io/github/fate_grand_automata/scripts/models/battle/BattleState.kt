@@ -69,6 +69,7 @@ class BattleState @Inject constructor() {
 
     val stage get() = runState.stage
     val turn get() = runState.turn
+    val currentTurn get() = runState.totalTurns
 
     fun nextTurn() = runState.nextTurn()
     fun nextStage() = runState.nextStage()

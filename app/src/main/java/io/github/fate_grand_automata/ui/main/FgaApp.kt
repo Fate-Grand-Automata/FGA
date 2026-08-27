@@ -19,6 +19,7 @@ import io.github.fate_grand_automata.ui.battle_config_item.BattleConfigDestinati
 import io.github.fate_grand_automata.ui.battle_config_item.BattleConfigScreen
 import io.github.fate_grand_automata.ui.battle_config_list.BattleConfigListScreen
 import io.github.fate_grand_automata.ui.card_priority.CardPriorityScreen
+import io.github.fate_grand_automata.ui.custom_card_selection.CustomCardSelectionScreen
 import io.github.fate_grand_automata.ui.fine_tune.FineTuneScreen
 import io.github.fate_grand_automata.ui.more.MoreOptionsScreen
 import io.github.fate_grand_automata.ui.onboarding.OnboardingScreen
@@ -144,6 +145,7 @@ fun FgaApp(
                         when (it) {
                             BattleConfigDestination.Back -> navController.popBackStack()
                             BattleConfigDestination.CardPriority -> navigate(NavConstants.cardPriority, id)
+                            BattleConfigDestination.CustomCardSelection -> navigate(NavConstants.customCardSelection, id)
                             is BattleConfigDestination.Other -> {
                                 navigate(NavConstants.battleConfigItem, it.id) {
                                     popUpTo(NavConstants.battleConfigs)
@@ -166,6 +168,11 @@ fun FgaApp(
             }
             battleConfigComposable(NavConstants.cardPriority) { _, _ ->
                 CardPriorityScreen(
+                    vm = hiltViewModel()
+                )
+            }
+            battleConfigComposable(NavConstants.customCardSelection) { _, _ ->
+                CustomCardSelectionScreen(
                     vm = hiltViewModel()
                 )
             }
@@ -192,6 +199,7 @@ object NavConstants {
     const val moreOptions = "more"
     const val fineTune = "fineTune"
     const val cardPriority = "cardPriority"
+    const val customCardSelection = "customCardSelection"
     const val preferredSupport = "preferredSupport"
     const val spam = "spam"
     const val onboarding = "onboarding"
