@@ -154,7 +154,7 @@
 點選按鈕後，請選擇 FGA 並將設定調整為「不進行最佳化」"</string>
 
     <!-- Fuzzy -->
-    <string name="p_battery_optimization_dontkillmyapp">"您可能需要調整更多對於您裝置的效能最佳化選項。請參考 dontkillmyapp.com"</string>
+    <string name="p_battery_optimization_dontkillmyapp">"您可能需要調整更多對於您裝置的效能最佳化選項。請參考 %s"</string>
     <string name="p_battle_config">"周回腳本"</string>
     <string name="p_battle_config_card_priority">"偏好指令卡"</string>
     <string name="p_battle_config_cmd">"技能順序"</string>
@@ -169,6 +169,7 @@
     <string name="p_battle_config_support_friend_name_hint">"請使用「支援圖片截取器」腳本加入好友名稱的圖片"</string>
     <string name="p_battle_config_support_friend_names">"好友名稱"</string>
     <string name="p_battle_config_support_friends_only">"只選擇好友從者"</string>
+    <string name="p_battle_config_support_grand_servant">"冠位從者"</string>
     <string name="p_battle_config_support_max_ascended">"最終再臨"</string>
     <string name="p_battle_config_support_mlb">"滿破禮裝"</string>
     <string name="p_battle_config_support_pref_ces">"偏好禮裝"</string>
@@ -275,6 +276,7 @@
     <string name="p_stop_on_ce_get_summary">"首次通關及絆禮裝獲得時自動停止腳本"</string>
     <string name="p_stop_on_first_clear_rewards">"首次通關自動停止"</string>
     <string name="p_storage">"資料存放位置"</string>
+    <string name="p_story_skip">"跳過劇情"</string>
     <string name="p_support_class_all">"全部職階（All）"</string>
     <string name="p_support_class_archer">"Archer"</string>
     <string name="p_support_class_assassin">"Assassin"</string>

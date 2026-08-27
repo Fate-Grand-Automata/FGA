@@ -166,7 +166,7 @@
 아래 버튼을 누르신 후 필터에서 \"최적화 안 함\" 대신 \"모든 앱\"을 선택 후 FGA를 눌러서 최적화 안 함을 선택해주세요."</string>
 
     <!-- Fuzzy -->
-    <string name="p_battery_optimization_dontkillmyapp">"간혹 어떤 기종의 장비에서는 추가적으로 다른 최적화들을 비활성해야할 수 있습니다. 관련 설명은 dontkillmyapp.com (영어)에서 확인하실 수 있습니다."</string>
+    <string name="p_battery_optimization_dontkillmyapp">"간혹 어떤 기종의 장비에서는 추가적으로 다른 최적화들을 비활성해야할 수 있습니다. 관련 설명은 %s (영어)에서 확인하실 수 있습니다."</string>
     <string name="p_battle_config">"오토 스킬"</string>
     <string name="p_battle_config_card_priority">"카드 우선"</string>
     <string name="p_battle_config_cmd">"커맨드"</string>

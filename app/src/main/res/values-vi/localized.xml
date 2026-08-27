@@ -152,7 +152,7 @@ Vui lòng bật khả năng truy cập cho ứng dụng này từ cài đặt H�
 Sau khi nhấn nút, hãy chuyển bộ lọc ứng dụng từ \"Không được tối ưu hóa\" sang \"Tất cả ứng dụng\" và đặt FGA thành \"Không tối ưu hóa\"."</string>
 
     <!-- Fuzzy -->
-    <string name="p_battery_optimization_dontkillmyapp">"Bạn cũng có thể cần phải tắt nhiều tối ưu hóa cụ thể hơn cho thiết bị của mình. Hướng dẫn có sẵn trên dontkillmyapp.com."</string>
+    <string name="p_battery_optimization_dontkillmyapp">"Bạn cũng có thể cần phải tắt nhiều tối ưu hóa cụ thể hơn cho thiết bị của mình. Hướng dẫn có sẵn trên %s."</string>
     <string name="p_battle_config">"Cấu hình cho trận chiến"</string>
     <string name="p_battle_config_card_priority">"Ưu tiên thẻ"</string>
     <string name="p_battle_config_cmd">"Câu lệnh"</string>
@@ -274,6 +274,7 @@ Sao chép hoặc đổi tên nó nếu bạn muốn giữ nó."</string>
     <string name="p_stop_on_ce_get_summary">"Phần thưởng hoàn thành nhiệm vụ lần đầu và CE Bond (Thử nghiệm)"</string>
     <string name="p_stop_on_first_clear_rewards">"Dừng lại ở phần thưởng đầu tiên"</string>
     <string name="p_storage">"Kho"</string>
+    <string name="p_story_skip">"Bỏ qua cốt truyện"</string>
     <string name="p_support_class_all">"Tất cả"</string>
     <string name="p_support_class_archer">"Archer"</string>
     <string name="p_support_class_assassin">"Assassin"</string>

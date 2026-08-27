@@ -165,7 +165,7 @@
 在点击下方按钮后，将应用程序筛选器由“未优化”切换到“所有应用”，并将下方FGA设置变更为“不优化”"</string>
 
     <!-- Fuzzy -->
-    <string name="p_battery_optimization_dontkillmyapp">"取决于您的设备，您可能还需要禁用更多的优化设置。您可以在dontkillmyapp.com（英文页面）上找到更多教程"</string>
+    <string name="p_battery_optimization_dontkillmyapp">"取决于您的设备，您可能还需要禁用更多的优化设置。您可以在%s（英文页面）上找到更多教程"</string>
     <string name="p_battle_config">"周回脚本"</string>
     <string name="p_battle_config_card_priority">"指令卡优先级"</string>
     <string name="p_battle_config_cmd">"技能顺序"</string>
@@ -294,6 +294,7 @@
     <string name="p_stop_on_ce_get_summary">"首次通关及牵绊礼装获得时自动停止脚本"</string>
     <string name="p_stop_on_first_clear_rewards">"获得首通奖励时自动停止"</string>
     <string name="p_storage">"文件存放位置"</string>
+    <string name="p_story_skip">"跳过剧情"</string>
     <string name="p_support_class_all">"全部职介（All）"</string>
     <string name="p_support_class_archer">"Archer"</string>
     <string name="p_support_class_assassin">"Assassin"</string>
@@ -359,15 +360,37 @@
     <string name="skill_maker_bb_dubai_target_2">"G.G.G.（防御型）"</string>
     <string name="skill_maker_buster">"力击"</string>
     <string name="skill_maker_change_np_type_2">"两种宝具类型"</string>
+    <string-array name="skill_maker_change_np_type_2_array">
+        <item>"卫宫"</item>
+        <item>"BB迪拜"</item>
+    </string-array>
     <string name="skill_maker_change_np_type_2_hint">"可切换两种宝具类型的从者"</string>
     <string name="skill_maker_change_np_type_3">"三种宝具类型"</string>
+    <string-array name="skill_maker_change_np_type_3_array">
+        <item>"太空伊什塔尔"</item>
+    </string-array>
     <string name="skill_maker_change_np_type_3_hint">"可切换三种宝具类型的从者"</string>
     <string name="skill_maker_charlotte">"夏洛特·科黛"</string>
     <string name="skill_maker_charlotte_choice_2">"暴击威力提升"</string>
     <string name="skill_maker_charlotte_choice_3">"宝具威力提升"</string>
     <string name="skill_maker_choices_2">"双选项"</string>
+    <string-array name="skill_maker_choices_2_array_slot_1and2">
+        <item>"库库尔坎"</item>
+    </string-array>
+    <string-array name="skill_maker_choices_2_array_slot_3">
+        <item>"库库尔坎"</item>
+        <item>"UDK－巴格斯特"</item>
+    </string-array>
     <string name="skill_maker_choices_2_hint">"拥有双选项技能的从者"</string>
     <string name="skill_maker_choices_3">"三选项"</string>
+    <string-array name="skill_maker_choices_3_array_slot_1">
+        <item>"梵高〔矿工〕"</item>
+    </string-array>
+    <string-array name="skill_maker_choices_3_array_slot_3">
+        <item>"静希草十郎"</item>
+        <item>"夏洛特·科黛"</item>
+        <item>"岸波白野"</item>
+    </string-array>
     <string name="skill_maker_choices_3_hint">"拥有三选项技能的从者"</string>
     <string name="skill_maker_confirm_clear_message">"将会清除所有技能施放指令，确认执行?"</string>
     <string name="skill_maker_confirm_clear_title">"确认清除"</string>
@@ -411,6 +434,10 @@ Order Change"</string>
 
 %d"</string>
     <string name="skill_maker_transform">"换装宝具"</string>
+    <string-array name="skill_maker_transform_array">
+        <item>"梅柳齐娜"</item>
+        <item>"托勒密"</item>
+    </string-array>
     <string name="skill_maker_transform_hint">"可换装宝具的从者"</string>
     <string name="skill_maker_udk_barghest">"UDK－巴格斯特"</string>
     <string name="skill_maker_udk_barghest_choice_1">"全体攻击"</string>
