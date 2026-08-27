@@ -19,7 +19,7 @@ Fate/Grand Automata (FGA) — an Android app that automates farming in the game 
 ```
 
 - Everything builds on **JDK 21**: the root `subprojects` block pins a Java toolchain of 21 for all modules, so it doesn't matter which JVM launches Gradle (Studio's JBR, a system JDK, CI's temurin 21).
-- **Emitted bytecode stays at Java 11** in every module. For `libautomata`/`scripts` that comes from `jvmTarget` in the root `subprojects` block; for `app`/`prefs` AGP derives it from their `compileOptions`. The toolchain and the bytecode target are separate knobs; raising the latter means checking D8 desugaring against minSdk 24.
+- **Emitted bytecode stays at Java 11** in every module. For `libautomata`/`scripts` that comes from `jvmTarget` in the root `subprojects` block; for `app`/`prefs` AGP derives it from their `compileOptions`. The toolchain and the bytecode target are separate knobs; raising the latter means checking D8 desugaring against minSdk 24. The one exception is `:scripts`'s *test* compilation, pinned to 17 in `scripts/build.gradle.kts` because JUnit 6 requires it — test code runs on the toolchain JVM and never reaches Android.
 - **AGP 9 compiles Kotlin itself.** `app` and `prefs` must *not* apply `org.jetbrains.kotlin.android` — AGP 9 rejects it outright. Their Kotlin output lands in `build/intermediates/built_in_kotlinc/`, not `build/tmp/kotlin-classes/`, and the root block's `tasks.withType<KotlinCompile>` no longer reaches them: per-module compiler settings belong in that module's `android { kotlin { compilerOptions { } } }`.
 - `compileSdk` is **37** while `targetSdk` stays **36** — recent androidx libraries force the compile level, but nothing opts into new runtime behavior. Keep the two decoupled; bumping `targetSdk` is a separate, user-visible decision.
 - Android Studio periodically offers to generate `gradle/gradle-daemon-jvm.properties` (`updateDaemonJvm`). Don't accept it — the toolchain above is the pin, and that file instead forces a ~525 MB JBR download that drifts from the CI JDK.
@@ -27,18 +27,32 @@ Fate/Grand Automata (FGA) — an Android app that automates farming in the game 
 - `versionCode`/`versionName` come from the `FGA_VERSION_CODE`/`FGA_VERSION_NAME` env vars (default 1 / "0.1.0"). When installing a debug build over a store install, set `FGA_VERSION_CODE` to at least the installed version — Android refuses downgrades.
 - `release` builds need `app/fgautomata.keystore` (GPG-decrypted in CI) and `KEYSTORE_PASS`. Release/Play Store deploys go through `fastlane` (`fastlane/Fastfile`, lanes `deploy` and `download_apk`) and are CI-only.
 - Build types: `debug`, `release`, and `ci` (`initWith(release)`, debug-signed, ARM-only ABIs). The `ci` type must exist in every Android module (`app`, `prefs`).
+- CI's Gradle cache comes from `gradle/actions/setup-gradle`, not from `setup-java`'s `cache: 'gradle'` — don't re-add the latter, it would cache the same directories twice with worse invalidation.
 
 ## Bumping dependencies
 
-Renovate opens one PR per bump, but the Android ones are interlocked, so a `renovate::minor` label can hide an AGP migration. Constraints found while collecting the 2026-08 batch:
+Renovate opens one PR per bump, but the Android toolchain bumps are interlocked, so a `renovate::minor` label can hide an AGP migration. The constraints run in one direction — bump along it and most failures never happen:
 
-- Gradle **>= 9.6** requires AGP 9 — 9.6 removed `InternalProblems`, which AGP 8.x used.
-- Hilt **>= 2.59** refuses AGP < 9, and Hilt <= 2.58 cannot read Kotlin 2.4 metadata. Hilt and Kotlin therefore have to move together.
-- `core-ktx` 1.19, `lifecycle` 2.11 and `hilt-navigation-compose` 1.4 require **AGP 9.1 + compileSdk 37**.
-- Coil 3.5 pulls `kotlin-stdlib` 2.4, which drags the Hilt/Kotlin constraint above in with it.
-- AGP 8.13.2 is the last 8.x, so none of the above can be satisfied by staying on AGP 8.
+```
+AGP + compileSdk ──▶ Gradle
+       │
+       ├──▶ Kotlin + KSP + Compose compiler ──▶ Hilt
+       │
+       └──▶ androidx + Compose BOM
+```
 
-When a bump fails, read the `checkAarMetadata` output first — it names the required AGP version and compileSdk directly, which is much faster than bisecting versions. Dependabot PRs here only touch `Gemfile.lock` (fastlane) and are often already behind `master`; check before applying one.
+- **AGP and `compileSdk` lead.** androidx AARs declare a minimum AGP *and* a minimum `compileSdk` in their metadata, so both usually have to move before any androidx bump resolves at all.
+- **Gradle follows AGP, never leads it.** Gradle removes internal APIs the installed AGP still calls, so a wrapper bump ahead of AGP fails at plugin-apply time; AGP separately declares a *minimum* Gradle. Move them as a pair with AGP in front.
+- **Kotlin, KSP and the Compose compiler move as one unit** (renovate already groups them), and after AGP — AGP compiles Kotlin itself.
+- **Hilt is pinned from both sides:** it declares a minimum AGP, and its bundled `kotlin-metadata-jvm` caps the Kotlin metadata version it can read. Hilt therefore cannot lag Kotlin, and neither can precede AGP.
+- **androidx and the Compose BOM come last.** By then AGP, `compileSdk` and Kotlin satisfy their metadata, and what's left is source-level API churn rather than resolution failures.
+- **Test-only dependencies sit outside the chain.** They resolve against the *test* compilation's `jvmTarget` (Gradle's `org.gradle.jvm.version` attribute), not the app's, so they can outrun it — but Kotlin aborts unless `compileTestKotlin` and `compileTestJava` agree on that target, even when there are no Java test sources.
+
+The chain can also be dragged forward **transitively**: any dependency that pulls a newer `kotlin-stdlib` re-triggers the Kotlin/Hilt constraint from a PR that looked unrelated. `dependencyInsight` on `kotlin-stdlib` names the culprit.
+
+When a bump fails, read the `checkAarMetadata` output first — it names the required AGP version and compileSdk directly, which is much faster than bisecting versions.
+
+Dependabot PRs here only touch `Gemfile.lock` (fastlane) and are often already behind `master`; check before applying one.
 
 ## Module layout and dependency direction
 
