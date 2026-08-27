@@ -41,6 +41,7 @@ import io.github.fate_grand_automata.util.messageAndStackTrace
 import io.github.fate_grand_automata.util.set
 import io.github.fate_grand_automata.util.showOverlayDialog
 import io.github.lib_automata.EntryPoint
+import io.github.lib_automata.OcrService
 import io.github.lib_automata.ScreenshotService
 import io.github.lib_automata.ScriptAbortException
 import kotlinx.coroutines.CoroutineScope
@@ -72,6 +73,20 @@ class ScriptManager @Inject constructor(
 ) {
     var scriptState: ScriptState = ScriptState.Stopped
         private set
+
+    /**
+     * The OCR engine belonging to the current [ScriptComponent]. Held so its native Tesseract
+     * context can be freed as soon as the run ends instead of waiting on the finalizer.
+     */
+    private var ocrService: OcrService? = null
+
+    fun releaseOcrService() {
+        ocrService?.let {
+            ocrService = null
+            runCatching { it.close() }
+                .onFailure { e -> Timber.w(e, "Failed to release the OCR service") }
+        }
+    }
 
     private suspend fun showBattleExit(
         context: Context,
@@ -109,6 +124,7 @@ class ScriptManager @Inject constructor(
         uiStateHolder.uiState = ScriptRunnerUIState.Idle
         uiStateHolder.isPlayButtonEnabled = false
         imageLoader.clearSupportCache()
+        releaseOcrService()
 
         // Stop recording
         scriptState.let { state ->
@@ -344,9 +360,33 @@ class ScriptManager @Inject constructor(
             .build()
 
         val hiltEntryPoint = EntryPoints.get(scriptComponent, ScriptEntryPoint::class.java)
-        val detectedMode = hiltEntryPoint.autoDetect().get()
+
+        // A fresh ScriptComponent means a fresh OCR engine; drop the previous one first
+        releaseOcrService()
+        ocrService = hiltEntryPoint.ocrService()
 
         scope.launch {
+            /*
+             * Screen detection needs a screenshot, which can fail when the projection never
+             * delivered a frame. Don't let that take the whole app down.
+             */
+            val detectedMode = try {
+                hiltEntryPoint.autoDetect().get()
+            } catch (e: Exception) {
+                Timber.e(e, "Screen detection failed")
+
+                val msg = if (e is KnownException)
+                    e.reason.msg
+                else "${context.getString(R.string.unexpected_error)}: ${e.message}"
+
+                uiStateHolder.isPlayButtonEnabled = true
+                releaseOcrService()
+
+                messageBox.show(context.getString(R.string.unexpected_error), msg)
+
+                return@launch
+            }
+
             val resp = scriptPicker(context, detectedMode)
 
             uiStateHolder.isPlayButtonEnabled = true
@@ -358,6 +398,9 @@ class ScriptManager @Inject constructor(
                     screenshotService = screenshotService,
                     entryPointProvider = { getEntryPoint(hiltEntryPoint) }
                 )
+            } else {
+                // onScriptExit never runs on this path
+                releaseOcrService()
             }
         }
     }

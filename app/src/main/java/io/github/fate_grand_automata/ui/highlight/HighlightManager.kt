@@ -5,12 +5,15 @@ import android.os.Build
 import android.view.WindowManager
 import dagger.hilt.android.scopes.ServiceScoped
 import io.github.fate_grand_automata.accessibility.TapperService
+import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.lib_automata.HighlightColor
 import io.github.lib_automata.Region
 import javax.inject.Inject
 
 @ServiceScoped
-class HighlightManager @Inject constructor() {
+class HighlightManager @Inject constructor(
+    private val prefsCore: PrefsCore
+) {
     private val tapperService by lazy {
         TapperService.instance ?: throw IllegalStateException("Accessibility service not running")
     }
@@ -37,12 +40,26 @@ class HighlightManager @Inject constructor() {
         }
     }
 
+    private var shown = false
+
+    /**
+     * Only attaches the overlay in debug mode.
+     *
+     * The pref is read here rather than watched, so toggling debug mode while the service
+     * runs only takes effect after a restart.
+     */
     fun show() {
+        if (shown || !prefsCore.debugMode.get()) return
+
         accessibilityWindowManager.addView(highlightView, highlightLayoutParams)
+        shown = true
     }
 
     fun hide() {
+        if (!shown) return
+
         accessibilityWindowManager.removeView(highlightView)
+        shown = false
     }
 
     fun add(region: Region, color: HighlightColor) {

@@ -65,6 +65,10 @@ fun battleLauncher(
                 }
             }
     }
+    // Each config's name lives in its own SharedPreferences file, so reading it per row would mean
+    // a locked SharedPreferences access for every item scrolled into view. Snapshot them once.
+    val configNames = remember(configs) { configs.map { it.name } }
+
     var selectedConfigIndex by remember { mutableIntStateOf(configs.indexOf(prefs.selectedBattleConfig)) }
 
     val perServerConfigPref by remember {
@@ -175,9 +179,9 @@ fun battleLauncher(
                     ),
                 state = configListState
             ) {
-                itemsIndexed(configs) { index, item ->
+                itemsIndexed(configs, key = { _, item -> item.id }) { index, _ ->
                     BattleConfigItem(
-                        name = item.name,
+                        name = configNames[index],
                         isSelected = selectedConfigIndex == index,
                         onSelected = { selectedConfigIndex = index }
                     )

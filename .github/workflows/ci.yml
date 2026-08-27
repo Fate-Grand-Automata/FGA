@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  JAVA_VERSION: 17
+  JAVA_VERSION: 21
   JAVA_DISTRO: 'temurin'
   VERSION_CODE: '${{ github.run_number }}'
 
@@ -31,10 +31,10 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654
+      - name: Set up JDK 21
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRO }}
@@ -53,13 +53,13 @@ jobs:
         working-directory: ./app
         run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
 
-      - uses: ruby/setup-ruby@d45b1a4e94b71acab930e56e79c6aa188764e7f9
+      - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
         with:
-          ruby-version: '4.0.5'
+          ruby-version: '4.0.6'
           bundler-cache: true
 
       - name: Deploy to Play Store
-        uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7
+        uses: maierj/fastlane-action@182983d8f94bad9884001c03c1c2786f4c7165ed # v3.2.0
         with:
           lane: 'deploy'
         env:
@@ -67,21 +67,21 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
 
       - name: Upload Bundle
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: bundle
           path: app/build/outputs/bundle/release/app-release.aab
         if: ${{ !cancelled() }}
 
       - name: Upload De-obfuscation mapping file
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: mapping-release
           path: app/build/outputs/mapping/release/mapping.txt
         if: ${{ !cancelled() }}
 
       - name: Download Universal APK
-        uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7
+        uses: maierj/fastlane-action@182983d8f94bad9884001c03c1c2786f4c7165ed # v3.2.0
         with:
           lane: 'download_apk'
           options: '{ "version_code": "$VERSION_CODE" }'
@@ -91,7 +91,7 @@ jobs:
         run: zip FGA-apk-${VERSION_CODE}.zip *.apk
       
       - name: Create release
-        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
+        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
