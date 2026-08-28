@@ -1,6 +1,7 @@
 {
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    "helpers:pinGitHubActionDigests"
   ],
   "ignorePresets": [
     ":prHourlyLimit2"
@@ -15,7 +16,6 @@
   },
   "github-actions": {
     "enabled": true,
-    "automerge": true,
     "groupName": "github-actions"
   },
   "packageRules": [

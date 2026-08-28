@@ -5,12 +5,17 @@ on:
     paths-ignore:
       - '.idea/**'
       - '.github/ISSUE_TEMPLATE/**'
+      - '.github/instructions/**'
+      - '.github/copilot-instructions.md'
       - '.gitattributes'
       - '.gitignore'
       - '*.md'
       - 'LICENSE'
       - 'custom-game-area/**'
       - 'wiki/**'
+      - 'docs/**'
+      - '.claude/**'
+      - '**/AGENTS.md'
   workflow_dispatch:
 
 concurrency:
@@ -18,24 +23,30 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  JAVA_VERSION: 17
+  JAVA_VERSION: 21
   JAVA_DISTRO: 'temurin'
   VERSION_CODE: '${{ github.run_number }}'
+  # Overrides the small heap committed in gradle.properties, which is sized so local
+  # builds can coexist with Android Studio. The Kotlin daemon inherits -Xmx and
+  # -XX:MaxMetaspaceSize from the Gradle daemon, so it does not need setting separately.
+  GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=1g -XX:+UseParallelGC"'
 
 jobs:
   build:
-    runs-on: macos-26
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654
+      - name: Set up JDK 21
+        uses: actions/setup-java@dd06d9cba3e5552c54d9f8ea23572deb30010f7c # v6.0.0
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRO }}
-          cache: 'gradle'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
 
       - name: Determine Version Name
         shell: bash
@@ -45,7 +56,7 @@ jobs:
           echo "FGA_VERSION_NAME=$VERSION_NAME" >>${GITHUB_ENV}
 
       - name: Build Android Package
-        run: ./gradlew assembleCi --scan --parallel --no-daemon
+        run: ./gradlew assembleCi --parallel
     
       - name: Rename Artifacts
         run: |
@@ -65,13 +76,13 @@ jobs:
           echo "FGA_MAPPING_ARTIFACT_NAME=FGA-mapping-PR-$build_name" >>${GITHUB_ENV}
 
       - name: Upload APK
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ${{ env.FGA_APK_ARTIFACT_NAME }}
           path: ${{ env.FGA_APK_PATH }}
 
       - name: Upload De-obfuscation mapping file
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ${{ env.FGA_MAPPING_ARTIFACT_NAME }}
           path: ${{ env.FGA_MAPPING_PATH }}

@@ -1,6 +1,5 @@
 plugins {
     id("com.android.application")
-    id("kotlin-android")
     id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
     id("com.google.devtools.ksp")
@@ -8,7 +7,7 @@ plugins {
 }
 
 android {
-    compileSdk = 35
+    compileSdk = 37
     ndkVersion = "21.3.6528147"
 
     compileOptions {
@@ -21,19 +20,6 @@ android {
         buildConfig = true
     }
 
-    kotlin {
-        compilerOptions {
-            optIn.add("androidx.compose.material.ExperimentalMaterialApi")
-            optIn.add("androidx.compose.material.ExperimentalMaterialApi")
-            optIn.add("androidx.compose.material3.ExperimentalMaterial3Api")
-            optIn.add("androidx.compose.foundation.ExperimentalFoundationApi")
-            optIn.add("androidx.compose.animation.ExperimentalAnimationApi")
-            optIn.add("androidx.compose.ui.ExperimentalComposeUiApi")
-            optIn.add("androidx.compose.foundation.layout.ExperimentalLayoutApi")
-            optIn.add("androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi")
-        }
-    }
-
     androidResources {
         generateLocaleConfig = true
     }
@@ -41,7 +27,7 @@ android {
     defaultConfig {
         applicationId = "io.github.fate_grand_automata"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = System.getenv("FGA_VERSION_CODE")?.toInt() ?: 1
         versionName = System.getenv("FGA_VERSION_NAME") ?: System.getenv("FGA_VERSION_CODE") ?: "0.1.0"
     }
@@ -69,6 +55,8 @@ android {
         }
         getByName("release") {
             isMinifyEnabled = true
+            // TODO test app extensively before enabling
+            // isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
         }
@@ -86,8 +74,22 @@ android {
     }
     lint {
         abortOnError = false
+        disable += "MissingTranslation"
     }
     namespace = "io.github.fate_grand_automata"
+}
+
+// Project-level extension: this never belonged inside `android { }`, where it only
+// resolved via the enclosing Project receiver.
+kotlin {
+    compilerOptions {
+        optIn.add("androidx.compose.material3.ExperimentalMaterial3Api")
+        optIn.add("androidx.compose.foundation.ExperimentalFoundationApi")
+        optIn.add("androidx.compose.animation.ExperimentalAnimationApi")
+        optIn.add("androidx.compose.ui.ExperimentalComposeUiApi")
+        optIn.add("androidx.compose.foundation.layout.ExperimentalLayoutApi")
+        optIn.add("androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi")
+    }
 }
 
 dependencies {
@@ -135,6 +137,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.lifecycle.viewmodel.compose)
 
 
 

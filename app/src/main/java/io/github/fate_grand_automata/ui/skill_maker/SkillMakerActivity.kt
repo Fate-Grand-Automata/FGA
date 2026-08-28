@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
@@ -89,7 +89,7 @@ fun SkillMakerUI(
 
     Crossfade(
         current,
-        animationSpec = spring()
+        animationSpec = tween(durationMillis = 120)
     ) { nav ->
         when (nav) {
             SkillMakerNav.Atk -> {

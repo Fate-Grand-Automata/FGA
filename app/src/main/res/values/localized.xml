@@ -156,6 +156,8 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_root_screenshot_summary">"Useful on Nox (Android 7). Toggle service after changing this."</string>
     <string name="p_auto_start_service">"Auto-start service"</string>
     <string name="p_thresholded_stage_counter">"Thresholded stage counter detection"</string>
+    <string name="p_check_for_updates">"Check for updates"</string>
+    <string name="p_check_for_updates_summary">"Offer to install a new version when one is available on Google Play"</string>
     <string name="p_fine_tune">"Fine-tune"</string>
     <string name="p_fine_tune_support">"Support"</string>
     <string name="p_fine_tune_support_swipes_per_update">"Swipes per Update"</string>
