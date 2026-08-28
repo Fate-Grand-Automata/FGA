@@ -28,6 +28,10 @@ env:
   JAVA_VERSION: 21
   JAVA_DISTRO: 'temurin'
   VERSION_CODE: '${{ github.run_number }}'
+  # Overrides the small heap committed in gradle.properties, which is sized so local
+  # builds can coexist with Android Studio. The Kotlin daemon inherits -Xmx and
+  # -XX:MaxMetaspaceSize from the Gradle daemon, so it does not need setting separately.
+  GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=1g -XX:+UseParallelGC"'
 
 jobs:
   play_store:

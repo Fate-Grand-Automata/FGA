@@ -20,17 +20,6 @@ android {
         buildConfig = true
     }
 
-    kotlin {
-        compilerOptions {
-            optIn.add("androidx.compose.material3.ExperimentalMaterial3Api")
-            optIn.add("androidx.compose.foundation.ExperimentalFoundationApi")
-            optIn.add("androidx.compose.animation.ExperimentalAnimationApi")
-            optIn.add("androidx.compose.ui.ExperimentalComposeUiApi")
-            optIn.add("androidx.compose.foundation.layout.ExperimentalLayoutApi")
-            optIn.add("androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi")
-        }
-    }
-
     androidResources {
         generateLocaleConfig = true
     }
@@ -66,6 +55,8 @@ android {
         }
         getByName("release") {
             isMinifyEnabled = true
+            // TODO test app extensively before enabling
+            // isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
         }
@@ -83,8 +74,22 @@ android {
     }
     lint {
         abortOnError = false
+        disable += "MissingTranslation"
     }
     namespace = "io.github.fate_grand_automata"
+}
+
+// Project-level extension: this never belonged inside `android { }`, where it only
+// resolved via the enclosing Project receiver.
+kotlin {
+    compilerOptions {
+        optIn.add("androidx.compose.material3.ExperimentalMaterial3Api")
+        optIn.add("androidx.compose.foundation.ExperimentalFoundationApi")
+        optIn.add("androidx.compose.animation.ExperimentalAnimationApi")
+        optIn.add("androidx.compose.ui.ExperimentalComposeUiApi")
+        optIn.add("androidx.compose.foundation.layout.ExperimentalLayoutApi")
+        optIn.add("androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi")
+    }
 }
 
 dependencies {
