@@ -24,12 +24,12 @@ class PreferredSupportSelection @Inject constructor(
 
     private data class ScrollBarState(
         val topScrollbar: Boolean = false,
-        val movedSrollBar: Boolean = false,
+        val movedScrollbar: Boolean = false,
         val bottomScrollbar: Boolean = false
     ) {
         fun resultWhenNoMatch(): SupportSelectionResult = when {
             topScrollbar -> SupportSelectionResult.ScrollDown
-            movedSrollBar && !bottomScrollbar -> SupportSelectionResult.ScrollDown
+            movedScrollbar && !bottomScrollbar -> SupportSelectionResult.ScrollDown
             else -> SupportSelectionResult.EarlyRefresh
         }
     }
@@ -65,7 +65,7 @@ class PreferredSupportSelection @Inject constructor(
         if (topScrollbar) return ScrollBarState(topScrollbar = true)
 
         return ScrollBarState(
-            movedSrollBar = images[Images.SupportScrollBarMoved] in locations.support.topScrollbarRegion,
+            movedScrollbar = images[Images.SupportScrollBarMoved] in locations.support.topScrollbarRegion,
             bottomScrollbar = images[Images.SupportScrollBarBottom] in locations.support.bottomScrollbarRegion
         )
     }
