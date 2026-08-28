@@ -79,8 +79,6 @@ android {
     namespace = "io.github.fate_grand_automata"
 }
 
-// Project-level extension: this never belonged inside `android { }`, where it only
-// resolved via the enclosing Project receiver.
 kotlin {
     compilerOptions {
         optIn.add("androidx.compose.material3.ExperimentalMaterial3Api")
@@ -148,3 +146,87 @@ dependencies {
     implementation(libs.coil.gif)
 
 }
+
+/*
+Keeps SupportNameResources in sync with the default support images. A key that no longer
+matches an asset degrades silently to the English name — indistinguishable from the
+intended fallback for user-added supports — so it has to fail the build instead.
+
+Hooked into `preBuild` rather than `check` because CI only ever runs `assembleCi`.
+*/
+val verifySupportNames = tasks.register("verifySupportNames") {
+    group = "verification"
+    description = "Checks SupportNameResources against the default support images."
+
+    val servantDir = layout.projectDirectory.dir("src/main/assets/Support/servant")
+    val ceDir = layout.projectDirectory.dir("src/main/assets/Support/ce")
+    val source = layout.projectDirectory
+        .file("src/main/java/io/github/fate_grand_automata/util/SupportNameResources.kt")
+    val stamp = layout.buildDirectory.file("verifySupportNames.stamp")
+
+    inputs.dir(servantDir).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.dir(ceDir).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.file(source).withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.file(stamp)
+
+    doLast {
+        val text = source.asFile.readText()
+
+        // Matched on the resource prefix rather than the map block, so reformatting the
+        // source or renaming the maps can't quietly turn the check into a no-op.
+        fun mappedNames(resPrefix: String) =
+            Regex(""""([^"]+)"\s+to\s+R\.string\.$resPrefix""")
+                .findAll(text)
+                .map { it.groupValues[1] }
+                .toSet()
+
+        val problems = mutableListOf<String>()
+
+        fun compare(kind: String, assetNames: Set<String>, mapped: Set<String>) {
+            if (assetNames.isEmpty()) {
+                problems += "found no $kind assets at all — has the layout changed?"
+            }
+            (assetNames - mapped).sorted().forEach {
+                problems += "$kind \"$it\" has no entry in SupportNameResources, " +
+                        "so it would display untranslated"
+            }
+            (mapped - assetNames).sorted().forEach {
+                problems += "$kind \"$it\" is mapped in SupportNameResources " +
+                        "but no such asset exists"
+            }
+        }
+
+        compare(
+            "servant",
+            servantDir.asFile.listFiles().orEmpty()
+                .filter { it.isDirectory }
+                .map { it.name }
+                .toSet(),
+            mappedNames("servant_name_")
+        )
+        compare(
+            "CE",
+            ceDir.asFile.listFiles().orEmpty()
+                .filter { it.isFile && it.extension == "png" }
+                .map { it.nameWithoutExtension }
+                .toSet(),
+            mappedNames("ce_name_")
+        )
+
+        if (problems.isNotEmpty()) {
+            throw GradleException(
+                problems.joinToString(
+                    separator = "\n  - ",
+                    prefix = "SupportNameResources is out of sync with assets/Support:\n  - "
+                )
+            )
+        }
+
+        stamp.get().asFile.apply {
+            parentFile.mkdirs()
+            writeText("ok")
+        }
+    }
+}
+
+tasks.named("preBuild") { dependsOn(verifySupportNames) }

@@ -23,3 +23,24 @@ Both directions follow the same rules:
 3. **Review every export for lost translations before merging** — the export is lossy in
    practice. Pay particular attention to `<string-array>` entries, which are the most
    frequent casualty.
+
+## Default support images carry translated names
+
+`app/src/main/assets/Support/servant/<Name>/` and `app/src/main/assets/Support/ce/<Name>.png`
+ship the default servants and craft essences. Those English names *are* the identity of a
+support entry — they are the keys written to preferences and the names matched against the
+extracted image files — so never translate them in place. The UI shows a translated label
+instead, resolved through `SupportNameResources`
+(`app/src/main/java/io/github/fate_grand_automata/util/SupportNameResources.kt`), which maps
+each servant folder name and each CE file name (minus the extension) to a string resource.
+
+Adding, renaming or removing anything under `assets/Support` therefore takes three edits:
+
+1. the asset — a folder under `servant/`, or a `.png` under `ce/`;
+2. a `servant_name_*` / `ce_name_*` entry in `values/localized.xml`;
+3. the matching line in `servantNameResIds` or `ceNameResIds`.
+
+A missing entry fails silently: the lookup falls back to the raw English name, which is also
+how user-added custom supports are meant to display. A rename that skips step 3 breaks the
+mapping the same quiet way, so the existing translation just stops being used. New strings
+reach the other languages through the POEditor sync above like any other source string.
