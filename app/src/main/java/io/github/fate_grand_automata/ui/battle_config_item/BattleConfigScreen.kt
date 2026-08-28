@@ -2,12 +2,10 @@ package io.github.fate_grand_automata.ui.battle_config_item
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -198,40 +196,28 @@ private fun BattleConfigContent(
                                 modifier = Modifier
                                     .height(IntrinsicSize.Min)
                             ) {
-                                Box(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                ) {
-                                    config.materials.Materials()
-                                }
+                                config.materials.Materials(Modifier.weight(1f))
 
                                 VerticalDivider()
 
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxHeight()
-                                        .clickable(onClick = { navigate(BattleConfigDestination.Spam) }),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        stringResource(R.string.p_spam_spam).uppercase(),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        modifier = Modifier
-                                            .padding(8.dp, 5.dp)
-                                    )
-                                }
+                                ConfigSummaryCell(
+                                    label = stringResource(R.string.p_spam_spam),
+                                    onClick = { navigate(BattleConfigDestination.Spam) },
+                                    modifier = Modifier.weight(1f),
+                                    content = { }
+                                )
 
                                 VerticalDivider()
 
-                                ServerSelection(config)
+                                ServerSelection(config, Modifier.weight(1f))
 
                                 VerticalDivider()
 
-                                PartySelection(config)
+                                PartySelection(config, Modifier.weight(1f))
 
                                 VerticalDivider()
 
-                                RaidDelay(config=config)
+                                RaidDelay(config = config, modifier = Modifier.weight(1f))
                             }
 
                             HorizontalDivider()

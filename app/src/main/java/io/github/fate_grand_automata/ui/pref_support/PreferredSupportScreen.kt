@@ -15,10 +15,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -74,6 +76,18 @@ private fun PreferredSupport(
     val prefCEs by config.preferredCEs.remember()
 
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
+
+    // Localizing the entries builds a new map, and `Map` is unstable to the Compose compiler,
+    // so doing it inline re-ran on every recomposition of this screen — including on every
+    // toggle in the multi-select dialogs. Keyed on the configuration so that a locale change
+    // still re-resolves the names.
+    val servantEntries = remember(vm.servants, configuration) {
+        vm.servants.mapValues { (name, _) -> getLocalizedServantName(context, name) }
+    }
+    val ceEntries = remember(vm.ces, configuration) {
+        vm.ces.mapValues { (_, displayName) -> getLocalizedCEName(context, displayName) }
+    }
 
     LazyColumn {
         item {
@@ -99,9 +113,7 @@ private fun PreferredSupport(
 
                     config.preferredServants.SupportSelectPreference(
                         title = stringResource(R.string.p_battle_config_support_pref_servants),
-                        entries = vm.servants.mapValues { (name, _) ->
-                            getLocalizedServantName(context, name)
-                        }
+                        entries = servantEntries
                     )
 
                     if (prefServants.isNotEmpty()) {
@@ -154,9 +166,7 @@ private fun PreferredSupport(
 
                     config.preferredCEs.SupportSelectPreference(
                         title = stringResource(R.string.p_battle_config_support_pref_ces),
-                        entries = vm.ces.mapValues { (_, displayName) ->
-                            getLocalizedCEName(context, displayName)
-                        }
+                        entries = ceEntries
                     )
 
                     if (prefCEs.isNotEmpty()) {

@@ -5,7 +5,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,12 +32,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -117,7 +115,8 @@ fun SupportGroup(
                             SupportSelectionModeEnum.First,
                             SupportSelectionModeEnum.Manual
                         ).associateWith { stringResource(it.stringRes) },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        singleRow = true
                     )
                 }
             }
@@ -248,6 +247,17 @@ fun PreferredSummary(
     friendNames: Set<String>
 ) {
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
+
+    // Kept out of the recomposition path for the same reason as in PreferredSupportScreen:
+    // `Set` is unstable to the Compose compiler, so this composable recomposes readily and
+    // would otherwise re-localize and re-join both lists every time.
+    val servantText = remember(servants, configuration) {
+        servants.joinToString { getLocalizedServantName(context, it) }
+    }
+    val ceText = remember(ces, configuration) {
+        ces.joinToString { getLocalizedCEName(context, it) }
+    }
 
     Column(
         modifier = Modifier
@@ -263,8 +273,7 @@ fun PreferredSummary(
                 contentDescription = "crown"
             )
 
-            val text = if (servants.isNotEmpty())
-                servants.joinToString { getLocalizedServantName(context, it) }
+            val text = if (servants.isNotEmpty()) servantText
             else stringResource(R.string.battle_config_support_any)
 
             Text(
@@ -302,8 +311,7 @@ fun PreferredSummary(
                 contentDescription = "card"
             )
 
-            val text = if (ces.isNotEmpty())
-                ces.joinToString { getLocalizedCEName(context, it) }
+            val text = if (ces.isNotEmpty()) ceText
             else stringResource(R.string.battle_config_support_any)
 
             Text(
