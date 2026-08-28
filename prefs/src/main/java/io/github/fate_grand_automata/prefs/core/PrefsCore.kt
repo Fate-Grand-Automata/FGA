@@ -48,6 +48,7 @@ class PrefsCore @Inject constructor(
     val hidePlayButton = maker.bool("hide_play_button")
     val debugMode = maker.bool("debug_mode")
     val autoStartService = maker.bool("auto_start_service")
+    val checkForUpdates = maker.bool("check_for_updates", true)
 
     val hideSQInAPResources = maker.bool("hide_sq_in_ap_resources", true)
 

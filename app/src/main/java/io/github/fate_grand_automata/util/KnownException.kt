@@ -24,5 +24,9 @@ class KnownException(val reason: Reason) : Exception(reason.msg) {
         ) : Reason("[$kind] folder: '$name' is empty!")
 
         class FailedRootPermission(e: Exception) : Reason("Failed to get Root permission: ${e.message}")
+
+        object NoVirtualDisplay : Reason("Screen capture couldn't be set up. Restart FGA and grant the screen capture permission again.")
+        object NoScreenshotReceived : Reason("Screen capture didn't deliver any image. Restart FGA and grant the screen capture permission again.")
+        object ScreenCaptureStopped : Reason("Screen capture was stopped. This happens when the system or another app takes it over, or when the display changes. Restart FGA and grant the screen capture permission again.")
     }
 }
