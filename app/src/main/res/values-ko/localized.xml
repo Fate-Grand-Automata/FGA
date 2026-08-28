@@ -429,8 +429,8 @@
     <string name="spam_np">"보구:"</string>
     <string name="spam_target">"대상"</string>
     <string name="start_service">"서비스 시작"</string>
-    <string name="state_off">"꺼짐"</string>
-    <string name="state_on">"켜짐"</string>
+    <string name="config_state_off">"꺼짐"</string>
+    <string name="config_state_on">"켜짐"</string>
     <string name="stop_after_this_run">"이번 판만 돌고 스크립트 종료"</string>
     <string name="stop_service">"서비스 중지"</string>
     <string name="stopped_by_user">"사용자에 의해 스크립트 중지됨"</string>

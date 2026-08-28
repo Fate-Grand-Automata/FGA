@@ -489,10 +489,23 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_battle_config_raid">"Raid"</string>
     <string name="p_battle_config_raid_delay">"Raid Turn Delay"</string>
     <string name="p_battle_config_raid_delay_message">This adds extra turn delay used for raids.</string>
-    <string name="state_on">On</string>
-    <string name="state_off">Off</string>
+    <string name="config_state_on">On</string>
+    <string name="config_state_off">Off</string>
     <string name="save">Save</string>
     <string name="reset">Reset</string>
+
+    <string name="error_could_not_create_directory">"Couldn't create directory: '%s'"</string>
+    <string name="error_could_not_create_file">"Couldn't create file: '%s'"</string>
+    <string name="error_could_not_open_file_for_recording">"Couldn't open file for recording"</string>
+    <string name="error_could_not_open_support_file_for_reading">"Couldn't open file for reading: [%1$s] '%2$s'"</string>
+    <string name="error_could_not_open_support_file_for_writing">"Couldn't open file for writing: [%1$s] '%2$s'"</string>
+    <string name="error_could_not_create_drop_screenshot_file">"Failed to create drop screenshot file"</string>
+    <string name="error_support_folder_is_empty">"[%1$s] folder: '%2$s' is empty!"</string>
+    <string name="error_failed_root_permission">"Failed to get Root permission: %s"</string>
+    <string name="error_no_virtual_display">"Screen capture couldn't be set up. Restart FGA and grant the screen capture permission again."</string>
+    <string name="error_no_screenshot_received">"Screen capture didn't deliver any image. Restart FGA and grant the screen capture permission again."</string>
+    <string name="error_screen_capture_stopped">"Screen capture was stopped. This happens when the system or another app takes it over, or when the display changes. Restart FGA and grant the screen capture permission again."</string>
+    <string name="error_no_suitable_target_ce_found">"No suitable target CE found"</string>
 
     <!-- Default Servant Names -->
     <string name="servant_name_arcueid">Arcueid</string>

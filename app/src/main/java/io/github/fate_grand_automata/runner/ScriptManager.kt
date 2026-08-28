@@ -256,7 +256,7 @@ class ScriptManager @Inject constructor(
 
             is AutoCEBomb.ExitException -> {
                 val msg = when (e.reason) {
-                    AutoCEBomb.ExitReason.NoSuitableTargetCEFound -> "No suitable target CE found"
+                    AutoCEBomb.ExitReason.NoSuitableTargetCEFound -> context.getString(R.string.error_no_suitable_target_ce_found)
                 }
 
                 messages.notify(msg)
@@ -266,7 +266,7 @@ class ScriptManager @Inject constructor(
             is KnownException -> {
                 messages.notify(scriptExitedString)
 
-                messageBox.show(scriptExitedString, e.reason.msg)
+                messageBox.show(scriptExitedString, e.reason.msg(context))
             }
 
             else -> {
@@ -376,7 +376,7 @@ class ScriptManager @Inject constructor(
                 Timber.e(e, "Screen detection failed")
 
                 val msg = if (e is KnownException)
-                    e.reason.msg
+                    e.reason.msg(context)
                 else "${context.getString(R.string.unexpected_error)}: ${e.message}"
 
                 uiStateHolder.isPlayButtonEnabled = true
@@ -454,7 +454,7 @@ class ScriptManager @Inject constructor(
         context: Context,
         detectedMode: ScriptModeEnum
     ) = withContext(Dispatchers.Main) {
-        suspendCoroutine<ScriptLauncherResponse> { continuation ->
+        suspendCancellableCoroutine<ScriptLauncherResponse> { continuation ->
 
             var dialog: DialogInterface? = null
 

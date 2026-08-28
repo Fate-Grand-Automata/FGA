@@ -95,7 +95,7 @@ fun RaidDelay(
                         .padding(horizontal = 2.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.state_on).uppercase(),
+                        text = stringResource(R.string.config_state_on).uppercase(),
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -119,7 +119,7 @@ fun RaidDelay(
                         .padding(horizontal = 2.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.state_off).uppercase(),
+                        text = stringResource(R.string.config_state_off).uppercase(),
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -162,7 +162,7 @@ fun RaidDelay(
         ConfigSummaryValue(
             when (addRaidTurnDelay) {
                 true -> "${raidTurnDelaySeconds}s"
-                false -> stringResource(R.string.state_off).uppercase()
+                false -> stringResource(R.string.config_state_off).uppercase()
             }
         )
     }

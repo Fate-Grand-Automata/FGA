@@ -58,7 +58,7 @@ private fun AutoBattle.ExitReason.text(): String = when (this) {
     AutoBattle.ExitReason.Abort -> stringResource(R.string.stopped_by_user)
     is AutoBattle.ExitReason.Unexpected -> {
         cause.let {
-            if (it is KnownException) it.reason.msg
+            if (it is KnownException) stringResource(it.reason.resId, *it.reason.args)
             else "${stringResource(R.string.unexpected_error)}: ${cause?.message}"
         }
     }
