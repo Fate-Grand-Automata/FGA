@@ -1,8 +1,6 @@
 package io.github.fate_grand_automata.util
 
 import android.content.Context
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import io.github.fate_grand_automata.R
 
 /**
@@ -11,13 +9,19 @@ import io.github.fate_grand_automata.R
  * The keys stored in SharedPreferences remain as the original English names
  * (used for image file matching). Only the display layer is localized.
  * Custom/user-added servants/CEs automatically fall back to their original names.
+ *
+ * Every key has to match an asset name under `app/src/main/assets/Support` exactly — a
+ * servant folder name, or a CE file name without its extension. A key that doesn't match
+ * degrades silently to the English name, which is indistinguishable from the intended
+ * fallback for custom supports, so the `verifySupportNames` build task fails the build
+ * when the two drift apart.
  */
 object SupportNameResources {
     /**
      * Maps English servant folder names to their localized string resource IDs.
      * Only contains the 23 default servants shipped with the app.
      */
-    val servantNameResIds: Map<String, Int> = mapOf(
+    private val servantNameResIds: Map<String, Int> = mapOf(
         "Arcueid" to R.string.servant_name_arcueid,
         "Artoria (Caster)" to R.string.servant_name_artoria_caster,
         "BB Dubai" to R.string.servant_name_bb_dubai,
@@ -47,7 +51,7 @@ object SupportNameResources {
      * Maps English CE file names to their localized string resource IDs.
      * Only contains the 22 default CEs shipped with the app.
      */
-    val ceNameResIds: Map<String, Int> = mapOf(
+    private val ceNameResIds: Map<String, Int> = mapOf(
         "Aerial Drive" to R.string.ce_name_aerial_drive,
         "Bella Lisa" to R.string.ce_name_bella_lisa,
         "Black Grail" to R.string.ce_name_black_grail,
@@ -76,35 +80,16 @@ object SupportNameResources {
      * Returns the localized display name for a given English servant name.
      * Falls back to the English name if no translation resource exists (covers custom servants).
      */
-    fun getLocalizedServantName(context: Context, englishName: String): String {
-        val resId = servantNameResIds[englishName]
-        return if (resId != null) context.getString(resId) else englishName
-    }
-
-    /**
-     * Composable variant using [stringResource].
-     */
-    @Composable
-    fun getLocalizedServantName(englishName: String): String {
-        val resId = servantNameResIds[englishName]
-        return if (resId != null) stringResource(resId) else englishName
-    }
+    fun getLocalizedServantName(context: Context, englishName: String) =
+        servantNameResIds.localize(context, englishName)
 
     /**
      * Returns the localized display name for a given English CE name.
      * Falls back to the English name if no translation resource exists (covers custom CEs).
      */
-    fun getLocalizedCEName(context: Context, englishName: String): String {
-        val resId = ceNameResIds[englishName]
-        return if (resId != null) context.getString(resId) else englishName
-    }
+    fun getLocalizedCEName(context: Context, englishName: String) =
+        ceNameResIds.localize(context, englishName)
 
-    /**
-     * Composable variant using [stringResource].
-     */
-    @Composable
-    fun getLocalizedCEName(englishName: String): String {
-        val resId = ceNameResIds[englishName]
-        return if (resId != null) stringResource(resId) else englishName
-    }
+    private fun Map<String, Int>.localize(context: Context, englishName: String) =
+        this[englishName]?.let(context::getString) ?: englishName
 }
