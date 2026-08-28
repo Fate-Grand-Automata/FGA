@@ -1,5 +1,5 @@
 ---
-paths: "app/src/main/res/**"
+paths: "app/src/main/res/**,app/src/main/assets/Support/**"
 description: The English string source and the external POEditor translation flow.
 ---
 

@@ -1,5 +1,5 @@
 ---
-applyTo: "app/src/main/res/**"
+applyTo: "app/src/main/res/**,app/src/main/assets/Support/**"
 description: The English string source and the external POEditor translation flow.
 ---
 
