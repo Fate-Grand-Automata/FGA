@@ -1,7 +1,5 @@
 # AGENTS.md
 
-Guidance for AI coding agents working in this repository. It follows the [AGENTS.md](https://agents.md/) convention, so any agent that supports it picks this file up directly; `CLAUDE.md` just includes it.
-
 Path-specific guidance lives in [`docs/agents/`](docs/agents/) so it is loaded only when relevant: read a guide when its trigger below matches. Copilot and Claude Code pick the same guides up automatically via stubs in `.github/instructions/` and `.claude/rules/` — see [`docs/agents/README.md`](docs/agents/README.md).
 
 ## What this is
@@ -18,8 +16,7 @@ Fate/Grand Automata (FGA) — an Android app that automates farming in the game 
 ## Build & test
 
 ```bash
-./gradlew assembleDebug          # debug APK, applicationId suffix .test, signed with committed app/fgadebug.keystore
-./gradlew assembleCi             # minified release-like APK signed with the debug keystore (what PR CI builds)
+./gradlew :app:compileDebugKotlin # Compiles the kotlin code for the android app.
 ./gradlew :scripts:test          # the only unit tests in the repo (JUnit 5 + assertk + mockk)
 ./gradlew :scripts:test --tests '*SupportSelectionTest'          # single test class
 ./gradlew :scripts:test --tests '*SupportSelectionTest.someName' # single test method
@@ -29,8 +26,6 @@ Fate/Grand Automata (FGA) — an Android app that automates farming in the game 
 
 - Everything builds on **JDK 21** via a Gradle toolchain pin; emitted bytecode stays at **Java 11**.
 - `lint` reports `MissingTranslation` **errors** on `app`. That is the expected steady state, not a regression — don't try to fix them in-repo.
-- `versionCode`/`versionName` come from the `FGA_VERSION_CODE`/`FGA_VERSION_NAME` env vars (default 1 / "0.1.0"). When installing a debug build over a store install, set `FGA_VERSION_CODE` to at least the installed version — Android refuses downgrades.
-- `release` builds need `app/fgautomata.keystore` and `KEYSTORE_PASS` and are CI-only; deploys go through `fastlane`.
 
 ## Module layout and dependency direction
 
