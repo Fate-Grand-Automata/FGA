@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Path-specific guidance lives in [`docs/agents/`](docs/agents/) so it is loaded only when relevant: read a guide when its trigger below matches. Copilot and Claude Code pick the same guides up automatically via stubs in `.github/instructions/` and `.claude/rules/` — see [`docs/agents/README.md`](docs/agents/README.md).
+Path-specific guidance lives in [`docs/agents/`](docs/agents) so it is loaded only when relevant: read a guide when its trigger below matches. Copilot and Claude Code pick the same guides up automatically via stubs in `.github/instructions/` and `.claude/rules/` — see [`docs/agents/README.md`](docs/agents/README.md).
 
 ## What this is
 
@@ -25,8 +25,7 @@ Fate/Grand Automata (FGA) — an Android app that automates farming in the game 
 ./gradlew dependencyUpdates      # ben-manes versions plugin
 ```
 
-- Everything builds on **JDK 21** via a Gradle toolchain pin; emitted bytecode stays at **Java 11**.
-- `lint` reports `MissingTranslation` **errors** on `app`. That is the expected steady state, not a regression — don't try to fix them in-repo.
+Everything builds on **JDK 21** via a Gradle toolchain pin; emitted bytecode stays at **Java 11**.
 
 ## Module layout and dependency direction
 
@@ -46,4 +45,4 @@ app  ──▶ scripts ──▶ libautomata
 - Hilt + KSP for DI; Compose (BOM-managed) with several `ExperimentalX` opt-ins already enabled in `app/build.gradle.kts`.
 - Dependencies live in `gradle/libs.versions.toml` — always add/bump there, never inline coordinates.
 - `wiki/` is the source of the GitHub wiki (published by `.github/workflows/publish-wiki.yml`) — user-facing docs go there, not in the README.
-- Agent guidance: keep this file to what's true repo-wide and put path-specific rules in [`docs/agents/`](docs/agents/), following [`docs/agents/README.md`](docs/agents/README.md).
+- Agent guidance: keep this file to what's true repo-wide and put path-specific rules in [`docs/agents/`](docs/agents), following [`docs/agents/README.md`](docs/agents/README.md).
