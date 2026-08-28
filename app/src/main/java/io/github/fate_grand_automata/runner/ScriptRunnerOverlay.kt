@@ -108,7 +108,17 @@ class ScriptRunnerOverlay @Inject constructor(
             restorePlayButtonLocation()
 
             highlightManager.show()
-            windowManager.addView(layout, scriptCtrlBtnLayoutParams)
+
+            try {
+                windowManager.addView(layout, scriptCtrlBtnLayoutParams)
+            } catch (e: Exception) {
+                // The overlay permission can be revoked between the check above and this call,
+                // and some ROMs reject the window for their own reasons. Either way it isn't
+                // worth taking the service down over.
+                Timber.e(e, "Failed to add the play button overlay")
+                highlightManager.hide()
+                return
+            }
 
             shown = true
         }
@@ -122,8 +132,7 @@ class ScriptRunnerOverlay @Inject constructor(
             // the overlay is up, we still have to take the views down or they leak.
             runCatching { windowManager.removeView(layout) }
                 .onFailure { Timber.w(it, "Failed to remove the play button overlay") }
-            runCatching { highlightManager.hide() }
-                .onFailure { Timber.w(it, "Failed to remove the highlight overlay") }
+            highlightManager.hide()
 
             shown = false
         }
