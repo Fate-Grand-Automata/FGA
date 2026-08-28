@@ -8,6 +8,7 @@
   ],
   "timezone": "Europe/Berlin",
   "semanticCommits": "disabled",
+  "rebaseWhen": "conflicted",
   "gradle": {
     "extends": [
       "schedule:monthly"
