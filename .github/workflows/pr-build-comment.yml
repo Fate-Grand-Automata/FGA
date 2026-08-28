@@ -23,27 +23,19 @@ jobs:
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
+            // GitHub leaves this array empty for workflow_run events triggered by PRs
+            // from forks, so treat that as "not a same-repo PR" and skip commenting.
             const prs = context.payload.workflow_run.pull_requests || [];
             if (prs.length === 0) {
-              core.setFailed('No PR associated with this workflow_run');
-              return;
-            }
-            const prNumber = prs[0].number;
-            const { data: pr } = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber,
-            });
-
-            // Only comment on PRs from branches in this repo, not forks
-            if (pr.head.repo.fork) {
-              core.notice('PR is from a fork, skipping comment');
+              core.notice('No PR association (likely a fork PR), skipping comment');
               core.setOutput('skip', 'true');
               return;
             }
-            core.setOutput('number', String(pr.number));
+            const prNumber = prs[0].number;
+            core.setOutput('number', String(prNumber));
 
       - name: Resolve APK artifact direct URL
+        if: steps.pr.outputs.skip != 'true'
         id: artifact
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
