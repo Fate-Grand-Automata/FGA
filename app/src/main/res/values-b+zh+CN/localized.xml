@@ -409,6 +409,8 @@
     <string name="skill_maker_space_ishtar">"太空伊什塔尔"</string>
     <string name="skill_maker_special_targets_warning">"拥有特殊技能的从者"</string>
     <string name="skill_maker_summer_shiki">"泳装两仪式"</string>
+    <string name="skill_maker_summer_shiki_choice_1">"月下（全体攻击）"</string>
+    <string name="skill_maker_summer_shiki_choice_2">"日轮（单体攻击）"</string>
     <string name="skill_maker_target_header">"请选择对象"</string>
     <string name="skill_maker_target_none">"无对象"</string>
     <string name="skill_maker_target_servant">"从者

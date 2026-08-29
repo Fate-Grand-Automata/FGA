@@ -425,6 +425,8 @@
     <string name="skill_maker_space_ishtar">"スペースイシュタル"</string>
     <string name="skill_maker_special_targets_warning">"特殊スキルを持つサーヴァント"</string>
     <string name="skill_maker_summer_shiki">"水着両儀式"</string>
+    <string name="skill_maker_summer_shiki_choice_1">"月下(全体攻撃)"</string>
+    <string name="skill_maker_summer_shiki_choice_2">"日輪(単体攻撃)"</string>
     <string name="skill_maker_target_header">"ターゲット選択"</string>
 
     <!-- Fuzzy -->

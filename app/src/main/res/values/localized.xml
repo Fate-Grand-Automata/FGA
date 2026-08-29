@@ -410,7 +410,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="skill_maker_transform">"Transform"</string>
     <string name="skill_maker_melusine">"Mélusine"</string>
     <string name="skill_maker_ptolemy">"Ptolemy"</string>
-    <string name="skill_maker_select_button_labels">"Select which servant mode to Proceed"</string>
+    <string name="skill_maker_select_button_labels">"Select which servant mode to proceed"</string>
     <string name="skill_maker_update_button_labels">"Update Button Labels"</string>
     <string name="skill_maker_special_targets_warning">Servants with special skills</string>
     <string name="skill_maker_van_gogh">Van Gogh (Miner)</string>

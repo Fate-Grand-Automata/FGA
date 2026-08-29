@@ -415,6 +415,8 @@
     <string name="skill_maker_space_ishtar">"스페이스 이슈타르"</string>
     <string name="skill_maker_special_targets_warning">"특수한 사용법이 있는 서번트용 스킬"</string>
     <string name="skill_maker_summer_shiki">"수영복 료기 시키"</string>
+    <string name="skill_maker_summer_shiki_choice_1">"월하[대군 보구]"</string>
+    <string name="skill_maker_summer_shiki_choice_2">"일륜[대인 보구]"</string>
     <string name="skill_maker_target_header">"대상 선택"</string>
     <string name="skill_maker_target_none">"대상 없음"</string>
 

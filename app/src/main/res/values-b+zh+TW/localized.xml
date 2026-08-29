@@ -352,6 +352,8 @@ Order Change"</string>
     <string name="skill_maker_quick">"Quick"</string>
     <string name="skill_maker_space_ishtar">"太空伊絲塔（宇宙凜）"</string>
     <string name="skill_maker_summer_shiki">"泳裝兩儀式"</string>
+    <string name="skill_maker_summer_shiki_choice_1">"月下（全體攻擊）"</string>
+    <string name="skill_maker_summer_shiki_choice_2">"日輪（單體攻擊）"</string>
     <string name="skill_maker_target_header">"請選擇對象"</string>
     <string name="skill_maker_target_none">"無對象"</string>
 
