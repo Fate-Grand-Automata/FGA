@@ -12,6 +12,7 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        "GitHub.copilot",
         "oderwat.indent-rainbow",
         "redhat.vscode-yaml",
         "-vscjava.vscode-java-pack",
