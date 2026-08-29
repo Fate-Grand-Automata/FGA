@@ -14,7 +14,6 @@ import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.models.ServantTarget
-import io.github.fate_grand_automata.scripts.models.Skill
 import io.github.fate_grand_automata.ui.FgaScreen
 import io.github.fate_grand_automata.ui.OnPause
 import io.github.fate_grand_automata.ui.PreventRtl
@@ -173,7 +172,6 @@ fun SkillMakerUI(
                     slot = nav.slot,
                     onOption1 = { vm.targetSkill(ServantTarget.SpecialTarget.Choice2OptionA) },
                     onOption2 = { vm.targetSkill(ServantTarget.SpecialTarget.Choice2OptionB) },
-                    goToTarget = nav.skill in Skill.Servant.skill2,
                     onTarget = { firstTarget -> navigate(SkillMakerNav.Choice2Target(nav.skill, firstTarget)) }
                 )
             }

@@ -377,6 +377,7 @@
     <string name="skill_maker_confirm_clear_title">"초기화 확인"</string>
     <string name="skill_maker_confirm_exit_message">"정말 저장하지 않고 나가시겠습니까? 저장되지 않은 스킬 커맨드는 모두 사라집니다."</string>
     <string name="skill_maker_confirm_exit_title">"나가기 확인"</string>
+    <string name="skill_maker_dante_alighieri">"단테 알리기에리"</string>
     <string name="skill_maker_emiya">"에미야"</string>
     <string name="skill_maker_hakuno">"하쿠노"</string>
     <string name="skill_maker_hakuno_choice_1">"천"</string>
@@ -396,6 +397,7 @@
     <string name="skill_maker_main_wave">"라운드: %d"</string>
     <string name="skill_maker_master_skills_header">"마스터 스킬"</string>
     <string name="skill_maker_master_skills_order_change">"오더 체인지 / 전투복"</string>
+    <string name="skill_maker_melusine">"멜뤼진"</string>
     <string name="skill_maker_option_1">"옵션 1"</string>
     <string name="skill_maker_option_2">"옵션 2"</string>
     <string name="skill_maker_option_3">"옵션 3"</string>
@@ -407,10 +409,14 @@
 %d"</string>
     <string name="skill_maker_order_change_starting_member">"스타팅 멤버"</string>
     <string name="skill_maker_order_change_sub_member">"서브 멤버"</string>
+    <string name="skill_maker_ptolemy">"프톨레마이오스"</string>
     <string name="skill_maker_quick">"Quick"</string>
     <string name="skill_maker_soujuurou">"소쥬로"</string>
     <string name="skill_maker_space_ishtar">"스페이스 이슈타르"</string>
     <string name="skill_maker_special_targets_warning">"특수한 사용법이 있는 서번트용 스킬"</string>
+    <string name="skill_maker_summer_shiki">"수영복 료기 시키"</string>
+    <string name="skill_maker_summer_shiki_choice_1">"월하[대군 보구]"</string>
+    <string name="skill_maker_summer_shiki_choice_2">"일륜[대인 보구]"</string>
     <string name="skill_maker_target_header">"대상 선택"</string>
     <string name="skill_maker_target_none">"대상 없음"</string>
 
