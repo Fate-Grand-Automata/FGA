@@ -46,7 +46,6 @@ class PreferredSupportSelection @Inject constructor(
             }
 
             val matched = boundsFinder.all()
-                .toList()
                 .firstNotNullOfOrNull { isMatch(it) }
 
             if (matched != null) {
