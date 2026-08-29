@@ -22,7 +22,10 @@ fun TargetButton(
 ) {
     Button(
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(containerColor = color),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = color,
+            contentColor = Color.White
+        ),
         modifier = Modifier
             .height(75.dp)
             .width(120.dp),
@@ -30,7 +33,6 @@ fun TargetButton(
     ) {
         Text(
             text,
-            color = Color.White,
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Clip,
             fontSize = 17.sp

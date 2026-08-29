@@ -31,32 +31,33 @@ enum class Choice2Type(val slot: SkillSlot) {
     companion object {
         fun mustSelect(current: SkillSlot) = current == SkillSlot.Second
 
-        val slot1 = setOf(Kukulkan)
+        fun inSlot(slot: SkillSlot) = entries.filter { it != Generic && it.slot.matches(slot) }
 
-        val slot2 = setOf(Kukulkan, Dante, SummerShiki)
+        val slot1 = inSlot(SkillSlot.First)
 
+        val slot2 = inSlot(SkillSlot.Second)
+
+        val slot3 = inSlot(SkillSlot.Third)
+
+        /** Servants whose option still needs a servant target picked afterwards. */
         val slot2TargetEntries = setOf(Kukulkan)
-
-        val slot3 = setOf(Kukulkan, UDKBarghest)
     }
 }
 
 
 enum class Choice3Type(val slot: SkillSlot) {
     Generic(SkillSlot.ANY),
-
-    // First slot
     VanGogh(SkillSlot.First),
-
-    // Third slot
     Hakuno(SkillSlot.Third),
     Soujuurou(SkillSlot.Third),
     Charlotte(SkillSlot.Third);
 
     companion object {
-        val slot1 = setOf(VanGogh)
+        fun inSlot(slot: SkillSlot) = entries.filter { it != Generic && it.slot.matches(slot) }
 
-        val slot3 = setOf(Hakuno, Soujuurou, Charlotte)
+        val slot1 = inSlot(SkillSlot.First)
+
+        val slot3 = inSlot(SkillSlot.Third)
     }
 }
 
@@ -65,6 +66,6 @@ enum class TransformType(val slot: SkillSlot) {
     Ptolemy(SkillSlot.Third);
 
     companion object {
-        val slot3 = setOf(Melusine, Ptolemy)
+        val slot3 = entries.filter { it.slot.matches(SkillSlot.Third) }
     }
 }

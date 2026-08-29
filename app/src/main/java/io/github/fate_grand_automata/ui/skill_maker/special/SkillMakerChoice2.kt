@@ -14,7 +14,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,23 +43,12 @@ fun SkillMakerChoice2(
     slot: SkillSlot,
     onOption1: () -> Unit,
     onOption2: () -> Unit,
-    goToTarget: Boolean,
     onTarget: (firstTarget: ServantTarget) -> Unit
 ) {
-    val entries by remember {
-        derivedStateOf {
-            Choice2Type.entries.filter {
-                it != Choice2Type.Generic && it.slot.matches(slot)
-            }
-        }
-    }
+    val entries = remember(slot) { Choice2Type.inSlot(slot) }
     var choice2Type by remember { mutableStateOf(Choice2Type.Generic) }
 
-    val mustSelect by remember {
-        derivedStateOf {
-            Choice2Type.mustSelect(slot)
-        }
-    }
+    val mustSelect = Choice2Type.mustSelect(slot)
 
     Column(
         modifier = Modifier
@@ -129,9 +117,7 @@ fun SkillMakerChoice2(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            entries.filterNot {
-                it == Choice2Type.Generic
-            }.forEach { entry ->
+            entries.forEach { entry ->
                 val containerColor by animateColorAsState(
                     targetValue = if (choice2Type == entry) {
                         MaterialTheme.colorScheme.onSurface.copy(0.12f)
@@ -220,7 +206,7 @@ fun SkillMakerChoice2Target(
 @Composable
 fun TestChoice2Slot2() {
     FGATheme {
-        SkillMakerChoice2(slot = SkillSlot.Second, onOption1 = { }, onOption2 = { }, goToTarget = true, onTarget = { })
+        SkillMakerChoice2(slot = SkillSlot.Second, onOption1 = { }, onOption2 = { }, onTarget = { })
     }
 }
 
@@ -229,7 +215,7 @@ fun TestChoice2Slot2() {
 @Composable
 fun TestChoice2Slot3() {
     FGATheme {
-        SkillMakerChoice2(slot = SkillSlot.Third, onOption1 = { }, onOption2 = { }, goToTarget = true, onTarget = { })
+        SkillMakerChoice2(slot = SkillSlot.Third, onOption1 = { }, onOption2 = { }, onTarget = { })
     }
 }
 

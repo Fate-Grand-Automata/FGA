@@ -14,7 +14,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,13 +44,7 @@ fun SkillMakerChoice3(
     slot: SkillSlot,
     onSkillTarget: (ServantTarget) -> Unit
 ) {
-    val entries by remember {
-        derivedStateOf {
-            Choice3Type.entries.filter {
-                it != Choice3Type.Generic && it.slot.matches(slot)
-            }
-        }
-    }
+    val entries = remember(slot) { Choice3Type.inSlot(slot) }
     var choice3Type by remember { mutableStateOf(Choice3Type.Generic) }
 
     Column(
