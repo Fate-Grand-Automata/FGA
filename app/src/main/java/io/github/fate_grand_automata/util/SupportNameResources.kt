@@ -13,15 +13,15 @@ import io.github.fate_grand_automata.R
  * Every key has to match an asset name under `app/src/main/assets/Support` exactly — a
  * servant folder name, or a CE file name without its extension. A key that doesn't match
  * degrades silently to the English name, which is indistinguishable from the intended
- * fallback for custom supports, so the `verifySupportNames` build task fails the build
- * when the two drift apart.
+ * fallback for custom supports, so `SupportNameResourcesTest` fails when the two drift
+ * apart.
  */
 object SupportNameResources {
     /**
      * Maps English servant folder names to their localized string resource IDs.
      * Only contains the 23 default servants shipped with the app.
      */
-    private val servantNameResIds: Map<String, Int> = mapOf(
+    internal val servantNameResIds: Map<String, Int> = mapOf(
         "Arcueid" to R.string.servant_name_arcueid,
         "Artoria (Caster)" to R.string.servant_name_artoria_caster,
         "BB Dubai" to R.string.servant_name_bb_dubai,
@@ -51,7 +51,7 @@ object SupportNameResources {
      * Maps English CE file names to their localized string resource IDs.
      * Only contains the 22 default CEs shipped with the app.
      */
-    private val ceNameResIds: Map<String, Int> = mapOf(
+    internal val ceNameResIds: Map<String, Int> = mapOf(
         "Aerial Drive" to R.string.ce_name_aerial_drive,
         "Bella Lisa" to R.string.ce_name_bella_lisa,
         "Black Grail" to R.string.ce_name_black_grail,

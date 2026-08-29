@@ -22,6 +22,9 @@ android {
             initWith(getByName("release"))
         }
     }
+    // run tests in CI builds instad of debug
+    testBuildType = "ci"
+
     namespace = "io.github.fate_grand_automata.prefs"
 }
 
