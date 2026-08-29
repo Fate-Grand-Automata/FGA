@@ -56,8 +56,7 @@ class MasterLocations @Inject constructor(
     val cancelCommandSpellRegion = Region(-202, 764, 95, 174).xFromCenter()
 
     fun locate(skill: Skill.CommandSpell) = when (skill) {
-        Skill.CommandSpell.CS1 -> 700
-        Skill.CommandSpell.CS2 -> 1000
+        Skill.CommandSpell.NpCharge -> 700
     }.let { y ->
         Location(0, y).xFromCenter()
     }

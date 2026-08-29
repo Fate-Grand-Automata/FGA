@@ -13,12 +13,6 @@ import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.scripts.models.Skill
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
-import androidx.lifecycle.viewModelScope
 import javax.inject.Inject
 
 @HiltViewModel
@@ -56,25 +50,27 @@ class SkillMakerViewModel @Inject constructor(
         m
     }
 
-    private var _commandSpellRemaining: MutableStateFlow<Int> =
-        MutableStateFlow(
-            value = 3 - skillCommand.count {
-                it is SkillMakerEntry.Action && it.action is AutoSkillAction.CommandSpell
-            }
-        )
+    // A hand-edited skill command can contain more command spells than a quest actually grants.
+    private val _commandSpellRemaining = mutableIntStateOf(
+        (MAX_COMMAND_SPELLS - model.skillCommand.count {
+            it is SkillMakerEntry.Action && it.action is AutoSkillAction.CommandSpell
+        }).coerceIn(0..MAX_COMMAND_SPELLS)
+    )
+    val commandSpellRemaining: State<Int> = _commandSpellRemaining
 
-    val commandSpellRemaining: StateFlow<Int> = _commandSpellRemaining
-        .map { it.coerceIn(0..3) }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Eagerly,
-            initialValue = 3
-        )
+    /**
+     * The only command spell FGA supports is the NP charge, so the button on the main screen goes
+     * straight to picking the servant to charge instead of offering a list of one.
+     */
+    fun initCommandSpell() {
+        if (_commandSpellRemaining.value <= 0) {
+            navigation.value = SkillMakerNav.CommandSpellUnavailable
+            return
+        }
 
-    fun initCommandSpell(skill: Skill) {
-        currentSkill = skill.autoSkillCode
+        currentSkill = Skill.CommandSpell.NpCharge.autoSkillCode
 
-        navigation.value = SkillMakerNav.CommandSpellTarget(skill)
+        navigation.value = SkillMakerNav.CommandSpellTarget
     }
 
     private val _wave = mutableIntStateOf(
@@ -367,5 +363,9 @@ class SkillMakerViewModel @Inject constructor(
 
     init {
         revertToPreviousEnemyTarget()
+    }
+
+    companion object {
+        private const val MAX_COMMAND_SPELLS = 3
     }
 }

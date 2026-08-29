@@ -2,7 +2,6 @@ package io.github.fate_grand_automata.ui.skill_maker
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -20,16 +19,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.models.ServantTarget
-import io.github.fate_grand_automata.scripts.models.Skill
 import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.FGATitle
-import io.github.fate_grand_automata.ui.skill_maker.special.TargetButton
-import io.github.fate_grand_automata.util.stringRes
+import io.github.fate_grand_automata.ui.skill_maker.utils.TargetButton
 
 @Composable
-fun SkillMakerCommandSpells(
-    remaining: Int,
-    onCommandSpell: (Skill.CommandSpell) -> Unit,
+fun SkillMakerCommandSpellUnavailable(
     onBack: () -> Unit
 ) {
     Column(
@@ -38,59 +33,29 @@ fun SkillMakerCommandSpells(
             .padding(16.dp)
     ) {
         FGATitle(
-            stringResource(R.string.skill_maker_command_spell, remaining)
+            stringResource(R.string.skill_maker_command_spell)
         )
 
-        if (remaining > 0) {
-            Row(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                TargetButton(
-                    onClick = {
-                        onCommandSpell(Skill.CommandSpell.CS1)
-                    },
-                    color = colorResource(R.color.colorServant1),
-                    text = stringResource(Skill.CommandSpell.CS1.stringRes)
-                )
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                stringResource(R.string.skill_maker_command_spell_warning),
+                textAlign = TextAlign.Center
+            )
+        }
 
-                TargetButton(
-                    onClick = {
-                        onCommandSpell(Skill.CommandSpell.CS2)
-                    },
-                    color = colorResource(R.color.colorServant2),
-                    text = stringResource(Skill.CommandSpell.CS2.stringRes)
-                )
-            }
-        } else {
-            Row(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Text(
-                    stringResource(R.string.skill_maker_command_spell_warning),
-                    modifier = Modifier,
-                    textAlign = TextAlign.Center
-                )
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Button(
-                    onClick = onBack,
-                ) {
-                    Text(stringResource(R.string.dismiss))
-                }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(onClick = onBack) {
+                Text(stringResource(R.string.dismiss))
             }
         }
     }
@@ -98,7 +63,7 @@ fun SkillMakerCommandSpells(
 
 @Composable
 fun SkillMakerCommandSpellTarget(
-    onServantTarget: (ServantTarget) -> Unit,
+    onServantTarget: (ServantTarget) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -106,7 +71,7 @@ fun SkillMakerCommandSpellTarget(
             .padding(16.dp)
     ) {
         FGATitle(
-            stringResource(R.string.skill_maker_target_header)
+            stringResource(R.string.skill_maker_command_spell_np_charge)
         )
 
         Row(
@@ -137,29 +102,20 @@ fun SkillMakerCommandSpellTarget(
     }
 }
 
-
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
 @Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun TestCommandSpell() {
+fun TestCommandSpellTarget() {
     FGATheme {
-        SkillMakerCommandSpells(
-            remaining = 3,
-            onCommandSpell = { },
-            onBack = { }
-        )
+        SkillMakerCommandSpellTarget(onServantTarget = { })
     }
 }
 
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
 @Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun TestCommandSpellZero() {
+fun TestCommandSpellUnavailable() {
     FGATheme {
-        SkillMakerCommandSpells(
-            remaining = 0,
-            onCommandSpell = { },
-            onBack = { }
-        )
+        SkillMakerCommandSpellUnavailable(onBack = { })
     }
 }

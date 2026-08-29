@@ -110,9 +110,7 @@ fun SkillMakerUI(
             SkillMakerNav.Main -> {
                 SkillMakerMain(
                     vm = vm,
-                    onCommandSpell = {
-                        navigate(SkillMakerNav.CommandSpell(it))
-                    },
+                    onCommandSpell = { vm.initCommandSpell() },
                     onMasterSkills = { navigate(SkillMakerNav.MasterSkills) },
                     onAtk = { navigate(SkillMakerNav.Atk) },
                     onSkill = { vm.initSkill(it) },
@@ -133,18 +131,13 @@ fun SkillMakerUI(
                 )
             }
 
-            is SkillMakerNav.CommandSpell -> {
-                SkillMakerCommandSpells(
-                    remaining = nav.cs,
-                    onCommandSpell = {
-                        vm.initCommandSpell(it)
-                    },
-                    onBack = {
-                        navigate(SkillMakerNav.Main)
-                    }
+            SkillMakerNav.CommandSpellUnavailable -> {
+                SkillMakerCommandSpellUnavailable(
+                    onBack = { navigate(SkillMakerNav.Main) }
                 )
             }
-            is SkillMakerNav.CommandSpellTarget -> {
+
+            SkillMakerNav.CommandSpellTarget -> {
                 SkillMakerCommandSpellTarget(
                     onServantTarget = { vm.targetSkill(it) }
                 )
