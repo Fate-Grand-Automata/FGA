@@ -8,3 +8,8 @@
 .externalNativeBuild
 .cxx
 custom-game-area/image.jpg
+
+# Play Store deploy credentials - holds a service account private key
+fastlane/serviceaccount.json
+fastlane/report.xml
+/crash/
