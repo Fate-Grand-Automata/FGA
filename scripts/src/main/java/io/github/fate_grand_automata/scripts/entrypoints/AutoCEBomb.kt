@@ -55,7 +55,6 @@ class AutoCEBomb @Inject constructor(
         for (img in imagesForSelectedRarity()) {
             val matches = locations.levelOneCERegion
                 .findAll(images[img])
-                .toList()
                 .sorted()
 
             // At least 2 copies are needed to merge
