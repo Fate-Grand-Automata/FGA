@@ -44,7 +44,7 @@ val ChangeNp3Type.targetBStringRes
 
 val ChangeNp3Type.targetCStringRes
     get() = when (this) {
-        ChangeNp3Type.Generic -> R.string.skill_maker_option_2
+        ChangeNp3Type.Generic -> R.string.skill_maker_option_3
         ChangeNp3Type.SpaceIshtar -> R.string.skill_maker_buster
     }
 
@@ -107,7 +107,7 @@ val Choice2Type.targetBStringRes
         Choice2Type.Kukulkan -> R.string.skill_maker_kukulkan_choice_2
         Choice2Type.SummerShiki -> R.string.skill_maker_summer_shiki_choice_2
         Choice2Type.UDKBarghest -> R.string.skill_maker_udk_barghest_choice_2
-        Choice2Type.Dante -> R.string.skill_maker_dante_alighieri_choice_1
+        Choice2Type.Dante -> R.string.skill_maker_dante_alighieri_choice_2
     }
 
 val TransformType.stringRes

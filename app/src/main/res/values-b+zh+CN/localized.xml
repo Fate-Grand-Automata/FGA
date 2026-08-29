@@ -360,42 +360,21 @@
     <string name="skill_maker_bb_dubai_target_2">"G.G.G.（防御型）"</string>
     <string name="skill_maker_buster">"力击"</string>
     <string name="skill_maker_change_np_type_2">"两种宝具类型"</string>
-    <string-array name="skill_maker_change_np_type_2_array">
-        <item>"卫宫"</item>
-        <item>"BB迪拜"</item>
-    </string-array>
     <string name="skill_maker_change_np_type_2_hint">"可切换两种宝具类型的从者"</string>
     <string name="skill_maker_change_np_type_3">"三种宝具类型"</string>
-    <string-array name="skill_maker_change_np_type_3_array">
-        <item>"太空伊什塔尔"</item>
-    </string-array>
     <string name="skill_maker_change_np_type_3_hint">"可切换三种宝具类型的从者"</string>
     <string name="skill_maker_charlotte">"夏洛特·科黛"</string>
     <string name="skill_maker_charlotte_choice_2">"暴击威力提升"</string>
     <string name="skill_maker_charlotte_choice_3">"宝具威力提升"</string>
     <string name="skill_maker_choices_2">"双选项"</string>
-    <string-array name="skill_maker_choices_2_array_slot_1and2">
-        <item>"库库尔坎"</item>
-    </string-array>
-    <string-array name="skill_maker_choices_2_array_slot_3">
-        <item>"库库尔坎"</item>
-        <item>"UDK－巴格斯特"</item>
-    </string-array>
     <string name="skill_maker_choices_2_hint">"拥有双选项技能的从者"</string>
     <string name="skill_maker_choices_3">"三选项"</string>
-    <string-array name="skill_maker_choices_3_array_slot_1">
-        <item>"梵高〔矿工〕"</item>
-    </string-array>
-    <string-array name="skill_maker_choices_3_array_slot_3">
-        <item>"静希草十郎"</item>
-        <item>"夏洛特·科黛"</item>
-        <item>"岸波白野"</item>
-    </string-array>
     <string name="skill_maker_choices_3_hint">"拥有三选项技能的从者"</string>
     <string name="skill_maker_confirm_clear_message">"将会清除所有技能施放指令，确认执行?"</string>
     <string name="skill_maker_confirm_clear_title">"确认清除"</string>
     <string name="skill_maker_confirm_exit_message">"将不会储存目前设定的技能施放指令，确认离开?"</string>
     <string name="skill_maker_confirm_exit_title">"确认离开"</string>
+    <string name="skill_maker_dante_alighieri">"但丁·阿利吉耶里"</string>
     <string name="skill_maker_emiya">"卫宫"</string>
     <string name="skill_maker_hakuno">"岸波白野"</string>
     <string name="skill_maker_hakuno_choice_1">"天之力特攻"</string>
@@ -414,6 +393,7 @@
     <string name="skill_maker_main_wave">"第 %d 波"</string>
     <string name="skill_maker_master_skills_header">"御主技能"</string>
     <string name="skill_maker_master_skills_order_change">"换人"</string>
+    <string name="skill_maker_melusine">"梅柳齐娜"</string>
     <string name="skill_maker_option_1">"选项1"</string>
     <string name="skill_maker_option_2">"选项2"</string>
     <string name="skill_maker_option_3">"选项3"</string>
@@ -423,20 +403,18 @@
 %d"</string>
     <string name="skill_maker_order_change_starting_member">"首发成员"</string>
     <string name="skill_maker_order_change_sub_member">"候补成员"</string>
+    <string name="skill_maker_ptolemy">"托勒密"</string>
     <string name="skill_maker_quick">"迅击"</string>
     <string name="skill_maker_soujuurou">"静希草十郎"</string>
     <string name="skill_maker_space_ishtar">"太空伊什塔尔"</string>
     <string name="skill_maker_special_targets_warning">"拥有特殊技能的从者"</string>
+    <string name="skill_maker_summer_shiki">"泳装两仪式"</string>
     <string name="skill_maker_target_header">"请选择对象"</string>
     <string name="skill_maker_target_none">"无对象"</string>
     <string name="skill_maker_target_servant">"从者
 
 %d"</string>
     <string name="skill_maker_transform">"换装宝具"</string>
-    <string-array name="skill_maker_transform_array">
-        <item>"梅柳齐娜"</item>
-        <item>"托勒密"</item>
-    </string-array>
     <string name="skill_maker_transform_hint">"可换装宝具的从者"</string>
     <string name="skill_maker_udk_barghest">"UDK－巴格斯特"</string>
     <string name="skill_maker_udk_barghest_choice_1">"全体攻击"</string>

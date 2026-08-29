@@ -389,6 +389,7 @@
     <string name="skill_maker_confirm_clear_title">"再確認"</string>
     <string name="skill_maker_confirm_exit_message">"本当に終了しますか？スキルコマンドの変更は保存されません。"</string>
     <string name="skill_maker_confirm_exit_title">"再確認"</string>
+    <string name="skill_maker_dante_alighieri">"ダンテ・アリギエーリ"</string>
     <string name="skill_maker_emiya">"エミヤ"</string>
     <string name="skill_maker_hakuno">"白野"</string>
     <string name="skill_maker_hakuno_choice_1">"天"</string>
@@ -406,6 +407,7 @@
     <string name="skill_maker_main_servant">"サーヴァント %d"</string>
     <string name="skill_maker_master_skills_header">"マスタースキル"</string>
     <string name="skill_maker_master_skills_order_change">"オーダーチェンジ"</string>
+    <string name="skill_maker_melusine">"メリュジーヌ"</string>
     <string name="skill_maker_option_1">"1番目"</string>
     <string name="skill_maker_option_2">"2番目"</string>
     <string name="skill_maker_option_3">"3番目"</string>
@@ -417,10 +419,12 @@
 %d"</string>
     <string name="skill_maker_order_change_starting_member">"スターティングメンバー"</string>
     <string name="skill_maker_order_change_sub_member">"サブメンバー"</string>
+    <string name="skill_maker_ptolemy">"プトレマイオス"</string>
     <string name="skill_maker_quick">"Quick"</string>
     <string name="skill_maker_soujuurou">"静希草十郎"</string>
     <string name="skill_maker_space_ishtar">"スペースイシュタル"</string>
     <string name="skill_maker_special_targets_warning">"特殊スキルを持つサーヴァント"</string>
+    <string name="skill_maker_summer_shiki">"水着両儀式"</string>
     <string name="skill_maker_target_header">"ターゲット選択"</string>
 
     <!-- Fuzzy -->
