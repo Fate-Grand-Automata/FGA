@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.scripts.modules
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
+import io.github.fate_grand_automata.scripts.entrypoints.AutoBattle
 import io.github.fate_grand_automata.scripts.enums.SpamEnum
 import io.github.fate_grand_automata.scripts.models.AutoSkillAction
 import io.github.fate_grand_automata.scripts.models.CommandCard
@@ -41,6 +42,11 @@ class Caster @Inject constructor(
         locations.battle.screenCheckRegion.exists(img, timeout)
     }
 
+    private fun confirmCommandSpell(): Boolean = locations.battle.master.cancelCommandSpellRegion.exists(
+        images[Images.Cancel],
+        timeout = 2.seconds
+    )
+
     private fun confirmSkillUse() {
         if (skillConfirmation == null) {
             skillConfirmation = locations.battle.skillUseRegion.exists(images[Images.SkillUse], 0.5.seconds)
@@ -57,7 +63,22 @@ class Caster @Inject constructor(
         when (skill) {
             is Skill.Master -> locations.battle.master.locate(skill)
             is Skill.Servant -> locations.battle.locate(skill)
+            is Skill.CommandSpell -> locations.battle.master.locate(skill)
         }.click()
+
+        if (skill is Skill.CommandSpell) {
+            // has an extra confirmation window
+
+            0.5.seconds.wait()
+            val isCommandSpellExist = confirmCommandSpell()
+            if (isCommandSpellExist) {
+                locations.battle.skillOkClick.click()
+            } else {
+                throw AutoBattle.BattleExitException(AutoBattle.ExitReason.OutOfCommandSpells)
+            }
+
+            0.5.seconds.wait()
+        }
 
         confirmSkillUse()
 
@@ -124,6 +145,25 @@ class Caster @Inject constructor(
         }
 
         locations.battle.locate(actualTarget)?.click()
+    }
+
+    private fun openCommandSpellMenu() {
+        val commandSpellMatch = locations.battle.master.commandSpellSearchRegion.find(
+            images[Images.CommandSpell]
+        )
+        if (commandSpellMatch != null) {
+            Location(commandSpellMatch.region.x, 150).click()
+        } else {
+            throw AutoBattle.BattleExitException(AutoBattle.ExitReason.OutOfCommandSpells)
+        }
+
+        0.5.seconds.wait()
+    }
+
+    fun castCommandSpell(skill: Skill.CommandSpell, target: ServantTarget?) {
+        openCommandSpellMenu()
+
+        castSkill(skill, target)
     }
 
     private fun openMasterSkillMenu() {

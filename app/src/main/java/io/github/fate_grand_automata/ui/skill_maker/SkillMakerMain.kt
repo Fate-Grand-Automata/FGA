@@ -7,17 +7,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,9 +40,14 @@ import io.github.fate_grand_automata.scripts.models.AutoSkillAction
 import io.github.fate_grand_automata.scripts.models.Skill
 import io.github.fate_grand_automata.ui.icon
 
+/* Fixed rather than filling the column: the column is far taller than it is wide now that only the
+ * Attack button is left in it, and a circle that filled the height would crowd the skill buttons. */
+private val ATTACK_BUTTON_SIZE = 104.dp
+
 @Composable
 fun SkillMakerMain(
     vm: SkillMakerViewModel,
+    onCommandSpell: () -> Unit,
     onMasterSkills: () -> Unit,
     onAtk: () -> Unit,
     onSkill: (Skill.Servant) -> Unit,
@@ -60,6 +62,7 @@ fun SkillMakerMain(
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth()
@@ -70,6 +73,36 @@ fun SkillMakerMain(
                 selected = enemyTarget,
                 onSelectedChange = { vm.setEnemyTarget(it) }
             )
+
+            // FGO groups the Command Spell and Master Skill buttons by the battle/turn counter.
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val commandSpellRemaining by vm.commandSpellRemaining
+
+                Button(
+                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorCommandSpell)),
+                    onClick = onCommandSpell
+                ) {
+                    Text(
+                        stringResource(R.string.skill_maker_command_spell_button, commandSpellRemaining),
+                        textAlign = TextAlign.Center,
+                        color = Color.White
+                    )
+                }
+
+                Button(
+                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorMasterSkill)),
+                    onClick = onMasterSkills
+                ) {
+                    Text(
+                        stringResource(R.string.skill_maker_main_master_skills),
+                        textAlign = TextAlign.Center,
+                        color = Color.White
+                    )
+                }
+            }
 
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -133,30 +166,13 @@ fun SkillMakerMain(
                 horizontalAlignment = Alignment.End,
                 modifier = Modifier
                     .padding(start = 16.dp)
-                    .width(IntrinsicSize.Max)
                     .fillMaxHeight()
             ) {
-                Button(
-                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorMasterSkill)),
-                    onClick = onMasterSkills
-                ) {
-                    Text(
-                        stringResource(R.string.skill_maker_main_master_skills),
-                        textAlign = TextAlign.Center,
-                        color = Color.White
-                    )
-                }
-
-                Spacer(Modifier.height(16.dp))
-
                 Button(
                     shape = CircleShape,
                     onClick = onAtk,
                     colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorAccent)),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .aspectRatio(1f)
-
+                    modifier = Modifier.size(ATTACK_BUTTON_SIZE)
                 ) {
                     Text(
                         stringResource(R.string.skill_maker_main_attack),
@@ -247,6 +263,7 @@ val SkillMakerEntry?.colorRes: Int
                     'g', 'h', 'i' -> R.color.colorServant3
                     else -> defaultColor
                 }
+                is AutoSkillAction.CommandSpell -> R.color.colorCommandSpell
 
                 else -> defaultColor
             }

@@ -110,6 +110,7 @@ fun SkillMakerUI(
             SkillMakerNav.Main -> {
                 SkillMakerMain(
                     vm = vm,
+                    onCommandSpell = { vm.initCommandSpell() },
                     onMasterSkills = { navigate(SkillMakerNav.MasterSkills) },
                     onAtk = { navigate(SkillMakerNav.Atk) },
                     onSkill = { vm.initSkill(it) },
@@ -127,6 +128,18 @@ fun SkillMakerUI(
                     onMasterSkill = { vm.initSkill(it) },
                     onMasterSkillNoTarget = { vm.noTargetSkill(it) },
                     onOrderChange = { navigate(SkillMakerNav.OrderChange) }
+                )
+            }
+
+            SkillMakerNav.CommandSpellUnavailable -> {
+                SkillMakerCommandSpellUnavailable(
+                    onBack = { navigate(SkillMakerNav.Main) }
+                )
+            }
+
+            SkillMakerNav.CommandSpellTarget -> {
+                SkillMakerCommandSpellTarget(
+                    onServantTarget = { vm.targetSkill(it) }
                 )
             }
 
@@ -179,6 +192,7 @@ fun SkillMakerUI(
             is SkillMakerNav.Choice2Target -> {
                 SkillMakerChoice2Target(onSkillTarget = { vm.targetSkill(listOf(nav.firstTarget, it)) })
             }
+
             is SkillMakerNav.Choice3 -> {
                 SkillMakerChoice3(
                     slot = nav.slot,

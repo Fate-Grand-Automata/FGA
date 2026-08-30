@@ -50,6 +50,29 @@ class SkillMakerViewModel @Inject constructor(
         m
     }
 
+    // A hand-edited skill command can contain more command spells than a quest actually grants.
+    private val _commandSpellRemaining = mutableIntStateOf(
+        (MAX_COMMAND_SPELLS - model.skillCommand.count {
+            it is SkillMakerEntry.Action && it.action is AutoSkillAction.CommandSpell
+        }).coerceIn(0..MAX_COMMAND_SPELLS)
+    )
+    val commandSpellRemaining: State<Int> = _commandSpellRemaining
+
+    /**
+     * The only command spell FGA supports is the NP charge, so the button on the main screen goes
+     * straight to picking the servant to charge instead of offering a list of one.
+     */
+    fun initCommandSpell() {
+        if (_commandSpellRemaining.value <= 0) {
+            navigation.value = SkillMakerNav.CommandSpellUnavailable
+            return
+        }
+
+        currentSkill = Skill.CommandSpell.NpCharge.autoSkillCode
+
+        navigation.value = SkillMakerNav.CommandSpellTarget
+    }
+
     private val _wave = mutableIntStateOf(
         if (state.skillString != null) {
             state.wave
@@ -183,7 +206,7 @@ class SkillMakerViewModel @Inject constructor(
     }
 
     fun targetSkill(targets: List<ServantTarget>) {
-        val skill = (Skill.Servant.list + Skill.Master.list)
+        val skill = (Skill.Servant.list + Skill.Master.list + Skill.CommandSpell.list)
             .first { it.autoSkillCode == currentSkill }
 
         add(
@@ -191,6 +214,10 @@ class SkillMakerViewModel @Inject constructor(
                 when (skill) {
                     is Skill.Servant -> AutoSkillAction.ServantSkill(skill, targets)
                     is Skill.Master -> AutoSkillAction.MasterSkill(skill, targets.firstOrNull())
+                    is Skill.CommandSpell -> {
+                        --_commandSpellRemaining.value
+                        AutoSkillAction.CommandSpell(skill, targets.firstOrNull())
+                    }
                 }
             )
         )
@@ -315,13 +342,20 @@ class SkillMakerViewModel @Inject constructor(
                 }
 
                 is SkillMakerEntry.Action -> {
-                    if (last.action is AutoSkillAction.TargetEnemy) {
-                        deleteSelected()
-                        revertToPreviousEnemyTarget()
-                    } else deleteSelected()
+                    when(last.action) {
+                        is AutoSkillAction.TargetEnemy -> {
+                            deleteSelected()
+                            revertToPreviousEnemyTarget()
+                        }
+                        is AutoSkillAction.CommandSpell -> {
+                            ++_commandSpellRemaining.value
+                            deleteSelected()
+                        }
+                        else -> deleteSelected()
+                    }
                 }
-                // Do nothing
                 is SkillMakerEntry.Start -> {
+                    // Do nothing
                 }
             }
         }
@@ -329,5 +363,9 @@ class SkillMakerViewModel @Inject constructor(
 
     init {
         revertToPreviousEnemyTarget()
+    }
+
+    companion object {
+        private const val MAX_COMMAND_SPELLS = 3
     }
 }
