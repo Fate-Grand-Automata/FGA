@@ -9,6 +9,7 @@ import io.github.fate_grand_automata.imaging.DroidCvPattern
 import io.github.fate_grand_automata.scripts.IImageLoader
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.enums.GameServer
+import io.github.fate_grand_automata.scripts.enums.GameServers
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.lib_automata.ColorManager
@@ -32,7 +33,7 @@ class ImageLoader @Inject constructor(
         // load image from En by default or from current game server if a custom image exists
         val gameServerWithImage = if (assets.list(gameServerPath)?.contains(FileName) == true) {
             gameServerPath
-        } else GameServer.default.simple
+        } else GameServers.default.simple
 
         val inputStream = assets.open("$gameServerWithImage/${FileName}")
 
@@ -45,7 +46,7 @@ class ImageLoader @Inject constructor(
 
     private fun key(name: String, gameServer: GameServer? = null) = CacheKey(name, gameServer, colorManager.isColor)
 
-    private var currentGameServer: GameServer = GameServer.default
+    private var currentGameServer: GameServer = GameServers.default
     private var regionCachedPatterns = mutableMapOf<CacheKey, Pattern>()
 
     override operator fun get(img: Images, gameServer: GameServer?): Pattern = synchronized(regionCachedPatterns) {

@@ -4,6 +4,7 @@ import android.content.Context
 import com.fredporciuncula.flow.preferences.Serializer
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.fate_grand_automata.scripts.enums.GameServer
+import io.github.fate_grand_automata.scripts.enums.GameServers
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.lib_automata.Location
 import javax.inject.Inject
@@ -114,12 +115,12 @@ class PrefsCore @Inject constructor(
 
     var showGameServer = maker.serialized(
         key = "show_game_server",
-        default = listOf(GameServer.default),
+        default = listOf(GameServers.default),
         serializer = object : Serializer<List<GameServer>> {
             private val separator = ","
             override fun deserialize(serialized: String): List<GameServer> {
                 val values = serialized.split(separator)
-                return values.mapNotNull { GameServer.deserialize(it) }
+                return values.mapNotNull { GameServers.deserialize(it) }
             }
 
             override fun serialize(value: List<GameServer>): String = value.joinToString(separator)
