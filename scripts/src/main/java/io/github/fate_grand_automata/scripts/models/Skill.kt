@@ -38,4 +38,12 @@ sealed class Skill(val autoSkillCode: Char) {
             val list by lazy { listOf(A, B, C) }
         }
     }
+
+    sealed class CommandSpell(autoSkillCode: Char) : Skill(autoSkillCode) {
+        data object NpCharge : CommandSpell('o')
+
+        companion object {
+            val list by lazy { listOf(NpCharge) }
+        }
+    }
 }

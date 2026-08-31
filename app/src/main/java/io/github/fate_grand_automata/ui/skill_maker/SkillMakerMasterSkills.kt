@@ -61,7 +61,7 @@ fun SkillMakerMasterSkills(
                         skill = it,
                         color = colorResource(R.color.colorMasterSkill),
                         onClick = { onMasterSkill(it) },
-                        onDoubleClick = { onMasterSkillNoTarget(it) }
+                        onLongClick = { onMasterSkillNoTarget(it) }
                     )
                 }
             }

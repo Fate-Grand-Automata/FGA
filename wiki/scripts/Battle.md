@@ -24,6 +24,7 @@
     - [Cards before NP](#cards-before-np)
   - [Master skills](#master-skills)
   - [Master skills - Plugsuit](#master-skills---plugsuit)
+  - [Command Spells](#command-spells)
   - [Next turn in the same wave, and Next wave](#next-turn-in-the-same-wave-and-next-wave)
     - [Next Wave](#next-wave)
     - [Next Turn in the same wave](#next-turn-in-the-same-wave)
@@ -275,6 +276,20 @@ The `l` command should not be used when using the Plugsuit mystic code. Instead,
 This will trigger the Plugsuit order change menu.
 
 ![Order Change](https://i.imgur.com/BY5izMc.png)
+
+## Command Spells
+
+The `CS` button on the main Skill Maker screen adds a command spell that fully charges one servant's
+NP gauge. It asks which servant to charge, the same way skill targeting does. The NP charge is the
+only command spell FGA supports - the HP restore is not available.
+
+The number on the button is how many command spells the command has left to spend. You can hold at
+most three command spells at a time, so a single battle config can use at most three. Deleting a
+command spell entry gives one back. At zero the button only opens a notice.
+
+That number counts the command spells *in the command*, not the ones on your account - FGA has no
+way to read how many you currently hold. If the game has none left when the script reaches the
+command, the script stops with "Ran out of Command Spell(s)".
 
 ## Next turn in the same wave, and Next wave
 

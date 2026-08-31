@@ -19,6 +19,7 @@ import io.github.fate_grand_automata.util.FakedComposeView
 import io.github.fate_grand_automata.util.ScriptState
 import io.github.fate_grand_automata.util.overlayType
 import io.github.lib_automata.Location
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -107,17 +108,30 @@ class ScriptRunnerOverlay @Inject constructor(
             restorePlayButtonLocation()
 
             highlightManager.show()
-            windowManager.addView(layout, scriptCtrlBtnLayoutParams)
+
+            try {
+                windowManager.addView(layout, scriptCtrlBtnLayoutParams)
+            } catch (e: Exception) {
+                // The overlay permission can be revoked between the check above and this call,
+                // and some ROMs reject the window for their own reasons. Either way it isn't
+                // worth taking the service down over.
+                Timber.e(e, "Failed to add the play button overlay")
+                highlightManager.hide()
+                return
+            }
 
             shown = true
         }
     }
 
     fun hide() {
-        if (shown && Settings.canDrawOverlays(service)) {
+        if (shown) {
             savePlayButtonLocation()
 
-            windowManager.removeView(layout)
+            // Don't gate this on canDrawOverlays: if the user revokes the permission while
+            // the overlay is up, we still have to take the views down or they leak.
+            runCatching { windowManager.removeView(layout) }
+                .onFailure { Timber.w(it, "Failed to remove the play button overlay") }
             highlightManager.hide()
 
             shown = false

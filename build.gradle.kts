@@ -23,6 +23,7 @@ buildscript {
 plugins {
     alias(libs.plugins.ben.manes.versions)
     alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.ksp) apply false
 }
 
@@ -37,9 +38,18 @@ allprojects {
 }
 
 subprojects {
+    // Compile every module with JDK 21, whichever JVM happens to launch Gradle.
+    // Bytecode stays at 11 - see jvmTarget below and each module's compileOptions.
+    pluginManager.withPlugin("java-base") {
+        extensions.configure<JavaPluginExtension> {
+            toolchain {
+                languageVersion.set(JavaLanguageVersion.of(21))
+            }
+        }
+    }
+
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         compilerOptions {
-            freeCompilerArgs.add("-opt-in=kotlin.time.ExperimentalTime")
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }

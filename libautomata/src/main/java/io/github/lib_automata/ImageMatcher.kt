@@ -46,7 +46,7 @@ interface ImageMatcher {
         region: Region,
         pattern: Pattern,
         similarity: Double? = null
-    ): Sequence<Match>
+    ): List<Match>
 
     fun isWhite(region: Region): Boolean
     fun isBlack(region: Region): Boolean
@@ -144,35 +144,39 @@ class RealImageMatcher @Inject constructor(
         )
     }
 
-    override fun findAll(region: Region, pattern: Pattern, similarity: Double?): Sequence<Match> {
+    override fun findAll(region: Region, pattern: Pattern, similarity: Double?): List<Match> {
         val matches = screenshotManager.getScreenshot()
             .crop(transform.toImage(region))
-            .findMatches(
-                pattern,
-                similarity ?: platformImpl.prefs.minSimilarity
-            )
-            .map {
-                exitManager.checkExitRequested()
+            .use { cropped ->
+                cropped
+                    .findMatches(
+                        pattern,
+                        similarity ?: platformImpl.prefs.minSimilarity
+                    )
+                    .map {
+                        exitManager.checkExitRequested()
 
-                // convert the relative position in the region to the absolute position on the screen
-                val matchedRegion = transform.fromImage(it.region) + region.location
+                        // convert the relative position in the region to the absolute position on the screen
+                        val matchedRegion = transform.fromImage(it.region) + region.location
 
-                Match(matchedRegion, it.score)
+                        Match(matchedRegion, it.score)
+                    }
+                    // findMatches is lazy, so it has to be drained before the crop is released
+                    .toList()
             }
-            .toList() // Convert to list to avoid sequence consumption issues
-        
+
         highlight(
             region,
             color = if (matches.isNotEmpty()) HighlightColor.Success else HighlightColor.Error
         )
         
-        return matches.asSequence()
+        return matches
     }
 
     override fun isWhite(region: Region) =
         screenshotManager.getScreenshot()
             .crop(transform.toImage(region))
-            .isWhite()
+            .use { it.isWhite() }
             .also {
                 highlight(
                     region,
@@ -183,7 +187,7 @@ class RealImageMatcher @Inject constructor(
     override fun isBlack(region: Region) =
         screenshotManager.getScreenshot()
             .crop(transform.toImage(region))
-            .isBlack()
+            .use { it.isBlack() }
             .also {
                 highlight(
                     region,

@@ -4,6 +4,7 @@ import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.ScriptNotify
 import io.github.fate_grand_automata.scripts.enums.GameServer
+import io.github.fate_grand_automata.scripts.enums.GameServers
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
 import io.github.fate_grand_automata.scripts.models.BoostItem
 import io.github.fate_grand_automata.scripts.models.FieldSlot
@@ -74,6 +75,7 @@ class AutoBattle @Inject constructor(
         class CardPriorityParseError(val msg: String) : ExitReason()
         data object Paused : ExitReason()
         data object StopAfterThisRun : ExitReason()
+        data object OutOfCommandSpells: ExitReason()
     }
 
     internal class BattleExitException(val reason: ExitReason) : Exception(reason.cause)
@@ -360,7 +362,7 @@ class AutoBattle @Inject constructor(
 
         // for TranslateFGO where the Repeat button is in English
         if (match == null && prefs.gameServer is GameServer.Jp) {
-            match = locations.continueRegion.find(images[Images.Repeat, GameServer.default])
+            match = locations.continueRegion.find(images[Images.Repeat, GameServers.default])
         }
         return match
     }

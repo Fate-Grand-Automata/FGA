@@ -1,11 +1,8 @@
 package io.github.fate_grand_automata.ui.battle_config_item
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -98,7 +95,7 @@ fun RaidDelay(
                         .padding(horizontal = 2.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.state_on).uppercase(),
+                        text = stringResource(R.string.config_state_on).uppercase(),
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -122,7 +119,7 @@ fun RaidDelay(
                         .padding(horizontal = 2.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.state_off).uppercase(),
+                        text = stringResource(R.string.config_state_off).uppercase(),
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -157,27 +154,16 @@ fun RaidDelay(
 
     }
 
-    Column(
+    ConfigSummaryCell(
+        label = stringResource(R.string.p_battle_config_raid),
+        onClick = { dialog.show() },
         modifier = modifier
-            .fillMaxHeight()
-            .clickable(
-                onClick = { dialog.show() }
-            )
-            .padding(8.dp, 5.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            stringResource(R.string.p_battle_config_raid).uppercase(),
-            style = MaterialTheme.typography.bodySmall
-        )
-
-        Text(
-            text = when (addRaidTurnDelay) {
+        ConfigSummaryValue(
+            when (addRaidTurnDelay) {
                 true -> "${raidTurnDelaySeconds}s"
-                false -> stringResource(R.string.state_off).uppercase()
-            },
-            style = MaterialTheme.typography.bodySmall
+                false -> stringResource(R.string.config_state_off).uppercase()
+            }
         )
     }
 }

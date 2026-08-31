@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -28,7 +27,10 @@ import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.prefs.remember
 
 @Composable
-fun PartySelection(config: BattleConfigCore) {
+fun PartySelection(
+    config: BattleConfigCore,
+    modifier: Modifier = Modifier
+) {
     var party by config.party.remember()
 
     val dialog = FgaDialog()
@@ -54,23 +56,12 @@ fun PartySelection(config: BattleConfigCore) {
         )
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxHeight()
-            .clickable(onClick = { dialog.show() })
-            .padding(8.dp, 5.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+    ConfigSummaryCell(
+        label = stringResource(R.string.p_battle_config_party),
+        onClick = { dialog.show() },
+        modifier = modifier
     ) {
-        Text(
-            stringResource(R.string.p_battle_config_party).uppercase(),
-            style = MaterialTheme.typography.bodySmall
-        )
-
-        Text(
-            if (party == -1) "--" else (party + 1).toString(),
-            style = MaterialTheme.typography.bodySmall
-        )
+        ConfigSummaryValue(if (party == -1) "--" else (party + 1).toString())
     }
 }
 

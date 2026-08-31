@@ -27,12 +27,12 @@ class CardPriorityViewModel @Inject constructor(
 
         cardPriority
             .take(3)
-            .map { it.toMutableList() }
+            .map { it.toMutableStateList() }
             .withIndex()
             .map {
                 CardPriorityListItem(
                     it.value,
-                    servantPriority.atWave(it.index).toMutableList(),
+                    servantPriority.atWave(it.index).toMutableStateList(),
                     mutableStateOf(rearrangeCards.getOrElse(it.index) { false }),
                     mutableStateOf(braveChains.getOrElse(it.index) { BraveChainEnum.None })
                 )
@@ -45,13 +45,13 @@ class CardPriorityViewModel @Inject constructor(
     fun save() {
         battleConfig.cardPriority.set(
             CardPriorityPerWave.from(
-                cardPriorityItems.map { CardPriority.from(it.scores) }
+                cardPriorityItems.map { CardPriority.from(it.scores.toList()) }
             )
         )
 
         battleConfig.servantPriority.set(
             ServantPriorityPerWave.from(
-                cardPriorityItems.map { it.servantPriority }
+                cardPriorityItems.map { it.servantPriority.toList() }
             )
         )
 

@@ -5,6 +5,7 @@
 
     <color name="colorEnemyTarget">#2e7d32</color>
     <color name="colorMasterSkill">#006064</color>
+    <color name="colorCommandSpell">#a03243</color>
     <color name="colorStageChange">#616161</color>
     <color name="colorServant1">#c62828</color>
     <color name="colorServant2">#0277bd</color>

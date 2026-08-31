@@ -1,5 +1,7 @@
 package io.github.fate_grand_automata.scripts.enums
 
+private const val betterFgoSuffix = " BFGO"
+
 sealed class GameServer constructor(val simple: String, val betterFgo: Boolean = false) {
     sealed class En constructor(betterFgo: Boolean = false) : GameServer("En", betterFgo) {
         object Original : En()
@@ -18,41 +20,46 @@ sealed class GameServer constructor(val simple: String, val betterFgo: Boolean =
     fun serialize(): String = simple + (if (betterFgo) betterFgoSuffix else "")
 
     override fun toString(): String = serialize()
+}
 
-    companion object {
-        val default = En.Original as GameServer
+/**
+ * The servers the app knows about, in the order they are offered to the user.
+ *
+ * Kept out of [GameServer] itself: naming a subclass from that class's own initializer reads it
+ * while it is still being created, whenever a subclass is what triggered the initializer.
+ */
+object GameServers {
+    // Widened on purpose - inference would pin this to the type of the one object it holds
+    val default: GameServer = GameServer.En.Original
 
-        private const val betterFgoSuffix = " BFGO"
+    val values = listOf(
+        GameServer.En.Original,
+        GameServer.En.BetterFGO,
+        GameServer.Jp.Original,
+        GameServer.Jp.BetterFGO,
+        GameServer.Cn,
+        GameServer.Tw,
+        GameServer.Kr
+    )
 
-        /**
-         * Maps an APK package name to the corresponding [GameServer].
-         */
-        fun fromPackageName(packageName: String): GameServer? = packageNames.get(packageName)
+    val packageNames = mapOf(
+        "com.aniplex.fategrandorder.en" to GameServer.En.Original,
+        "io.rayshift.betterfgo.en" to GameServer.En.BetterFGO,
+        "com.aniplex.fategrandorder" to GameServer.Jp.Original,
+        "io.rayshift.betterfgo" to GameServer.Jp.BetterFGO,
+        "com.bilibili.fatego" to GameServer.Cn,
+        "com.bilibili.fatego.sharejoy" to GameServer.Cn,
+        "com.komoe.fgomycard" to GameServer.Tw,
+        "com.xiaomeng.fategrandorder" to GameServer.Tw,
+        "com.netmarble.fgok" to GameServer.Kr
+    )
 
-        val values = listOf(
-            En.Original,
-            En.BetterFGO,
-            Jp.Original,
-            Jp.BetterFGO,
-            Cn, Tw, Kr
-        )
+    private val serializedValues = values.associateBy { it.serialize() }
 
-        val packageNames = mapOf(
-            "com.aniplex.fategrandorder.en" to En.Original,
-            "io.rayshift.betterfgo.en" to En.BetterFGO,
-            "com.aniplex.fategrandorder" to Jp.Original,
-            "io.rayshift.betterfgo" to Jp.BetterFGO,
-            "com.bilibili.fatego" to Cn,
-            "com.bilibili.fatego.sharejoy" to Cn,
-            "com.komoe.fgomycard" to Tw,
-            "com.xiaomeng.fategrandorder" to Tw,
-            "com.netmarble.fgok" to Kr
-        )
+    /**
+     * Maps an APK package name to the corresponding [GameServer].
+     */
+    fun fromPackageName(packageName: String): GameServer? = packageNames[packageName]
 
-        private val serializedValues by lazy {
-            values.associateBy { it.serialize() }
-        }
-
-        fun deserialize(value: String): GameServer? = serializedValues[value]
-    }
+    fun deserialize(value: String): GameServer? = serializedValues[value]
 }

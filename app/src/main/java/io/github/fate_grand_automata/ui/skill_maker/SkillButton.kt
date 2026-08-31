@@ -22,7 +22,7 @@ fun RowScope.SkillButton(
     skill: Skill,
     color: Color,
     onClick: () -> Unit,
-    onDoubleClick: () -> Unit
+    onLongClick: () -> Unit
 ) {
     Surface(
         color = color,
@@ -33,9 +33,12 @@ fun RowScope.SkillButton(
             .aspectRatio(1f)
             .fillMaxSize()
             .weight(1f, false)
+            // Long-press rather than double-tap: a non-null onDoubleClick forces the tap
+            // detector to wait out ViewConfiguration.doubleTapTimeoutMillis (300ms) before it can
+            // fire onClick, whereas a long press is detected during the press and delays nothing.
             .combinedClickable(
                 onClick = onClick,
-                onDoubleClick = onDoubleClick
+                onLongClick = onLongClick
             ),
     ) {
         Box {

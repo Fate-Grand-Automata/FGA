@@ -47,4 +47,17 @@ class MasterLocations @Inject constructor(
 
     val masterSkillOpenClick
         get() = Location(0, 640) + masterOffsetNewUI
+
+    val commandSpellSearchRegion = when (isWide) {
+        true -> Region(-590, 180, 190, 120).xFromRight()
+        false -> Region(-520, 210, 190, 120).xFromRight()
+    }
+
+    val cancelCommandSpellRegion = Region(-202, 764, 95, 174).xFromCenter()
+
+    fun locate(skill: Skill.CommandSpell) = when (skill) {
+        Skill.CommandSpell.NpCharge -> 700
+    }.let { y ->
+        Location(0, y).xFromCenter()
+    }
 }

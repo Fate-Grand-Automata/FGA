@@ -4,9 +4,9 @@ import android.content.Context
 import android.net.Uri
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.fate_grand_automata.R
+import io.github.fate_grand_automata.prefs.BattleConfigFile
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
@@ -55,9 +55,7 @@ class BattleConfigScreenViewModel @Inject constructor(
             }
 
     private fun export(stream: OutputStream) {
-        val values = battleConfig.export()
-        val gson = Gson()
-        val json = gson.toJson(values)
+        val json = BattleConfigFile.encode(battleConfig.export())
 
         stream.writer().use { it.write(json) }
     }

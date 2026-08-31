@@ -19,6 +19,7 @@ import dagger.hilt.android.scopes.ServiceScoped
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.main.MainActivity
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -108,31 +109,54 @@ class ScriptRunnerNotification @Inject constructor(
                 .bigText(service.getString(R.string.overlay_notification_text)))
             .setSmallIcon(R.mipmap.notification_icon)
             .setColor(service.getColor(R.color.colorBusterWeak))
-            .setPriority(NotificationManager.IMPORTANCE_LOW)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
             .setContentIntent(activityIntent)
             .addAction(stopAction)
     }
 
-    fun show(useRootForScreenshots: Boolean) {
+    /**
+     * Promotes the service to the foreground.
+     *
+     * [withMediaProjection] may only be true while we actually hold MediaProjection consent.
+     * Android 14+ rejects the mediaProjection foreground service type with a SecurityException
+     * unless the `android:project_media` app-op is currently granted, and that exception is
+     * fatal because it escapes Service.onCreate().
+     *
+     * Can be called again to add the mediaProjection type once consent arrives.
+     *
+     * @return false if the system refused to start the foreground service
+     */
+    fun show(withMediaProjection: Boolean): Boolean {
         val builder = startBuildNotification()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            var foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
-            if (!useRootForScreenshots) {
-                foregroundServiceType = foregroundServiceType.or(ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION)
-            }
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                var foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+                if (withMediaProjection) {
+                    foregroundServiceType =
+                        foregroundServiceType.or(ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION)
+                }
 
-            service.startForeground(
-                Ids.foregroundNotification,
-                builder.build(),
-                foregroundServiceType
-            )
-        } else {
-            service.startForeground(
-                Ids.foregroundNotification,
-                builder.build()
-            )
+                service.startForeground(
+                    Ids.foregroundNotification,
+                    builder.build(),
+                    foregroundServiceType
+                )
+            } else {
+                service.startForeground(
+                    Ids.foregroundNotification,
+                    builder.build()
+                )
+            }
+        } catch (e: RuntimeException) {
+            // SecurityException, ForegroundServiceStartNotAllowedException,
+            // ForegroundServiceTypeException, ... - the caller has to shut the service down,
+            // but crashing the app here helps nobody.
+            Timber.e(e, "Couldn't start the foreground service")
+            return false
         }
+
+        return true
     }
 
     fun message(msg: String) {

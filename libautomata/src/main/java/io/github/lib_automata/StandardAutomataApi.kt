@@ -18,7 +18,8 @@ class StandardAutomataApi @Inject constructor(
         screenshotManager.getScreenshot()
             .crop(transform.toImage(this))
             .also { highlight(this, HighlightColor.Info) }
-            .copy() // It is important that the image gets cloned here.
+            // It is important that the image gets cloned here.
+            .use { cropped -> cropped.copy() }
             .apply {
                 this.tag = tag
             }
@@ -57,7 +58,11 @@ class StandardAutomataApi @Inject constructor(
     override fun Region.detectText(outlinedText: Boolean): String {
         screenshotManager.getScreenshot()
             .crop(transform.toImage(this))
-            .threshold(0.5)
+            /*
+            threshold produces a new image, so the result of crop is no longer needed and can be
+            released
+             */
+            .use { it.threshold(0.5) }
             .let {
                 if (outlinedText) {
                     it.use {

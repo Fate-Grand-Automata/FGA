@@ -1,33 +1,38 @@
 package io.github.fate_grand_automata.ui.card_priority
 
-import android.graphics.Color
+import androidx.annotation.ColorRes
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.enums.CardAffinityEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CardScore
 import io.github.fate_grand_automata.ui.drag_sort.DragSort
-import io.github.fate_grand_automata.ui.drag_sort.DragSortAdapter
+import io.github.fate_grand_automata.ui.drag_sort.DragSortItemStyle
 
 @Composable
 fun CardPriorityDragSort(
-    scores: MutableList<CardScore>
+    scores: SnapshotStateList<CardScore>
 ) {
-    val context = LocalContext.current
-
     DragSort(
         items = scores,
-        viewConfigGrabber = {
-            DragSortAdapter.ItemViewConfig(
-                foregroundColor = Color.WHITE,
-                backgroundColor = context.getColor(it.getColorRes()),
+        key = { "${it.type}-${it.affinity}" },
+        style = {
+            DragSortItemStyle(
+                backgroundColor = colorResource(it.getColorRes()),
+                contentColor = Color.White,
                 text = it.toString()
             )
-        }
+        },
+        modifier = Modifier.fillMaxWidth()
     )
 }
 
+@ColorRes
 fun CardScore.getColorRes(): Int {
     return when (type) {
         CardTypeEnum.Buster -> when (affinity) {

@@ -124,6 +124,7 @@ Skills"</string>
     <string name="p_stop_on_ce_get">"Stop on CE GET"</string>
     <string name="p_stop_on_first_clear_rewards">"Stop on first-clear rewards"</string>
     <string name="p_stop_on_ce_get_summary">"First-time quest completion rewards and Bond CEs (Experimental)"</string>
+    <string name="p_stop_on_out_of_command_spell">Ran out of Command Spell(s).</string>
     <string name="p_screenshot_drops">"Screenshot Drops"</string>
     <string name="p_screenshot_drops_summary">"Saved to 'drops' folder"</string>
     <string name="p_screenshot_drops_unmodified">"Save unmodified screenshots"</string>
@@ -156,6 +157,8 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_root_screenshot_summary">"Useful on Nox (Android 7). Toggle service after changing this."</string>
     <string name="p_auto_start_service">"Auto-start service"</string>
     <string name="p_thresholded_stage_counter">"Thresholded stage counter detection"</string>
+    <string name="p_check_for_updates">"Check for updates"</string>
+    <string name="p_check_for_updates_summary">"Offer to install a new version when one is available on Google Play"</string>
     <string name="p_fine_tune">"Fine-tune"</string>
     <string name="p_fine_tune_support">"Support"</string>
     <string name="p_fine_tune_support_swipes_per_update">"Swipes per Update"</string>
@@ -193,6 +196,20 @@ Copy or rename it if you want to keep it."</string>
     <string name="spam">"Spam mode"</string>
     <string name="spam_target">"Target"</string>
     <string name="spam_np">"NP:"</string>
+    <string name="spam_skill">"S%1$d:"</string>
+    <string name="spam_waves">"Waves"</string>
+    <string name="spam_servant">"Servant:"</string>
+    <string name="spam_presets">"PRESETS"</string>
+    <string name="spam_preset_spam_all">"SPAM ALL"</string>
+    <string name="spam_preset_spam_all_danger">"SPAM ALL DANGER"</string>
+    <string name="spam_preset_no_spam">"NO SPAM"</string>
+    <string name="spam_target_none">"None"</string>
+    <string name="spam_target_self">"Self"</string>
+    <string name="spam_target_slot_1">"Slot1"</string>
+    <string name="spam_target_slot_2">"Slot2"</string>
+    <string name="spam_target_slot_3">"Slot3"</string>
+    <string name="spam_target_left">"Left"</string>
+    <string name="spam_target_right">"Right"</string>
     <string name="p_spam_none">"None"</string>
     <string name="p_spam_spam">"Spam"</string>
     <string name="p_spam_danger">"Danger"</string>
@@ -399,39 +416,16 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="update_download_success">"Download successful. Restarting app in 5 seconds."</string>
     <string name="skill_maker_soujuurou">"Soujuurou"</string>
     <string name="skill_maker_choices_3">"Choices (3)"</string>
-    <string-array name="skill_maker_choices_3_array_slot_1">
-        <item>"Van Gogh (Miner)"</item>
-    </string-array>
-    <string-array name="skill_maker_choices_3_array_slot_3">
-        <item>"Soujuurou"</item>
-        <item>"Charlotte"</item>
-        <item>"Hakuno"</item>
-    </string-array>
-    <string-array name="skill_maker_choices_2_array_slot_1and2">
-        <item>"Kukulkan"</item>
-    </string-array>
-    <string-array name="skill_maker_choices_2_array_slot_3">
-        <item>"Kukulkan"</item>
-        <item>"UDK-Barghest"</item>
-    </string-array>
     <string name="skill_maker_kukulkan_choice_1">"Don't use stars"</string>
     <string name="skill_maker_kukulkan_choice_2">"Use stars"</string>
     <string name="skill_maker_udk_barghest_choice_1">"AoE"</string>
     <string name="skill_maker_udk_barghest_choice_2">"Single Target"</string>
     <string name="skill_maker_change_np_type_2">"NP Type (2)"</string>
-    <string-array name="skill_maker_change_np_type_2_array">
-        <item>"Emiya"</item>
-        <item>"BB Dubai"</item>
-    </string-array>
     <string name="skill_maker_change_np_type_3">"NP Type (3)"</string>
-    <string-array name="skill_maker_change_np_type_3_array">
-        <item>"Space Ishtar"</item>
-    </string-array>
     <string name="skill_maker_transform">"Transform"</string>
-    <string-array name="skill_maker_transform_array">
-        <item>"Mélusine"</item>
-        <item>"Ptolemy"</item>
-    </string-array>
+    <string name="skill_maker_melusine">"Mélusine"</string>
+    <string name="skill_maker_ptolemy">"Ptolemy"</string>
+    <string name="skill_maker_select_button_labels">"Select which servant mode to proceed"</string>
     <string name="skill_maker_update_button_labels">"Update Button Labels"</string>
     <string name="skill_maker_special_targets_warning">Servants with special skills</string>
     <string name="skill_maker_van_gogh">Van Gogh (Miner)</string>
@@ -447,6 +441,14 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="skill_maker_charlotte_choice_3">"NP Damage"</string>
     <string name="skill_maker_choices_2">"Choices (2)"</string>
 
+    <string name="skill_maker_summer_shiki">"Summer Shiki"</string>
+    <string name="skill_maker_summer_shiki_choice_1">"Moonlight (AOE)"</string>
+    <string name="skill_maker_summer_shiki_choice_2">Sun (ST)</string>
+
+    <string name="skill_maker_dante_alighieri">"Dante Alighieri"</string>
+    <string name="skill_maker_dante_alighieri_choice_1">"Paradise (Arts Up)"</string>
+    <string name="skill_maker_dante_alighieri_choice_2">Inferno (Buster Up)</string>
+
     <string name="skill_maker_choices_3_hint">"Servants with 3 choices dialog"</string>
     <string name="skill_maker_choices_2_hint">"Servants with 2 choices dialog"</string>
     <string name="skill_maker_change_np_type_2_hint">"Servants with 2 NP Types"</string>
@@ -454,6 +456,11 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="skill_maker_transform_hint">"Servants which transform"</string>
 
     <string name="dismiss">"Dismiss"</string>
+    <string name="skill_maker_command_spell">Command Spell</string>
+    <string name="skill_maker_command_spell_button">"CS (%d)"</string>
+    <string name="skill_maker_command_spell_np_charge">Command Spell: Charge NP</string>
+    <string name="skill_maker_command_spell_warning">Ran out of Command Spell(s)</string>
+
     <string name="reset_all">"Reset all"</string>
     <string name="reset_to_default">"Reset to default"</string>
 
@@ -487,8 +494,70 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_battle_config_raid">"Raid"</string>
     <string name="p_battle_config_raid_delay">"Raid Turn Delay"</string>
     <string name="p_battle_config_raid_delay_message">This adds extra turn delay used for raids.</string>
-    <string name="state_on">On</string>
-    <string name="state_off">Off</string>
+    <string name="config_state_on">On</string>
+    <string name="config_state_off">Off</string>
     <string name="save">Save</string>
     <string name="reset">Reset</string>
+
+    <string name="error_could_not_create_directory">"Couldn't create directory: '%s'"</string>
+    <string name="error_could_not_create_file">"Couldn't create file: '%s'"</string>
+    <string name="error_could_not_open_file_for_recording">"Couldn't open file for recording"</string>
+    <string name="error_could_not_open_support_file_for_reading">"Couldn't open file for reading: [%1$s] '%2$s'"</string>
+    <string name="error_could_not_open_support_file_for_writing">"Couldn't open file for writing: [%1$s] '%2$s'"</string>
+    <string name="error_could_not_create_drop_screenshot_file">"Failed to create drop screenshot file"</string>
+    <string name="error_support_folder_is_empty">"[%1$s] folder: '%2$s' is empty!"</string>
+    <string name="error_failed_root_permission">"Failed to get Root permission: %s"</string>
+    <string name="error_no_virtual_display">"Screen capture couldn't be set up. Restart FGA and grant the screen capture permission again."</string>
+    <string name="error_no_screenshot_received">"Screen capture didn't deliver any image. Restart FGA and grant the screen capture permission again."</string>
+    <string name="error_screen_capture_stopped">"Screen capture was stopped. This happens when the system or another app takes it over, or when the display changes. Restart FGA and grant the screen capture permission again."</string>
+    <string name="error_no_suitable_target_ce_found">"No suitable target CE found"</string>
+
+    <!-- Default Servant Names -->
+    <string name="servant_name_arcueid">Arcueid</string>
+    <string name="servant_name_artoria_caster">Artoria (Caster)</string>
+    <string name="servant_name_bb_dubai">BB Dubai</string>
+    <string name="servant_name_chloe_avenger">Chloe (Avenger)</string>
+    <string name="servant_name_ciel">Ciel</string>
+    <string name="servant_name_douman">Douman</string>
+    <string name="servant_name_flora">Flora</string>
+    <string name="servant_name_jalter">Jalter</string>
+    <string name="servant_name_koyanskaya">Koyanskaya</string>
+    <string name="servant_name_koyanskaya_of_the_darkness_foreigner">Koyanskaya of the Darkness (Foreigner)</string>
+    <string name="servant_name_lady_avalon">Lady Avalon</string>
+    <string name="servant_name_mash">Mash</string>
+    <string name="servant_name_merlin">Merlin</string>
+    <string name="servant_name_nero_bride">Nero (Bride)</string>
+    <string name="servant_name_oberon">Oberon</string>
+    <string name="servant_name_omii_san">Omii-san</string>
+    <string name="servant_name_sima_yi_reines">Sima Yi (Reines)</string>
+    <string name="servant_name_skadi">Skadi</string>
+    <string name="servant_name_skadi_ruler">Skadi (Ruler)</string>
+    <string name="servant_name_tamamo">Tamamo</string>
+    <string name="servant_name_tiamat_summer">Tiamat Summer</string>
+    <string name="servant_name_u_olga_marie">U-Olga Marie</string>
+    <string name="servant_name_waver">Waver</string>
+
+    <!-- Default CE Names -->
+    <string name="ce_name_aerial_drive">Aerial Drive</string>
+    <string name="ce_name_bella_lisa">Bella Lisa</string>
+    <string name="ce_name_black_grail">Black Grail</string>
+    <string name="ce_name_blessed_bride">Blessed Bride</string>
+    <string name="ce_name_chaldea_lunchtime">Chaldea Lunchtime</string>
+    <string name="ce_name_chaldea_morning">Chaldea Morning</string>
+    <string name="ce_name_chaldea_teatime">Chaldea Teatime</string>
+    <string name="ce_name_foreign_god">Foreign God</string>
+    <string name="ce_name_from_nff_with_love">From NFF with Love</string>
+    <string name="ce_name_golden_sumo">Golden Sumo</string>
+    <string name="ce_name_great_library_of_memories">Great Library of Memories</string>
+    <string name="ce_name_gudaguda_poster_girl">GudaGuda Poster Girl</string>
+    <string name="ce_name_holy_night_supper">Holy Night Supper</string>
+    <string name="ce_name_kaleidoscope">Kaleidoscope</string>
+    <string name="ce_name_marshal_of_the_sorcerors">Marshal of the Sorcerors</string>
+    <string name="ce_name_mona_lisa">Mona Lisa</string>
+    <string name="ce_name_needle_of_sincerity">Needle of Sincerity</string>
+    <string name="ce_name_painting_summer">Painting Summer</string>
+    <string name="ce_name_report_check">Report Check</string>
+    <string name="ce_name_secret_mission">Secret Mission</string>
+    <string name="ce_name_the_chaldean">The Chaldean</string>
+    <string name="ce_name_wings_of_manuscript">Wings of Manuscript</string>
 </resources>

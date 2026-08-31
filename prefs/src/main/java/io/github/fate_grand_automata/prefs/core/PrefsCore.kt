@@ -4,6 +4,7 @@ import android.content.Context
 import com.fredporciuncula.flow.preferences.Serializer
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.fate_grand_automata.scripts.enums.GameServer
+import io.github.fate_grand_automata.scripts.enums.GameServers
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.lib_automata.Location
 import javax.inject.Inject
@@ -12,7 +13,7 @@ import javax.inject.Singleton
 @Singleton
 class PrefsCore @Inject constructor(
     maker: PrefMaker,
-    @ApplicationContext val context: Context
+    @param:ApplicationContext val context: Context
 ) {
     companion object {
         const val GAME_SERVER_AUTO_DETECT = "auto_detect"
@@ -48,6 +49,7 @@ class PrefsCore @Inject constructor(
     val hidePlayButton = maker.bool("hide_play_button")
     val debugMode = maker.bool("debug_mode")
     val autoStartService = maker.bool("auto_start_service")
+    val checkForUpdates = maker.bool("check_for_updates", true)
 
     val hideSQInAPResources = maker.bool("hide_sq_in_ap_resources", true)
 
@@ -56,7 +58,7 @@ class PrefsCore @Inject constructor(
     val receiveEmbersWhenGiftBoxFull = maker.bool("receive_embers_when_gift_box_full")
 
     val supportSwipesPerUpdate = maker.int("support_swipes_per_update_x", 10)
-    val supportMaxUpdates = maker.int("support_max_updates_x", 5)
+    val supportMaxUpdates = maker.int("support_max_updates_x", 20)
 
     val minSimilarity = maker.int("min_similarity", 80)
     val mlbSimilarity = maker.int("mlb_similarity", 70)
@@ -113,12 +115,12 @@ class PrefsCore @Inject constructor(
 
     var showGameServer = maker.serialized(
         key = "show_game_server",
-        default = listOf(GameServer.default),
+        default = listOf(GameServers.default),
         serializer = object : Serializer<List<GameServer>> {
             private val separator = ","
             override fun deserialize(serialized: String): List<GameServer> {
                 val values = serialized.split(separator)
-                return values.mapNotNull { GameServer.deserialize(it) }
+                return values.mapNotNull { GameServers.deserialize(it) }
             }
 
             override fun serialize(value: List<GameServer>): String = value.joinToString(separator)

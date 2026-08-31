@@ -4,13 +4,19 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import androidx.core.content.ContextCompat
 
 class ScreenOffReceiver : BroadcastReceiver() {
 
+    private var registered = false
+
     fun register(Context: Context, listener: () -> Unit) {
+        if (registered) return
+
         val filter = IntentFilter(Intent.ACTION_SCREEN_OFF)
 
-        Context.registerReceiver(this, filter)
+        ContextCompat.registerReceiver(Context, this, filter, ContextCompat.RECEIVER_NOT_EXPORTED)
+        registered = true
 
         screenOffListener = listener
     }
@@ -22,7 +28,11 @@ class ScreenOffReceiver : BroadcastReceiver() {
     }
 
     fun unregister(Context: Context) {
+        // onDestroy can run without a matching register() if service startup bailed out
+        if (!registered) return
+
         Context.unregisterReceiver(this)
+        registered = false
 
         screenOffListener = { }
     }

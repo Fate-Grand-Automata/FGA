@@ -1,44 +1,44 @@
 [versions]
-appcompat_version = "1.7.1"
+appcompat_version = "1.8.0"
 assertk_version = "0.28.1"
-constraintlayout_version = "2.2.1"
-core_ktx_version = "1.16.0"
+constraintlayout_version = "2.2.2"
+core_ktx_version = "1.19.0"
 documentfile_version = "1.1.0"
 flow_preferences_version = "1.9.1"
-hilt_navigation_compose_version = "1.2.0"
-kotlinx_coroutines_core_version = "1.10.2"
-lifecycle_version = "2.9.2"
-hilt_version = "2.57"
-gson_version = "2.13.1"
+hilt_navigation_compose_version = "1.4.0"
+kotlinx_coroutines_core_version = "1.11.0"
+kotlinx_serialization_version = "1.11.0"
+lifecycle_version = "2.11.0"
+hilt_version = "2.60.1"
 
 
-kotlin_version = "2.2.10"
-ksp_version = "2.2.10-2.0.2"
+kotlin_version = "2.4.10"
+ksp_version = "2.3.11"
 
-gradle_version = "8.10.0"
+gradle_version = "9.3.2"
 
 
-ben-manes_versions = "0.52.0"
+ben-manes_versions = "0.61.0"
 accompanist_version = "0.37.3"
 
 google_android_play_version = "2.1.0"
 
-activity_version = "1.10.1"
-mockk_version = "1.14.5"
+activity_version = "1.13.0"
+mockk_version = "1.14.11"
 
-opencv_version = "4.11.0"
-navigation_compose_version = "2.9.3"
+opencv_version = "4.14.0"
+navigation_compose_version = "2.10.0"
 
-recyclerview_version = "1.4.0"
+reorderable_version = "3.1.0"
 tesseract4android_version = "4.9.0"
 
 timber_version = "5.0.1"
 
-compose_bom_version = "2025.08.00"
+compose_bom_version = "2026.08.00"
 
 
-coil_version = "3.3.0"
-junit_bom_version = "5.13.4"
+coil_version = "3.6.0"
+junit_bom_version = "6.1.3"
 
 
 [libraries]
@@ -50,6 +50,12 @@ ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devto
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin_version" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx_coroutines_core_version" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
+# :app has no Kotlin plugin to pick the test framework variant, so it names one explicitly
+kotlin-test-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "kotlin_version" }
+
+# Serialization: `-core` carries @Serializable and the generated serializers, `-json` the JSON format
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx_serialization_version" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx_serialization_version" }
 
 fredporciuncula-flow-preferences = { module = "com.fredporciuncula:flow-preferences", version.ref = "flow_preferences_version" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk_version" }
@@ -67,10 +73,8 @@ dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", vers
 
 # Navigation
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt_navigation_compose_version" }
+androidx-hilt-lifecycle-viewmodel-compose = { module = "androidx.hilt:hilt-lifecycle-viewmodel-compose", version.ref = "hilt_navigation_compose_version" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation_compose_version" }
-
-# Gson
-google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson_version" }
 
 # Accompanist
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist_version" }
@@ -85,7 +89,6 @@ androidx-activity-compose = { group = "androidx.activity", name = "activity-comp
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat_version" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core_ktx_version" }
 androidx-documentfile = { module = "androidx.documentfile:documentfile", version.ref = "documentfile_version" }
-androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview_version" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout_version" }
 
 opencv = { group = "org.opencv", name = "opencv", version.ref = "opencv_version" }
@@ -104,12 +107,15 @@ compose-material3-window-size = { group = "androidx.compose.material3", name = "
 compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
+reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable_version" }
+
 coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil_version" }
 coil-gif = { module = "io.coil-kt.coil3:coil-gif", version.ref = "coil_version" }
 
 [plugins]
-ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes_versions" }
+ben-manes-versions = { id = "io.github.ben-manes.versions", version.ref = "ben-manes_versions" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp_version" }
 
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin_version" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin_version" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_version" }
