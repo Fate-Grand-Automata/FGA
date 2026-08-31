@@ -5,6 +5,7 @@ plugins {
     id("java-library")
     id("kotlin")
     id("com.google.devtools.ksp")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 dependencies {
@@ -13,6 +14,8 @@ dependencies {
     api(project(":libautomata"))
 
     implementation(libs.kotlin.stdlib)
+    // api: the @Serializable models are part of this module's public surface
+    api(libs.kotlinx.serialization.core)
 
     implementation(libs.dagger.hilt.core)
     ksp(libs.dagger.hilt.compiler)

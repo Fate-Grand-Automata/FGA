@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("com.google.devtools.ksp")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -32,10 +33,20 @@ dependencies {
     implementation(project(":scripts"))
     implementation(libs.androidx.core.ktx)
 
-    implementation(libs.google.gson)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.dagger.hilt.android)
     ksp(libs.dagger.hilt.compiler)
 
     api(libs.fredporciuncula.flow.preferences)
+
+    testImplementation(platform(libs.junit.bom)) {
+        because("kotlin-test comes with conflicting junit versions")
+    }
+    testImplementation(libs.kotlin.test.junit5)
+    testImplementation(libs.willowtreeapps.assertk)
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }

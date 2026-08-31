@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.fredporciuncula.flow.preferences.Serializer
-import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
 import io.github.fate_grand_automata.prefs.import
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.GameServer
@@ -15,6 +13,17 @@ import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantSpamConfig
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
+
+/*
+ * A config exported from a newer version has to stay loadable here, and one exported from here
+ * loadable there: unknown keys are skipped, and every field is written out even at its default.
+ */
+private val spamJson = Json {
+    ignoreUnknownKeys = true
+    encodeDefaults = true
+}
 
 class BattleConfigCore(
     val id: String,
@@ -112,7 +121,6 @@ class BattleConfigCore(
         default = ServantPriorityPerWave.default
     )
 
-    private val gson = Gson()
     private val defaultSpamConfig = (1..6).map { ServantSpamConfig() }
 
     val spam = maker.serialized(
@@ -120,15 +128,13 @@ class BattleConfigCore(
         serializer = object : Serializer<List<ServantSpamConfig>> {
             override fun deserialize(serialized: String) =
                 try {
-                    gson
-                        .fromJson(serialized, Array<ServantSpamConfig>::class.java)
-                        ?.toList() ?: defaultSpamConfig
-                } catch (e: JsonSyntaxException) {
+                    spamJson.decodeFromString<List<ServantSpamConfig>>(serialized)
+                } catch (e: SerializationException) {
                     defaultSpamConfig
                 }
 
             override fun serialize(value: List<ServantSpamConfig>) =
-                gson.toJson(value)
+                spamJson.encodeToString(value)
         },
         defaultSpamConfig
     )
