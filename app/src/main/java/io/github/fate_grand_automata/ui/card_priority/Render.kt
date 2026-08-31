@@ -1,9 +1,9 @@
 package io.github.fate_grand_automata.ui.card_priority
 
-import android.graphics.Color
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -14,9 +14,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
@@ -24,7 +26,7 @@ import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.ui.FGAListItemColors
 import io.github.fate_grand_automata.ui.drag_sort.DragSort
-import io.github.fate_grand_automata.ui.drag_sort.DragSortAdapter
+import io.github.fate_grand_automata.ui.drag_sort.DragSortItemStyle
 import io.github.fate_grand_automata.ui.prefs.listDialog
 import io.github.fate_grand_automata.util.stringRes
 
@@ -95,7 +97,7 @@ fun CardPriorityListItem.Render(
 
 @Composable
 private fun ServantPriority(
-    priorities: MutableList<TeamSlot>
+    priorities: SnapshotStateList<TeamSlot>
 ) {
     Text(
         "Servant Priority".uppercase(),
@@ -103,23 +105,25 @@ private fun ServantPriority(
             .padding(bottom = 5.dp, top = 16.dp)
     )
 
-    val context = LocalContext.current
-
     DragSort(
         items = priorities,
-        viewConfigGrabber = {
-            DragSortAdapter.ItemViewConfig(
-                foregroundColor = Color.WHITE,
-                backgroundColor = when (it.position) {
-                    1 -> R.color.colorArts
-                    2 -> R.color.colorQuick
-                    3 -> R.color.colorBuster
-                    4 -> R.color.colorArtsResist
-                    5 -> R.color.colorQuickResist
-                    else -> R.color.colorBusterResist
-                }.let { res -> context.getColor(res) },
+        key = { it.position },
+        style = {
+            DragSortItemStyle(
+                backgroundColor = colorResource(
+                    when (it.position) {
+                        1 -> R.color.colorArts
+                        2 -> R.color.colorQuick
+                        3 -> R.color.colorBuster
+                        4 -> R.color.colorArtsResist
+                        5 -> R.color.colorQuickResist
+                        else -> R.color.colorBusterResist
+                    }
+                ),
+                contentColor = Color.White,
                 text = "  ${it.position}  "
             )
-        }
+        },
+        modifier = Modifier.fillMaxWidth()
     )
 }

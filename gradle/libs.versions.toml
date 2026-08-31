@@ -29,7 +29,7 @@ mockk_version = "1.14.11"
 opencv_version = "4.14.0"
 navigation_compose_version = "2.10.0"
 
-recyclerview_version = "1.4.0"
+reorderable_version = "3.1.0"
 tesseract4android_version = "4.9.0"
 
 timber_version = "5.0.1"
@@ -89,7 +89,6 @@ androidx-activity-compose = { group = "androidx.activity", name = "activity-comp
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat_version" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core_ktx_version" }
 androidx-documentfile = { module = "androidx.documentfile:documentfile", version.ref = "documentfile_version" }
-androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview_version" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout_version" }
 
 opencv = { group = "org.opencv", name = "opencv", version.ref = "opencv_version" }
@@ -107,6 +106,8 @@ compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-material3-window-size = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+
+reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable_version" }
 
 coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil_version" }
 coil-gif = { module = "io.coil-kt.coil3:coil-gif", version.ref = "coil_version" }
