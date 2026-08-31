@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @Singleton
 class PrefsCore @Inject constructor(
     maker: PrefMaker,
-    @ApplicationContext val context: Context
+    @param:ApplicationContext val context: Context
 ) {
     companion object {
         const val GAME_SERVER_AUTO_DETECT = "auto_detect"

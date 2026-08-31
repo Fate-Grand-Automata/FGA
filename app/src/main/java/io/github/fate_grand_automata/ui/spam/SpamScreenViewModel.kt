@@ -55,7 +55,7 @@ class SpamScreenViewModel @Inject constructor(
             )
         }
 
-    data class SpamPreset(@StringRes val nameRes: Int, val action: (List<SpamState>) -> Unit)
+    data class SpamPreset(@param:StringRes val nameRes: Int, val action: (List<SpamState>) -> Unit)
 
     private fun applyPreset(state: List<SpamState>, spamMode: SpamEnum) {
         val allWaves = setOf(1, 2, 3)
