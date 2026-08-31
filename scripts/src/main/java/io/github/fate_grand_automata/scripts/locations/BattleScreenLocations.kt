@@ -1,6 +1,5 @@
 package io.github.fate_grand_automata.scripts.locations
 
-import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.models.EnemyTarget
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.OrderChangeMember

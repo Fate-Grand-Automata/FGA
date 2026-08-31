@@ -9,6 +9,7 @@ import com.google.gson.JsonSyntaxException
 import io.github.fate_grand_automata.prefs.import
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.GameServer
+import io.github.fate_grand_automata.scripts.enums.GameServers
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
 import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
@@ -168,7 +169,7 @@ class BattleConfigCore(
         serializer = object : Serializer<Server> {
             override fun deserialize(serialized: String) =
                 try {
-                    GameServer.deserialize(serialized)?.let { Server.Set(it) } ?: Server.NotSet
+                    GameServers.deserialize(serialized)?.let { Server.Set(it) } ?: Server.NotSet
                 } catch (e: Exception) {
                     Server.NotSet
                 }
