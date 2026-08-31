@@ -6,13 +6,10 @@ import android.provider.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavOptionsBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.ui.FgaScreen
 import io.github.fate_grand_automata.ui.battle_config_item.BattleConfigDestination
@@ -27,6 +24,7 @@ import io.github.fate_grand_automata.ui.pref_support.PreferredSupportScreen
 import io.github.fate_grand_automata.ui.pref_support.SupportViewModel
 import io.github.fate_grand_automata.ui.skill_maker.SkillMakerActivity
 import io.github.fate_grand_automata.ui.spam.SpamScreen
+import androidx.core.net.toUri
 
 @Composable
 fun FgaApp(
@@ -40,28 +38,12 @@ fun FgaApp(
         NavHost(
             navController = navController,
             startDestination = if (vm.prefs.isOnboardingRequired()) {
-                NavConstants.onboarding
+                Route.Onboarding
             } else {
-                NavConstants.home
+                Route.Home
             }
         ) {
-            fun battleConfigComposable(
-                route: String,
-                content: @Composable (NavBackStackEntry, id: String) -> Unit
-            ) {
-                composable(
-                    route = "$route/{${NavConstants.battleConfigIdKey}}",
-                    arguments = listOf(navArgument(NavConstants.battleConfigIdKey) { type = NavType.StringType })
-                ) {
-                    content(it, it.arguments?.getString(NavConstants.battleConfigIdKey) ?: "")
-                }
-            }
-
-            fun navigate(route: String, id: String, builder: NavOptionsBuilder.() -> Unit = { }) {
-                navController.navigate("$route/$id", builder)
-            }
-
-            composable(NavConstants.home) {
+            composable<Route.Home> {
                 MainScreen(
                     vm = vm,
                     navigate = {
@@ -72,17 +54,17 @@ fun FgaApp(
                             }
 
                             MainScreenDestinations.BattleConfigs -> {
-                                navController.navigate(NavConstants.battleConfigs)
+                                navController.navigate(Route.BattleConfigList)
                             }
 
                             MainScreenDestinations.MoreOptions -> {
-                                navController.navigate(NavConstants.moreOptions)
+                                navController.navigate(Route.MoreOptions)
                             }
 
                             MainScreenDestinations.OverlaySettings -> {
                                 val intent = Intent(
                                     Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                    Uri.parse("package:${context.packageName}")
+                                    "package:${context.packageName}".toUri()
                                 )
 
                                 context.startActivity(intent)
@@ -107,92 +89,85 @@ fun FgaApp(
                     }
                 )
             }
-            composable(NavConstants.onboarding) {
+            composable<Route.Onboarding> {
                 OnboardingScreen(
                     vm = hiltViewModel(),
                     navigateToHome = {
-                        navController.navigate(NavConstants.home) {
+                        navController.navigate(Route.Home) {
                             // disables going back to onboarding from home screen
-                            popUpTo(NavConstants.onboarding) {
+                            popUpTo<Route.Onboarding> {
                                 inclusive = true
                             }
                         }
                     }
                 )
             }
-            composable(NavConstants.battleConfigs) {
+            composable<Route.BattleConfigList> {
                 BattleConfigListScreen(
                     vm = hiltViewModel(),
-                    navigate = { navigate(NavConstants.battleConfigItem, it) }
+                    navigate = { navController.navigate(Route.BattleConfigItem(it)) }
                 )
             }
-            composable(NavConstants.moreOptions) {
+            composable<Route.MoreOptions> {
                 MoreOptionsScreen(
                     vm = hiltViewModel(),
-                    navigateToFineTune = { navController.navigate(NavConstants.fineTune) }
+                    navigateToFineTune = { navController.navigate(Route.FineTune) }
                 )
             }
-            composable(NavConstants.fineTune) {
+            composable<Route.FineTune> {
                 FineTuneScreen(
                     vm = hiltViewModel()
                 )
             }
-            battleConfigComposable(NavConstants.battleConfigItem) { _, id ->
+            composable<Route.BattleConfigItem> { backStackEntry ->
+                val id = backStackEntry.toRoute<Route.BattleConfigItem>().id
+
                 BattleConfigScreen(
                     vm = hiltViewModel(),
                     navigate = {
                         when (it) {
                             BattleConfigDestination.Back -> navController.popBackStack()
-                            BattleConfigDestination.CardPriority -> navigate(NavConstants.cardPriority, id)
+                            BattleConfigDestination.CardPriority ->
+                                navController.navigate(Route.CardPriority(id))
+
                             is BattleConfigDestination.Other -> {
-                                navigate(NavConstants.battleConfigItem, it.id) {
-                                    popUpTo(NavConstants.battleConfigs)
+                                navController.navigate(Route.BattleConfigItem(it.id)) {
+                                    popUpTo<Route.BattleConfigList>()
                                 }
                             }
 
-                            BattleConfigDestination.PreferredSupport -> navigate(NavConstants.preferredSupport, id)
+                            BattleConfigDestination.PreferredSupport ->
+                                navController.navigate(Route.PreferredSupport(id))
+
                             BattleConfigDestination.SkillMaker -> {
                                 val intent = Intent(context, SkillMakerActivity::class.java).apply {
-                                    putExtra(NavConstants.battleConfigIdKey, id)
+                                    putExtra(Route.BattleConfig.idArg, id)
                                 }
 
                                 context.startActivity(intent)
                             }
 
-                            BattleConfigDestination.Spam -> navigate(NavConstants.spam, id)
+                            BattleConfigDestination.Spam -> navController.navigate(Route.Spam(id))
                         }
                     }
                 )
             }
-            battleConfigComposable(NavConstants.cardPriority) { _, _ ->
+            composable<Route.CardPriority> {
                 CardPriorityScreen(
                     vm = hiltViewModel()
                 )
             }
-            battleConfigComposable(NavConstants.preferredSupport) { _, _ ->
+            composable<Route.PreferredSupport> {
                 PreferredSupportScreen(
                     vm = hiltViewModel(),
                     supportVm = supportVm
                 )
             }
-            battleConfigComposable(NavConstants.spam) { _, _ ->
+            composable<Route.Spam> {
                 SpamScreen(
                     vm = hiltViewModel()
                 )
             }
         }
     }
-}
-
-object NavConstants {
-    const val home = "home"
-    const val battleConfigs = "configs"
-    const val battleConfigItem = "configItem"
-    const val battleConfigIdKey = "id"
-    const val moreOptions = "more"
-    const val fineTune = "fineTune"
-    const val cardPriority = "cardPriority"
-    const val preferredSupport = "preferredSupport"
-    const val spam = "spam"
-    const val onboarding = "onboarding"
 }
