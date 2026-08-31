@@ -132,8 +132,6 @@ class Caster @Inject constructor(
                                     else -> ServantTarget.Left // Assume Left when Slot B is empty
                                 }
                             }
-
-                            else -> target
                         }
                     }
 
