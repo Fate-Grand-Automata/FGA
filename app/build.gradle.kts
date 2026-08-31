@@ -107,7 +107,6 @@ dependencies {
 
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.documentfile)
-    implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.constraintlayout)
 
     implementation(libs.opencv)
@@ -148,6 +147,8 @@ dependencies {
     implementation(libs.google.android.play.update.ktx)
     implementation(libs.coil)
     implementation(libs.coil.gif)
+
+    implementation(libs.reorderable)
 
     testImplementation(platform(libs.junit.bom)) {
         because("kotlin-test comes with conflicting junit versions")
