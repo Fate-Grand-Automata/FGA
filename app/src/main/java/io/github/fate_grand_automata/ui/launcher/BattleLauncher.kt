@@ -147,7 +147,7 @@ fun battleLauncher(
                 prefs.selectedBattleConfig = configs[selectedConfigIndex]
             }
 
-            prefs.updateCompletedRuns()
+            prefs.resetCompletedRuns()
         }
     }
 

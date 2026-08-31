@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -21,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import io.github.fate_grand_automata.R
@@ -91,15 +92,23 @@ fun ScriptRunnerUI(
                 enabled = enabled,
                 modifier = dragModifier
             ) {
-                if (script == ScriptModeEnum.Battle && state == ScriptRunnerUIState.Running) {
-                    Text(
-                        text = "$completedRuns",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(18.dp, 10.dp),
-                        textAlign = TextAlign.Center,
-                        maxLines = 1
-                    )
-                } else {
+                BadgedBox(
+                    badge = {
+                        if (script == ScriptModeEnum.Battle && state == ScriptRunnerUIState.Running) {
+                            Badge(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                                contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                                modifier = Modifier.offset(x = 6.dp)
+                            ) {
+                                Text(
+                                    text = "$completedRuns",
+                                    maxLines = 1
+                                )
+                            }
+                        }
+                    },
+                    modifier = Modifier.padding(18.dp, 10.dp)
+                ) {
                     Icon(
                         painter = when (state) {
                             ScriptRunnerUIState.Idle, is ScriptRunnerUIState.Paused -> painterResource(R.drawable.ic_play)
@@ -109,12 +118,9 @@ fun ScriptRunnerUI(
                             ScriptRunnerUIState.Idle -> "start"
                             is ScriptRunnerUIState.Paused -> "resume"
                             ScriptRunnerUIState.Running -> "pause"
-                        },
-                        modifier = Modifier
-                            .padding(18.dp, 10.dp)
+                        }
                     )
                 }
-                
             }
 
             AnimatedVisibility(
