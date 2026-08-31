@@ -11,6 +11,7 @@ import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
 import io.github.fate_grand_automata.scripts.enums.SpamEnum
 import io.github.fate_grand_automata.scripts.enums.SupportClass
 import io.github.fate_grand_automata.scripts.enums.SupportSelectionModeEnum
+import io.github.fate_grand_automata.scripts.models.SkillSpamTarget
 
 val RefillResourceEnum.stringRes
     get() = when (this) {
@@ -33,6 +34,17 @@ val SpamEnum.stringRes
         SpamEnum.None -> R.string.p_spam_none
         SpamEnum.Spam -> R.string.p_spam_spam
         SpamEnum.Danger -> R.string.p_spam_danger
+    }
+
+val SkillSpamTarget.stringRes
+    get() = when (this) {
+        SkillSpamTarget.None -> R.string.spam_target_none
+        SkillSpamTarget.Self -> R.string.spam_target_self
+        SkillSpamTarget.Slot1 -> R.string.spam_target_slot_1
+        SkillSpamTarget.Slot2 -> R.string.spam_target_slot_2
+        SkillSpamTarget.Slot3 -> R.string.spam_target_slot_3
+        SkillSpamTarget.Left -> R.string.spam_target_left
+        SkillSpamTarget.Right -> R.string.spam_target_right
     }
 
 val SupportClass.stringRes
