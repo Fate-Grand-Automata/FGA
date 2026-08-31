@@ -6,7 +6,7 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.SupportImageKind
 
 class KnownException(val reason: Reason) : Exception("${reason::class.simpleName}(${reason.args.joinToString()})") {
-    sealed class Reason(@StringRes val resId: Int, vararg val args: Any) {
+    sealed class Reason(@param:StringRes val resId: Int, vararg val args: Any) {
         class CouldNotCreateDirectory(name: String) : Reason(R.string.error_could_not_create_directory, name)
         class CouldNotCreateFile(name: String) : Reason(R.string.error_could_not_create_file, name)
         object CouldNotOpenFileForRecording : Reason(R.string.error_could_not_open_file_for_recording)
