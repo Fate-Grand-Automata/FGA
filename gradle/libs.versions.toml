@@ -7,9 +7,9 @@ documentfile_version = "1.1.0"
 flow_preferences_version = "1.9.1"
 hilt_navigation_compose_version = "1.4.0"
 kotlinx_coroutines_core_version = "1.11.0"
+kotlinx_serialization_version = "1.11.0"
 lifecycle_version = "2.11.0"
 hilt_version = "2.60.1"
-gson_version = "2.14.0"
 
 
 kotlin_version = "2.4.10"
@@ -53,6 +53,10 @@ kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
 # :app has no Kotlin plugin to pick the test framework variant, so it names one explicitly
 kotlin-test-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "kotlin_version" }
 
+# Serialization: `-core` carries @Serializable and the generated serializers, `-json` the JSON format
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx_serialization_version" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx_serialization_version" }
+
 fredporciuncula-flow-preferences = { module = "com.fredporciuncula:flow-preferences", version.ref = "flow_preferences_version" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk_version" }
 willowtreeapps-assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk_version" }
@@ -71,9 +75,6 @@ dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", vers
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt_navigation_compose_version" }
 androidx-hilt-lifecycle-viewmodel-compose = { module = "androidx.hilt:hilt-lifecycle-viewmodel-compose", version.ref = "hilt_navigation_compose_version" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation_compose_version" }
-
-# Gson
-google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson_version" }
 
 # Accompanist
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist_version" }
@@ -115,4 +116,5 @@ ben-manes-versions = { id = "io.github.ben-manes.versions", version.ref = "ben-m
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp_version" }
 
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin_version" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin_version" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_version" }

@@ -6,9 +6,9 @@ import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.fate_grand_automata.R
+import io.github.fate_grand_automata.prefs.BattleConfigFile
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.scripts.enums.GameServers
@@ -88,15 +88,13 @@ class BattleConfigListViewModel @Inject constructor(
         var failed = 0
 
         withContext(Dispatchers.IO) {
-            val gson = Gson()
             val resolver = context.contentResolver
             val dir = DocumentFile.fromTreeUri(context, dirUri)
 
             val configs = configsToExport()
 
             configs.forEach { battleConfig ->
-                val values = battleConfig.export()
-                val json = gson.toJson(values)
+                val json = BattleConfigFile.encode(battleConfig.export())
 
                 try {
                     dir?.createFile("*/*", "${battleConfig.name}.fga")
@@ -133,8 +131,6 @@ class BattleConfigListViewModel @Inject constructor(
         var failed = 0
 
         withContext(Dispatchers.IO) {
-            val gson = Gson()
-
             uris.forEach { uri ->
                 try {
                     val json = context.contentResolver.openInputStream(uri)?.use { inStream ->
@@ -144,11 +140,7 @@ class BattleConfigListViewModel @Inject constructor(
                     }
 
                     if (json != null) {
-                        val map = gson.fromJson(json, Map::class.java)
-                            .map { (k, v) -> k.toString() to v }
-                            .toMap()
-
-                        newConfig().import(map)
+                        newConfig().import(BattleConfigFile.decode(json))
                     }
                 } catch (e: Exception) {
                     ++failed
