@@ -60,7 +60,8 @@ interface IPreferences {
     fun isOnboardingRequired(): Boolean
     fun completedOnboarding()
 
-    fun updateCompletedRuns(runs: Int = 0)
+    fun updateCompletedRuns(runs: Int)
+    fun resetCompletedRuns()
 }
 
 val IPreferences.wantsMediaProjectionToken get() = !useRootForScreenshots
