@@ -139,7 +139,7 @@ class ScriptManager @Inject constructor(
                 // A little bit of delay so the exit message can be recorded
                 launch {
                     try {
-                        delay(500)
+                        delay(500.milliseconds)
                         withContext(Dispatchers.Main) {
                             recording.close()
                         }
@@ -390,7 +390,7 @@ class ScriptManager @Inject constructor(
             launcherResponseHandler.handle(resp)
 
             if (resp !is ScriptLauncherResponse.Cancel) {
-                delay(500)
+                delay(500.milliseconds)
                 runEntryPoint(
                     screenshotService = screenshotService,
                     entryPointProvider = { getEntryPoint(hiltEntryPoint) }
