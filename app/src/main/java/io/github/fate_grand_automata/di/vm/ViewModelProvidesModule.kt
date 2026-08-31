@@ -8,13 +8,13 @@ import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
-import io.github.fate_grand_automata.ui.main.NavConstants
+import io.github.fate_grand_automata.ui.main.Route
 
 @Module
 @InstallIn(ViewModelComponent::class)
 class ViewModelProvidesModule {
     val SavedStateHandle.configKey: String get() =
-        this[NavConstants.battleConfigIdKey]
+        this[Route.BattleConfig.idArg]
             ?: throw kotlin.Exception("Couldn't get Battle Config key")
 
     @ViewModelScoped
