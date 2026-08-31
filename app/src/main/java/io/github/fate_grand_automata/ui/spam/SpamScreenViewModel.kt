@@ -1,9 +1,11 @@
 package io.github.fate_grand_automata.ui.spam
 
+import androidx.annotation.StringRes
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
 import io.github.fate_grand_automata.scripts.enums.SpamEnum
 import io.github.fate_grand_automata.scripts.models.NpSpamConfig
@@ -53,7 +55,7 @@ class SpamScreenViewModel @Inject constructor(
             )
         }
 
-    data class SpamPreset(val name: String, val action: (List<SpamState>) -> Unit)
+    data class SpamPreset(@StringRes val nameRes: Int, val action: (List<SpamState>) -> Unit)
 
     private fun applyPreset(state: List<SpamState>, spamMode: SpamEnum) {
         val allWaves = setOf(1, 2, 3)
@@ -70,15 +72,14 @@ class SpamScreenViewModel @Inject constructor(
         }
     }
 
-    // TODO: Localize
     val presets = listOf(
-        SpamPreset("SPAM ALL") {
+        SpamPreset(R.string.spam_preset_spam_all) {
             applyPreset(it, SpamEnum.Spam)
         },
-        SpamPreset("SPAM ALL DANGER") {
+        SpamPreset(R.string.spam_preset_spam_all_danger) {
             applyPreset(it, SpamEnum.Danger)
         },
-        SpamPreset("NO SPAM") {
+        SpamPreset(R.string.spam_preset_no_spam) {
             applyPreset(it, SpamEnum.None)
         }
     )
