@@ -36,7 +36,12 @@ dependencyResolutionManagement {
         }
         // fallback for the rest of the dependencies
         mavenCentral()
-        maven { url = uri("https://jitpack.io") }
+        // tesseract4android is published nowhere else
+        maven("https://jitpack.io") {
+            content {
+                includeGroup("cz.adaptech.tesseract4android")
+            }
+        }
     }
 }
 

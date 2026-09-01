@@ -30,5 +30,6 @@ subprojects {
 }
 
 tasks.register<Delete>("clean") {
+    description = "Cleans the build directory of the root project."
     delete(rootProject.layout.buildDirectory)
 }
