@@ -42,11 +42,6 @@ junit_bom_version = "6.1.3"
 
 
 [libraries]
-android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp_version" }
-kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin_version" }
-hilt-android-gradle-plugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt_version" }
-ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp_version" }
-
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin_version" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx_coroutines_core_version" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }

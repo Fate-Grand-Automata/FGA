@@ -1,3 +1,4 @@
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -32,4 +33,20 @@ subprojects {
 tasks.register<Delete>("clean") {
     description = "Cleans the build directory of the root project."
     delete(rootProject.layout.buildDirectory)
+}
+
+/**
+ * Google and androidx publish alphas to the same channel as stable releases, so
+ * `dependencyUpdates` reports them as available updates unless they are filtered out here.
+ *
+ * A version is stable if it is digits and separators only, or has release, final, or GA in its
+ * version.
+ */
+fun isStable(version: String): Boolean {
+    val stableSuffix = listOf("RELEASE", "FINAL", "GA").any { version.uppercase().contains(it) }
+    return stableSuffix || Regex("^[0-9,.v-]+(-r)?$").matches(version)
+}
+
+tasks.withType<DependencyUpdatesTask>().configureEach {
+    rejectVersionIf { !isStable(candidate.version) }
 }
