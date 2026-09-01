@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.prefs
 
+import io.github.fate_grand_automata.prefs.core.CompletedRunsHolder
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.prefs.core.map
 import io.github.fate_grand_automata.scripts.enums.GameServer
@@ -16,6 +17,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 class PreferencesImpl @Inject constructor(
     val prefs: PrefsCore,
+    private val completedRunsHolder: CompletedRunsHolder,
 ) : IPreferences {
     override var scriptMode by prefs.scriptMode
 
@@ -174,11 +176,11 @@ class PreferencesImpl @Inject constructor(
         prefs.onboardingCompletedVersion.set(PrefsCore.CURRENT_ONBOARDING_VERSION)
 
     override fun updateCompletedRuns(runs: Int) {
-        prefs.completedRuns.set(runs)
+        completedRunsHolder.update(runs)
     }
 
     override fun resetCompletedRuns() {
-        prefs.completedRuns.set(0)
+        completedRunsHolder.reset()
     }
 
     override val support = object :

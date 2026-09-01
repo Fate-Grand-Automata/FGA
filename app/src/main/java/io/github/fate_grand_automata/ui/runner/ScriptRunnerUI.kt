@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,11 +31,13 @@ import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.prefs.remember
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun ScriptRunnerUI(
     state: ScriptRunnerUIState,
     prefsCore: PrefsCore,
+    completedRuns: StateFlow<Int>,
     updateState: (ScriptRunnerUIAction) -> Unit,
     onDrag: (Float, Float) -> Unit,
     enabled: Boolean,
@@ -43,7 +46,7 @@ fun ScriptRunnerUI(
     val hidePlayButton by prefsCore.hidePlayButton.remember()
     val script by prefsCore.scriptMode.remember()
 
-    val completedRuns by prefsCore.completedRuns.remember()
+    val completedRunsCount by completedRuns.collectAsState()
 
     FGATheme(
         darkTheme = true,
@@ -96,12 +99,12 @@ fun ScriptRunnerUI(
                     badge = {
                         if (script == ScriptModeEnum.Battle && state == ScriptRunnerUIState.Running) {
                             Badge(
-                                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                                contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                                modifier = Modifier.offset(x = 6.dp)
+                                containerColor = Color.Transparent,
+                                contentColor = Color(0xFFA6EEFF),
+                                modifier = Modifier.offset(x = 8.dp)
                             ) {
                                 Text(
-                                    text = "$completedRuns",
+                                    text = "$completedRunsCount",
                                     maxLines = 1
                                 )
                             }
