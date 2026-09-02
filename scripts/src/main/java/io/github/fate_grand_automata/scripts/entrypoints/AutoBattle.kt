@@ -73,6 +73,7 @@ class AutoBattle @Inject constructor(
         data object SupportSelectionPreferredNotSet : ExitReason()
         class SkillCommandParseError(cause: Exception) : ExitReason(cause)
         class CardPriorityParseError(val msg: String) : ExitReason()
+        class CardTypePatternParseError(val msg: String) : ExitReason()
         data object Paused : ExitReason()
         data object StopAfterThisRun : ExitReason()
         data object OutOfCommandSpells: ExitReason()
