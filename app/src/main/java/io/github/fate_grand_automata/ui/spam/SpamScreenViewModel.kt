@@ -4,22 +4,32 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.fate_grand_automata.R
-import io.github.fate_grand_automata.prefs.core.BattleConfigCore
+import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.scripts.enums.SpamEnum
 import io.github.fate_grand_automata.scripts.models.NpSpamConfig
 import io.github.fate_grand_automata.scripts.models.ServantSpamConfig
 import io.github.fate_grand_automata.scripts.models.SkillSpamConfig
 import io.github.fate_grand_automata.scripts.models.SkillSpamTarget
-import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
-import javax.inject.Inject
+import io.github.fate_grand_automata.scripts.prefs.IPreferences
 
-@HiltViewModel
-class SpamScreenViewModel @Inject constructor(
-    val battleConfig: IBattleConfig,
-    val battleConfigCore: BattleConfigCore
+@HiltViewModel(assistedFactory = SpamScreenViewModel.Factory::class)
+class SpamScreenViewModel @AssistedInject constructor(
+    prefs: IPreferences,
+    prefsCore: PrefsCore,
+    @Assisted id: String
 ) : ViewModel() {
+    val battleConfig = prefs.forBattleConfig(id)
+    val battleConfigCore = prefsCore.forBattleConfig(id)
+
+    @AssistedFactory
+    interface Factory {
+        fun create(id: String): SpamScreenViewModel
+    }
     private val spamConfig = battleConfig.spam
 
     data class NpSpamState(

@@ -27,7 +27,7 @@ activity_version = "1.13.0"
 mockk_version = "1.14.11"
 
 opencv_version = "4.14.0"
-navigation_compose_version = "2.10.0"
+nav3_core_version = "1.1.7"
 
 reorderable_version = "3.1.0"
 tesseract4android_version = "4.9.0"
@@ -69,7 +69,9 @@ dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", vers
 # Navigation
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt_navigation_compose_version" }
 androidx-hilt-lifecycle-viewmodel-compose = { module = "androidx.hilt:hilt-lifecycle-viewmodel-compose", version.ref = "hilt_navigation_compose_version" }
-androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation_compose_version" }
+androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3_core_version" }
+androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3_core_version" }
+androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycle_version" }
 
 # Accompanist
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist_version" }
