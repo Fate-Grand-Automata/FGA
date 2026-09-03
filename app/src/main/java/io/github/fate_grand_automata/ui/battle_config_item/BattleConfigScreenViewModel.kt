@@ -4,11 +4,13 @@ import android.content.Context
 import android.net.Uri
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.BattleConfigFile
-import io.github.fate_grand_automata.prefs.core.BattleConfigCore
-import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
+import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.skill_maker.SkillMakerModel
 import kotlinx.coroutines.flow.combine
@@ -16,14 +18,20 @@ import kotlinx.coroutines.flow.map
 import timber.log.Timber
 import java.io.OutputStream
 import java.util.UUID
-import javax.inject.Inject
 
-@HiltViewModel
-class BattleConfigScreenViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = BattleConfigScreenViewModel.Factory::class)
+class BattleConfigScreenViewModel @AssistedInject constructor(
     val prefs: IPreferences,
-    val battleConfig: IBattleConfig,
-    val battleConfigCore: BattleConfigCore
+    prefsCore: PrefsCore,
+    @Assisted id: String
 ) : ViewModel() {
+    val battleConfig = prefs.forBattleConfig(id)
+    val battleConfigCore = prefsCore.forBattleConfig(id)
+
+    @AssistedFactory
+    interface Factory {
+        fun create(id: String): BattleConfigScreenViewModel
+    }
 
     val cardPriority =
         battleConfigCore.cardPriority

@@ -1,16 +1,15 @@
 package io.github.fate_grand_automata.ui.main
 
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 /** The destinations of the [FgaApp] navigation graph. */
-sealed interface Route {
+sealed interface Route : NavKey {
     /**
      * The screens that edit one battle config.
      *
-     * Navigation stores each route field in the destination's `SavedStateHandle` under its own
-     * property name. `ViewModelProvidesModule` reads the config id from there by name, which is
-     * what lets it serve all four of these screens without knowing which one is on top - so the
-     * property has to keep the name [BattleConfig.idArg].
+     * [BattleConfig.idArg] also names the `Intent` extra `SkillMakerActivity` is launched with,
+     * since that's a separate Activity outside the nav graph.
      */
     sealed interface BattleConfig : Route {
         val id: String
