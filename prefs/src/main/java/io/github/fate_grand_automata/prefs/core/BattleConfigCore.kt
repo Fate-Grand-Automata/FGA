@@ -78,7 +78,7 @@ class BattleConfigCore(
         default = emptyList()
     )
 
-    var braveChains = maker.serialized(
+    val braveChains = maker.serialized(
         "auto_skill_brave_chains",
         serializer = object : Serializer<List<BraveChainEnum>> {
             private val separator = ","

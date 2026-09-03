@@ -21,7 +21,7 @@ import java.util.UUID
 
 @HiltViewModel(assistedFactory = BattleConfigScreenViewModel.Factory::class)
 class BattleConfigScreenViewModel @AssistedInject constructor(
-    val prefs: IPreferences,
+    private val prefs: IPreferences,
     prefsCore: PrefsCore,
     @Assisted id: String
 ) : ViewModel() {

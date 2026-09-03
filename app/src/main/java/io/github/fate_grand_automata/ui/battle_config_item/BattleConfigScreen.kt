@@ -34,7 +34,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
@@ -51,7 +50,7 @@ import io.github.fate_grand_automata.util.toSp
 
 @Composable
 fun BattleConfigScreen(
-    vm: BattleConfigScreenViewModel = viewModel(),
+    vm: BattleConfigScreenViewModel,
     navigate: (BattleConfigDestination) -> Unit
 ) {
     val context = LocalContext.current
@@ -62,6 +61,7 @@ fun BattleConfigScreen(
 
     BattleConfigContent(
         config = vm.battleConfigCore,
+        vm = vm,
         onExport = { battleConfigExport.launch("${vm.battleConfig.name}.fga") },
         onCopy = {
             val id = vm.createCopyAndReturnId(context)
@@ -87,11 +87,11 @@ sealed class BattleConfigDestination {
 @Composable
 private fun BattleConfigContent(
     config: BattleConfigCore,
+    vm: BattleConfigScreenViewModel,
     onExport: () -> Unit,
     onCopy: () -> Unit,
     onDelete: () -> Unit,
-    navigate: (BattleConfigDestination) -> Unit,
-    vm: BattleConfigScreenViewModel = viewModel()
+    navigate: (BattleConfigDestination) -> Unit
 ) {
     Box(
         modifier = Modifier
