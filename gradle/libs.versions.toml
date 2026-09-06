@@ -26,7 +26,9 @@ google_android_play_version = "2.1.0"
 activity_version = "1.13.0"
 mockk_version = "1.14.11"
 
-opencv_version = "4.14.0"
+opencv_version = "4.11.0"
+# Only used for its 16 KB aligned libc++_shared.so, see app/build.gradle.kts
+opencv_aligned_libcxx_version = "4.14.0"
 nav3_core_version = "1.1.7"
 
 reorderable_version = "3.1.0"
@@ -89,6 +91,7 @@ androidx-documentfile = { module = "androidx.documentfile:documentfile", version
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout_version" }
 
 opencv = { group = "org.opencv", name = "opencv", version.ref = "opencv_version" }
+opencv-aligned-libcxx = { group = "org.opencv", name = "opencv", version.ref = "opencv_aligned_libcxx_version" }
 tesseract4android = { module = "cz.adaptech.tesseract4android:tesseract4android", version.ref = "tesseract4android_version" }
 
 junit-bom = { group = "org.junit", name = "junit-bom", version.ref = "junit_bom_version" }

@@ -21,6 +21,11 @@
   },
   "packageRules": [
     {
+      "description": "OpenCV 4.12.0+ calls KleidiCV SVE kernels, which SIGILL on BlueStacks Air (macOS). This also suppresses opencv_aligned_libcxx_version, the same coordinate, which must be bumped by hand. See app/build.gradle.kts.",
+      "matchPackageNames": ["org.opencv:opencv"],
+      "enabled": false
+    },
+    {
       "groupName": "kotlin",
       "matchPackageNames": [
         "/^org.jetbrains.kotlin/",

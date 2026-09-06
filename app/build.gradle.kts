@@ -1,3 +1,5 @@
+import javax.inject.Inject
+
 plugins {
     alias(libs.plugins.android.application)
     id("kotlin-parcelize")
@@ -5,6 +7,73 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
+}
+
+/*
+ * OpenCV is pinned to 4.11.0 because every later release bundles a KleidiCV that runs
+ * SVE instructions, and BlueStacks Air on macOS advertises SVE2 in HWCAP2 without
+ * implementing SVE, so those builds die with SIGILL. Do not bump `opencv_version`
+ * until that is fixed upstream.
+ *
+ * The 4.11.0 AAR ships a 4 KB aligned libc++_shared.so, which Play's 16 KB page size
+ * requirement rejects, so the 16 KB aligned copy from a current OpenCV release is
+ * packaged in its place. libc++_shared.so only ever gains symbols, so the newer one
+ * still satisfies the older libopencv_java4.so.
+ */
+val alignedLibCxx = configurations.create("alignedLibCxx") {
+    isTransitive = false
+}
+
+abstract class ExtractAlignedLibCxx : DefaultTask() {
+    @get:InputFiles
+    abstract val aar: ConfigurableFileCollection
+
+    @get:OutputDirectory
+    abstract val outputDir: DirectoryProperty
+
+    @get:Inject
+    abstract val archives: ArchiveOperations
+
+    @get:Inject
+    abstract val files: FileSystemOperations
+
+    @TaskAction
+    fun extract() {
+        files.sync {
+            from(archives.zipTree(aar.singleFile)) {
+                include("jni/*/libc++_shared.so")
+                // jniLibs source dirs are laid out as <abi>/<lib>, the AAR as jni/<abi>/<lib>.
+                eachFile { path = path.removePrefix("jni/") }
+            }
+            includeEmptyDirs = false
+            into(outputDir)
+        }
+
+        /*
+         * On an empty extraction the packaging step falls back to OpenCV's own 4 KB aligned
+         * copy and the build still succeeds, so Play would be the first thing to complain.
+         */
+        if (!outputDir.get().file("arm64-v8a/libc++_shared.so").asFile.exists()) {
+            throw GradleException(
+                "No arm64-v8a/libc++_shared.so in ${aar.singleFile.name} — its layout changed.",
+            )
+        }
+    }
+}
+
+val extractAlignedLibCxx = tasks.register<ExtractAlignedLibCxx>("extractAlignedLibCxx") {
+    description = "Extracts the 16 KB aligned libc++_shared.so packaged in place of OpenCV's."
+    aar.from(alignedLibCxx)
+    outputDir.set(layout.buildDirectory.dir("alignedLibCxx"))
+}
+
+androidComponents {
+    onVariants { variant ->
+        variant.sources.jniLibs?.addGeneratedSourceDirectory(
+            extractAlignedLibCxx,
+            ExtractAlignedLibCxx::outputDir,
+        )
+    }
 }
 
 android {
@@ -79,6 +148,13 @@ android {
     // run tests in CI builds instad of debug
     testBuildType = "ci"
 
+    packaging {
+        jniLibs {
+            // Project-local jniLibs are merged ahead of any dependency's, so ours wins.
+            pickFirsts += "**/libc++_shared.so"
+        }
+    }
+
     namespace = "io.github.fate_grand_automata"
 }
 
@@ -109,6 +185,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
 
     implementation(libs.opencv)
+    alignedLibCxx("${libs.opencv.aligned.libcxx.get()}@aar")
     implementation(libs.tesseract4android)
 
     implementation(libs.lifecycle.viewmodel.ktx)
