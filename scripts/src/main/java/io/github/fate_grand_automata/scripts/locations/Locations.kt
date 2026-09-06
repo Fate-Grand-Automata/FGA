@@ -144,7 +144,7 @@ class Locations @Inject constructor(
         true -> Location(-396, 1284).xFromRight()
     }
 
-    val tempServantEnhancementRegion = Region(252, 1096, 301, 57).xFromCenter()
+    val tempServantEnhancementRegion = Region(176, 1080, 480, 104).xFromCenter()
 
     val enhancementSkipRapidClick = Location(0, 1400).xFromCenter()
 

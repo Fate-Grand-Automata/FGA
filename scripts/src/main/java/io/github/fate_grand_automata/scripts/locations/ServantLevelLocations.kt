@@ -10,25 +10,14 @@ class ServantLevelLocations @Inject constructor(
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
     val emberConfirmationDialogRegion = when (gameServer) {
-        is GameServer.Jp -> Region(321, 1209, 160, 100).xFromCenter()
+        is GameServer.Jp, is GameServer.Kr, is GameServer.Cn -> Region(250, 1204, 300, 116).xFromCenter()
         else -> Region(338, 1229, 130, 70).xFromCenter()
     }
 
-    val emberConfirmationDialogLocation = when (isWide) {
-        true -> Location(-1096, 1259).xFromRight()
-        false -> Location(-1096, 1259).xFromRight()
-    }
-
     val servantAutoSelectRegion = when (gameServer) {
-        is GameServer.Jp -> Region(764, 0, 260, 60).xFromCenter()
+        is GameServer.Jp, is GameServer.Kr, is GameServer.Cn -> Region(742, 0, 304, 72).xFromCenter()
         else -> Region(1032, 0, 238, 53).xFromCenter()
     }.copy(y = if (isWide) 268 else 308)
-     
-
-    val autoSelectLocation = when (isWide) {
-        true -> Location(-347, 294).xFromRight()
-        false -> Location(-127, 334).xFromRight()
-    }
 
     val emptyEmberOrQPDialogRegion =
         Region(-113, 1086, 224, 76).xFromCenter()
