@@ -160,6 +160,13 @@ fun FGAListItemColors() = ListItemDefaults.colors(
     containerColor = MaterialTheme.colorScheme.surfaceVariant
 )
 
+/**
+ * Menus default to `surfaceContainer`, which this scheme leaves unset — Material then falls
+ * back to its purple baseline value. Match the cards the menus are anchored to instead.
+ */
+@Composable
+fun FGAMenuContainerColor() = MaterialTheme.colorScheme.surfaceVariant
+
 @Composable
 fun FGATheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
