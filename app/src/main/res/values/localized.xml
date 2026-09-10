@@ -496,6 +496,14 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_battle_config_raid_delay_message">This adds extra turn delay used for raids.</string>
     <string name="config_state_on">On</string>
     <string name="config_state_off">Off</string>
+    <string name="clear">"Clear"</string>
+    <string name="battle_config_item_back">"Back"</string>
+    <string name="battle_config_server_any">"Any"</string>
+    <string name="battle_config_party_default">"Default"</string>
+    <string name="battle_config_materials_none">"Don't count"</string>
+    <string name="battle_config_notes_hint">"Add a note"</string>
+    <string name="battle_config_cmd_not_set">"Not recorded — open the Skill Maker"</string>
+    <string name="battle_config_cmd_invalid">"Invalid skill command: %1$s"</string>
     <string name="save">Save</string>
     <string name="reset">Reset</string>
 

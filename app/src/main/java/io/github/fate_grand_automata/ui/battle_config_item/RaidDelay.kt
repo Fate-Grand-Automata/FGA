@@ -162,7 +162,7 @@ fun RaidDelay(
         ConfigSummaryValue(
             when (addRaidTurnDelay) {
                 true -> "${raidTurnDelaySeconds}s"
-                false -> stringResource(R.string.config_state_off).uppercase()
+                false -> stringResource(R.string.config_state_off)
             }
         )
     }

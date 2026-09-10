@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -21,9 +22,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 
+/**
+ * The app-wide screen header. [leading] and [trailing] sit on the title's row, [subheading]
+ * wraps below it.
+ */
 @Composable
 fun Heading(
     text: String,
+    leading: (@Composable () -> Unit)? = null,
+    trailing: (@Composable () -> Unit)? = null,
     subheading: (@Composable () -> Unit)? = null
 ) {
     Column(
@@ -32,12 +39,23 @@ fun Heading(
     ) {
         val landscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-        Text(
-            if (landscape) text.uppercase() else text,
-            style = if (landscape) MaterialTheme.typography.titleSmall else MaterialTheme.typography.headlineMedium,
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(start = 16.dp)
-        )
+                .fillMaxWidth()
+                // An icon button brings its own touch padding, so the title needs less of its own.
+                .padding(start = if (leading != null) 4.dp else 16.dp, end = 4.dp)
+        ) {
+            leading?.invoke()
+
+            Text(
+                if (landscape) text.uppercase() else text,
+                style = if (landscape) MaterialTheme.typography.titleSmall else MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.weight(1f)
+            )
+
+            trailing?.invoke()
+        }
 
         if (subheading != null) {
             FlowRow(

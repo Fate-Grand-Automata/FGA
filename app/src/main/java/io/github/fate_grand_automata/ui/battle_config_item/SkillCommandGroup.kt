@@ -1,11 +1,11 @@
 package io.github.fate_grand_automata.ui.battle_config_item
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
@@ -45,6 +45,8 @@ fun SkillCommandGroup(
     val parsedCommand by vm.skillCommand.collectAsState(listOf())
     var editing by remember { mutableStateOf(false) }
 
+    val invalidCommandMessage = stringResource(R.string.battle_config_cmd_invalid)
+
     if (editing) {
         var errorMessage by remember { mutableStateOf("") }
 
@@ -61,8 +63,7 @@ fun SkillCommandGroup(
                         editing = false
                         errorMessage = ""
                     } catch (e: Exception) {
-                        // TODO: Localize
-                        errorMessage = "Invalid skill command ${e.cause?.message}"
+                        errorMessage = invalidCommandMessage.format(e.cause?.message ?: "")
                     }
                 },
                 onCancel = { editing = false },
@@ -80,7 +81,14 @@ fun SkillCommandGroup(
             title = { Text(stringResource(R.string.p_battle_config_cmd)) },
             summary = if (parsedCommand.isNotEmpty()) {
                 { SkillCommandSummary(parsedCommand) }
-            } else null,
+            } else {
+                {
+                    Text(
+                        stringResource(R.string.battle_config_cmd_not_set),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            },
             onClick = openSkillMaker
         ) {
             IconButton(
@@ -95,16 +103,21 @@ fun SkillCommandGroup(
     }
 }
 
-// FIXME: Scrolling commands crashes the app (as of compose-beta09) -> https://issuetracker.google.com/issues/189965769 looks related
+/*
+ * A plain scrolling Row rather than a LazyRow: this is the supporting content of a ListItem,
+ * whose measure policy asks for the child's intrinsic height, and a LazyRow is a
+ * SubcomposeLayout, which throws on any intrinsic measurement. A command is short enough that
+ * composing every entry costs nothing.
+ */
 @Composable
 fun SkillCommandSummary(skillCommand: List<SkillMakerEntry>) {
-    LazyRow(
+    Row(
         modifier = Modifier
             .padding(vertical = 2.dp)
-            .height(25.dp) // without this, the app crashes when opening battle configs
             .fillMaxWidth()
+            .horizontalScroll(rememberScrollState())
     ) {
-        items(skillCommand) {
+        skillCommand.forEach {
             Card(
                 colors = cardColors(
                     containerColor = colorResource(it.colorRes)

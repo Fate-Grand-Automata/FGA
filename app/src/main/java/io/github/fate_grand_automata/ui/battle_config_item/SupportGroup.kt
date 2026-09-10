@@ -47,10 +47,9 @@ import io.github.fate_grand_automata.scripts.enums.SupportSelectionModeEnum
 import io.github.fate_grand_automata.scripts.enums.canAlsoCheckAll
 import io.github.fate_grand_automata.ui.DimmedIcon
 import io.github.fate_grand_automata.ui.icon
-import io.github.fate_grand_automata.ui.prefs.ListPreference
+import io.github.fate_grand_automata.ui.prefs.DropdownPreference
 import io.github.fate_grand_automata.ui.prefs.Preference
 import io.github.fate_grand_automata.ui.prefs.PreferenceGroupHeader
-import io.github.fate_grand_automata.ui.prefs.SingleSelectChipPreference
 import io.github.fate_grand_automata.ui.prefs.SwitchPreference
 import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.util.SupportNameResources.getLocalizedCEName
@@ -101,7 +100,7 @@ fun SupportGroup(
             val preferredMode = supportMode == SupportSelectionModeEnum.Preferred
 
             Row {
-                config.selectionMode.ListPreference(
+                config.selectionMode.DropdownPreference(
                     title = stringResource(R.string.p_battle_config_support_selection_mode),
                     entries = SupportSelectionModeEnum.entries
                         .associateWith { stringResource(it.stringRes) },
@@ -109,14 +108,13 @@ fun SupportGroup(
                 )
 
                 if (preferredMode) {
-                    config.fallbackTo.SingleSelectChipPreference(
+                    config.fallbackTo.DropdownPreference(
                         title = stringResource(R.string.p_battle_config_support_fallback_selection_mode),
                         entries = listOf(
                             SupportSelectionModeEnum.First,
                             SupportSelectionModeEnum.Manual
                         ).associateWith { stringResource(it.stringRes) },
-                        modifier = Modifier.weight(1f),
-                        singleRow = true
+                        modifier = Modifier.weight(1f)
                     )
                 }
             }

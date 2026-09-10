@@ -41,6 +41,11 @@ fun ConfigSummaryCell(
             style = MaterialTheme.typography.labelSmall,
             color = LocalContentColor.current.copy(alpha = 0.7f),
             textAlign = TextAlign.Center,
+            /*
+             * Shrinks rather than wrapping, so a long translated label can't push this cell's
+             * value off the baseline the other cells in the strip share.
+             */
+            maxLines = 1,
             autoSize = TextAutoSize.StepBased(
                 minFontSize = 7.sp,
                 maxFontSize = 11.sp,

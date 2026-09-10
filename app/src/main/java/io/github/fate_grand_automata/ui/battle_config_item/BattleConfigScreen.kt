@@ -11,16 +11,26 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.FileDownload
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -36,16 +46,17 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
+import io.github.fate_grand_automata.scripts.enums.SpamEnum
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.CardScore
+import io.github.fate_grand_automata.ui.FGAMenuContainerColor
 import io.github.fate_grand_automata.ui.Heading
-import io.github.fate_grand_automata.ui.HeadingButton
 import io.github.fate_grand_automata.ui.VerticalDivider
 import io.github.fate_grand_automata.ui.card_priority.getColorRes
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
-import io.github.fate_grand_automata.ui.icon
 import io.github.fate_grand_automata.ui.prefs.EditTextPreference
 import io.github.fate_grand_automata.ui.prefs.Preference
+import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.util.toSp
 
 @Composable
@@ -112,27 +123,73 @@ private fun BattleConfigContent(
                 )
             }
 
+            var actionsExpanded by remember { mutableStateOf(false) }
+
             Heading(
-                stringResource(R.string.battle_config_edit)
-            ) {
-                HeadingButton(
-                    text = stringResource(R.string.battle_config_item_export),
-                    onClick = onExport
-                )
+                text = stringResource(R.string.battle_config_edit),
+                leading = {
+                    IconButton(onClick = { navigate(BattleConfigDestination.Back) }) {
+                        Icon(
+                            Icons.AutoMirrored.Default.ArrowBack,
+                            contentDescription = stringResource(R.string.battle_config_item_back)
+                        )
+                    }
+                },
+                trailing = {
+                    Box {
+                        IconButton(onClick = { actionsExpanded = true }) {
+                            Icon(
+                                Icons.Default.MoreVert,
+                                contentDescription = stringResource(R.string.p_more_options)
+                            )
+                        }
 
-                HeadingButton(
-                    text = stringResource(R.string.battle_config_item_copy),
-                    icon = icon(Icons.Default.ContentCopy),
-                    onClick = onCopy
-                )
+                        DropdownMenu(
+                            expanded = actionsExpanded,
+                            onDismissRequest = { actionsExpanded = false },
+                            containerColor = FGAMenuContainerColor()
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.battle_config_item_export)) },
+                                leadingIcon = { Icon(Icons.Default.FileDownload, contentDescription = null) },
+                                onClick = {
+                                    actionsExpanded = false
+                                    onExport()
+                                }
+                            )
 
-                HeadingButton(
-                    text = stringResource(R.string.battle_config_item_delete),
-                    isDanger = true,
-                    icon = icon(Icons.Default.Delete),
-                    onClick = { deleteConfirmDialog.show() }
-                )
-            }
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.battle_config_item_copy)) },
+                                leadingIcon = { Icon(Icons.Default.ContentCopy, contentDescription = null) },
+                                onClick = {
+                                    actionsExpanded = false
+                                    onCopy()
+                                }
+                            )
+
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        stringResource(R.string.battle_config_item_delete),
+                                        color = MaterialTheme.colorScheme.error
+                                    )
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        Icons.Default.Delete,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.error
+                                    )
+                                },
+                                onClick = {
+                                    actionsExpanded = false
+                                    deleteConfirmDialog.show()
+                                }
+                            )
+                        }
+                    }
+                }
+            )
 
             LazyColumn(
                 modifier = Modifier.weight(1f)
@@ -155,8 +212,11 @@ private fun BattleConfigContent(
 
                             HorizontalDivider()
 
+                            val notesHint = stringResource(R.string.battle_config_notes_hint)
+
                             config.notes.EditTextPreference(
-                                title = stringResource(R.string.p_battle_config_notes)
+                                title = stringResource(R.string.p_battle_config_notes),
+                                summary = { it.ifBlank { notesHint } }
                             )
                         }
                     }
@@ -200,12 +260,26 @@ private fun BattleConfigContent(
 
                                 VerticalDivider()
 
+                                val spam by config.spam.remember()
+                                val spamEnabled = remember(spam) {
+                                    spam.any { servant ->
+                                        servant.np.spam != SpamEnum.None
+                                                || servant.skills.any { it.spam != SpamEnum.None }
+                                    }
+                                }
+
                                 ConfigSummaryCell(
                                     label = stringResource(R.string.p_spam_spam),
                                     onClick = { navigate(BattleConfigDestination.Spam) },
-                                    modifier = Modifier.weight(1f),
-                                    content = { }
-                                )
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    ConfigSummaryValue(
+                                        stringResource(
+                                            if (spamEnabled) R.string.config_state_on
+                                            else R.string.config_state_off
+                                        )
+                                    )
+                                }
 
                                 VerticalDivider()
 
