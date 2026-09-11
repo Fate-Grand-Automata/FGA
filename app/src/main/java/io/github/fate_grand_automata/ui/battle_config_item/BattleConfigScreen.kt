@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.FileDownload
@@ -127,14 +126,6 @@ private fun BattleConfigContent(
 
             Heading(
                 text = stringResource(R.string.battle_config_edit),
-                leading = {
-                    IconButton(onClick = { navigate(BattleConfigDestination.Back) }) {
-                        Icon(
-                            Icons.AutoMirrored.Default.ArrowBack,
-                            contentDescription = stringResource(R.string.battle_config_item_back)
-                        )
-                    }
-                },
                 trailing = {
                     Box {
                         IconButton(onClick = { actionsExpanded = true }) {
