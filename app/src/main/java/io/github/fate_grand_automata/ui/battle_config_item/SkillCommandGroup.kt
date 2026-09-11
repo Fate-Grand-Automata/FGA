@@ -63,7 +63,7 @@ fun SkillCommandGroup(
                         editing = false
                         errorMessage = ""
                     } catch (e: Exception) {
-                        errorMessage = invalidCommandMessage.format(e.cause?.message ?: "")
+                        errorMessage = invalidCommandMessage.format(e.cause?.message ?: e.message ?: "")
                     }
                 },
                 onCancel = { editing = false },
