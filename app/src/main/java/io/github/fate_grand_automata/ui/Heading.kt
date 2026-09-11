@@ -13,18 +13,31 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.github.fate_grand_automata.R
+
+/**
+ * Pops the current screen, or null when there is nothing to go back to. `FgaApp` provides it
+ * from the navigation back stack, so a screen gets a back arrow without having to know that it
+ * is navigable. A screen that passes its own [Heading] `leading` overrides it.
+ */
+val LocalNavigateBack = compositionLocalOf<(() -> Unit)?> { null }
 
 /**
  * The app-wide screen header. [leading] and [trailing] sit on the title's row, [subheading]
- * wraps below it.
+ * wraps below it. [leading] defaults to a back arrow wherever [LocalNavigateBack] is set.
  */
 @Composable
 fun Heading(
@@ -33,6 +46,18 @@ fun Heading(
     trailing: (@Composable () -> Unit)? = null,
     subheading: (@Composable () -> Unit)? = null
 ) {
+    val navigateBack = LocalNavigateBack.current
+    val start = leading ?: navigateBack?.let { back ->
+        @Composable {
+            IconButton(onClick = back) {
+                Icon(
+                    Icons.AutoMirrored.Default.ArrowBack,
+                    contentDescription = stringResource(R.string.navigate_back)
+                )
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .padding(vertical = 16.dp)
@@ -44,9 +69,9 @@ fun Heading(
             modifier = Modifier
                 .fillMaxWidth()
                 // An icon button brings its own touch padding, so the title needs less of its own.
-                .padding(start = if (leading != null) 4.dp else 16.dp, end = 4.dp)
+                .padding(start = if (start != null) 4.dp else 16.dp, end = 4.dp)
         ) {
-            leading?.invoke()
+            start?.invoke()
 
             Text(
                 if (landscape) text.uppercase() else text,
