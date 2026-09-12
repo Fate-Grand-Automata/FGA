@@ -3,11 +3,13 @@ package io.github.fate_grand_automata.ui.drag_sort
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.scrollbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -56,6 +58,10 @@ fun <T> DragSort(
     LazyRow(
         state = listState,
         modifier = modifier
+            .scrollbar(
+                state = listState.scrollIndicatorState,
+                orientation = Orientation.Horizontal,
+            )
     ) {
         itemsIndexed(items, key = { index, _ -> itemKeys[index] }) { index, item ->
             ReorderableItem(reorderableState, key = itemKeys[index]) { isDragging ->
