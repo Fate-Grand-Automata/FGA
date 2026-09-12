@@ -30,6 +30,8 @@ class AutoGiftBox @Inject constructor(
     companion object {
         const val maxClickCount = 99
         const val maxNullStreak = 3
+
+        val regex = Regex("""[xX]? ?(\d+)$""")
     }
 
     private data class IterationResult(
@@ -130,7 +132,9 @@ class AutoGiftBox @Inject constructor(
     // Return number of selected gold cards
     private fun pickGifts(checkRegion: Region): IterationResult {
         var clickCount = 0
+        
         var selectedGoldCards = 0
+        var selectedCards = 0
 
         for (gift in checkRegion.findAll(images[Images.GiftBoxCheck]).sorted()) {
             val countRegion = when (prefs.gameServer) {
@@ -143,30 +147,33 @@ class AutoGiftBox @Inject constructor(
 
             val gold = images[Images.GoldXP] in iconRegion
             val silver = !gold && images[Images.SilverXP] in iconRegion
+            val gold5Star = !gold && !silver && images[Images.Gold5StarXP] in iconRegion
 
-            if (gold || silver) {
-                if (gold) {
+            if (gold || silver || gold5Star) {
+                if (gold || gold5Star) {
                     val text = countRegion.detectText(true)
                         // replace common OCR mistakes
                         .replace("%", "x")
                         .replace("S", "5")
                         .replace("O", "0")
                         .lowercase()
-                    val regex = Regex("""x ?(\d+)$""")
                     // extract the count if it was found in the text
                     val count = regex.find(text)?.groupValues?.getOrNull(1)?.toInt()
 
                     if (count == null || count > prefs.maxGoldEmberStackSize) {
                         continue
                     } else {
-                        selectedGoldCards += count
+                        if (gold || gold5Star) {
+                            selectedGoldCards += count
+                        }
+                        selectedCards += count
                     }
                 }
 
                 gift.region.click()
                 clickCount++
 
-                if (selectedGoldCards > prefs.maxGoldEmberTotalCount) {
+                if (selectedCards > prefs.maxGoldEmberTotalCount) {
                     break
                 }
             }
