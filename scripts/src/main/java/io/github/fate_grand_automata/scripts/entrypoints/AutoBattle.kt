@@ -141,6 +141,74 @@ class AutoBattle @Inject constructor(
         }
     }
 
+    private fun configureAutoItemUse() {
+        val battleConfig = prefs.selectedBattleConfig
+        val wantStormPod = battleConfig.useStormPod
+        val wantTeapot = battleConfig.useTeapot
+
+        if (battleConfig.autoItemUsePopup) {
+            configureAutoItemUsePopup(wantStormPod, wantTeapot)
+        } else {
+            configureAutoItemUseSingle(wantTeapot)
+        }
+    }
+
+    private fun configureAutoItemUsePopup(wantStormPod: Boolean, wantTeapot: Boolean) {
+        // Open the Auto Item Use popup
+        locations.autoItemUseClick.click()
+        1.seconds.wait()
+
+        // Detect current state using color template matching
+        val (stormPodIsOn, teapotIsOn) = useColor {
+            useSameSnapIn {
+                val stormPod = locations.autoItemUseStormPodRegion.exists(
+                    images[Images.AutoItemOn], similarity = 0.70
+                )
+                val teapot = locations.autoItemUseTeapotRegion.exists(
+                    images[Images.AutoItemOn], similarity = 0.70
+                )
+                stormPod to teapot
+            }
+        }
+
+        if (wantStormPod && !stormPodIsOn) {
+            locations.autoItemUseStormPodClick.click()
+            0.5.seconds.wait()
+        } else if (!wantStormPod && stormPodIsOn) {
+            locations.autoItemUseStormPodClick.click()
+            0.5.seconds.wait()
+        }
+
+        if (wantTeapot && !teapotIsOn) {
+            locations.autoItemUseTeapotClick.click()
+            0.5.seconds.wait()
+        } else if (!wantTeapot && teapotIsOn) {
+            locations.autoItemUseTeapotClick.click()
+            0.5.seconds.wait()
+        }
+
+        // Close the Auto Item Use popup
+        locations.autoItemUseCloseClick.click()
+        1.seconds.wait()
+    }
+
+    private fun configureAutoItemUseSingle(wantTeapot: Boolean) {
+        // Single item mode: detect ON/OFF from the party screen indicator
+        val isOn = useColor {
+            locations.autoItemUseSingleRegion.exists(
+                images[Images.AutoItemOn], similarity = 0.70
+            )
+        }
+
+        if (wantTeapot && !isOn) {
+            locations.autoItemUseClick.click()
+            0.5.seconds.wait()
+        } else if (!wantTeapot && isOn) {
+            locations.autoItemUseClick.click()
+            0.5.seconds.wait()
+        }
+    }
+
     class ExitState(
         val timesRan: Int,
         val runLimit: Int?,
@@ -492,6 +560,8 @@ class AutoBattle @Inject constructor(
 
     fun startQuest() {
         partySelection.selectParty()
+
+        configureAutoItemUse()
 
         locations.menuStartQuestClick.click()
 

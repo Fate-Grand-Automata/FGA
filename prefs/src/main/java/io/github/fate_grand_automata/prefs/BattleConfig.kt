@@ -46,6 +46,10 @@ internal class BattleConfig(
 
     override val raidTurnDelaySeconds by prefs.raidTurnDelaySeconds
 
+    override val useStormPod by prefs.useStormPod
+    override val useTeapot by prefs.useTeapot
+    override val autoItemUsePopup by prefs.autoItemUsePopup
+
     override var spam by prefs.spam
 
     override fun export(): Map<String, *> = prefs.export()

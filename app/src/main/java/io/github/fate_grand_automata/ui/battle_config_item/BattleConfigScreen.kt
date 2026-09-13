@@ -283,6 +283,10 @@ private fun BattleConfigContent(
                                 VerticalDivider()
 
                                 RaidDelay(config = config, modifier = Modifier.weight(1f))
+
+                                VerticalDivider()
+
+                                AutoItemUse(config = config, modifier = Modifier.weight(1f))
                             }
 
                             HorizontalDivider()

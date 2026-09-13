@@ -196,4 +196,8 @@ class BattleConfigCore(
     val addRaidTurnDelay = maker.bool("add_raid_delay")
 
     val raidTurnDelaySeconds = maker.stringAsInt("raid_delay_seconds", 3)
+
+    val useStormPod = maker.bool("use_storm_pod")
+    val useTeapot = maker.bool("use_teapot")
+    val autoItemUsePopup = maker.bool("auto_item_use_popup", true)
 }

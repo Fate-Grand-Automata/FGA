@@ -31,6 +31,10 @@ interface IBattleConfig {
     val addRaidTurnDelay: Boolean
     val raidTurnDelaySeconds : Int
 
+    val useStormPod: Boolean
+    val useTeapot: Boolean
+    val autoItemUsePopup: Boolean
+
     fun export(): Map<String, *>
 
     fun import(map: Map<String, *>)

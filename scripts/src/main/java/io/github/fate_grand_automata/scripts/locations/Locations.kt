@@ -88,6 +88,21 @@ class Locations @Inject constructor(
         BoostItem.Enabled.BoostItem3 -> Location(1280, 1000)
     }.xFromCenter()
 
+    // Auto Item Use (Stargazer's Teapot / Storm Pod)
+    val autoItemUseClick =
+        (if (isWide)
+            Location(-950, -160)
+        else Location(-750, -90))
+            .xFromRight()
+            .yFromBottom()
+
+    val autoItemUseStormPodClick = Location(-153, 806).xFromCenter()
+    val autoItemUseTeapotClick = Location(346, 806).xFromCenter()
+    val autoItemUseStormPodRegion = Region(-203, 766, 100, 80).xFromCenter()
+    val autoItemUseTeapotRegion = Region(296, 766, 100, 80).xFromCenter()
+    val autoItemUseSingleRegion = Region(436, 1320, 100, 80).xFromCenter()
+    val autoItemUseCloseClick = Location(0, 1090).xFromCenter()
+
     val selectedPartyRegion = Region(-370, 62, 740, 72).xFromCenter()
     
     val partySelectionArray: List<Location> = (0..14).map {
