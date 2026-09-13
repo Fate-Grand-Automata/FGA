@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.ui.battle_config_item
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -18,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -34,6 +37,7 @@ fun AutoItemUse(
 ) {
     var useStormPod by config.useStormPod.remember()
     var useTeapot by config.useTeapot.remember()
+    var autoItemUsePopup by config.autoItemUsePopup.remember()
 
     val dialog = FgaDialog()
 
@@ -42,6 +46,7 @@ fun AutoItemUse(
     ) {
         var currentUseStormPod by remember(useStormPod) { mutableStateOf(useStormPod) }
         var currentUseTeapot by remember(useTeapot) { mutableStateOf(useTeapot) }
+        var currentPopup by remember(autoItemUsePopup) { mutableStateOf(autoItemUsePopup) }
 
         Row {
             Box(
@@ -56,6 +61,7 @@ fun AutoItemUse(
                 onClick = {
                     currentUseStormPod = config.useStormPod.defaultValue
                     currentUseTeapot = config.useTeapot.defaultValue
+                    currentPopup = config.autoItemUsePopup.defaultValue
                 },
                 modifier = Modifier
                     .padding(16.dp, 5.dp)
@@ -75,58 +81,81 @@ fun AutoItemUse(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
         ) {
-            // Storm Pod toggle
-            Text(
-                text = stringResource(R.string.p_battle_config_storm_pod),
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
-            )
+            // Multiple items checkbox
             Row(
                 verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { currentPopup = !currentPopup }
+                    .padding(bottom = 4.dp)
             ) {
-                Card(
-                    shape = RoundedCornerShape(25),
-                    colors = CardDefaults.cardColors(
-                        containerColor =
-                        if (currentUseStormPod) MaterialTheme.colorScheme.primaryContainer
-                        else MaterialTheme.colorScheme.surfaceVariant
-                    ),
-                    onClick = { currentUseStormPod = true },
+                Checkbox(
+                    checked = currentPopup,
+                    onCheckedChange = { currentPopup = it },
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 2.dp)
+                        .alpha(if (currentPopup) 1f else 0.7f)
+                        .padding(end = 5.dp)
+                )
+                Text(
+                    text = stringResource(R.string.p_battle_config_auto_item_popup),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
+            // Storm Pod toggle - only when NOT Bleached Earth
+            if (!currentPopup) {
+                Text(
+                    text = stringResource(R.string.p_battle_config_storm_pod),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(
-                        text = stringResource(R.string.config_state_on).uppercase(),
-                        style = MaterialTheme.typography.bodySmall,
+                    Card(
+                        shape = RoundedCornerShape(25),
+                        colors = CardDefaults.cardColors(
+                            containerColor =
+                            if (currentUseStormPod) MaterialTheme.colorScheme.primaryContainer
+                            else MaterialTheme.colorScheme.surfaceVariant
+                        ),
+                        onClick = { currentUseStormPod = true },
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
-                        textAlign = TextAlign.Center,
-                        fontWeight = if (currentUseStormPod) FontWeight.Bold else null
-                    )
-                }
-                Card(
-                    shape = RoundedCornerShape(25),
-                    colors = CardDefaults.cardColors(
-                        containerColor =
-                        if (!currentUseStormPod) MaterialTheme.colorScheme.primaryContainer
-                        else MaterialTheme.colorScheme.surfaceVariant
-                    ),
-                    onClick = { currentUseStormPod = false },
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 2.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.config_state_off).uppercase(),
-                        style = MaterialTheme.typography.bodySmall,
+                            .weight(1f)
+                            .padding(horizontal = 2.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.config_state_on).uppercase(),
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            textAlign = TextAlign.Center,
+                            fontWeight = if (currentUseStormPod) FontWeight.Bold else null
+                        )
+                    }
+                    Card(
+                        shape = RoundedCornerShape(25),
+                        colors = CardDefaults.cardColors(
+                            containerColor =
+                            if (!currentUseStormPod) MaterialTheme.colorScheme.primaryContainer
+                            else MaterialTheme.colorScheme.surfaceVariant
+                        ),
+                        onClick = { currentUseStormPod = false },
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
-                        textAlign = TextAlign.Center,
-                        fontWeight = if (!currentUseStormPod) FontWeight.Bold else null
-                    )
+                            .weight(1f)
+                            .padding(horizontal = 2.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.config_state_off).uppercase(),
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            textAlign = TextAlign.Center,
+                            fontWeight = if (!currentUseStormPod) FontWeight.Bold else null
+                        )
+                    }
                 }
             }
 
@@ -187,8 +216,9 @@ fun AutoItemUse(
 
             buttons(
                 onSubmit = {
-                    useStormPod = currentUseStormPod
+                    useStormPod = if (currentPopup) false else currentUseStormPod
                     useTeapot = currentUseTeapot
+                    autoItemUsePopup = currentPopup
                 },
                 okLabel = stringResource(R.string.save),
             )

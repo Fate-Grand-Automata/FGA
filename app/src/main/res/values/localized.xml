@@ -517,8 +517,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_battle_config_auto_item_use_message">Configure items to automatically activate before battle.</string>
     <string name="p_battle_config_storm_pod">"Storm Pod"</string>
     <string name="p_battle_config_teapot">"Teapot"</string>
-    <string name="p_battle_config_auto_item_popup">"Multiple Items"</string>
-    <string name="p_battle_config_auto_item_popup_summary">"Enable if quest has both Storm Pod and Teapot. Disable if only Teapot."</string>
+    <string name="p_battle_config_auto_item_popup">"Bleached Earth"</string>
 
     <string name="clear">"Clear"</string>
     <string name="navigate_back">"Back"</string>

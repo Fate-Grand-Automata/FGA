@@ -147,9 +147,11 @@ class AutoBattle @Inject constructor(
         val wantTeapot = battleConfig.useTeapot
 
         if (battleConfig.autoItemUsePopup) {
-            configureAutoItemUsePopup(wantStormPod, wantTeapot)
-        } else {
+            // Bleached Earth: single item (only Teapot)
             configureAutoItemUseSingle(wantTeapot)
+        } else {
+            // Normal: popup with Storm Pod + Teapot
+            configureAutoItemUsePopup(wantStormPod, wantTeapot)
         }
     }
 
