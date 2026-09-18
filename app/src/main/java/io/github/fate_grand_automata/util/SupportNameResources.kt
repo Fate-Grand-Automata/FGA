@@ -49,21 +49,25 @@ object SupportNameResources {
 
     /**
      * Maps English CE file names to their localized string resource IDs.
-     * Only contains the 22 default CEs shipped with the app.
+     * Only contains the 28 default CEs shipped with the app.
      */
     internal val ceNameResIds: Map<String, Int> = mapOf(
         "Aerial Drive" to R.string.ce_name_aerial_drive,
         "Bella Lisa" to R.string.ce_name_bella_lisa,
+        "Beyond the Night Without the Snow Flower" to R.string.ce_name_beyond_the_night_without_the_snow_flower,
         "Black Grail" to R.string.ce_name_black_grail,
         "Blessed Bride" to R.string.ce_name_blessed_bride,
+        "Chaldea Dinnertime" to R.string.ce_name_chaldea_dinnertime,
         "Chaldea Lunchtime" to R.string.ce_name_chaldea_lunchtime,
         "Chaldea Morning" to R.string.ce_name_chaldea_morning,
         "Chaldea Teatime" to R.string.ce_name_chaldea_teatime,
+        "Detective Fou" to R.string.ce_name_detective_fou,
         "Foreign God" to R.string.ce_name_foreign_god,
         "From NFF with Love" to R.string.ce_name_from_nff_with_love,
         "Golden Sumo" to R.string.ce_name_golden_sumo,
         "Great Library of Memories" to R.string.ce_name_great_library_of_memories,
         "GudaGuda Poster Girl" to R.string.ce_name_gudaguda_poster_girl,
+        "Gun Dealer" to R.string.ce_name_gun_dealer,
         "Holy Night Supper" to R.string.ce_name_holy_night_supper,
         "Kaleidoscope" to R.string.ce_name_kaleidoscope,
         "Marshal of the Sorcerors" to R.string.ce_name_marshal_of_the_sorcerors,
@@ -71,7 +75,9 @@ object SupportNameResources {
         "Needle of Sincerity" to R.string.ce_name_needle_of_sincerity,
         "Painting Summer" to R.string.ce_name_painting_summer,
         "Report Check" to R.string.ce_name_report_check,
+        "Rising Against the Azure Sky" to R.string.ce_name_rising_against_the_azure_sky,
         "Secret Mission" to R.string.ce_name_secret_mission,
+        "Sword Saints of Wandering" to R.string.ce_name_sword_saints_of_wandering,
         "The Chaldean" to R.string.ce_name_the_chaldean,
         "Wings of Manuscript" to R.string.ce_name_wings_of_manuscript
     )
