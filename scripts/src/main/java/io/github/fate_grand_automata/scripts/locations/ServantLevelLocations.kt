@@ -15,9 +15,12 @@ class ServantLevelLocations @Inject constructor(
     }
 
     val servantAutoSelectRegion = when (gameServer) {
-        is GameServer.Jp, is GameServer.Kr, is GameServer.Cn -> Region(742, 0, 304, 72).xFromCenter()
-        else -> Region(1032, 0, 238, 53).xFromCenter()
-    }.copy(y = if (isWide) 268 else 308)
+        is GameServer.Jp, is GameServer.Kr, is GameServer.Cn ->
+            Region(742, 0, 304, 72).xFromCenter().copy(y = if (isWide) 268 else 308)
+        // EN and TW don't have the automatic autofill yet
+        // Also, their templates fill the whole button, so the region needs margin around it to still match when the button is shifted slightly
+        else -> Region(1022, 0, 258, 73).xFromCenter().copy(y = if (isWide) 258 else 298)
+    }
 
     val emptyEmberOrQPDialogRegion =
         Region(-113, 1086, 224, 76).xFromCenter()
