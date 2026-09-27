@@ -79,8 +79,9 @@ class Caster @Inject constructor(
 
             0.5.seconds.wait()
         }
-
-        confirmSkillUse()
+        else {
+            confirmSkillUse()
+        }
 
         targets.forEach { target ->
             prefs.skillDelay.wait()
