@@ -30,6 +30,7 @@
     <string name="cannot_start_recording">"無法開啟螢幕錄影"</string>
     <string name="cannot_stop_recording">"無法停止螢幕錄影"</string>
     <string name="card_priority">"偏好指令卡"</string>
+    <string name="card_priority_hint_move_item">"長按並拖曳以重新排序"</string>
     <string name="card_priority_high">"優先選出"</string>
     <string name="card_priority_low">"盡量不選出"</string>
     <string name="card_priority_wave_number">"BATTLE %d"</string>

@@ -36,6 +36,7 @@
     <string name="cannot_start_recording">"화면 녹화를 시작할 수 없음"</string>
     <string name="cannot_stop_recording">"화면 녹화를 끝낼 수 없음"</string>
     <string name="card_priority">"카드 우선순위"</string>
+    <string name="card_priority_hint_move_item">"길게 눌러 드래그하여 순서 변경"</string>
     <string name="card_priority_high">"높음"</string>
     <string name="card_priority_low">"낮음"</string>
     <string name="card_priority_wave_number">"웨이브 %d"</string>
