@@ -36,6 +36,7 @@
     <string name="cannot_start_recording">"レコーディング開始できませんでした"</string>
     <string name="cannot_stop_recording">"レコーディング中止できませんでした"</string>
     <string name="card_priority">"カードの優先順位"</string>
+    <string name="card_priority_hint_move_item">"長押ししてドラッグで並べ替え"</string>
     <string name="card_priority_high">"高い"</string>
     <string name="card_priority_low">"低い"</string>
     <string name="card_priority_wave_number">"ウェーブ %d"</string>

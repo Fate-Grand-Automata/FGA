@@ -36,6 +36,7 @@
     <string name="cannot_start_recording">"无法开启录屏"</string>
     <string name="cannot_stop_recording">"无法停止录屏"</string>
     <string name="card_priority">"指令卡优先级"</string>
+    <string name="card_priority_hint_move_item">"长按并拖动以重新排序"</string>
     <string name="card_priority_high">"优先选出"</string>
     <string name="card_priority_low">"尽量不选出"</string>
     <string name="card_priority_wave_number">"战斗 %d"</string>

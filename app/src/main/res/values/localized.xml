@@ -65,6 +65,7 @@ Skills"</string>
     <string name="skill_maker_option_2">"Option 2"</string>
     <string name="skill_maker_option_3">"Option 3"</string>
     <string name="card_priority_wave_number">"WAVE %d"</string>
+    <string name="card_priority_hint_move_item">"Hold and drag to reorder"</string>
     <string name="card_priority_high">"HIGH"</string>
     <string name="card_priority_low">"LOW"</string>
     <string name="start_service">"Start Service"</string>
