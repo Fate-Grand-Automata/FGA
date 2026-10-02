@@ -469,19 +469,20 @@
 
     <!-- Default Servant Names -->
     <string name="servant_name_arcueid">Archetype：Earth</string>
-    <string name="servant_name_artoria_caster">阿尔托莉雅·卡斯特(Caster)</string>
+    <string name="servant_name_artoria_caster">阿尔托莉雅(Caster)</string>
     <string name="servant_name_bb_dubai">"BB迪拜"</string>
-    <string name="servant_name_chloe_avenger">克洛伊·冯·爱因兹贝伦(Avenger)</string>
-    <string name="servant_name_ciel">谜之代行者C.I.E.L</string>
-    <string name="servant_name_douman">芦屋道满</string>
+    <string name="servant_name_chloe_avenger">克洛伊(Avenger)</string>
+    <string name="servant_name_ciel">希耶尔</string>
+    <string name="servant_name_douman">道满</string>
     <string name="servant_name_flora">芙萝拉</string>
     <string name="servant_name_jalter">贞德〔Alter〕</string>
+    <string name="servant_name_kazuradrop">Kazuradrop</string>
     <string name="servant_name_koyanskaya">光之高扬斯卡娅</string>
     <string name="servant_name_koyanskaya_of_the_darkness_foreigner">暗之高扬斯卡娅</string>
     <string name="servant_name_lady_avalon">"阿瓦隆女士"</string>
-    <string name="servant_name_mash">玛修·基列莱特</string>
+    <string name="servant_name_mash">玛修</string>
     <string name="servant_name_merlin">"梅林"</string>
-    <string name="servant_name_nero_bride">尼禄·克劳狄乌斯〔新娘〕</string>
+    <string name="servant_name_nero_bride">尼禄〔新娘〕</string>
     <string name="servant_name_oberon">"奥伯龙"</string>
     <string name="servant_name_omii_san">蛇女房</string>
     <string name="servant_name_sima_yi_reines">"司马懿(莱妮丝)"</string>
@@ -499,7 +500,7 @@
     <string name="ce_name_blessed_bride">献给幸福的新娘</string>
     <string name="ce_name_chaldea_lunchtime">"迦勒底午餐时光"</string>
     <string name="ce_name_chaldea_morning">迦勒底之晨</string>
-    <string name="ce_name_chaldea_teatime">"迦勒底下午茶时光"</string>
+    <string name="ce_name_chaldea_teatime">"迦勒底午茶时光"</string>
     <string name="ce_name_foreign_god">"异星之神"</string>
     <string name="ce_name_from_nff_with_love">"来自NFF的爱"</string>
     <string name="ce_name_golden_sumo">黄金相扑～岩场～</string>
@@ -511,7 +512,7 @@
     <string name="ce_name_mona_lisa">"蒙娜丽莎"</string>
     <string name="ce_name_needle_of_sincerity">至诚的一针</string>
     <string name="ce_name_painting_summer">绘画之夏</string>
-    <string name="ce_name_report_check">"报告检查"</string>
+    <string name="ce_name_report_check">"检查报告"</string>
     <string name="ce_name_secret_mission">"秘密任务"</string>
     <string name="ce_name_the_chaldean">迦勒底之人</string>
     <string name="ce_name_wings_of_manuscript">"手稿之翼"</string>

@@ -491,24 +491,25 @@
 
     <!-- Default Servant Names -->
     <string name="servant_name_arcueid">アーキタイプ：アース</string>
-    <string name="servant_name_artoria_caster">アルトリア・キャスター(キャスター)</string>
+    <string name="servant_name_artoria_caster">アルトリア(キャスター)</string>
     <string name="servant_name_bb_dubai">"BBドバイ"</string>
-    <string name="servant_name_chloe_avenger">クロエ・フォン・アインツベルン(アヴェンジャー)</string>
-    <string name="servant_name_ciel">謎の代行者C.I.E.L</string>
-    <string name="servant_name_douman">蘆屋道満</string>
+    <string name="servant_name_chloe_avenger">クロエ(アヴェンジャー)</string>
+    <string name="servant_name_ciel">シエル</string>
+    <string name="servant_name_douman">道満</string>
     <string name="servant_name_flora">"フローラ"</string>
     <string name="servant_name_jalter">ジャンヌ・ダルク〔オルタ〕</string>
+    <string name="servant_name_kazuradrop">カズラドロップ</string>
     <string name="servant_name_koyanskaya">光のコヤンスカヤ</string>
     <string name="servant_name_koyanskaya_of_the_darkness_foreigner">闇のコヤンスカヤ</string>
     <string name="servant_name_lady_avalon">"レディ・アヴァロン"</string>
-    <string name="servant_name_mash">マシュ・キリエライト</string>
+    <string name="servant_name_mash">マシュ</string>
     <string name="servant_name_merlin">"マーリン"</string>
-    <string name="servant_name_nero_bride">ネロ・クラウディウス〔ブライド〕</string>
+    <string name="servant_name_nero_bride">ネロ〔ブライド〕</string>
     <string name="servant_name_oberon">"オベロン"</string>
     <string name="servant_name_omii_san">蛇女房</string>
     <string name="servant_name_sima_yi_reines">"司馬懿(ライネス)"</string>
-    <string name="servant_name_skadi">"スカサハ＝スカディ"</string>
-    <string name="servant_name_skadi_ruler">"スカサハ＝スカディ(ルーラー)"</string>
+    <string name="servant_name_skadi">スカディ</string>
+    <string name="servant_name_skadi_ruler">スカディ(ルーラー)</string>
     <string name="servant_name_tamamo">"玉藻の前"</string>
     <string name="servant_name_tiamat_summer">"ティアマト(サマー)"</string>
     <string name="servant_name_u_olga_marie">"U-オルガマリー"</string>
