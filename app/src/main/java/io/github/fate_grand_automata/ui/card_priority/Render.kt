@@ -39,6 +39,8 @@ fun CardPriorityListItem.Render(
     ) {
         CardPriorityDragSort(scores)
 
+        ReorderHint()
+
         Card(
             modifier = Modifier
                 .padding(16.dp),
@@ -125,5 +127,16 @@ private fun ServantPriority(
             )
         },
         modifier = Modifier.fillMaxWidth()
+    )
+
+    ReorderHint()
+}
+
+@Composable
+private fun ReorderHint() {
+    Text(
+        stringResource(R.string.card_priority_hint_move_item),
+        style = MaterialTheme.typography.bodySmall,
+        modifier = Modifier.padding(horizontal = 16.dp)
     )
 }

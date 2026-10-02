@@ -69,8 +69,6 @@ fun CardPriorityView(
                     .fillMaxWidth()
             ) {
                 Column {
-                    Text(stringResource(R.string.card_priority_hint_move_item))
-
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier
