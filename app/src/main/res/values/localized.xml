@@ -546,8 +546,9 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_name_douman">Douman</string>
     <string name="servant_name_flora">Flora</string>
     <string name="servant_name_jalter">Jalter</string>
+    <string name="servant_name_kazuradrop">Kazuradrop</string>
     <string name="servant_name_koyanskaya">Koyanskaya</string>
-    <string name="servant_name_koyanskaya_of_the_darkness_foreigner">Koyanskaya of the Darkness (Foreigner)</string>
+    <string name="servant_name_koyanskaya_of_the_darkness_foreigner">Koyanskaya (Foreigner)</string>
     <string name="servant_name_lady_avalon">Lady Avalon</string>
     <string name="servant_name_mash">Mash</string>
     <string name="servant_name_merlin">Merlin</string>

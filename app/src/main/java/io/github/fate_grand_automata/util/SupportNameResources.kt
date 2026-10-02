@@ -30,6 +30,7 @@ object SupportNameResources {
         "Douman" to R.string.servant_name_douman,
         "Flora" to R.string.servant_name_flora,
         "Jalter" to R.string.servant_name_jalter,
+        "Kazuradrop" to R.string.servant_name_kazuradrop,
         "Koyanskaya" to R.string.servant_name_koyanskaya,
         "Koyanskaya of the Darkness (Foreigner)" to R.string.servant_name_koyanskaya_of_the_darkness_foreigner,
         "Lady Avalon" to R.string.servant_name_lady_avalon,

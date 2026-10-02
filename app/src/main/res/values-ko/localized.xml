@@ -476,4 +476,46 @@
     <string name="update_download_success">"다운로드가 완료되었습니다. 5초 내로 재시작됩니다."</string>
     <string name="wait_ap_regen_toast_message">"AP 회복을 기다리고 있습니다. %d분 후 재확인합니다."</string>
     <string name="withdraw_disabled">"모든 서번트가 패배하였으며 자동 철수는 비활성화 상태입니다."</string>
+
+    <!-- Default Servant Names -->
+    <string name="servant_name_arcueid">아키타입 : 어스</string>
+    <string name="servant_name_artoria_caster">알트리아(캐스터)</string>
+    <string name="servant_name_bb_dubai">BB 두바이</string>
+    <string name="servant_name_chloe_avenger">클로에(어벤저)</string>
+    <string name="servant_name_ciel">시엘</string>
+    <string name="servant_name_douman">도만</string>
+    <string name="servant_name_jalter">잔 다르크(얼터)</string>
+    <string name="servant_name_kazuradrop">카즈라드롭</string>
+    <string name="servant_name_koyanskaya">빛의 코얀스카야</string>
+    <string name="servant_name_koyanskaya_of_the_darkness_foreigner">어둠의 코얀스카야</string>
+    <string name="servant_name_lady_avalon">레이디 아발론</string>
+    <string name="servant_name_mash">마슈</string>
+    <string name="servant_name_merlin">멀린</string>
+    <string name="servant_name_nero_bride">네로(브라이드)</string>
+    <string name="servant_name_oberon">오베론</string>
+    <string name="servant_name_sima_yi_reines">사마의(라이네스)</string>
+    <string name="servant_name_skadi">스카디</string>
+    <string name="servant_name_skadi_ruler">스카디(룰러)</string>
+    <string name="servant_name_tamamo">타마모노마에</string>
+    <string name="servant_name_waver">제갈공명(엘멜로이 2세)</string>
+
+    <!-- Default CE Names -->
+    <string name="ce_name_aerial_drive">에어리얼 드라이브</string>
+    <string name="ce_name_bella_lisa">벨라리자</string>
+    <string name="ce_name_black_grail">검은 성배</string>
+    <string name="ce_name_chaldea_lunchtime">칼데아 런치타임</string>
+    <string name="ce_name_chaldea_morning">칼데아 모닝</string>
+    <string name="ce_name_chaldea_teatime">칼데아 티타임</string>
+    <string name="ce_name_from_nff_with_love">NFF에서 사랑을 담아</string>
+    <string name="ce_name_golden_sumo">골든 스모 ~이와바쇼~</string>
+    <string name="ce_name_gudaguda_poster_girl">구다구다 마스코트걸</string>
+    <string name="ce_name_holy_night_supper">성야의 만찬</string>
+    <string name="ce_name_kaleidoscope">컬라이더스코프</string>
+    <string name="ce_name_marshal_of_the_sorcerors">마도원수</string>
+    <string name="ce_name_mona_lisa">모나리자</string>
+    <string name="ce_name_needle_of_sincerity">지성의 한 땀</string>
+    <string name="ce_name_painting_summer">페인팅 서머</string>
+    <string name="ce_name_report_check">리포트 체크</string>
+    <string name="ce_name_secret_mission">시크릿 미션</string>
+    <string name="ce_name_wings_of_manuscript">수고의 날개</string>
 </resources>

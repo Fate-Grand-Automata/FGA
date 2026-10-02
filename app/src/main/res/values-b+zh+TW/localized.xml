@@ -404,4 +404,45 @@ Order Change"</string>
     <string name="update_download_success">"更新已下載完成，於 5 秒鐘後重啟"</string>
     <string name="wait_ap_regen_toast_message">"等待 AP 恢復中，%d 分鐘後重新檢查"</string>
     <string name="withdraw_disabled">"已關閉撤退功能且從者已全數退場"</string>
+
+    <!-- Default Servant Names -->
+    <string name="servant_name_arcueid">Archetype：Earth</string>
+    <string name="servant_name_artoria_caster">阿爾托莉亞(Caster)</string>
+    <string name="servant_name_bb_dubai">BB杜拜</string>
+    <string name="servant_name_chloe_avenger">克洛伊(Avenger)</string>
+    <string name="servant_name_ciel">希耶爾</string>
+    <string name="servant_name_douman">道滿</string>
+    <string name="servant_name_jalter">貞德〔Alter〕</string>
+    <string name="servant_name_kazuradrop">Kazuradrop</string>
+    <string name="servant_name_koyanskaya">光之高揚斯卡婭</string>
+    <string name="servant_name_koyanskaya_of_the_darkness_foreigner">暗之高揚斯卡婭</string>
+    <string name="servant_name_lady_avalon">Lady阿瓦隆</string>
+    <string name="servant_name_mash">瑪修</string>
+    <string name="servant_name_merlin">梅林</string>
+    <string name="servant_name_nero_bride">尼祿〔Bride〕</string>
+    <string name="servant_name_oberon">奧伯隆</string>
+    <string name="servant_name_sima_yi_reines">司馬懿〔萊涅絲〕</string>
+    <string name="servant_name_skadi">斯卡蒂</string>
+    <string name="servant_name_skadi_ruler">斯卡蒂(Ruler)</string>
+    <string name="servant_name_tamamo">玉藻前</string>
+    <string name="servant_name_waver">諸葛孔明〔埃爾梅羅Ⅱ世〕</string>
+
+    <!-- Default CE Names -->
+    <string name="ce_name_aerial_drive">天際旋蕩</string>
+    <string name="ce_name_bella_lisa">貝拉．麗莎</string>
+    <string name="ce_name_black_grail">黑之聖杯</string>
+    <string name="ce_name_chaldea_lunchtime">迦勒底午餐時光</string>
+    <string name="ce_name_chaldea_morning">迦勒底晨光</string>
+    <string name="ce_name_chaldea_teatime">迦勒底午茶時光</string>
+    <string name="ce_name_from_nff_with_love">來自NFF的愛</string>
+    <string name="ce_name_golden_sumo">黃金相撲～岩場～</string>
+    <string name="ce_name_gudaguda_poster_girl">嘮嘮叨叨看板娘</string>
+    <string name="ce_name_holy_night_supper">聖夜晚餐</string>
+    <string name="ce_name_kaleidoscope">萬華鏡</string>
+    <string name="ce_name_marshal_of_the_sorcerors">魔道元帥</string>
+    <string name="ce_name_mona_lisa">蒙娜麗莎</string>
+    <string name="ce_name_painting_summer">繪畫之夏</string>
+    <string name="ce_name_report_check">檢查報告</string>
+    <string name="ce_name_secret_mission">秘密任務</string>
+    <string name="ce_name_wings_of_manuscript">手稿之翼</string>
 </resources>
