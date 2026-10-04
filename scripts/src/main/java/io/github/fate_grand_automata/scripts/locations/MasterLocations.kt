@@ -57,6 +57,7 @@ class MasterLocations @Inject constructor(
 
     fun locate(skill: Skill.CommandSpell) = when (skill) {
         Skill.CommandSpell.NpCharge -> 700
+        Skill.CommandSpell.Heal -> 700
     }.let { y ->
         Location(0, y).xFromCenter()
     }

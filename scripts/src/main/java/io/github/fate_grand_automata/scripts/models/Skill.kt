@@ -42,6 +42,8 @@ sealed class Skill(val autoSkillCode: Char) {
     sealed class CommandSpell(autoSkillCode: Char) : Skill(autoSkillCode) {
         data object NpCharge : CommandSpell('o')
 
+        data object Heal : CommandSpell('p')
+
         companion object {
             val list by lazy { listOf(NpCharge) }
         }
