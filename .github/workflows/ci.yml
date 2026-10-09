@@ -62,7 +62,7 @@ jobs:
         working-directory: ./app
         run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
 
-      - uses: ruby/setup-ruby@14594264cd68ce8a2345dd349bc3d138a4ef85c8 # v1.327.0
+      - uses: ruby/setup-ruby@e81a8fa391b11a595c1b7ed84177cc0fe02faf83 # v1.328.0
         with:
           ruby-version: '4.0.7'
           bundler-cache: true
@@ -76,14 +76,14 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
 
       - name: Upload Bundle
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: bundle
           path: app/build/outputs/bundle/release/app-release.aab
         if: ${{ !cancelled() }}
 
       - name: Upload De-obfuscation mapping file
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: mapping-release
           path: app/build/outputs/mapping/release/mapping.txt
