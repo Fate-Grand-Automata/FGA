@@ -32,7 +32,8 @@ import io.github.fate_grand_automata.util.stringRes
 
 @Composable
 fun CardPriorityListItem.Render(
-    useServantPriority: Boolean
+    useServantPriority: Boolean,
+    useMightyChain: Boolean
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -58,6 +59,7 @@ fun CardPriorityListItem.Render(
                     selected = braveChains,
                     onSelectedChange = { braveChains = it },
                     entries = BraveChainEnum.entries
+                        .filter { useMightyChain || it != BraveChainEnum.Always }
                         .associateWith { stringResource(it.stringRes) },
                     title = stringResource(R.string.p_brave_chains)
                 )
