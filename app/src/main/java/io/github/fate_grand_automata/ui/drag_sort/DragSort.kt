@@ -43,11 +43,17 @@ fun <T> DragSort(
     items: SnapshotStateList<T>,
     key: (T) -> Any,
     style: @Composable (T) -> DragSortItemStyle,
+    canDrag: (T) -> Boolean = { true },
+    onMove: ((fromIndex: Int, toIndex: Int) -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
     val reorderableState = rememberReorderableLazyListState(listState) { from, to ->
-        items.add(to.index, items.removeAt(from.index))
+        if (onMove == null) {
+            items.add(to.index, items.removeAt(from.index))
+        } else {
+            onMove(from.index, to.index)
+        }
     }
     val haptics = LocalHapticFeedback.current
 
@@ -63,20 +69,25 @@ fun <T> DragSort(
                 val inset by animateColorAsState(
                     if (isDragging) MaterialTheme.colorScheme.background else Color.Transparent
                 )
+                val dragModifier = if (canDrag(item)) {
+                    Modifier.longPressDraggableHandle(
+                        onDragStarted = {
+                            haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                        },
+                        onDragStopped = {
+                            haptics.performHapticFeedback(HapticFeedbackType.GestureEnd)
+                        }
+                    )
+                } else {
+                    Modifier
+                }
 
                 Text(
                     text = itemStyle.text,
                     color = itemStyle.contentColor,
                     fontSize = 16.sp,
                     modifier = Modifier
-                        .longPressDraggableHandle(
-                            onDragStarted = {
-                                haptics.performHapticFeedback(HapticFeedbackType.LongPress)
-                            },
-                            onDragStopped = {
-                                haptics.performHapticFeedback(HapticFeedbackType.GestureEnd)
-                            }
-                        )
+                        .then(dragModifier)
                         .background(itemStyle.backgroundColor)
                         /*
                          * Painted in the page colour so the chip reads as shrinking rather than

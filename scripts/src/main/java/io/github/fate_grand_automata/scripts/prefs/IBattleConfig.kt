@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.scripts.prefs
 
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
 import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
@@ -17,6 +18,9 @@ interface IBattleConfig {
     val servantPriority: ServantPriorityPerWave
     val rearrangeCards: List<Boolean>
     val braveChains: List<BraveChainEnum>
+    val useMightyChain: Boolean
+    val npCardTypes: List<CardTypeEnum>
+    val mightyChainOrders: List<List<CardTypeEnum>>
     val party: Int
     val materials: Set<MaterialEnum>
     val support: ISupportPreferences

@@ -6,6 +6,7 @@ import androidx.core.content.edit
 import com.fredporciuncula.flow.preferences.Serializer
 import io.github.fate_grand_automata.prefs.import
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.GameServers
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
@@ -99,6 +100,56 @@ class BattleConfigCore(
                     .joinToString(separator) { m -> m.toString() }
         },
         default = emptyList()
+    )
+
+    val useMightyChain = maker.bool("use_mighty_chain")
+
+    val npCardTypes = maker.serialized(
+        "mighty_chain_np_card_types",
+        serializer = object : Serializer<List<CardTypeEnum>> {
+            override fun deserialize(serialized: String) =
+                serialized.split(",").map {
+                    runCatching { enumValueOf<CardTypeEnum>(it) }
+                        .getOrDefault(CardTypeEnum.Unknown)
+                }.let { values -> List(3) { values.getOrElse(it) { CardTypeEnum.Unknown } } }
+
+            override fun serialize(value: List<CardTypeEnum>) =
+                List(3) { value.getOrElse(it) { CardTypeEnum.Unknown } }
+                    .joinToString(",") { it.name }
+        },
+        default = List(3) { CardTypeEnum.Unknown }
+    )
+
+    val mightyChainOrders = maker.serialized(
+        "mighty_chain_card_orders",
+        serializer = object : Serializer<List<List<CardTypeEnum>>> {
+            private val defaultOrder = listOf(
+                CardTypeEnum.Buster,
+                CardTypeEnum.Arts,
+                CardTypeEnum.Quick
+            )
+
+            override fun deserialize(serialized: String) =
+                serialized.split(";").map { wave ->
+                    wave.split(",")
+                        .mapNotNull { runCatching { enumValueOf<CardTypeEnum>(it) }.getOrNull() }
+                        .filter { it in defaultOrder }
+                        .distinct()
+                        .let { parsed -> (parsed + defaultOrder).distinct().take(3) }
+                }.let { waves -> List(3) { waves.getOrElse(it) { defaultOrder } } }
+
+            override fun serialize(value: List<List<CardTypeEnum>>) =
+                List(3) { wave ->
+                    val parsed = value.getOrElse(wave) { defaultOrder }
+                    (parsed.filter { it in defaultOrder } + defaultOrder)
+                        .distinct()
+                        .take(3)
+                        .joinToString(",") { it.name }
+                }.joinToString(";")
+        },
+        default = List(3) {
+            listOf(CardTypeEnum.Buster, CardTypeEnum.Arts, CardTypeEnum.Quick)
+        }
     )
 
     val shuffleCards = maker.enum("shuffle_cards", ShuffleCardsEnum.None)
