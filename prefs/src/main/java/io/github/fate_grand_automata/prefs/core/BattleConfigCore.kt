@@ -102,7 +102,8 @@ class BattleConfigCore(
         default = emptyList()
     )
 
-    val useMightyChain = maker.bool("use_mighty_chain")
+    // Keep the legacy storage keys so installed preview builds retain their settings.
+    val useCardSequence = maker.bool("use_mighty_chain")
 
     val npCardTypes = maker.serialized(
         "mighty_chain_np_card_types",
@@ -120,7 +121,7 @@ class BattleConfigCore(
         default = List(3) { CardTypeEnum.Unknown }
     )
 
-    val mightyChainOrders = maker.serialized(
+    val cardSequenceOrders = maker.serialized(
         "mighty_chain_card_orders",
         serializer = object : Serializer<List<List<CardTypeEnum>>> {
             private val defaultOrder = listOf(
@@ -134,16 +135,17 @@ class BattleConfigCore(
                     wave.split(",")
                         .mapNotNull { runCatching { enumValueOf<CardTypeEnum>(it) }.getOrNull() }
                         .filter { it in defaultOrder }
-                        .distinct()
-                        .let { parsed -> (parsed + defaultOrder).distinct().take(3) }
+                        .let { parsed -> List(3) { parsed.getOrElse(it) { defaultOrder[it] } } }
                 }.let { waves -> List(3) { waves.getOrElse(it) { defaultOrder } } }
 
             override fun serialize(value: List<List<CardTypeEnum>>) =
                 List(3) { wave ->
                     val parsed = value.getOrElse(wave) { defaultOrder }
-                    (parsed.filter { it in defaultOrder } + defaultOrder)
-                        .distinct()
-                        .take(3)
+                    List(3) { index ->
+                        parsed.getOrElse(index) { defaultOrder[index] }
+                            .takeIf { it in defaultOrder }
+                            ?: defaultOrder[index]
+                    }
                         .joinToString(",") { it.name }
                 }.joinToString(";")
         },
