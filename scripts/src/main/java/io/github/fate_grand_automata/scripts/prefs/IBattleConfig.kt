@@ -18,9 +18,9 @@ interface IBattleConfig {
     val servantPriority: ServantPriorityPerWave
     val rearrangeCards: List<Boolean>
     val braveChains: List<BraveChainEnum>
-    val useMightyChain: Boolean
+    val useCardSequence: Boolean
     val npCardTypes: List<CardTypeEnum>
-    val mightyChainOrders: List<List<CardTypeEnum>>
+    val cardSequenceOrders: List<List<CardTypeEnum>>
     val party: Int
     val materials: Set<MaterialEnum>
     val support: ISupportPreferences

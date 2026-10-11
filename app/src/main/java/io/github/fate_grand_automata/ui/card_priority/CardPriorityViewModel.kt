@@ -17,7 +17,7 @@ import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.ServantPriorityPerWave
 
-data class MightyChainAttack(
+data class CardSequenceAttack(
     val npSlots: List<Int>,
     val cardsBeforeNp: Int,
 )
@@ -56,17 +56,17 @@ class CardPriorityViewModel @AssistedInject constructor(
     }
 
     val useServantPriority = battleConfig.useServantPriority
-    val useMightyChain = battleConfig.useMightyChain
+    val useCardSequence = battleConfig.useCardSequence
     val npCardTypes = battleConfig.npCardTypes
-    val mightyChainOrders = battleConfig.mightyChainOrders.get()
+    val cardSequenceOrders = battleConfig.cardSequenceOrders.get()
         .map { it.toMutableStateList() }
-    val mightyChainTurns: List<List<MightyChainAttack>> = runCatching {
+    val cardSequenceTurns: List<List<CardSequenceAttack>> = runCatching {
         AutoSkillCommand.parse(battleConfig.skillCommand.get()).stages.map { turns ->
             turns.mapNotNull { actions ->
                 actions.filterIsInstance<AutoSkillAction.Atk>()
                     .firstOrNull { it.nps.isNotEmpty() }
                     ?.let { attack ->
-                        MightyChainAttack(
+                        CardSequenceAttack(
                             npSlots = attack.nps.mapNotNull {
                                 CommandCard.NP.list.indexOf(it).takeIf { index -> index >= 0 }
                             },
@@ -92,6 +92,6 @@ class CardPriorityViewModel @AssistedInject constructor(
 
         battleConfig.rearrangeCards.set(cardPriorityItems.map { it.rearrangeCards.value })
         battleConfig.braveChains.set(cardPriorityItems.map { it.braveChains.value })
-        battleConfig.mightyChainOrders.set(mightyChainOrders.map { it.toList() })
+        battleConfig.cardSequenceOrders.set(cardSequenceOrders.map { it.toList() })
     }
 }

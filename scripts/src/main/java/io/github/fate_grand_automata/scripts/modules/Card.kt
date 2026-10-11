@@ -11,7 +11,7 @@ import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.SpamConfigPerTeamSlot
 import io.github.fate_grand_automata.scripts.models.battle.BattleState
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
-import io.github.fate_grand_automata.scripts.modules.attack.MightyChainHandler
+import io.github.fate_grand_automata.scripts.modules.attack.CardSequenceHandler
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
@@ -60,38 +60,32 @@ class Card @Inject constructor(
         val braveChainsPerWave = battleConfig.braveChains
         val rearrangeCardsPerWave = battleConfig.rearrangeCards
 
-        if (battleConfig.useMightyChain) {
-            val mightyNpUsage = NPUsage(npUsage.nps + spamNps, npUsage.cardsBeforeNP)
+        if (battleConfig.useCardSequence) {
+            val sequenceNpUsage = NPUsage(npUsage.nps + spamNps, npUsage.cardsBeforeNP)
             val braveChain = braveChainsPerWave.inCurrentWave(BraveChainEnum.None)
-            val mightyOrder = battleConfig.mightyChainOrders
+            val desiredOrder = battleConfig.cardSequenceOrders
                 .inCurrentWave(
                     listOf(CardTypeEnum.Buster, CardTypeEnum.Arts, CardTypeEnum.Quick)
                 )
-            val cardsOrderedForMighty = cardsOrderedByPriority.sortedBy { card ->
-                mightyOrder.indexOf(card.type).takeIf { it >= 0 } ?: Int.MAX_VALUE
-            }
-            val npTypes = mightyNpUsage.nps.associate { np ->
+            val npTypes = sequenceNpUsage.nps.associate { np ->
                 val slot = np.toFieldSlot()
                 slot to battleConfig.npCardTypes.getOrElse(slot.position - 1) {
                     CardTypeEnum.Unknown
                 }
             }
 
-            val mighty = MightyChainHandler.pick(
-                cards = cardsOrderedForMighty,
-                npUsage = mightyNpUsage,
+            val selectedSequence = CardSequenceHandler.pick(
+                cards = cardsOrderedByPriority,
+                desiredOrder = desiredOrder,
+                npUsage = sequenceNpUsage,
                 npTypes = npTypes,
                 braveChainEnum = braveChain,
-                forceBraveChain = braveChain == BraveChainEnum.Always,
             )
 
-            if (mighty != null) {
-                return braveChains.pick(
-                    cards = mighty,
-                    npUsage = mightyNpUsage,
-                    braveChains = BraveChainEnum.None,
-                    rearrange = rearrangeCardsPerWave.inCurrentWave(false),
-                ).map { it.card }
+            if (selectedSequence != null) {
+                // The configured sequence already defines the click order. Rearranging it would
+                // silently change the user's requested first-, second-, and third-card effects.
+                return selectedSequence.map { it.card }
             }
         }
 

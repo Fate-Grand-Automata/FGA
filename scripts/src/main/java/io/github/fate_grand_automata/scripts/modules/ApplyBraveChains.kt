@@ -166,7 +166,6 @@ class ApplyBraveChains @Inject constructor() {
                 npUsage = npUsage
             )
 
-            BraveChainEnum.Always,
             BraveChainEnum.WithNP -> withNp(
                 cards = cards,
                 rearrange = rearrange,
