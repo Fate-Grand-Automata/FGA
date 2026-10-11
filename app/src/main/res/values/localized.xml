@@ -97,6 +97,17 @@ Skills"</string>
     <string name="p_battle_config_server">"Server"</string>
     <string name="p_battle_config_card_priority">"Card Priority"</string>
     <string name="p_battle_config_use_servant_priority">"Use Servant Priority"</string>
+    <string name="p_battle_config_use_card_sequence">"Use card sequence"</string>
+    <string name="p_card_sequence_np_types">"NP card types"</string>
+    <string name="p_card_sequence_servant_np_type">"Servant %1$d NP card type"</string>
+    <string name="p_card_sequence_servant_np">"Servant %1$d NP"</string>
+    <string name="p_card_sequence_np_type_unknown">"Not set (use normal selection)"</string>
+    <string name="p_card_sequence_np">"NP"</string>
+    <string name="p_card_sequence_order">"Card order"</string>
+    <string name="p_card_sequence_hint">"Tap a card slot to change its type"</string>
+    <string name="p_chain_type_quick">"Quick"</string>
+    <string name="p_chain_type_arts">"Arts"</string>
+    <string name="p_chain_type_buster">"Buster"</string>
     <string name="p_battle_config_support">"Support"</string>
     <string name="p_battle_config_support_selection_mode">"Selection Mode"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"Fallback"</string>

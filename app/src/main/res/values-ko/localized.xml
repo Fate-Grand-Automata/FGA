@@ -518,4 +518,15 @@
     <string name="ce_name_report_check">리포트 체크</string>
     <string name="ce_name_secret_mission">시크릿 미션</string>
     <string name="ce_name_wings_of_manuscript">수고의 날개</string>
+    <string name="p_battle_config_use_card_sequence">체인 세부 설정 사용</string>
+    <string name="p_card_sequence_np_types">보구 카드 타입</string>
+    <string name="p_card_sequence_servant_np_type">서번트 %1$d 보구 카드 타입</string>
+    <string name="p_card_sequence_servant_np">서번트 %1$d 보구</string>
+    <string name="p_card_sequence_np_type_unknown">미지정 (기존 방식)</string>
+    <string name="p_card_sequence_np">보구</string>
+    <string name="p_card_sequence_order">카드 순서</string>
+    <string name="p_card_sequence_hint">카드 칸을 눌러 종류 변경</string>
+    <string name="p_chain_type_quick">퀵</string>
+    <string name="p_chain_type_arts">아츠</string>
+    <string name="p_chain_type_buster">버스터</string>
 </resources>
