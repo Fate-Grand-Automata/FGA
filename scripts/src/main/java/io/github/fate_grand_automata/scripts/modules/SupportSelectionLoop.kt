@@ -14,6 +14,7 @@ class SupportSelectionLoop @Inject constructor(
     private val supportClassPicker: SupportClassPicker
 ) {
     fun select(provider: SupportSelectionProvider): Boolean {
+        provider.onSelectionStart()
         var numberOfSwipes = 0
         var numberOfUpdates = 0
         var onAllList = false

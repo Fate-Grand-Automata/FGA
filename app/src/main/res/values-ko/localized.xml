@@ -251,6 +251,10 @@
     <string name="p_max_gold_ember_set_size">"4성 경험치 카드 개수"</string>
     <string name="p_max_gold_ember_total_count">"종화 획득 총량"</string>
     <string name="p_max_skills">"스킬 최대 레벨"</string>
+    <string name="p_append_skills">"어펜드 스킬"</string>
+    <string name="p_class_score">"클래스 스코어"</string>
+    <string name="p_condition_ignore">"무관"</string>
+    <string name="p_condition_max">"최대"</string>
     <string name="p_more_options">"더 많은 옵션"</string>
     <string name="p_not_set">"설정 안함"</string>
     <string name="p_rearrange_cards">"카드 재배열"</string>

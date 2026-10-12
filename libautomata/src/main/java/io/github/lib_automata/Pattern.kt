@@ -61,7 +61,16 @@ interface Pattern : AutoCloseable {
     fun floodFill(x: Double, y: Double, maxDiff: Double, newValue: Double): Pattern
 
     fun fillText(): Pattern
+
+    /** Counts pixels whose HSV channels are inside the inclusive OpenCV HSV ranges. */
+    fun countHsvPixels(range: HsvRange): Int
 }
+
+data class HsvRange(
+    val hue: IntRange,
+    val saturation: IntRange,
+    val value: IntRange
+)
 
 /**
  * Gets the width and height in the form of a [Size] object.
