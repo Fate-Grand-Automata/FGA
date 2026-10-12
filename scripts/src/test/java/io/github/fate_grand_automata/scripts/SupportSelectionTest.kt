@@ -17,12 +17,16 @@ import io.mockk.mockk
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import kotlin.time.Duration.Companion.milliseconds
 
 class SupportSelectionTest {
     private val commonPrefs = object : ISupportPreferencesCommon {
         override val maxUpdates = 3
         override val mlbSimilarity = 0.85
         override val swipesPerUpdate = 5
+        override val skillDisplayWait = 350.milliseconds
+        override val appendUnlockedMinRatio = 0.15
+        override val classScoreMinRatio = 0.04
     }
 
     private val messages = mockk<IScriptMessages>().apply {
