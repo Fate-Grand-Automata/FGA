@@ -28,8 +28,7 @@ class SupportColorChecker @Inject constructor(
         supportPrefs.classScore != ClassScoreRequirement.Max ||
             locations.support.classScoreRegion(bounds.region).matchesColor(
                 range = maxScoreYellow,
-                minimumPixels = 40,
-                minimumRatio = 0.03
+                minimumRatio = prefs.support.classScoreMinRatio
             )
 
     fun checkUnlockedAppendSkills(bounds: SupportBounds): Boolean =
@@ -39,8 +38,7 @@ class SupportColorChecker @Inject constructor(
                 requirement != AppendSkillRequirement.Unlocked ||
                     region.matchesColor(
                         range = brightColor,
-                        minimumPixels = 100,
-                        minimumRatio = 0.15
+                        minimumRatio = prefs.support.appendUnlockedMinRatio
                     )
             }
 
@@ -54,11 +52,10 @@ class SupportColorChecker @Inject constructor(
 
     private fun Region.matchesColor(
         range: HsvRange,
-        minimumPixels: Int,
         minimumRatio: Double
     ): Boolean = getPattern().use { pattern ->
         val count = pattern.countHsvPixels(range)
-        count >= minimumPixels && count.toDouble() / pattern.pixelCount >= minimumRatio
+        count.toDouble() / pattern.pixelCount >= minimumRatio
     }
 
     private val Pattern.pixelCount get() = width * height
