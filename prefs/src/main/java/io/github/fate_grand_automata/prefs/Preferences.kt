@@ -190,6 +190,15 @@ class PreferencesImpl @Inject constructor(
         override val swipesPerUpdate by prefs.supportSwipesPerUpdate
 
         override val maxUpdates by prefs.supportMaxUpdates
+
+        override val skillDisplayWait by prefs.supportSkillDisplayWait
+            .map { it.milliseconds }
+
+        override val appendUnlockedMinRatio by prefs.supportAppendUnlockedMinRatio
+            .map { it / 100.0 }
+
+        override val classScoreMinRatio by prefs.supportClassScoreMinRatio
+            .map { it / 100.0 }
     }
 
     override val platformPrefs = object : PlatformPrefs {

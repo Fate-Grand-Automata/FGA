@@ -223,6 +223,9 @@
     <string name="p_fine_tune_stage_counter_similarity">"스테이지 카운터 유사도 (%)"</string>
     <string name="p_fine_tune_support">"서포트"</string>
     <string name="p_fine_tune_support_max_updates">"최대 갱신 수"</string>
+    <string name="p_fine_tune_support_skill_display_wait">"스킬 표시 전환 대기시간 (ms)"</string>
+    <string name="p_fine_tune_support_append_unlocked_min_ratio">"어펜드 개방 최소 픽셀 비율 (%)"</string>
+    <string name="p_fine_tune_support_class_score_min_ratio">"클래스 스코어 최소 픽셀 비율 (%)"</string>
     <string name="p_fine_tune_support_swipes_per_update">"갱신당 스와이프 수"</string>
     <string name="p_fine_tune_swipe_duration">"스와이프 지속 시간 (ms)"</string>
     <string name="p_fine_tune_swipe_multiplier">"스와이프 배율기 (%)"</string>

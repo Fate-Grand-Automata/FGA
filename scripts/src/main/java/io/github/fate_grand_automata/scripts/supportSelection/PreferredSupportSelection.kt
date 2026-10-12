@@ -7,7 +7,6 @@ import io.github.fate_grand_automata.scripts.prefs.ISupportPreferences
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.math.abs
-import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
 class PreferredSupportSelection @Inject constructor(
@@ -107,7 +106,7 @@ class PreferredSupportSelection @Inject constructor(
 
         repeat(clicks) {
             locations.support.skillDisplayToggle.click()
-            0.35.seconds.wait()
+            prefs.support.skillDisplayWait.wait()
         }
 
         skillDisplay = when (skillDisplay) {
