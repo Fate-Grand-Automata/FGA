@@ -4,11 +4,10 @@ import io.github.fate_grand_automata.SupportImageKind
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.ScriptLog
+import io.github.fate_grand_automata.scripts.enums.AppendSkillRequirement
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferences
-import io.github.lib_automata.Location
 import io.github.lib_automata.Pattern
 import io.github.lib_automata.Region
-import io.github.lib_automata.Size
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
@@ -19,7 +18,7 @@ class ServantSelection @Inject constructor(
     private val starChecker: SupportSelectionStarChecker,
     private val grandChecker: SupportSelectionGrandChecker
 ) : IFgoAutomataApi by api {
-    fun check(servants: List<String>, bounds: SupportBounds): Boolean {
+    fun checkIdentity(servants: List<String>, bounds: SupportBounds): Boolean {
         // TODO: Only check the upper part (excluding CE)
         val searchRegion = bounds.region.clip(locations.support.listRegion)
 
@@ -39,18 +38,43 @@ class ServantSelection @Inject constructor(
             .filter {
                 !supportPrefs.grandServant || isGrandServant(it.region)
             }
-            .filter {
-                val needMaxedSkills = listOf(
-                    supportPrefs.skill1Max,
-                    supportPrefs.skill2Max,
-                    supportPrefs.skill3Max
-                )
-                val skillCheckNeeded = needMaxedSkills.any { it }
-                !skillCheckNeeded || checkMaxedSkills(needMaxedSkills, whichSkillsAreMaxed(bounds.region))
-            }
 
         return matched.isNotEmpty()
     }
+
+    fun needsRegularSkillCheck() = regularSkillRequirements().any { it }
+
+    fun checkRegularSkills(bounds: SupportBounds): Boolean {
+        val expected = regularSkillRequirements()
+        return !expected.any { it } || checkMaxedSkills(expected, whichSkillsAreMaxed(bounds.region))
+    }
+
+    fun appendSkillRequirements() = listOf(
+        supportPrefs.appendSkill1,
+        supportPrefs.appendSkill2,
+        supportPrefs.appendSkill3,
+        supportPrefs.appendSkill4,
+        supportPrefs.appendSkill5
+    )
+
+    fun needsAppendSkillCheck() =
+        appendSkillRequirements().any { it != AppendSkillRequirement.Ignore }
+
+    fun checkMaxAppendSkills(bounds: SupportBounds): Boolean {
+        val regions = locations.support.appendSkillRegions(bounds.region)
+        return appendSkillRequirements()
+            .zip(regions)
+            .all { (requirement, region) ->
+                requirement != AppendSkillRequirement.Max ||
+                    region.exists(images[Images.SkillTen], similarity = 0.68)
+            }
+    }
+
+    private fun regularSkillRequirements() = listOf(
+        supportPrefs.skill1Max,
+        supportPrefs.skill2Max,
+        supportPrefs.skill3Max
+    )
 
     /**
      * If you lock your friends, a lock icon shows on the left of servant image,
@@ -84,23 +108,8 @@ class ServantSelection @Inject constructor(
     }
 
     private fun whichSkillsAreMaxed(bounds: Region): List<Boolean> {
-        val y = bounds.y + 325
-        val x = bounds.x + 1610
-
-        val skillMargin = 90
-
-        val skillLoc = listOf(
-            Location(x, y),
-            Location(x + skillMargin, y),
-            Location(x + 2 * skillMargin, y)
-        )
-
-        return skillLoc
-            .map {
-                val skillRegion = Region(it, Size(60, 50))
-
-                skillRegion.exists(images[Images.SkillTen], similarity = 0.68)
-            }
+        return locations.support.regularSkillRegions(bounds)
+            .map { it.exists(images[Images.SkillTen], similarity = 0.68) }
     }
 
     private fun checkMaxedSkills(expectedSkills: List<Boolean>, actualSkills: List<Boolean>): Boolean {

@@ -91,4 +91,26 @@ class SupportScreenLocations @Inject constructor(
     }
 
     val refreshRegion = Region(1770, 195, 175, 165) + headerOffset
+
+    val skillDisplayToggle = Location(1605, 250) + supportOffset
+
+    fun regularSkillRegions(bounds: Region): List<Region> =
+        skillRegions(bounds, count = 3, margin = 90)
+
+    fun appendSkillRegions(bounds: Region): List<Region> =
+        skillRegions(bounds, count = 5, margin = 78)
+
+    private fun skillRegions(bounds: Region, count: Int, margin: Int): List<Region> =
+        List(count) { index ->
+            Region(
+                Location(bounds.x + 1610 + index * margin, bounds.y + 325),
+                io.github.lib_automata.Size(60, 50)
+            )
+        }
+
+    fun classScoreRegion(bounds: Region) =
+        Region(
+            Location(bounds.x + 1970, bounds.y + 325),
+            io.github.lib_automata.Size(80, 50)
+        )
 }

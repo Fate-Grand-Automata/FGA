@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.imaging
 
 import android.graphics.Bitmap
 import io.github.lib_automata.Match
+import io.github.lib_automata.HsvRange
 import io.github.lib_automata.Pattern
 import io.github.lib_automata.Region
 import io.github.lib_automata.Size
@@ -198,6 +199,41 @@ class DroidCvPattern(
 
         Core.bitwise_not(mask, mask)
         return DroidCvPattern(mask)
+    }
+
+    override fun countHsvPixels(range: HsvRange): Int {
+        if (mat.channels() == 1) return 0
+
+        val bgr = when (mat.channels()) {
+            3 -> mat
+            4 -> Mat().also { Imgproc.cvtColor(mat, it, Imgproc.COLOR_BGRA2BGR) }
+            else -> return 0
+        }
+
+        try {
+            Mat().use { hsv ->
+                Mat().use { mask ->
+                    Imgproc.cvtColor(bgr, hsv, Imgproc.COLOR_BGR2HSV)
+                    Core.inRange(
+                        hsv,
+                        Scalar(
+                            range.hue.first.toDouble(),
+                            range.saturation.first.toDouble(),
+                            range.value.first.toDouble()
+                        ),
+                        Scalar(
+                            range.hue.last.toDouble(),
+                            range.saturation.last.toDouble(),
+                            range.value.last.toDouble()
+                        ),
+                        mask
+                    )
+                    return Core.countNonZero(mask)
+                }
+            }
+        } finally {
+            if (bgr !== mat) bgr.release()
+        }
     }
 
     /**

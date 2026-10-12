@@ -30,6 +30,8 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.Pref
 import io.github.fate_grand_automata.prefs.core.SupportPrefsCore
 import io.github.fate_grand_automata.scripts.enums.BondCEEffectEnum
+import io.github.fate_grand_automata.scripts.enums.AppendSkillRequirement
+import io.github.fate_grand_automata.scripts.enums.ClassScoreRequirement
 import io.github.fate_grand_automata.ui.Heading
 import io.github.fate_grand_automata.ui.OnResume
 import io.github.fate_grand_automata.ui.icon
@@ -141,6 +143,38 @@ private fun PreferredSupport(
                                     config.skill3Max
                                 )
                             )
+                        }
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Text(
+                                stringResource(R.string.p_append_skills),
+                                modifier = Modifier.weight(1f)
+                            )
+
+                            AppendSkills(
+                                skills = listOf(
+                                    config.appendSkill1,
+                                    config.appendSkill2,
+                                    config.appendSkill3,
+                                    config.appendSkill4,
+                                    config.appendSkill5
+                                )
+                            )
+                        }
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Text(
+                                stringResource(R.string.p_class_score),
+                                modifier = Modifier.weight(1f)
+                            )
+
+                            ClassScore(config.classScore)
                         }
                     }
                 }
@@ -305,6 +339,101 @@ private fun MaxSkills(
                     Text(skillText(max))
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun AppendSkills(
+    skills: List<Pref<AppendSkillRequirement>>
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        skills.forEachIndexed { index, pref ->
+            if (index != 0) {
+                Text("/", modifier = Modifier.padding(horizontal = 2.dp))
+            }
+
+            var requirement by pref.remember()
+            val selected = requirement != AppendSkillRequirement.Ignore
+            val backgroundColor = if (selected) {
+                MaterialTheme.colorScheme.secondary
+            } else {
+                MaterialTheme.colorScheme.surfaceVariant
+            }
+            val foregroundColor = if (selected) {
+                MaterialTheme.colorScheme.onSecondary
+            } else {
+                MaterialTheme.colorScheme.onSurfaceVariant
+            }
+
+            Card(
+                elevation = cardElevation(5.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = backgroundColor,
+                    contentColor = foregroundColor
+                )
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .clickable {
+                            requirement = when (requirement) {
+                                AppendSkillRequirement.Ignore -> AppendSkillRequirement.Unlocked
+                                AppendSkillRequirement.Unlocked -> AppendSkillRequirement.Max
+                                AppendSkillRequirement.Max -> AppendSkillRequirement.Ignore
+                            }
+                        }
+                        .size(40.dp)
+                ) {
+                    Text(
+                        when (requirement) {
+                            AppendSkillRequirement.Ignore -> "x"
+                            AppendSkillRequirement.Unlocked -> "1+"
+                            AppendSkillRequirement.Max -> "10"
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ClassScore(
+    score: Pref<ClassScoreRequirement>
+) {
+    var requirement by score.remember()
+    val selected = requirement == ClassScoreRequirement.Max
+    val backgroundColor = if (selected) {
+        MaterialTheme.colorScheme.secondary
+    } else {
+        MaterialTheme.colorScheme.surfaceVariant
+    }
+    val foregroundColor = if (selected) {
+        MaterialTheme.colorScheme.onSecondary
+    } else {
+        MaterialTheme.colorScheme.onSurfaceVariant
+    }
+
+    Card(
+        elevation = cardElevation(5.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = backgroundColor,
+            contentColor = foregroundColor
+        )
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .clickable {
+                    requirement = when (requirement) {
+                        ClassScoreRequirement.Ignore -> ClassScoreRequirement.Max
+                        ClassScoreRequirement.Max -> ClassScoreRequirement.Ignore
+                    }
+                }
+                .size(40.dp)
+        ) {
+            Text(if (selected) "62" else "x")
         }
     }
 }
