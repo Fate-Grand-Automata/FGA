@@ -40,7 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.1
 
-      - name: Set up JDK 21
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
         uses: actions/setup-java@v6.0.1
         with:
           java-version: ${{ env.JAVA_VERSION }}
