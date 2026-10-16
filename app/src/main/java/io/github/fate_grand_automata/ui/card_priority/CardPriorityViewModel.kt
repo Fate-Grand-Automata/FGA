@@ -4,20 +4,27 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.fate_grand_automata.prefs.core.BattleConfigCore
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.models.CardPriority
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantPriorityPerWave
-import javax.inject.Inject
 
-@HiltViewModel
-class CardPriorityViewModel @Inject constructor(
-    val prefsCore: PrefsCore,
-    val battleConfig: BattleConfigCore
+@HiltViewModel(assistedFactory = CardPriorityViewModel.Factory::class)
+class CardPriorityViewModel @AssistedInject constructor(
+    prefsCore: PrefsCore,
+    @Assisted id: String
 ) : ViewModel() {
+    val battleConfig = prefsCore.forBattleConfig(id)
+
+    @AssistedFactory
+    interface Factory {
+        fun create(id: String): CardPriorityViewModel
+    }
     val cardPriorityItems: SnapshotStateList<CardPriorityListItem> by lazy {
         val cardPriority = battleConfig.cardPriority.get()
         val servantPriority = battleConfig.servantPriority.get()
@@ -27,12 +34,12 @@ class CardPriorityViewModel @Inject constructor(
 
         cardPriority
             .take(3)
-            .map { it.toMutableList() }
+            .map { it.toMutableStateList() }
             .withIndex()
             .map {
                 CardPriorityListItem(
                     it.value,
-                    servantPriority.atWave(it.index).toMutableList(),
+                    servantPriority.atWave(it.index).toMutableStateList(),
                     mutableStateOf(rearrangeCards.getOrElse(it.index) { false }),
                     mutableStateOf(braveChains.getOrElse(it.index) { BraveChainEnum.None })
                 )
@@ -45,13 +52,13 @@ class CardPriorityViewModel @Inject constructor(
     fun save() {
         battleConfig.cardPriority.set(
             CardPriorityPerWave.from(
-                cardPriorityItems.map { CardPriority.from(it.scores) }
+                cardPriorityItems.map { CardPriority.from(it.scores.toList()) }
             )
         )
 
         battleConfig.servantPriority.set(
             ServantPriorityPerWave.from(
-                cardPriorityItems.map { it.servantPriority }
+                cardPriorityItems.map { it.servantPriority.toList() }
             )
         )
 

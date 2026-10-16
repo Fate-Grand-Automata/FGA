@@ -18,7 +18,7 @@ Right now, it is only used when searching for friend supports and in Gift Box sc
 Time taken to swipe. Swiping faster will scroll more, slower will scroll less.
 
 ### Support Swipe Multiplier (%)
-Control the length of swipes in support screen. This multiples with the number of pixels to swipe over. Use along with swipe duration to tweak it to your needs.
+The distance of each swipe is scaled by this. Use it along with swipe duration to tweak it to your needs.
 
 ### Wait Multiplier (%)
-This multiples to every wait/delay. So, you can make the overall script slower/faster by using this.
+Scales every wait and delay. Raise it to slow the whole script down, lower it to speed it up.

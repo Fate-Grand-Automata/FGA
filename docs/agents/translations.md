@@ -44,3 +44,28 @@ A missing entry fails silently: the lookup falls back to the raw English name, w
 how user-added custom supports are meant to display. A rename that skips step 3 breaks the
 mapping the same quiet way, so the existing translation just stops being used. New strings
 reach the other languages through the POEditor sync above like any other source string.
+
+### Looking up official names
+
+Take translated servant and CE names from the game data on [Atlas Academy](https://atlasacademy.io)
+rather than translating them by hand. The language folders map to servers: `values-ja` → JP,
+`values-b+zh+CN` → CN, `values-b+zh+TW` → TW, `values-ko` → KR.
+
+- Search by English name: `https://api.atlasacademy.io/basic/NA/servant/search?name=<name>`.
+  For an entry that isn't on NA yet, or to look up many at once, download
+  `https://api.atlasacademy.io/export/<region>/basic_servant.json` (CEs: `basic_equip.json`).
+  Find the ID by its JP or NA name, then read the other regions' names under that same ID.
+  Keep only `type` `normal`/`heroine` (servants) or `servantEquip` (CEs).
+- One JP name can belong to several servants (Jalter Avenger and Berserker, Skadi Caster and
+  Ruler). Choose by class to match the asset.
+- If the ID is missing from a region's export, the servant or CE isn't released there yet.
+  Leave the string out; the app then falls back to English.
+- Short names a region uses in battle are in the `nice` endpoint
+  (`/nice/<region>/servant/<id>`) under `ascensionAdd.overWriteServantBattleName`.
+
+Servant labels stay short, at most 15 characters, like the English ones:
+
+- Use the first name alone when no other servant shares it (マシュ, not マシュ・キリエライト).
+- Add the class in parentheses when the asset is one of several versions of a servant:
+  クロエ(アヴェンジャー), 克洛伊(Avenger), 클로에(어벤저).
+CE names stay in their full official form.

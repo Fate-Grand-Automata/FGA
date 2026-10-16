@@ -61,8 +61,7 @@ fun Pref<Set<MaterialEnum>>.Materials(modifier: Modifier = Modifier) {
                     .alignByBaseline(),
                 enabled = current.isNotEmpty()
             ) {
-                // TODO: Localize
-                Text("CLEAR")
+                Text(stringResource(R.string.clear).uppercase())
             }
         }
 
@@ -122,6 +121,6 @@ fun MaterialsSummary(materials: List<MaterialEnum>) {
             }
         }
     } else {
-        ConfigSummaryValue("--")
+        ConfigSummaryValue(stringResource(R.string.battle_config_materials_none))
     }
 }

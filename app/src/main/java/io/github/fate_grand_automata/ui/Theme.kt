@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Typography
@@ -158,6 +159,26 @@ private val DarkColors = darkColorScheme(
 @Composable
 fun FGAListItemColors() = ListItemDefaults.colors(
     containerColor = MaterialTheme.colorScheme.surfaceVariant
+)
+
+/**
+ * Menus default to `surfaceContainer`, which this scheme leaves unset — Material then falls
+ * back to its purple baseline value. Match the cards the menus are anchored to instead.
+ */
+@Composable
+fun FGAMenuContainerColor() = MaterialTheme.colorScheme.surfaceVariant
+
+/**
+ * Sliders default their inactive track to `secondaryContainer`, which in this scheme is a bright
+ * mint far louder than `primary` — the empty half of the track ends up shouting over the filled
+ * half. A dimmed `onSurfaceVariant` reads as an empty track on the cards sliders sit on, in both
+ * themes.
+ */
+@Composable
+fun FGASliderColors() = SliderDefaults.colors(
+    thumbColor = MaterialTheme.colorScheme.primary,
+    activeTrackColor = MaterialTheme.colorScheme.primary,
+    inactiveTrackColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.25f)
 )
 
 @Composable

@@ -156,10 +156,6 @@ class ScriptMessages @Inject constructor(
             appendLine(
                 context.getString(R.string.times_ran_out_of, timesRan, perServerConfigPref.limitRuns)
             )
-        } else if (timesRan > 0) {
-            appendLine(
-                context.getString(R.string.times_ran, timesRan)
-            )
         }
 
         if (ceDropCount > 0) {

@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -106,8 +107,8 @@ fun CardPriorityWaveSelector(
                             if (items.size < 3) {
                                 items.add(
                                     CardPriorityListItem(
-                                        items[0].scores.toMutableList(),
-                                        items[0].servantPriority.toMutableList(),
+                                        items[0].scores.toMutableStateList(),
+                                        items[0].servantPriority.toMutableStateList(),
                                         mutableStateOf(false),
                                         mutableStateOf(BraveChainEnum.None)
                                     )

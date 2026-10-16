@@ -50,8 +50,7 @@ fun PartySelection(
 
         buttons(
             showCancel = false,
-            // TODO: Localize
-            okLabel = "CLEAR",
+            okLabel = stringResource(R.string.clear).uppercase(),
             onSubmit = { party = -1 }
         )
     }
@@ -61,7 +60,11 @@ fun PartySelection(
         onClick = { dialog.show() },
         modifier = modifier
     ) {
-        ConfigSummaryValue(if (party == -1) "--" else (party + 1).toString())
+        ConfigSummaryValue(
+            if (party == -1)
+                stringResource(R.string.battle_config_party_default)
+            else (party + 1).toString()
+        )
     }
 }
 

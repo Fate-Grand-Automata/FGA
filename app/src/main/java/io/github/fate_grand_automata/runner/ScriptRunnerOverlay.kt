@@ -9,6 +9,7 @@ import android.view.WindowManager
 import androidx.compose.ui.platform.ComposeView
 import dagger.hilt.android.scopes.ServiceScoped
 import io.github.fate_grand_automata.di.script.ScriptComponentBuilder
+import io.github.fate_grand_automata.prefs.core.CompletedRunsHolder
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.ui.highlight.HighlightManager
 import io.github.fate_grand_automata.ui.runner.ScriptRunnerUI
@@ -30,6 +31,7 @@ class ScriptRunnerOverlay @Inject constructor(
     private val windowManager: WindowManager,
     private val highlightManager: HighlightManager,
     private val prefsCore: PrefsCore,
+    private val completedRunsHolder: CompletedRunsHolder,
     private val uiStateHolder: ScriptRunnerUIStateHolder,
     private val scriptManager: ScriptManager,
     private val screenshotServiceHolder: ScreenshotServiceHolder,
@@ -58,6 +60,7 @@ class ScriptRunnerOverlay @Inject constructor(
             ScriptRunnerUI(
                 state = uiStateHolder.uiState,
                 prefsCore = prefsCore,
+                completedRuns = completedRunsHolder.completedRuns,
                 updateState = { act(it) },
                 isRecording = uiStateHolder.isRecording,
                 enabled = uiStateHolder.isPlayButtonEnabled,

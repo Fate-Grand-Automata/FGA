@@ -3,7 +3,6 @@ package io.github.fate_grand_automata.ui.skill_maker
 import android.os.Bundle
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -11,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.core.view.WindowCompat
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.models.ServantTarget
@@ -18,6 +18,7 @@ import io.github.fate_grand_automata.ui.FgaScreen
 import io.github.fate_grand_automata.ui.OnPause
 import io.github.fate_grand_automata.ui.PreventRtl
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
+import io.github.fate_grand_automata.ui.main.Route
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice3
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice2
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice2Target
@@ -26,18 +27,20 @@ import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChangeNpTy
 
 @AndroidEntryPoint
 class SkillMakerActivity : AppCompatActivity() {
-    val vm: SkillMakerViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
+        val configId = intent.getStringExtra(Route.BattleConfig.idArg)!!
+
         setContent {
             FgaScreen {
                 PreventRtl {
                     SkillMakerUI(
-                        vm = vm,
+                        vm = hiltViewModel<SkillMakerViewModel, SkillMakerViewModel.Factory>(
+                            creationCallback = { it.create(configId) }
+                        ),
                         exit = { finish() }
                     )
                 }

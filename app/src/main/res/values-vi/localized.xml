@@ -32,6 +32,7 @@ Vui lòng bật khả năng truy cập cho ứng dụng này từ cài đặt H�
     <string name="cannot_start_recording">"Không thể bắt đầu ghi hình"</string>
     <string name="cannot_stop_recording">"Không thể dừng ghi hình"</string>
     <string name="card_priority">"Ưu tiên thẻ"</string>
+    <string name="card_priority_hint_move_item">"Nhấn giữ và kéo để sắp xếp lại"</string>
     <string name="card_priority_high">"LỚN"</string>
     <string name="card_priority_low">"BÉ"</string>
     <string name="card_priority_wave_number">"LƯỢT QUÁI %d"</string>

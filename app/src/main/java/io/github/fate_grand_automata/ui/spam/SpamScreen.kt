@@ -76,7 +76,7 @@ fun SpamScreen(
                 modifier = Modifier.padding(16.dp, 5.dp)
             ) {
                 Text(
-                    "Servant:",
+                    stringResource(R.string.spam_servant),
                     modifier = Modifier.padding(end = 16.dp)
                 )
 
@@ -120,7 +120,7 @@ fun SpamScreen(
             )
 
             Text(
-                "PRESETS",
+                stringResource(R.string.spam_presets),
                 modifier = Modifier
                     .padding(16.dp, 5.dp)
             )
@@ -134,7 +134,7 @@ fun SpamScreen(
             ) {
                 items(vm.presets) { preset ->
                     HeadingButton(
-                        text = preset.name,
+                        text = stringResource(preset.nameRes),
                         onClick = { preset.action(vm.spamStates) }
                     )
                 }
@@ -147,27 +147,27 @@ fun SpamScreen(
 private fun NpSpamView(
     spamConfig: SpamScreenViewModel.NpSpamState
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .padding(start = 16.dp)
-    ) {
-        Text(stringResource(R.string.spam_np))
+    var selectedSpamMode by spamConfig.spamMode
+    var selectedWaves by spamConfig.waves
 
-        var selectedSpamMode by spamConfig.spamMode
-        var selectedWaves by spamConfig.waves
+    Column {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(start = 16.dp)
+        ) {
+            Text(stringResource(R.string.spam_np))
 
-        SelectSpamMode(
-            selected = selectedSpamMode,
-            onSelectChange = { selectedSpamMode = it },
-            modifier = Modifier.weight(1f)
-        )
+            SelectSpamMode(
+                selected = selectedSpamMode,
+                onSelectChange = { selectedSpamMode = it },
+                modifier = Modifier.weight(1f)
+            )
+        }
 
         if (selectedSpamMode != SpamEnum.None) {
             SelectWaves(
                 selected = selectedWaves,
-                onSelectChange = { selectedWaves = it },
-                modifier = Modifier.weight(1f)
+                onSelectChange = { selectedWaves = it }
             )
         }
     }
@@ -178,34 +178,36 @@ private fun SkillSpamView(
     index: Int,
     skillConfig: SpamScreenViewModel.SkillSpamState
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .padding(start = 16.dp)
-    ) {
-        Text("S${index + 1}:")
+    var selectedSpamMode by skillConfig.spamMode
+    var selectedTarget by skillConfig.target
+    var selectedWaves by skillConfig.waves
 
-        var selectedSpamMode by skillConfig.spamMode
-        var selectedTarget by skillConfig.target
-        var selectedWaves by skillConfig.waves
+    Column {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(start = 16.dp)
+        ) {
+            Text(stringResource(R.string.spam_skill, index + 1))
 
-        SelectSpamMode(
-            selected = selectedSpamMode,
-            onSelectChange = { selectedSpamMode = it },
-            modifier = Modifier.weight(1f)
-        )
-
-        if (selectedSpamMode != SpamEnum.None) {
-            SelectTarget(
-                selected = selectedTarget,
-                onSelectChange = { selectedTarget = it },
+            SelectSpamMode(
+                selected = selectedSpamMode,
+                onSelectChange = { selectedSpamMode = it },
                 modifier = Modifier.weight(1f)
             )
 
+            if (selectedSpamMode != SpamEnum.None) {
+                SelectTarget(
+                    selected = selectedTarget,
+                    onSelectChange = { selectedTarget = it },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+
+        if (selectedSpamMode != SpamEnum.None) {
             SelectWaves(
                 selected = selectedWaves,
-                onSelectChange = { selectedWaves = it },
-                modifier = Modifier.weight(1f)
+                onSelectChange = { selectedWaves = it }
             )
         }
     }
@@ -282,13 +284,13 @@ private fun SelectTarget(
     val dialog = listDialog(
         selected = selected,
         onSelectedChange = onSelectChange,
-        entries = SkillSpamTarget.entries.associateWith { it.toString() },
+        entries = SkillSpamTarget.entries.associateWith { stringResource(it.stringRes) },
         title = stringResource(R.string.spam_target)
     )
 
     ListItem(
         headlineContent = { Text(stringResource(R.string.spam_target)) },
-        supportingContent = { Text(selected.toString()) },
+        supportingContent = { Text(stringResource(selected.stringRes)) },
         modifier = modifier
             .clickable { dialog.show() },
         colors = FGAListItemColors()
@@ -302,7 +304,7 @@ private fun SelectWaves(
     modifier: Modifier = Modifier
 ) {
     MultiSelectChip(
-        title = "Waves",
+        title = stringResource(R.string.spam_waves),
         selected = selected,
         onSelectedChange = onSelectChange,
         entries = (1..3).associateWith { "$it" },

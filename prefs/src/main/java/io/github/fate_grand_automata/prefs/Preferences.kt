@@ -1,8 +1,10 @@
 package io.github.fate_grand_automata.prefs
 
+import io.github.fate_grand_automata.prefs.core.CompletedRunsHolder
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.prefs.core.map
 import io.github.fate_grand_automata.scripts.enums.GameServer
+import io.github.fate_grand_automata.scripts.enums.GameServers
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IGesturesPreferences
 import io.github.fate_grand_automata.scripts.prefs.IPerServerConfigPrefs
@@ -15,10 +17,11 @@ import kotlin.time.Duration.Companion.milliseconds
 
 class PreferencesImpl @Inject constructor(
     val prefs: PrefsCore,
+    private val completedRunsHolder: CompletedRunsHolder,
 ) : IPreferences {
     override var scriptMode by prefs.scriptMode
 
-    override var gameServer = GameServer.default
+    override var gameServer = GameServers.default
 
     private var battleConfigList by prefs.battleConfigList
 
@@ -157,7 +160,7 @@ class PreferencesImpl @Inject constructor(
     override fun getPerServerConfigPref(server: GameServer): IPerServerConfigPrefs =
         serverPrefsMap.getOrPut(server.simple) {
             PerServerConfigPrefs(
-                GameServer.deserialize(server.simple)!!,
+                GameServers.deserialize(server.simple)!!,
                 prefs
             )
         }
@@ -171,6 +174,14 @@ class PreferencesImpl @Inject constructor(
 
     override fun completedOnboarding() =
         prefs.onboardingCompletedVersion.set(PrefsCore.CURRENT_ONBOARDING_VERSION)
+
+    override fun updateCompletedRuns(runs: Int) {
+        completedRunsHolder.update(runs)
+    }
+
+    override fun resetCompletedRuns() {
+        completedRunsHolder.reset()
+    }
 
     override val support = object :
         ISupportPreferencesCommon {

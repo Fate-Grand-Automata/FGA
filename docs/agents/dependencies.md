@@ -21,6 +21,20 @@
 - `compileSdk` is **37** while `targetSdk` stays **36** — recent androidx libraries force
   the compile level, but nothing opts into new runtime behavior. Keep the two decoupled;
   bumping `targetSdk` is a separate, user-visible decision.
+- **OpenCV is pinned to 4.11.0** and Renovate is told to leave it alone. Every release bundles
+  ARM's KleidiCV; 4.11.0's (0.3.0) never calls its SVE kernels, 4.12.0's and later do. BlueStacks
+  Air on macOS advertises `HWCAP2_SVE2` without implementing SVE, so those later builds die with
+  `SIGILL` — at first image match on 4.12/4.13, and at `System.loadLibrary` on 4.14, where a
+  static constructor probes the vector length with `rdvl`. Vetting a bump means checking whether
+  an SVE instruction is *reachable*, not whether one is present: 4.11.0 contains `rdvl` too, just
+  with nothing calling it. `strings libopencv_java4.so | grep 'Custom HAL'` only reports the
+  KleidiCV version, of which 0.3.0 is the known-good one — and note that stock `objdump` cannot
+  disassemble these files (`architecture UNKNOWN`), so a grep over its output silently finds
+  nothing for every version.
+- The 4.11.0 AAR's `libc++_shared.so` is 4 KB aligned while Play requires 16 KB, so
+  `app/build.gradle.kts` extracts the 16 KB aligned copy from a separately pinned
+  `opencv_aligned_libcxx_version` and packages that instead. Bump it by hand: both catalog entries
+  are the same Maven coordinate, so the Renovate rule that pins `opencv_version` silences it too.
 - Build types: `debug`, `release`, and `ci` (`initWith(release)`, debug-signed, ARM-only
   ABIs). The `ci` type must exist in every Android module (`app`, `prefs`).
 - CI's Gradle cache comes from `gradle/actions/setup-gradle`, not `setup-java`'s
