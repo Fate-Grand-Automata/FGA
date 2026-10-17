@@ -10,16 +10,15 @@ class ServantLevelLocations @Inject constructor(
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
     val emberConfirmationDialogRegion = when (gameServer) {
-        is GameServer.Jp, is GameServer.Kr, is GameServer.Cn -> Region(250, 1204, 300, 116).xFromCenter()
-        else -> Region(338, 1229, 130, 70).xFromCenter()
+        is GameServer.Tw -> Region(338, 1229, 130, 70).xFromCenter()
+        else -> Region(250, 1204, 300, 116).xFromCenter()
     }
 
     val servantAutoSelectRegion = when (gameServer) {
-        is GameServer.Jp, is GameServer.Kr, is GameServer.Cn ->
-            Region(742, 0, 304, 72).xFromCenter().copy(y = if (isWide) 268 else 308)
-        // EN and TW don't have the automatic autofill yet
-        // Also, their templates fill the whole button, so the region needs margin around it to still match when the button is shifted slightly
-        else -> Region(1022, 0, 258, 73).xFromCenter().copy(y = if (isWide) 258 else 298)
+        // TW doesn't have the automatic autofill yet
+        // Also, its templates fill the whole button, so the region needs margin around it to still match when the button is shifted slightly
+        is GameServer.Tw -> Region(1022, 0, 258, 73).xFromCenter().copy(y = if (isWide) 258 else 298)
+        else -> Region(742, 0, 304, 72).xFromCenter().copy(y = if (isWide) 268 else 308)
     }
 
     val emptyEmberOrQPDialogRegion =
