@@ -16,7 +16,9 @@ Under the `FGA/support/` folder, put:
 - Friend name images in `friend` folder
 
 If you want to use any servant or CE other than the default ones provided with the app, you'll have to
-create their images using the `Support Image Maker` mode.
+create their images using the `Support Image Maker` mode. Servants can also be added straight from the
+[Atlas Academy](https://apps.atlasacademy.io/db) DB in the support settings, see
+[Battle](Battle#preferred-servant---adding-a-servant-from-the-atlas-academy-db).
 
 Instead of having to select multiple ascension images for a servant, you can put all the images of a servant in a folder and select the folder in
 settings.
