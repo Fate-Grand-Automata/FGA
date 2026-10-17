@@ -9,7 +9,6 @@ import dagger.hilt.EntryPoints
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
 import io.github.fate_grand_automata.R
-import io.github.fate_grand_automata.accessibility.TapperService
 import io.github.fate_grand_automata.di.script.ScriptComponentBuilder
 import io.github.fate_grand_automata.di.script.ScriptEntryPoint
 import io.github.fate_grand_automata.di.service.ServiceCoroutineScope
@@ -21,7 +20,6 @@ import io.github.fate_grand_automata.scripts.entrypoints.AutoGiftBox
 import io.github.fate_grand_automata.scripts.entrypoints.AutoLottery
 import io.github.fate_grand_automata.scripts.entrypoints.AutoServantLevel
 import io.github.fate_grand_automata.scripts.entrypoints.SupportImageMaker
-import io.github.fate_grand_automata.scripts.enums.GameServers
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.exit.BattleExit
@@ -31,6 +29,7 @@ import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIState
 import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIStateHolder
 import io.github.fate_grand_automata.ui.support_img_namer.showSupportImageNamer
 import io.github.fate_grand_automata.util.FakedComposeView
+import io.github.fate_grand_automata.util.GameServerResolver
 import io.github.fate_grand_automata.util.ImageLoader
 import io.github.fate_grand_automata.util.KnownException
 import io.github.fate_grand_automata.util.ScriptMessages
@@ -62,6 +61,7 @@ class ScriptManager @Inject constructor(
     private val imageLoader: ImageLoader,
     private val preferences: IPreferences,
     private val prefsCore: PrefsCore,
+    private val gameServerResolver: GameServerResolver,
     private val storageProvider: StorageProvider,
     private val messages: ScriptMessages,
     private val uiStateHolder: ScriptRunnerUIStateHolder,
@@ -321,22 +321,9 @@ class ScriptManager @Inject constructor(
     }
 
     private fun updateGameServer() {
-        val server = prefsCore.gameServerRaw.get()
+        preferences.gameServer = gameServerResolver.resolve()
 
-        preferences.gameServer =
-            if (server == PrefsCore.GAME_SERVER_AUTO_DETECT)
-                (TapperService.instance?.detectedFgoServer ?: GameServers.default).also {
-                    Timber.d("Using auto-detected Game Server: $it")
-                }
-            else try {
-                GameServers.deserialize(server)?.also {
-                    Timber.d("Using Game Server: $it")
-                } ?: GameServers.default
-            } catch (e: Exception) {
-                Timber.e(e, "Game Server: Falling back to NA")
-
-                GameServers.default
-            }
+        Timber.d("Using Game Server: ${preferences.gameServer}")
     }
 
     fun startScript(
