@@ -40,7 +40,7 @@ jobs:
       - uses: actions/checkout@v7.0.1
 
       - name: Set up JDK ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v6.0.1
+        uses: actions/setup-java@v6.1.0
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRO }}
@@ -79,13 +79,13 @@ jobs:
           echo "FGA_MAPPING_ARTIFACT_NAME=FGA-mapping-PR-$build_name" >>${GITHUB_ENV}
 
       - name: Upload APK
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: ${{ env.FGA_APK_ARTIFACT_NAME }}
           path: ${{ env.FGA_APK_PATH }}
 
       - name: Upload De-obfuscation mapping file
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: ${{ env.FGA_MAPPING_ARTIFACT_NAME }}
           path: ${{ env.FGA_MAPPING_PATH }}
