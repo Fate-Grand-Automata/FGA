@@ -1,0 +1,48 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - development
+      - master
+    paths-ignore:
+      - '.idea/**'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.gitattributes'
+      - '.gitignore'
+      - '*.md'
+      - 'LICENSE'
+      - 'custom-game-area/**'
+      - 'wiki/**'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JAVA_VERSION: 17
+  JAVA_DISTRO: 'temurin'
+  VERSION_CODE: '${{ github.run_number }}'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRO }}
+          cache: 'gradle'
+
+      - name: Build Android Package
+        run: ./gradlew assembleCi --parallel --no-daemon
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: FGA-ci-build-${{ github.run_number }}
+          path: app/build/outputs/apk/ci/app-ci.apk

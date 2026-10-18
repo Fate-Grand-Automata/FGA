@@ -44,6 +44,9 @@ internal class BattleConfig(
 
     override var spam by prefs.spam
 
+    override var shouldUseTeapots by prefs.shouldUseTeapots
+    override var limitTeapots by prefs.limitTeapots
+
     override fun export(): Map<String, *> = prefs.export()
 
     override fun import(map: Map<String, *>) =

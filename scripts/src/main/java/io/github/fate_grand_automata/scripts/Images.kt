@@ -93,4 +93,6 @@ enum class Images(val path: String) {
     GrandCeLabel("grand_ce_label.png"),
     BondCeEffectDefault("bond_ce_effect_default.png"),
     BondCeEffectNP("bond_ce_effect_np.png"),
+    TeapotsOff("teapots_off.png"),
+    TeapotsOn("teapots_on.png"),
 }

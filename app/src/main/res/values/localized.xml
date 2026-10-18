@@ -481,4 +481,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
     <string name="servant_enhancement_aborted">Enhancement was aborted</string>
     <string name="note">"Note:"</string>
+    <string name="p_should_use_teapots">Use Stargazer\'s Teapots</string>
+    <string name="p_should_use_teapots_summary">Automatically toggles Stargazer\'s Teapots (or Auto Item Use popup) for this battle config.</string>
+    <string name="p_limit_teapots">Limit Teapots</string>
 </resources>

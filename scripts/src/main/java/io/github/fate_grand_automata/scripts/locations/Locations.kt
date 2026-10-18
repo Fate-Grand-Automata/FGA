@@ -40,6 +40,11 @@ class Locations @Inject constructor(
     val interludeCloseClick = Location(-399, 1125).xFromCenter()
     val interludeEndScreenClose = Region(-515, 1080, 230, 90).xFromCenter()
 
+    val teapotDialogRegion = Region(-130, 1000, 260, 450).xFromCenter()
+    val teapotDialogToggleRegion = Region(305, 770, 72, 70).xFromCenter()
+    val teapotParty1ToggleRegion = Region(55, 930, 72, 70).xFromCenter()
+    val teapotParty2ToggleRegion = Region(305, 930, 72, 70).xFromCenter()
+
     val menuScreenRegion =
         (if (isWide)
             Region(-600, 1200, 600, 240)

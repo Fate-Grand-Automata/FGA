@@ -185,4 +185,7 @@ class BattleConfigCore(
     val support = SupportPrefsCore(maker)
 
     val autoChooseTarget = maker.bool("auto_choose_target")
+
+    val shouldUseTeapots = maker.bool("should_use_teapots")
+    val limitTeapots = maker.int("limit_teapots", 0)
 }

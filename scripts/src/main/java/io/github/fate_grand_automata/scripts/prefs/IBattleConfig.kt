@@ -28,6 +28,9 @@ interface IBattleConfig {
 
     val server: GameServer?
 
+    var shouldUseTeapots: Boolean
+    var limitTeapots: Int
+
     fun export(): Map<String, *>
 
     fun import(map: Map<String, *>)

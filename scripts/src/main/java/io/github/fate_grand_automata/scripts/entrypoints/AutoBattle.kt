@@ -3,6 +3,8 @@ package io.github.fate_grand_automata.scripts.entrypoints
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.ScriptNotify
+import io.github.fate_grand_automata.scripts.ScriptLog
+import io.github.lib_automata.Region
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
 import io.github.fate_grand_automata.scripts.models.BoostItem
@@ -93,6 +95,8 @@ class AutoBattle @Inject constructor(
 
     private var isQuestClose = false
 
+    private var teapotsUsed = 0
+
     override fun script(): Nothing {
         try {
             loop()
@@ -151,7 +155,8 @@ class AutoBattle @Inject constructor(
         val averageTimePerRun: Duration,
         val minTurnsPerRun: Int,
         val maxTurnsPerRun: Int,
-        val averageTurnsPerRun: Double
+        val averageTurnsPerRun: Double,
+        val teapotsUsed: Int = 0
     )
 
     private fun makeExitState(): ExitState {
@@ -167,7 +172,8 @@ class AutoBattle @Inject constructor(
             averageTimePerRun = state.averageTimePerRun,
             minTurnsPerRun = state.minTurnsPerRun,
             maxTurnsPerRun = state.maxTurnsPerRun,
-            averageTurnsPerRun = state.averageTurnsPerRun
+            averageTurnsPerRun = state.averageTurnsPerRun,
+            teapotsUsed = teapotsUsed
         )
     }
 
@@ -343,7 +349,7 @@ class AutoBattle @Inject constructor(
         // Lock the Ordeal Call for JP server
         if (prefs.gameServer !is GameServer.Jp) return false
 
-        return images[Images.Close] in locations.ordealCallOutOfPodsRegion
+        return findImage(locations.ordealCallOutOfPodsRegion, Images.Close)
     }
 
     private fun ordealCallOutOfPods() {
@@ -404,7 +410,7 @@ class AutoBattle @Inject constructor(
     }
 
     private fun isInInterludeEndScreen() =
-        images[Images.Close] in locations.interludeEndScreenClose
+        findImage(locations.interludeEndScreenClose, Images.Close)
 
     /**
      * Checks if FGO is on the quest reward screen for Mana Prisms, SQ, ...
@@ -479,18 +485,82 @@ class AutoBattle @Inject constructor(
     private fun isRankUp() =
         images[Images.RankUp] in locations.rankUpRegion
 
+    private fun handleTeapotToggle(toggleRegion: Region) {
+        val hasTeapotsOn = images[Images.TeapotsOn] in toggleRegion
+        val hasTeapotsOff = images[Images.TeapotsOff] in toggleRegion
+
+        if (!hasTeapotsOn && !hasTeapotsOff) {
+            return
+        }
+
+        val battleConfig = prefs.selectedBattleConfig
+        val isCurrentlyOn = hasTeapotsOn
+        val shouldUse = battleConfig.shouldUseTeapots
+        val limitEnabled = battleConfig.limitTeapots > 0
+
+        val shouldBeOn = shouldUse && (!limitEnabled || battleConfig.limitTeapots > 0)
+
+        if (shouldBeOn && !isCurrentlyOn) {
+            toggleRegion.click()
+            0.5.seconds.wait()
+            teapotsUsed++
+            if (limitEnabled) {
+                battleConfig.limitTeapots--
+            }
+            messages.log(ScriptLog.TeapotsTurnedOn)
+        } else if (!shouldBeOn && isCurrentlyOn) {
+            toggleRegion.click()
+            0.5.seconds.wait()
+            messages.log(ScriptLog.TeapotsTurnedOff)
+        }
+    }
+
+    private fun handleAutoItemUsePopup() {
+        val closeRegion = locations.ordealCallOutOfPodsRegion
+        val hasPopup = findImage(closeRegion, Images.Close, 2.seconds)
+
+        if (hasPopup) {
+            0.5.seconds.wait()
+            // Check teapot toggle in the dialog
+            handleTeapotToggle(locations.teapotDialogToggleRegion)
+
+            // Click Close button to dismiss popup
+            locations.ordealCallOutOfPodsClick.click()
+            0.5.seconds.wait()
+        } else {
+            // Also check party screen toggle
+            handlePartyTeapots()
+        }
+    }
+
+    private fun handlePartyTeapots() {
+        val cases = listOf(
+            locations.teapotParty1ToggleRegion,
+            locations.teapotParty2ToggleRegion
+        )
+        for (region in cases) {
+            if (images[Images.TeapotsOn] in region || images[Images.TeapotsOff] in region) {
+                handleTeapotToggle(region)
+                break
+            }
+        }
+    }
+
     /**
      * Starts the quest after the support has already been selected. The following features are done optionally:
      * 1. The configured party is selected if it is set in the selected AutoSkill config
      * 2. A boost item is selected if [IPreferences.boostItemSelectionMode] is set (needed in some events)
      * 3. The story is skipped if [IPreferences.storySkip] is activated
+     * 4. Teapots are configured and Auto Item Use popup is handled
      */
-    private
-
-    fun startQuest() {
+    private fun startQuest() {
         partySelection.selectParty()
 
+        handlePartyTeapots()
+
         locations.menuStartQuestClick.click()
+
+        handleAutoItemUsePopup()
 
         2.seconds.wait()
 
