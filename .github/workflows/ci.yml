@@ -41,7 +41,7 @@ jobs:
       - uses: actions/checkout@v7.0.1
 
       - name: Set up JDK ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v6.0.1
+        uses: actions/setup-java@v6.1.0
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRO }}
@@ -62,7 +62,7 @@ jobs:
         working-directory: ./app
         run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
 
-      - uses: ruby/setup-ruby@v1.327.0
+      - uses: ruby/setup-ruby@v1.329.0
         with:
           ruby-version: '4.0.7'
           bundler-cache: true
@@ -76,14 +76,14 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
 
       - name: Upload Bundle
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: bundle
           path: app/build/outputs/bundle/release/app-release.aab
         if: ${{ !cancelled() }}
 
       - name: Upload De-obfuscation mapping file
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: mapping-release
           path: app/build/outputs/mapping/release/mapping.txt
