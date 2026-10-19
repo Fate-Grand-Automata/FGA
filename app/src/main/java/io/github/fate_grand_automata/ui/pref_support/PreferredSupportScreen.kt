@@ -47,11 +47,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun PreferredSupportScreen(
     vm: PreferredSupportViewModel = viewModel(),
-    supportVm: SupportViewModel = viewModel()
+    supportVm: SupportViewModel = viewModel(),
+    atlasVm: AtlasServantViewModel = viewModel()
 ) {
     PreferredSupport(
         config = vm.supportPrefs,
-        vm = supportVm
+        vm = supportVm,
+        atlasVm = atlasVm
     )
 
     val context = LocalContext.current
@@ -70,7 +72,8 @@ fun PreferredSupportScreen(
 @Composable
 private fun PreferredSupport(
     config: SupportPrefsCore,
-    vm: SupportViewModel
+    vm: SupportViewModel,
+    atlasVm: AtlasServantViewModel
 ) {
     val prefServants by config.preferredServants.remember()
     val prefCEs by config.preferredCEs.remember()
@@ -142,6 +145,12 @@ private fun PreferredSupport(
                                 )
                             )
                         }
+                    }
+
+                    AddServantFromAtlasPreference(vm = atlasVm) { name ->
+                        // Select what was just added, so the next run can use it right away.
+                        config.preferredServants.set(config.preferredServants.get() + name)
+                        vm.refresh(context)
                     }
                 }
             }
