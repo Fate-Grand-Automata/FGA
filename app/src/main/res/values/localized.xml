@@ -536,6 +536,9 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="error_no_screenshot_received">"Screen capture didn't deliver any image. Restart FGA and grant the screen capture permission again."</string>
     <string name="error_screen_capture_stopped">"Screen capture was stopped. This happens when the system or another app takes it over, or when the display changes. Restart FGA and grant the screen capture permission again."</string>
     <string name="error_no_suitable_target_ce_found">"No suitable target CE found"</string>
+    <string name="error_game_server_not_detected">"FGA couldn't detect which FGO server is running. Leave FGO and open it again, then retry.
+
+If your FGO version isn't recognized or runs inside an app cloner, select your server under %1$s > %2$s > %3$s instead."</string>
 
     <!-- Default Servant Names -->
     <string name="servant_name_arcueid">Arcueid</string>

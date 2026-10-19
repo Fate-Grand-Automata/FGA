@@ -42,17 +42,28 @@ object GameServers {
         GameServer.Kr
     )
 
-    val packageNames = mapOf(
-        "com.aniplex.fategrandorder.en" to GameServer.En.Original,
-        "io.rayshift.betterfgo.en" to GameServer.En.BetterFGO,
-        "com.aniplex.fategrandorder" to GameServer.Jp.Original,
-        "io.rayshift.betterfgo" to GameServer.Jp.BetterFGO,
-        "com.bilibili.fatego" to GameServer.Cn,
-        "com.bilibili.fatego.sharejoy" to GameServer.Cn,
-        "com.komoe.fgomycard" to GameServer.Tw,
-        "com.xiaomeng.fategrandorder" to GameServer.Tw,
-        "com.netmarble.fgok" to GameServer.Kr
+    private val packagesByServer = mapOf(
+        GameServer.En.Original to listOf("com.aniplex.fategrandorder.en"),
+        GameServer.En.BetterFGO to listOf("io.rayshift.betterfgo.en"),
+        GameServer.Jp.Original to listOf("com.aniplex.fategrandorder"),
+        GameServer.Jp.BetterFGO to listOf("io.rayshift.betterfgo"),
+        GameServer.Cn to listOf(
+            "com.bilibili.fatego",
+            "com.bilibili.fatego.sharejoy",
+            "com.bilibili.fgo.mi", // Xiaomi
+            "com.bilibili.fgo.uc", // 9Game / UC
+            "com.bilibili.fgo.vivo",
+            "com.bilibili.fgo.m4399",
+            "com.tencent.tmgp.fgo", // Tencent MyApp
+            "com.bilibili.uo.fatego" // migration server
+        ),
+        GameServer.Tw to listOf("com.komoe.fgomycard", "com.xiaomeng.fategrandorder"),
+        GameServer.Kr to listOf("com.netmarble.fgok")
     )
+
+    val packageNames = packagesByServer
+        .flatMap { (server, packages) -> packages.map { it to server } }
+        .toMap()
 
     private val serializedValues = values.associateBy { it.serialize() }
 
