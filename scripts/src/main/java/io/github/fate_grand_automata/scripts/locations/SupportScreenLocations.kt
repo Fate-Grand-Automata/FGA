@@ -92,7 +92,7 @@ class SupportScreenLocations @Inject constructor(
 
     val refreshRegion = Region(1770, 195, 175, 165) + headerOffset
 
-    val skillDisplayToggle = Location(1605, 250) + supportOffset
+    val skillDisplayToggle = Location(1700, 250) + headerOffset
 
     fun regularSkillRegions(bounds: Region): List<Region> =
         skillRegions(bounds, count = 3, margin = 90)
