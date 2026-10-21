@@ -168,8 +168,10 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_fine_tune_support">"Support"</string>
     <string name="p_fine_tune_support_swipes_per_update">"Swipes per Update"</string>
     <string name="p_fine_tune_support_max_updates">"Max Updates"</string>
+    <string name="p_fine_tune_append_score_recognition">"Append Skills / Class Score Recognition"</string>
     <string name="p_fine_tune_support_skill_display_wait">"Skill display switch wait"</string>
-    <string name="p_fine_tune_support_append_unlocked_min_ratio">"Append unlocked minimum ratio"</string>
+    <string name="p_fine_tune_support_append_unlocked_min_ratio">"Append unlocked minimum pixel ratio"</string>
+    <string name="p_fine_tune_support_append_max_similarity">"Append Level 10 similarity"</string>
     <string name="p_fine_tune_support_class_score_min_ratio">"Class Score minimum ratio"</string>
     <string name="p_fine_tune_similarity">"Similarity"</string>
     <string name="p_fine_tune_min_similarity">"Min Similarity"</string>
@@ -191,6 +193,7 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_fine_tune_default_value">"Default: %1$s"</string>
     <string name="p_fine_tune_support_swipes_per_update_hint">"Number of times to scroll through support list before refreshing."</string>
     <string name="p_fine_tune_support_max_updates_hint">"Maximum number of times to refresh in support screen after which the configured fallback option is used."</string>
+    <string name="p_fine_tune_support_append_max_similarity_hint">"Template similarity required to recognize an Append Skill at Level 10. Lower this value if Level 10 is missed on your device."</string>
     <string name="p_fine_tune_support_skill_display_wait_hint">"Wait after each tap of the regular/Append Skill display button."</string>
     <string name="p_fine_tune_support_append_unlocked_min_ratio_hint">"Minimum percentage of bright pixels required to identify an unlocked Append Skill."</string>
     <string name="p_fine_tune_support_class_score_min_ratio_hint">"Minimum percentage of yellow pixels required to identify max Class Score (+62)."</string>
