@@ -98,7 +98,7 @@ class SupportScreenLocations @Inject constructor(
         skillRegions(bounds, count = 3, margin = 90)
 
     fun appendSkillRegions(bounds: Region): List<Region> =
-        skillRegions(bounds, count = 5, margin = 78)
+        skillRegions(bounds, count = 5, margin = 75)
 
     private fun skillRegions(bounds: Region, count: Int, margin: Int): List<Region> =
         List(count) { index ->
