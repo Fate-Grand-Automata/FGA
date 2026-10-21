@@ -3,12 +3,15 @@ package io.github.fate_grand_automata.scripts.modules
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.ScriptLog
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.SpamConfigPerTeamSlot
 import io.github.fate_grand_automata.scripts.models.battle.BattleState
+import io.github.fate_grand_automata.scripts.models.toFieldSlot
+import io.github.fate_grand_automata.scripts.modules.attack.CardSequenceHandler
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
@@ -56,6 +59,35 @@ class Card @Inject constructor(
 
         val braveChainsPerWave = battleConfig.braveChains
         val rearrangeCardsPerWave = battleConfig.rearrangeCards
+
+        if (battleConfig.useCardSequence) {
+            val sequenceNpUsage = NPUsage(npUsage.nps + spamNps, npUsage.cardsBeforeNP)
+            val braveChain = braveChainsPerWave.inCurrentWave(BraveChainEnum.None)
+            val desiredOrder = battleConfig.cardSequenceOrders
+                .inCurrentWave(
+                    listOf(CardTypeEnum.Buster, CardTypeEnum.Arts, CardTypeEnum.Quick)
+                )
+            val npTypes = sequenceNpUsage.nps.associate { np ->
+                val slot = np.toFieldSlot()
+                slot to battleConfig.npCardTypes.getOrElse(slot.position - 1) {
+                    CardTypeEnum.Unknown
+                }
+            }
+
+            val selectedSequence = CardSequenceHandler.pick(
+                cards = cardsOrderedByPriority,
+                desiredOrder = desiredOrder,
+                npUsage = sequenceNpUsage,
+                npTypes = npTypes,
+                braveChainEnum = braveChain,
+            )
+
+            if (selectedSequence != null) {
+                // The configured sequence already defines the click order. Rearranging it would
+                // silently change the user's requested first-, second-, and third-card effects.
+                return selectedSequence.map { it.card }
+            }
+        }
 
         return braveChains.pick(
             cards = cardsOrderedByPriority,
