@@ -79,4 +79,27 @@ class SupportScreenLocationsTest {
             assertTrue(toggle.y in 0 until 1440, "toggle is outside screen height")
         }
     }
+
+    @Test
+    fun `append skill regions use normalized spacing and stop before class score`() {
+        val expectedOffsets = listOf(1610, 1685, 1760, 1835, 1910)
+
+        listOf(2560, 2880, 3088, 3120, 3200, 3360).forEach { scriptWidth ->
+            val support = locations(scriptWidth)
+            val bounds = support.defaultBounds.copy(y = 400)
+            val appendRegions = support.appendSkillRegions(bounds)
+            val classScore = support.classScoreRegion(bounds)
+
+            assertThat(appendRegions.size).isEqualTo(5)
+
+            appendRegions.forEachIndexed { index, region ->
+                assertThat(region.x - bounds.x).isEqualTo(expectedOffsets[index])
+                assertThat(region.y - bounds.y).isEqualTo(325)
+                assertThat(region.width).isEqualTo(60)
+                assertThat(region.height).isEqualTo(50)
+            }
+
+            assertThat(appendRegions.last().right).isEqualTo(classScore.x)
+        }
+    }
 }
