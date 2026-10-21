@@ -61,6 +61,7 @@ class PrefsCore @Inject constructor(
     val supportMaxUpdates = maker.int("support_max_updates_x", 20)
     val supportSkillDisplayWait = maker.int("support_skill_display_wait", 350)
     val supportAppendUnlockedMinRatio = maker.int("support_append_unlocked_min_ratio", 15)
+    val supportAppendMaxSimilarity = maker.int("support_append_max_similarity_v2", 60)
     val supportClassScoreMinRatio = maker.int("support_class_score_min_ratio", 4)
 
     val minSimilarity = maker.int("min_similarity", 80)
