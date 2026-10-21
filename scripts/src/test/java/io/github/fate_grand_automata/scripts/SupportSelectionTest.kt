@@ -26,6 +26,7 @@ class SupportSelectionTest {
         override val swipesPerUpdate = 5
         override val skillDisplayWait = 350.milliseconds
         override val appendUnlockedMinRatio = 0.15
+        override val appendMaxSimilarity = 0.60
         override val classScoreMinRatio = 0.04
     }
 
