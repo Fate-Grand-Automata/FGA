@@ -56,6 +56,20 @@ class AttackScreenLocations @Inject constructor(
     fun supportCheckRegion(card: CommandCard.Face) =
         affinityRegion(card) + Location(-50, 100)
 
+    fun supportCheckNewRegion(card: CommandCard.Face): Region {
+        val region = affinityRegion(card) + Location(-40, 155)
+        val newHeight = 120
+        val newWidth = 250
+        return Region(region.x, region.y, newWidth, newHeight)
+    }
+
+    fun supportCheckNewRegion2(card: CommandCard.Face): Region {
+        val region = affinityRegion(card) + Location(100, 170)
+        val newHeight = 100
+        val newWidth = 100
+        return Region(region.x, region.y, newWidth, newHeight)
+    }
+
     val backClick =
         (if (isWide)
             Location(-325, 1310)
