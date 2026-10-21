@@ -30,7 +30,12 @@ class FineTuneSettingsViewModel @Inject constructor(
                     icon = icon(R.drawable.ic_refresh),
                     valueRange = 0..50,
                     hint = R.string.p_fine_tune_support_max_updates_hint
-                ),
+                )
+            )
+        ),
+        FineTuneGroup(
+            name = R.string.p_fine_tune_append_score_recognition,
+            items = listOf(
                 FineTuneItem(
                     pref = prefs.supportSkillDisplayWait,
                     name = R.string.p_fine_tune_support_skill_display_wait,
@@ -47,6 +52,14 @@ class FineTuneSettingsViewModel @Inject constructor(
                     valueRange = 0..100,
                     valueRepresentation = { "$it%" },
                     hint = R.string.p_fine_tune_support_append_unlocked_min_ratio_hint
+                ),
+                FineTuneItem(
+                    pref = prefs.supportAppendMaxSimilarity,
+                    name = R.string.p_fine_tune_support_append_max_similarity,
+                    icon = icon(R.drawable.ic_image_search),
+                    valueRange = 0..100,
+                    valueRepresentation = { "$it%" },
+                    hint = R.string.p_fine_tune_support_append_max_similarity_hint
                 ),
                 FineTuneItem(
                     pref = prefs.supportClassScoreMinRatio,
