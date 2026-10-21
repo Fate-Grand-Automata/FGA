@@ -42,6 +42,8 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.SupportPrefsCore
+import io.github.fate_grand_automata.scripts.enums.AppendSkillRequirement
+import io.github.fate_grand_automata.scripts.enums.ClassScoreRequirement
 import io.github.fate_grand_automata.scripts.enums.SupportClass
 import io.github.fate_grand_automata.scripts.enums.SupportSelectionModeEnum
 import io.github.fate_grand_automata.scripts.enums.canAlsoCheckAll
@@ -282,20 +284,7 @@ fun PreferredSummary(
             )
 
             if (servants.isNotEmpty()) {
-                Card(
-                    elevation = cardElevation(2.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                ) {
-                    Text(
-                        maxSkillText,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier
-                            .padding(5.dp, 1.dp)
-                    )
-                }
+                SupportConditionSummary(config, maxSkillText)
             }
         }
 
@@ -355,6 +344,51 @@ fun PreferredSummary(
                     modifier = Modifier
                         .weight(1f)
                         .padding(start = 16.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SupportConditionSummary(
+    config: SupportPrefsCore,
+    maxSkillText: String
+) {
+    val append1 by config.appendSkill1.remember()
+    val append2 by config.appendSkill2.remember()
+    val append3 by config.appendSkill3.remember()
+    val append4 by config.appendSkill4.remember()
+    val append5 by config.appendSkill5.remember()
+    val classScore by config.classScore.remember()
+
+    fun appendText(requirement: AppendSkillRequirement) = when (requirement) {
+        AppendSkillRequirement.Ignore -> "x"
+        AppendSkillRequirement.Unlocked -> "1+"
+        AppendSkillRequirement.Max -> "10"
+    }
+
+    val rows = listOf(
+        maxSkillText,
+        listOf(append1, append2, append3, append4, append5)
+            .joinToString("/") { appendText(it) },
+        "CS  " + if (classScore == ClassScoreRequirement.Max) "62" else "x"
+    )
+
+    Column(horizontalAlignment = Alignment.End) {
+        rows.forEach { text ->
+            Card(
+                elevation = cardElevation(2.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                ),
+                modifier = Modifier.padding(vertical = 1.dp)
+            ) {
+                Text(
+                    text,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(5.dp, 1.dp)
                 )
             }
         }

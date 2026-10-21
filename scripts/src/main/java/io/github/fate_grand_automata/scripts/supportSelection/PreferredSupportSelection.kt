@@ -4,9 +4,9 @@ import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.entrypoints.AutoBattle
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferences
-import io.github.lib_automata.Region
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
+import kotlin.math.abs
 
 @ScriptScope
 class PreferredSupportSelection @Inject constructor(
@@ -16,11 +16,22 @@ class PreferredSupportSelection @Inject constructor(
     private val friendChecker: SupportFriendChecker,
     private val servantSelection: ServantSelection,
     private val ceSelection: CESelection,
-    private val friendSelection: FriendSelection
+    private val friendSelection: FriendSelection,
+    private val colorChecker: SupportColorChecker
 ) : SupportSelectionProvider, IFgoAutomataApi by api {
     private val servants = supportPrefs.preferredServants
     private val ces = supportPrefs.preferredCEs
     private val friendNames = supportPrefs.friendNames
+    private val needsRegularSkills = servants.isNotEmpty() && servantSelection.needsRegularSkillCheck()
+    private val needsAppendSkills = servants.isNotEmpty() && servantSelection.needsAppendSkillCheck()
+
+    private enum class SkillDisplay { Regular, Append }
+    private var skillDisplay = SkillDisplay.Regular
+
+    override fun onSelectionStart() {
+        // FGO always opens a new support screen in the regular-skill display.
+        skillDisplay = SkillDisplay.Regular
+    }
 
     private data class ScrollBarState(
         val topScrollbar: Boolean = false,
@@ -39,21 +50,95 @@ class PreferredSupportSelection @Inject constructor(
             throw AutoBattle.BattleExitException(AutoBattle.ExitReason.SupportSelectionPreferredNotSet)
         }
 
-        return useSameSnapIn {
-            if (supportPrefs.friendsOnly && !friendChecker.isFriend()) {
-                // no friends on screen, so there's no point in scrolling anymore
-                return@useSameSnapIn SupportSelectionResult.Refresh
+        if (useSameSnapIn { supportPrefs.friendsOnly && !friendChecker.isFriend() }) {
+            return SupportSelectionResult.Refresh
+        }
+
+        val rejectedRows = mutableSetOf<Int>()
+        var pendingRow: Int? = null
+
+        while (true) {
+            val candidates = findCandidates(rejectedRows)
+
+            if (pendingRow != null) {
+                val expectedRow = pendingRow
+                val pending = candidates.minByOrNull { abs(it.region.y - expectedRow) }
+                    ?.takeIf { abs(it.region.y - expectedRow) <= 20 }
+
+                if (pending != null) {
+                    pending.region.click()
+                    return SupportSelectionResult.Done
+                }
+
+                rejectedRows += expectedRow
+                pendingRow = null
+                continue
             }
 
-            val matched = boundsFinder.all()
-                .firstNotNullOfOrNull { isMatch(it) }
+            val candidate = candidates.firstOrNull()
+            if (candidate == null) {
+                return useSameSnapIn { readScrollBarState().resultWhenNoMatch() }
+            }
 
-            if (matched != null) {
-                matched.click()
-                SupportSelectionResult.Done
-            } else {
-                val scrollBarState = readScrollBarState()
-                scrollBarState.resultWhenNoMatch()
+            val needsOtherDisplay = when (skillDisplay) {
+                SkillDisplay.Regular -> needsAppendSkills
+                SkillDisplay.Append -> needsRegularSkills
+            }
+
+            if (!needsOtherDisplay) {
+                candidate.region.click()
+                return SupportSelectionResult.Done
+            }
+
+            pendingRow = candidate.region.y
+            switchSkillDisplay()
+        }
+    }
+
+    private fun switchSkillDisplay() {
+        // The in-game button cycles through three modes:
+        // regular only -> append only -> alternating -> regular only.
+        // Never inspect the alternating mode because its contents depend on animation timing.
+        val clicks = when (skillDisplay) {
+            SkillDisplay.Regular -> 1
+            SkillDisplay.Append -> 2
+        }
+
+        repeat(clicks) {
+            locations.support.skillDisplayToggle.click()
+            prefs.support.skillDisplayWait.wait()
+        }
+
+        skillDisplay = when (skillDisplay) {
+            SkillDisplay.Regular -> SkillDisplay.Append
+            SkillDisplay.Append -> SkillDisplay.Regular
+        }
+    }
+
+    private fun findCandidates(rejectedRows: Set<Int>): List<SupportBounds> {
+        val grayscaleMatches = useSameSnapIn {
+            boundsFinder.all()
+                .filterNot { bounds -> rejectedRows.any { abs(it - bounds.region.y) <= 20 } }
+                .filter { isInvariantMatch(it) }
+                .filter {
+                    when (skillDisplay) {
+                        SkillDisplay.Regular -> !needsRegularSkills || servantSelection.checkRegularSkills(it)
+                        SkillDisplay.Append -> !needsAppendSkills || servantSelection.checkMaxAppendSkills(it)
+                    }
+                }
+        }
+
+        val needsClassScore = servants.isNotEmpty() && colorChecker.needsClassScoreCheck()
+        val needsAppendColor = skillDisplay == SkillDisplay.Append &&
+            needsAppendSkills && colorChecker.needsColorCheckInAppendMode()
+
+        if (!needsClassScore && !needsAppendColor) return grayscaleMatches
+
+        return useColor {
+            useSameSnapIn {
+                grayscaleMatches
+                    .filter { !needsClassScore || colorChecker.checkClassScore(it) }
+                    .filter { !needsAppendColor || colorChecker.checkUnlockedAppendSkills(it) }
             }
         }
     }
@@ -69,17 +154,15 @@ class PreferredSupportSelection @Inject constructor(
         )
     }
 
-    private fun isMatch(bounds: SupportBounds): Region? {
+    private fun isInvariantMatch(bounds: SupportBounds): Boolean {
         if (supportPrefs.friendsOnly && !friendChecker.isFriend(bounds)) {
-            return null
+            return false
         }
 
-        return if (
-            servantSelection.check(servants, bounds) &&
+        return (
+            servantSelection.checkIdentity(servants, bounds) &&
             ceSelection.check(ces, bounds) &&
             (!supportPrefs.friendsOnly || friendSelection.check(friendNames, bounds))
-        ) {
-            bounds.region
-        } else null
+        )
     }
 }
