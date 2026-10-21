@@ -4,6 +4,8 @@ import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.enums.AppendSkillRequirement
 import io.github.fate_grand_automata.scripts.enums.ClassScoreRequirement
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferences
+import io.github.lib_automata.HighlightColor
+import io.github.lib_automata.Highlighter
 import io.github.lib_automata.HsvRange
 import io.github.lib_automata.Pattern
 import io.github.lib_automata.Region
@@ -13,7 +15,8 @@ import javax.inject.Inject
 @ScriptScope
 class SupportColorChecker @Inject constructor(
     api: IFgoAutomataApi,
-    private val supportPrefs: ISupportPreferences
+    private val supportPrefs: ISupportPreferences,
+    private val highlight: Highlighter
 ) : IFgoAutomataApi by api {
     private val brightColor = HsvRange(0..179, 80..255, 150..255)
     private val maxScoreYellow = HsvRange(18..39, 80..255, 70..255)
@@ -53,9 +56,18 @@ class SupportColorChecker @Inject constructor(
     private fun Region.matchesColor(
         range: HsvRange,
         minimumRatio: Double
-    ): Boolean = getPattern().use { pattern ->
-        val count = pattern.countHsvPixels(range)
-        count.toDouble() / pattern.pixelCount >= minimumRatio
+    ): Boolean {
+        val matches = getPattern().use { pattern ->
+            val count = pattern.countHsvPixels(range)
+            count.toDouble() / pattern.pixelCount >= minimumRatio
+        }
+
+        highlight(
+            this,
+            color = if (matches) HighlightColor.Success else HighlightColor.Error
+        )
+
+        return matches
     }
 
     private val Pattern.pixelCount get() = width * height
