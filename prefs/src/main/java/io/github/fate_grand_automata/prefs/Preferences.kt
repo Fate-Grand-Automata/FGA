@@ -197,6 +197,9 @@ class PreferencesImpl @Inject constructor(
         override val appendUnlockedMinRatio by prefs.supportAppendUnlockedMinRatio
             .map { it / 100.0 }
 
+        override val appendMaxSimilarity by prefs.supportAppendMaxSimilarity
+            .map { it / 100.0 }
+
         override val classScoreMinRatio by prefs.supportClassScoreMinRatio
             .map { it / 100.0 }
     }
