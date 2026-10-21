@@ -66,7 +66,10 @@ class ServantSelection @Inject constructor(
             .zip(regions)
             .all { (requirement, region) ->
                 requirement != AppendSkillRequirement.Max ||
-                    region.exists(images[Images.SkillTen], similarity = 0.68)
+                    region.exists(
+                        images[Images.SkillTen],
+                        similarity = prefs.support.appendMaxSimilarity
+                    )
             }
     }
 
