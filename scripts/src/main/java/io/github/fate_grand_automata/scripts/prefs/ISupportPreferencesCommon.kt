@@ -8,5 +8,6 @@ interface ISupportPreferencesCommon {
     val maxUpdates: Int
     val skillDisplayWait: Duration
     val appendUnlockedMinRatio: Double
+    val appendMaxSimilarity: Double
     val classScoreMinRatio: Double
 }
