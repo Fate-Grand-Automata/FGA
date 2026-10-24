@@ -62,9 +62,9 @@ jobs:
         working-directory: ./app
         run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
 
-      - uses: ruby/setup-ruby@v1.329.0
+      - uses: ruby/setup-ruby@v1.335.0
         with:
-          ruby-version: '4.0.7'
+          ruby-version: '4.0.9'
           bundler-cache: true
 
       - name: Deploy to Play Store
