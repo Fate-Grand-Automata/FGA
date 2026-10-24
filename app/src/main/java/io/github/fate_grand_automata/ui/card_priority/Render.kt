@@ -32,7 +32,7 @@ import io.github.fate_grand_automata.util.stringRes
 
 @Composable
 fun CardPriorityListItem.Render(
-    useServantPriority: Boolean
+    useServantPriority: Boolean,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
