@@ -1,6 +1,8 @@
 package io.github.fate_grand_automata.prefs.core
 
 import io.github.fate_grand_automata.scripts.enums.BondCEEffectEnum
+import io.github.fate_grand_automata.scripts.enums.AppendSkillRequirement
+import io.github.fate_grand_automata.scripts.enums.ClassScoreRequirement
 import io.github.fate_grand_automata.scripts.enums.SupportClass
 import io.github.fate_grand_automata.scripts.enums.SupportSelectionModeEnum
 
@@ -35,6 +37,13 @@ class SupportPrefsCore(
     val skill1Max = maker.bool("support_skill_max_1")
     val skill2Max = maker.bool("support_skill_max_2")
     val skill3Max = maker.bool("support_skill_max_3")
+
+    val appendSkill1 = maker.enum("support_append_skill_1", AppendSkillRequirement.Ignore)
+    val appendSkill2 = maker.enum("support_append_skill_2", AppendSkillRequirement.Ignore)
+    val appendSkill3 = maker.enum("support_append_skill_3", AppendSkillRequirement.Ignore)
+    val appendSkill4 = maker.enum("support_append_skill_4", AppendSkillRequirement.Ignore)
+    val appendSkill5 = maker.enum("support_append_skill_5", AppendSkillRequirement.Ignore)
+    val classScore = maker.enum("support_class_score", ClassScoreRequirement.Ignore)
 
     val grandServant = maker.bool("support_grand_servant")
     val bondCEEffect = maker.enum(

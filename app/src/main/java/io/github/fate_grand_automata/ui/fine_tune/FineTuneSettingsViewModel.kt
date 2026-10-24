@@ -34,6 +34,44 @@ class FineTuneSettingsViewModel @Inject constructor(
             )
         ),
         FineTuneGroup(
+            name = R.string.p_fine_tune_append_score_recognition,
+            items = listOf(
+                FineTuneItem(
+                    pref = prefs.supportSkillDisplayWait,
+                    name = R.string.p_fine_tune_support_skill_display_wait,
+                    icon = icon(R.drawable.ic_time),
+                    valueRange = 100..1000,
+                    step = 50,
+                    valueRepresentation = { "${it}ms" },
+                    hint = R.string.p_fine_tune_support_skill_display_wait_hint
+                ),
+                FineTuneItem(
+                    pref = prefs.supportAppendUnlockedMinRatio,
+                    name = R.string.p_fine_tune_support_append_unlocked_min_ratio,
+                    icon = icon(R.drawable.ic_image_search),
+                    valueRange = 0..100,
+                    valueRepresentation = { "$it%" },
+                    hint = R.string.p_fine_tune_support_append_unlocked_min_ratio_hint
+                ),
+                FineTuneItem(
+                    pref = prefs.supportAppendMaxSimilarity,
+                    name = R.string.p_fine_tune_support_append_max_similarity,
+                    icon = icon(R.drawable.ic_image_search),
+                    valueRange = 0..100,
+                    valueRepresentation = { "$it%" },
+                    hint = R.string.p_fine_tune_support_append_max_similarity_hint
+                ),
+                FineTuneItem(
+                    pref = prefs.supportClassScoreMinRatio,
+                    name = R.string.p_fine_tune_support_class_score_min_ratio,
+                    icon = icon(R.drawable.ic_image_search),
+                    valueRange = 0..100,
+                    valueRepresentation = { "$it%" },
+                    hint = R.string.p_fine_tune_support_class_score_min_ratio_hint
+                )
+            )
+        ),
+        FineTuneGroup(
             name = R.string.p_fine_tune_similarity,
             items = listOf(
                 FineTuneItem(
