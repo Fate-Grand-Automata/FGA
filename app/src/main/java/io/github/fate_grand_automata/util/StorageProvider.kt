@@ -21,6 +21,7 @@ import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
+import androidx.core.net.toUri
 
 @Singleton
 class StorageProvider @Inject constructor(
@@ -65,11 +66,16 @@ class StorageProvider @Inject constructor(
             // Don't release permission if user picked the same directory again
             if (prevDir.isNotBlank() && prevDir != rootUri.toString()) {
                 try {
-                    resolver.releasePersistableUriPermission(Uri.parse(prevDir), persistablePermission)
+                    resolver.releasePersistableUriPermission(prevDir.toUri(), persistablePermission)
                 } catch (e: Exception) {
                     Timber.e(e, "Error on releasing persistable URI")
                 }
             }
+        }
+
+        // The new folder may contain support images from an older app version
+        if (prefsCore.dirRoot.get() != rootUri.toString()) {
+            prefsCore.supportImagesExtractedVersion.resetToDefault()
         }
 
         prefsCore.dirRoot.set(rootUri.toString())
@@ -81,7 +87,7 @@ class StorageProvider @Inject constructor(
     init {
         prefsCore.dirRoot.get().let { dir ->
             if (dir.isNotBlank()) {
-                dirRoot = DocumentFile.fromTreeUri(context, Uri.parse(dir))
+                dirRoot = DocumentFile.fromTreeUri(context, dir.toUri())
             }
         }
     }
@@ -96,6 +102,17 @@ class StorageProvider @Inject constructor(
 
     val shouldExtractSupportImages
         get() = dirRoot?.findFile(supportFolderName) == null
+
+    /**
+     * True when the support images were extracted by a different app version,
+     * which might not have contained all default support images.
+     */
+    val areSupportImagesOutdated
+        get() = prefsCore.supportImagesExtractedVersion.get() != BuildConfig.VERSION_CODE &&
+                !shouldExtractSupportImages
+
+    fun markSupportImagesExtracted() =
+        prefsCore.supportImagesExtractedVersion.set(BuildConfig.VERSION_CODE)
 
     private val supportImageFolder
         get() = dirRoot.getOrCreateDir(supportFolderName)
@@ -116,26 +133,11 @@ class StorageProvider @Inject constructor(
             SupportImageKind.Friend -> supportFriendFolder
         }
 
-    override fun writeSupportImage(kind: SupportImageKind, name: String): OutputStream {
-        val folder = kind.imageFolder
+    fun supportImageWriter(kind: SupportImageKind) =
+        SupportImageWriter(resolver, kind, kind.imageFolder.uri)
 
-        val indexOfSlash = name.indexOf('/')
-        val resolved = if (indexOfSlash == -1) {
-            folder.getOrCreateFile(name, mimePng)
-        } else {
-            val subFolder = name.substring(0 until indexOfSlash)
-            val fileName = name.substring(indexOfSlash + 1)
-
-            folder
-                .getOrCreateDir(subFolder)
-                .getOrCreateFile(fileName, mimePng)
-        }
-
-        return resolver.openOutputStream(resolved.uri)
-            ?: throw KnownException(
-                KnownException.Reason.CouldNotOpenSupportFileForWriting(kind, name)
-            )
-    }
+    override fun writeSupportImage(kind: SupportImageKind, name: String): OutputStream =
+        supportImageWriter(kind).write(name)
 
     override fun readSupportImage(kind: SupportImageKind, name: String): List<InputStream> {
         val file = kind.imageFolder.findFile(name)
