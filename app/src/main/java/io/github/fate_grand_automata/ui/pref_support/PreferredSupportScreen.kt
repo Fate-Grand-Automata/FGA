@@ -74,6 +74,7 @@ private fun PreferredSupport(
 ) {
     val prefServants by config.preferredServants.remember()
     val prefCEs by config.preferredCEs.remember()
+    val grandServant by config.grandServant.remember()
 
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
@@ -174,15 +175,19 @@ private fun PreferredSupport(
                             title = stringResource(R.string.p_battle_config_support_mlb)
                         )
 
-                        config.bondCEEffect.ListPreference(
-                            title = stringResource(R.string.p_battle_config_support_bond_ce_effect_preference),
-                            entries = BondCEEffectEnum.entries
-                                .associateWith { stringResource(it.stringRes) }
-                        )
+                        AnimatedVisibility(grandServant) {
+                            Column {
+                                config.bondCEEffect.ListPreference(
+                                    title = stringResource(R.string.p_battle_config_support_bond_ce_effect_preference),
+                                    entries = BondCEEffectEnum.entries
+                                        .associateWith { stringResource(it.stringRes) }
+                                )
 
-                        config.requireBothNormalAndRewardMatch.SwitchPreference(
-                            title = stringResource(R.string.p_battle_config_support_require_both_normal_and_reward_match)
-                        )
+                                config.requireBothNormalAndRewardMatch.SwitchPreference(
+                                    title = stringResource(R.string.p_battle_config_support_require_both_normal_and_reward_match)
+                                )
+                            }
+                        }
                     }
                 }
             }

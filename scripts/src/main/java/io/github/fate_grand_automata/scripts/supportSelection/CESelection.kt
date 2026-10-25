@@ -16,6 +16,13 @@ class CESelection @Inject constructor(
     private val starChecker: SupportSelectionStarChecker,
     private val grandChecker: SupportSelectionGrandChecker
 ) : IFgoAutomataApi by api {
+    // These options are only shown in the UI while Grand Servant is enabled
+    private val bondCEEffect
+        get() = if (supportPrefs.grandServant) supportPrefs.bondCEEffect else BondCEEffectEnum.Ignore
+
+    private val requireBothNormalAndRewardMatch
+        get() = supportPrefs.grandServant && supportPrefs.requireBothNormalAndRewardMatch
+
     fun check(ces: List<String>, bounds: SupportBounds): Boolean {
         // TODO: Only check the lower part (excluding Servant)
         val searchRegion = bounds.region.clip(locations.support.listRegion)
@@ -43,13 +50,13 @@ class CESelection @Inject constructor(
             val normalMatch = matched.any { grandCeRegion1.contains(it.region) }
             val rewardMatch = matched.any { grandCeRegion3.contains(it.region) }
 
-            val ceSlotMatch = if (supportPrefs.requireBothNormalAndRewardMatch) {
+            val ceSlotMatch = if (requireBothNormalAndRewardMatch) {
                 normalMatch && rewardMatch
             } else {
                 normalMatch || rewardMatch
             }
 
-            val bondEffectMatch = when (supportPrefs.bondCEEffect) {
+            val bondEffectMatch = when (bondCEEffect) {
                 BondCEEffectEnum.Default -> {
                     bondRegion.find(images[Images.BondCeEffectDefault]) != null
                 }
@@ -72,8 +79,8 @@ class CESelection @Inject constructor(
                     !supportPrefs.mlb || isLimitBroken(it.region)
                 }
             return matched.isNotEmpty()
-                && !supportPrefs.requireBothNormalAndRewardMatch
-                && supportPrefs.bondCEEffect == BondCEEffectEnum.Ignore
+                && !requireBothNormalAndRewardMatch
+                && bondCEEffect == BondCEEffectEnum.Ignore
         }
     }
 
