@@ -479,8 +479,13 @@ class AutoBattle @Inject constructor(
         locations.battle.battleSafeMiddleOfScreenClick.click(10)
     }
 
+    /**
+     * Servers pick up the redrawn Rank-Up artwork at different times, and the JP image has the new
+     * one, so servers still using the En image need to check for it as well.
+     */
     private fun isRankUp() =
         images[Images.RankUp] in locations.rankUpRegion
+                || images[Images.RankUp, GameServer.Jp.Original] in locations.rankUpRegion
 
     /**
      * Starts the quest after the support has already been selected. The following features are done optionally:
