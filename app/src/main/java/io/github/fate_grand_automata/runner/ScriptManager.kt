@@ -32,6 +32,7 @@ import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIState
 import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIStateHolder
 import io.github.fate_grand_automata.ui.support_img_namer.showSupportImageNamer
 import io.github.fate_grand_automata.util.FakedComposeView
+import io.github.fate_grand_automata.util.GameServerResolver
 import io.github.fate_grand_automata.util.ImageLoader
 import io.github.fate_grand_automata.util.KnownException
 import io.github.fate_grand_automata.util.ScriptMessages
@@ -62,6 +63,7 @@ class ScriptManager @Inject constructor(
     private val imageLoader: ImageLoader,
     private val preferences: IPreferences,
     private val prefsCore: PrefsCore,
+    private val gameServerResolver: GameServerResolver,
     private val storageProvider: StorageProvider,
     private val messages: ScriptMessages,
     private val uiStateHolder: ScriptRunnerUIStateHolder,

@@ -9,6 +9,9 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
+    <!-- Only used to read servant data and images from the Atlas Academy DB. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".util.AutomataApplication"
         android:allowBackup="true"
