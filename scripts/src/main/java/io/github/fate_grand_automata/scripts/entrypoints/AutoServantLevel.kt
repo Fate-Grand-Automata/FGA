@@ -116,14 +116,13 @@ class AutoServantLevel @Inject constructor(
     private var isRefundWindowClicked = false
 
     /**
-     * Whether the server's enhancement screen has the auto fill toggle. On those servers the
-     * ember selection dialog is confirmed with an "Execute" button rather than an "OK" one, and
-     * an enhancement is followed by the ember/QP refund prompt.
+     * Whether the server's enhancement screen has the auto fill toggle. On those servers an
+     * enhancement is followed by the ember/QP refund prompt.
      */
     private val hasAutoFillEnhancement
         get() = when (prefs.gameServer) {
-            is GameServer.Jp, is GameServer.Kr, is GameServer.Cn -> true
-            else -> false
+            is GameServer.Tw -> false
+            else -> true
         }
 
     private fun loop(): Nothing {
@@ -374,7 +373,10 @@ class AutoServantLevel @Inject constructor(
      * This function will check if the ember selection dialog is visible.
      */
     private fun isEmberSelectionDialogVisible(): Boolean {
-        val pattern = if (hasAutoFillEnhancement) images[Images.Execute] else images[Images.Ok]
+        val pattern = when (prefs.gameServer) {
+            is GameServer.Jp, is GameServer.Kr, is GameServer.Cn -> images[Images.Execute]
+            else -> images[Images.Ok]
+        }
         return pattern in locations.servant.emberConfirmationDialogRegion
     }
 

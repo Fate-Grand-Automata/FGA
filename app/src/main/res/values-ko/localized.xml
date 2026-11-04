@@ -36,17 +36,57 @@
     <string name="cannot_start_recording">"화면 녹화를 시작할 수 없음"</string>
     <string name="cannot_stop_recording">"화면 녹화를 끝낼 수 없음"</string>
     <string name="card_priority">"카드 우선순위"</string>
-    <string name="card_priority_hint_move_item">"길게 눌러 드래그하여 순서 변경"</string>
     <string name="card_priority_high">"높음"</string>
+    <string name="card_priority_hint_move_item">"길게 눌러 드래그하여 순서 변경"</string>
     <string name="card_priority_low">"낮음"</string>
     <string name="card_priority_wave_number">"웨이브 %d"</string>
     <string name="ce_dropped">"개념예장 드롭됨!"</string>
     <string name="ce_get">"개념예장 획득!"</string>
+
+    <!-- Default CE Names -->
+    <string name="ce_name_aerial_drive">"에어리얼 드라이브"</string>
+    <string name="ce_name_bella_lisa">"벨라리자"</string>
+    <string name="ce_name_beyond_the_night_without_the_snow_flower">"눈꽃 없는 밤의 너머로"</string>
+    <string name="ce_name_black_grail">"검은 성배"</string>
+    <string name="ce_name_blessed_bride">"행복한 신부에게"</string>
+    <string name="ce_name_chaldea_dinnertime">"칼데아 디너 타임"</string>
+    <string name="ce_name_chaldea_lunchtime">"칼데아 런치타임"</string>
+    <string name="ce_name_chaldea_morning">"칼데아 모닝"</string>
+    <string name="ce_name_chaldea_teatime">"칼데아 티타임"</string>
+    <string name="ce_name_detective_fou">"명탐정 폼즈"</string>
+    <string name="ce_name_foreign_god">"이성의 신"</string>
+    <string name="ce_name_from_nff_with_love">"NFF에서 사랑을 담아"</string>
+    <string name="ce_name_golden_sumo">"골든 스모 ~이와바쇼~"</string>
+    <string name="ce_name_great_library_of_memories">"기억의 대도서관"</string>
+    <string name="ce_name_gudaguda_poster_girl">"구다구다 마스코트걸"</string>
+    <string name="ce_name_gun_dealer">"건 딜러"</string>
+    <string name="ce_name_holy_night_supper">"성야의 만찬"</string>
+    <string name="ce_name_kaleidoscope">"컬라이더스코프"</string>
+    <string name="ce_name_marshal_of_the_sorcerors">"마도원수"</string>
+    <string name="ce_name_mona_lisa">"모나리자"</string>
+    <string name="ce_name_needle_of_sincerity">"지성의 한 땀"</string>
+    <string name="ce_name_painting_summer">"페인팅 서머"</string>
+    <string name="ce_name_report_check">"리포트 체크"</string>
+    <string name="ce_name_rising_against_the_azure_sky">"창공에 서다"</string>
+    <string name="ce_name_secret_mission">"시크릿 미션"</string>
+    <string name="ce_name_sword_saints_of_wandering">"유전의 검성"</string>
+    <string name="ce_name_the_chaldean">"칼데아의 사람"</string>
+    <string name="ce_name_wings_of_manuscript">"수고의 날개"</string>
     <string name="ces_dropped">"예장 %d개 획득함"</string>
+    <string name="config_state_off">"꺼짐"</string>
+    <string name="config_state_on">"켜짐"</string>
     <string name="dismiss">"닫기"</string>
     <string name="donate">"기부"</string>
     <string name="draw_overlay_disabled_message">"다른 앱 위에 그리기를 허용해주세요. FGA의 시작 버튼 배치를 위해 사용됩니다."</string>
     <string name="draw_overlay_disabled_title">"오버레이 권한 없음"</string>
+    <string name="error_could_not_create_directory">"디렉"</string>
+    <string name="error_could_not_create_drop_screenshot_file">"드롭 스크린샷 파일 생성에 실패했습니다"</string>
+    <string name="error_could_not_create_file">"파일을 생성할 수 없습니다: '%s'"</string>
+    <string name="error_could_not_open_file_for_recording">"기록을 위한 파일을 열 수 없습니다"</string>
+    <string name="error_could_not_open_support_file_for_reading">"읽기를 위한 파일 열기에 실패했습니다: [%1$s] '%2$s' "</string>
+    <string name="error_could_not_open_support_file_for_writing">"쓰기를 위한 파일 열기에 실패했습니다: [%1$s] '%2$s'"</string>
+    <string name="error_failed_root_permission">"관리자 권한 얻기 실패: %s"</string>
+    <string name="error_support_folder_is_empty">"[%1$s] 폴더: '%2$s' 가 비어있습니다!"</string>
     <string name="failed_to_determine_card">"카드 유형 확인 실패: %s"</string>
     <string name="fine_tune_menu_reset_to_defaults">"기본값으로 리셋"</string>
     <string name="first_clear_rewards">"초회 클리어 보상!"</string>
@@ -153,9 +193,7 @@
     <string name="no_embers_found">"화면에서 종화를 찾을 수 없습니다. 종화를 필터하지 않았는지 확인바랍니다."</string>
     <string name="note">"메모:"</string>
     <string name="notification_stop">"멈춤"</string>
-
-    <!-- Fuzzy -->
-    <string name="overlay_notification_text">"오버레이 서비스 실행중"</string>
+    <string name="overlay_notification_text">"오버레이 서비스가 실행중 입니다. 플레이 버튼을 누르면 필요에 따라 스크린샷을 활용합니다."</string>
     <string name="p_advanced">"고급"</string>
     <string name="p_app_language">"언어 선택"</string>
     <string name="p_auto_choose_target">"대상 자동 선택"</string>
@@ -201,6 +239,8 @@
     <string name="p_brave_chains_don_t_care">"상관 없음"</string>
     <string name="p_brave_chains_with_np">"보구랑 같이"</string>
     <string name="p_ces">"개념예장"</string>
+    <string name="p_check_for_updates">"업데이트 확인"</string>
+    <string name="p_check_for_updates_summary">"Google Play에서 새 버전을 이용할 수 있을 때 이를 설치하도록 제안합니다"</string>
     <string name="p_choose_app_language">"사용할 언어를 선택하세요"</string>
     <string name="p_choose_folder_action">"선택"</string>
     <string name="p_choose_folder_message">"서포트 이미지, 드롭 이미지 등을 저장할 폴더를 선택하세요.
@@ -347,6 +387,29 @@
     <string name="servant_enhancement_redirect_ascension_success">"영기재림으로 이동"</string>
     <string name="servant_enhancement_redirect_grail">"레벨 상한에 도달하면 성배전림으로 이동됩니다."</string>
     <string name="servant_enhancement_redirect_grail_success">"성배전림으로 이동"</string>
+
+    <!-- Default Servant Names -->
+    <string name="servant_name_arcueid">"아키타입:어스"</string>
+    <string name="servant_name_artoria_caster">"알트리아 캐스터"</string>
+    <string name="servant_name_bb_dubai">"BB 두바이"</string>
+    <string name="servant_name_chloe_avenger">"클로에 폰 아인츠베른(어벤저)"</string>
+    <string name="servant_name_ciel">"수수께끼의 대행자 C.I.E.L"</string>
+    <string name="servant_name_douman">"아시야 도만"</string>
+    <string name="servant_name_flora">"플로라"</string>
+    <string name="servant_name_jalter">"잔 다르크 [얼터]"</string>
+    <string name="servant_name_kazuradrop">"카즈라드롭"</string>
+    <string name="servant_name_koyanskaya">"빛의 코얀스카야"</string>
+    <string name="servant_name_koyanskaya_of_the_darkness_foreigner">"어둠의 코얀스카야"</string>
+    <string name="servant_name_lady_avalon">"레이디 아발론"</string>
+    <string name="servant_name_mash">"마슈 키리에라이트"</string>
+    <string name="servant_name_merlin">"멀린"</string>
+    <string name="servant_name_nero_bride">"네로 클라우디우스 [브라이드]"</string>
+    <string name="servant_name_oberon">"오베론"</string>
+    <string name="servant_name_sima_yi_reines">"사마의 [라이네스]"</string>
+    <string name="servant_name_skadi">"스카사하=스카디"</string>
+    <string name="servant_name_skadi_ruler">"스카사하=스카디(룰러)"</string>
+    <string name="servant_name_tamamo">"타마모노마에"</string>
+    <string name="servant_name_waver">"제갈공명 [엘멜로이 2세]"</string>
     <string name="servert_enhancement_warning_notice">"이 스크립트는 자동 선택 기능을 사용하여 종화를 선택합니다."</string>
     <string name="skill_maker_arts">"Arts"</string>
     <string name="skill_maker_atk_cards_before_np">"보구 전 공격카드"</string>
@@ -379,6 +442,8 @@
     <string name="skill_maker_confirm_exit_message">"정말 저장하지 않고 나가시겠습니까? 저장되지 않은 스킬 커맨드는 모두 사라집니다."</string>
     <string name="skill_maker_confirm_exit_title">"나가기 확인"</string>
     <string name="skill_maker_dante_alighieri">"단테 알리기에리"</string>
+    <string name="skill_maker_dante_alighieri_choice_1">"천국 (아츠 강화)"</string>
+    <string name="skill_maker_dante_alighieri_choice_2">"지옥 (버스터 강화)"</string>
     <string name="skill_maker_emiya">"에미야"</string>
     <string name="skill_maker_hakuno">"하쿠노"</string>
     <string name="skill_maker_hakuno_choice_1">"천"</string>
@@ -415,7 +480,7 @@
     <string name="skill_maker_soujuurou">"소쥬로"</string>
     <string name="skill_maker_space_ishtar">"스페이스 이슈타르"</string>
     <string name="skill_maker_special_targets_warning">"특수한 사용법이 있는 서번트용 스킬"</string>
-    <string name="skill_maker_summer_shiki">"수영복 료기 시키"</string>
+    <string name="skill_maker_summer_shiki">"료기 시키 (수영복)"</string>
     <string name="skill_maker_summer_shiki_choice_1">"월하[대군 보구]"</string>
     <string name="skill_maker_summer_shiki_choice_2">"일륜[대인 보구]"</string>
     <string name="skill_maker_target_header">"대상 선택"</string>
@@ -436,8 +501,6 @@
     <string name="spam_np">"보구:"</string>
     <string name="spam_target">"대상"</string>
     <string name="start_service">"서비스 시작"</string>
-    <string name="config_state_off">"꺼짐"</string>
-    <string name="config_state_on">"켜짐"</string>
     <string name="stop_after_this_run">"이번 판만 돌고 스크립트 종료"</string>
     <string name="stop_service">"서비스 중지"</string>
     <string name="stopped_by_user">"사용자에 의해 스크립트 중지됨"</string>
@@ -476,46 +539,4 @@
     <string name="update_download_success">"다운로드가 완료되었습니다. 5초 내로 재시작됩니다."</string>
     <string name="wait_ap_regen_toast_message">"AP 회복을 기다리고 있습니다. %d분 후 재확인합니다."</string>
     <string name="withdraw_disabled">"모든 서번트가 패배하였으며 자동 철수는 비활성화 상태입니다."</string>
-
-    <!-- Default Servant Names -->
-    <string name="servant_name_arcueid">아키타입 : 어스</string>
-    <string name="servant_name_artoria_caster">알트리아(캐스터)</string>
-    <string name="servant_name_bb_dubai">BB 두바이</string>
-    <string name="servant_name_chloe_avenger">클로에(어벤저)</string>
-    <string name="servant_name_ciel">시엘</string>
-    <string name="servant_name_douman">도만</string>
-    <string name="servant_name_jalter">잔 다르크(얼터)</string>
-    <string name="servant_name_kazuradrop">카즈라드롭</string>
-    <string name="servant_name_koyanskaya">빛의 코얀스카야</string>
-    <string name="servant_name_koyanskaya_of_the_darkness_foreigner">어둠의 코얀스카야</string>
-    <string name="servant_name_lady_avalon">레이디 아발론</string>
-    <string name="servant_name_mash">마슈</string>
-    <string name="servant_name_merlin">멀린</string>
-    <string name="servant_name_nero_bride">네로(브라이드)</string>
-    <string name="servant_name_oberon">오베론</string>
-    <string name="servant_name_sima_yi_reines">사마의(라이네스)</string>
-    <string name="servant_name_skadi">스카디</string>
-    <string name="servant_name_skadi_ruler">스카디(룰러)</string>
-    <string name="servant_name_tamamo">타마모노마에</string>
-    <string name="servant_name_waver">제갈공명(엘멜로이 2세)</string>
-
-    <!-- Default CE Names -->
-    <string name="ce_name_aerial_drive">에어리얼 드라이브</string>
-    <string name="ce_name_bella_lisa">벨라리자</string>
-    <string name="ce_name_black_grail">검은 성배</string>
-    <string name="ce_name_chaldea_lunchtime">칼데아 런치타임</string>
-    <string name="ce_name_chaldea_morning">칼데아 모닝</string>
-    <string name="ce_name_chaldea_teatime">칼데아 티타임</string>
-    <string name="ce_name_from_nff_with_love">NFF에서 사랑을 담아</string>
-    <string name="ce_name_golden_sumo">골든 스모 ~이와바쇼~</string>
-    <string name="ce_name_gudaguda_poster_girl">구다구다 마스코트걸</string>
-    <string name="ce_name_holy_night_supper">성야의 만찬</string>
-    <string name="ce_name_kaleidoscope">컬라이더스코프</string>
-    <string name="ce_name_marshal_of_the_sorcerors">마도원수</string>
-    <string name="ce_name_mona_lisa">모나리자</string>
-    <string name="ce_name_needle_of_sincerity">지성의 한 땀</string>
-    <string name="ce_name_painting_summer">페인팅 서머</string>
-    <string name="ce_name_report_check">리포트 체크</string>
-    <string name="ce_name_secret_mission">시크릿 미션</string>
-    <string name="ce_name_wings_of_manuscript">수고의 날개</string>
 </resources>

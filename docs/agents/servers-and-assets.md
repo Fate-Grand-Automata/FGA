@@ -7,9 +7,11 @@ the art actually differs. `IFgoAutomataApi.findImage` additionally tries the `En
 JP to support TranslateFGO. `assets/Support/` holds user-provided servant/CE images;
 `assets/tessdata/` the OCR data. Template images must be 720p — see the coordinates guide.
 
-`docs/reference-images/{En,Jp,Cn,Tw,Kr}/` holds device screenshots, usually contributed by
-users, that the per-server templates were cut from. Keep the screenshot a template came from
-so a later fix can be re-cut and checked against the same source. They never ship in the APK.
+`docs/reference-images/{En,Jp,Cn,Tw,Kr}/<category>/` holds device screenshots, usually
+contributed by users, that the per-server templates were cut from. The category folders are
+per game screen (`battle`, `support`, `friend-summon`, …); put a new screenshot in the
+matching one or add a new one. Keep the screenshot a template came from so a later fix can be
+re-cut and checked against the same source. They never ship in the APK.
 
 **Store them at 720p**, scaled so the *game area* is 720px tall — on a screen with letterbox
 bars that leaves the image itself taller. That is the resolution matching runs at, so a crop

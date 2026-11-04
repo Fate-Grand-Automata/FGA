@@ -37,16 +37,16 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@v7.0.1
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v6.1.0
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRO }}
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+        uses: gradle/actions/setup-gradle@v6.4.0
 
       - name: Determine Version Name
         shell: bash
@@ -79,13 +79,13 @@ jobs:
           echo "FGA_MAPPING_ARTIFACT_NAME=FGA-mapping-PR-$build_name" >>${GITHUB_ENV}
 
       - name: Upload APK
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: ${{ env.FGA_APK_ARTIFACT_NAME }}
           path: ${{ env.FGA_APK_PATH }}
 
       - name: Upload De-obfuscation mapping file
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: ${{ env.FGA_MAPPING_ARTIFACT_NAME }}
           path: ${{ env.FGA_MAPPING_PATH }}

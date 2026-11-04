@@ -23,23 +23,27 @@ where this goes wrong.
    - Some callers click relative to the *match*, not a fixed location -
      `Caster.openCommandSpellMenu` uses `Location(match.region.x, 150)`, so the template's
      left edge decides where the tap lands.
-3. **Get the screenshot** from `docs/reference-images/<Server>/`, and put any new one there
-   so the template can be re-cut later - see
+3. **Get the screenshot** from `docs/reference-images/<Server>/<category>/`, and put any
+   new one there so the template can be re-cut later - see
    [`docs/agents/servers-and-assets.md`](../../../docs/agents/servers-and-assets.md).
    Those are stored at 720p; commit a contributed screenshot downscaled, not raw. The script
    downscales whatever it is given, so it works either way.
+
+   The repo is public, so before committing a new screenshot black out other players' names
+   (support list, friend lists) with `censor_names.py` (next to this file), then check the
+   result by eye.
 4. **Look at the existing assets** for the same `Images` entry. Match their convention;
    they are usually a tight crop of the localized label, not the icon. `En` is the
    fallback, so only add a server file when the art genuinely differs.
 
 ## Cropping
 
-Source screenshots live in `docs/reference-images/<Server>/`. Stage 1 - see what the region
-covers:
+Source screenshots live in `docs/reference-images/<Server>/<category>/`. Stage 1 - see what
+the region covers:
 
 ```bash
 python3 .claude/skills/extract-template-asset/crop_template.py \
-    docs/reference-images/Kr/battle-screen.png \
+    docs/reference-images/Kr/battle/battle-screen.png \
     --region -590,180,190,120 --anchor right --out-dir /tmp/cs
 ```
 
@@ -51,7 +55,7 @@ Stage 2 - read the template box off the grid image and cut it:
 
 ```bash
 python3 .claude/skills/extract-template-asset/crop_template.py \
-    docs/reference-images/Kr/battle-screen.png \
+    docs/reference-images/Kr/battle/battle-screen.png \
     --region -590,180,190,120 --anchor right \
     --template 48,31,21,11 --click-y 150 \
     --out app/src/main/assets/Kr/command_spell.png

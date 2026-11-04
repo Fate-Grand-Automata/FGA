@@ -1,0 +1,68 @@
+name: Upload translations to POEditor
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'app/src/main/res/values-*/localized.xml'
+  workflow_dispatch:
+
+concurrency:
+  group: upload-translations
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  upload-translations:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      # Keeps the next POEditor export on top of the current master, so merging it back has no conflicts.
+      - name: Reset translations branch to master
+        run: git push --force origin HEAD:refs/heads/translations
+
+      - name: Upload translations
+        env:
+          POEDITOR_API_TOKEN: ${{ secrets.POEDITOR_API_TOKEN }}
+          POEDITOR_PROJECT_ID: ${{ secrets.POEDITOR_PROJECT_ID }}
+        run: |
+          # Resource folder -> POEditor language code
+          declare -A languages=(
+            [values-b+zh+CN]=zh-CN
+            [values-b+zh+TW]=zh-TW
+            [values-ja]=ja
+            [values-ko]=ko
+            [values-vi]=vi
+          )
+
+          first=true
+          for folder in "${!languages[@]}"; do
+            language="${languages[$folder]}"
+
+            # POEditor allows only one upload every 20 seconds.
+            if [ "$first" = false ]; then
+              sleep 25
+            fi
+            first=false
+
+            echo "Uploading $folder as $language"
+            # overwrite=0 only fills in translations that are empty in POEditor,
+            # so work done by translators since the last export is kept.
+            response=$(curl --silent --show-error -X POST https://api.poeditor.com/v2/projects/upload \
+              -F "api_token=$POEDITOR_API_TOKEN" \
+              -F "id=$POEDITOR_PROJECT_ID" \
+              -F "updating=translations" \
+              -F "language=$language" \
+              -F "overwrite=0" \
+              -F "type=android_strings" \
+              -F "file=@app/src/main/res/$folder/localized.xml")
+
+            if [ "$(echo "$response" | jq -r '.response.status')" != "success" ]; then
+              echo "::error::Upload of $folder failed: $(echo "$response" | jq -c '.response')"
+              exit 1
+            fi
+            echo "$response" | jq -c '.result.translations'
+          done

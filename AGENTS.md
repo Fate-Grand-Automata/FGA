@@ -13,6 +13,7 @@ Fate/Grand Automata (FGA) — an Android app that automates farming in the game 
 - **Automation logic in `scripts/`, or the Hilt wiring in `app/di/` and `app/runner/`** — [`docs/agents/automation-scripts.md`](docs/agents/automation-scripts.md). Every run gets its own Hilt component, and `script()` never returns normally.
 - **Any file in `app/src/main/assets/`** — [`docs/agents/servers-and-assets.md`](docs/agents/servers-and-assets.md). Template images are per-server with an `En` fallback; server choice and app language are independent.
 - **Strings under `app/src/main/res/`** — [`docs/agents/translations.md`](docs/agents/translations.md). English strings live in `values/localized.xml`; the translated `values-*` copies are synced from POEditor.
+- **Any file in `.github/workflows/`** — [`docs/agents/github-workflows.md`](docs/agents/github-workflows.md). Every workflow change must regenerate `actions.lock` with `gh actions-lock`.
 
 ## Build & test
 
