@@ -40,13 +40,13 @@ jobs:
       - uses: actions/checkout@v7.0.1
 
       - name: Set up JDK ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v6.1.0
+        uses: actions/setup-java@v6.2.0
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRO }}
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6.4.0
+        uses: gradle/actions/setup-gradle@v6.4.1
 
       - name: Determine Version Name
         shell: bash
