@@ -545,6 +545,27 @@ Then you can select if you want the preferred servant to be `max ascended` and w
 
 Note: FGA can only reliably detect if the skill level is max level `Lvl. 10` or not. FGA can't detect the current skill level.
 
+#### Preferred Servant - Adding a Servant from the Atlas Academy DB
+
+Instead of creating a servant's images in-game with the Support Image Maker, you can add them from
+[Atlas Academy](https://apps.atlasacademy.io/db). An internet connection is needed.
+
+1. Click on `Add Servant from Atlas Academy DB`.
+2. Type (part of) the servant's name and press the search button.
+3. Pick the servant from the results — each one shows their face art and class — and press `Add`.
+
+Names are matched in the language of the server selected in **More options → Game Server** (with
+`Auto-detect`, the server FGA last saw in front of the game). English names are searched as a
+fallback, so either language works for servants that are on NA too.
+
+FGA downloads the servant's face images from the DB and converts them into the support images it
+matches against, and selects the servant right away. Images of servants you already added are kept
+and the new ones are added next to them.
+
+The servant is stored under their English (NA) name, so it shows up in the list under that name
+even when you play on another server. A servant that isn't on NA yet keeps the name your server
+uses instead.
+
 #### Preferred Servant - Preferred CE
 
 Click on Preferred CE and select the wanted CEs.
