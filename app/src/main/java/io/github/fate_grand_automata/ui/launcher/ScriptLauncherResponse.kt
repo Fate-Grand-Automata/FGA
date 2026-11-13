@@ -17,6 +17,11 @@ sealed class ScriptLauncherResponse {
     data object Battle : ScriptLauncherResponse()
 
     data object ServantEnhancement : ScriptLauncherResponse()
+
+    /**
+     * @param targetLevels one per skill, in skill order
+     */
+    data class Skill(val targetLevels: List<Int>) : ScriptLauncherResponse()
 }
 
 class ScriptLauncherResponseBuilder(
