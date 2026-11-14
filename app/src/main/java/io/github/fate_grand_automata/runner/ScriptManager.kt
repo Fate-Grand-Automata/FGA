@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.widget.Toast
+import androidx.compose.runtime.Composable
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
@@ -21,11 +22,14 @@ import io.github.fate_grand_automata.scripts.entrypoints.AutoFriendGacha
 import io.github.fate_grand_automata.scripts.entrypoints.AutoGiftBox
 import io.github.fate_grand_automata.scripts.entrypoints.AutoLottery
 import io.github.fate_grand_automata.scripts.entrypoints.AutoServantLevel
+import io.github.fate_grand_automata.scripts.entrypoints.AutoSkillUpgrade
 import io.github.fate_grand_automata.scripts.entrypoints.SupportImageMaker
 import io.github.fate_grand_automata.scripts.enums.GameServers
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
+import io.github.fate_grand_automata.scripts.models.SkillUpgradeState
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.exit.BattleExit
+import io.github.fate_grand_automata.ui.exit.SkillExit
 import io.github.fate_grand_automata.ui.launcher.ScriptLauncher
 import io.github.fate_grand_automata.ui.launcher.ScriptLauncherResponse
 import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIState
@@ -36,6 +40,7 @@ import io.github.fate_grand_automata.util.ImageLoader
 import io.github.fate_grand_automata.util.KnownException
 import io.github.fate_grand_automata.util.ScriptMessages
 import io.github.fate_grand_automata.util.ScriptState
+import io.github.fate_grand_automata.util.displayMessage
 import io.github.fate_grand_automata.util.StorageProvider
 import io.github.fate_grand_automata.util.messageAndStackTrace
 import io.github.fate_grand_automata.util.set
@@ -90,20 +95,42 @@ class ScriptManager @Inject constructor(
     private suspend fun showBattleExit(
         context: Context,
         exception: AutoBattle.ExitException
+    ) = showExitDialog(context) { onClose ->
+        BattleExit(
+            exception = exception,
+            prefs = preferences,
+            prefsCore = prefsCore,
+            onClose = onClose,
+            onCopy = {
+                clipboardManager.set(context, exception)
+            }
+        )
+    }
+
+    private suspend fun showSkillExit(
+        context: Context,
+        exception: AutoSkillUpgrade.ExitException
+    ) = showExitDialog(context) { onClose ->
+        SkillExit(
+            exception = exception,
+            onClose = onClose,
+            onCopy = { clipboardManager.set(context, exception) }
+        )
+    }
+
+    /**
+     * Shows [content] in an overlay dialog and suspends until the dialog is dismissed.
+     * @param content receives a callback that dismisses the dialog
+     */
+    private suspend fun showExitDialog(
+        context: Context,
+        content: @Composable (onClose: () -> Unit) -> Unit
     ) = withContext(Dispatchers.Main) {
         suspendCancellableCoroutine<Unit> { continuation ->
             var dialog: DialogInterface? = null
 
             val composeView = FakedComposeView(context) {
-                BattleExit(
-                    exception = exception,
-                    prefs = preferences,
-                    prefsCore = prefsCore,
-                    onClose = { dialog?.dismiss() },
-                    onCopy = {
-                        clipboardManager.set(context, exception)
-                    }
-                )
+                content { dialog?.dismiss() }
             }
 
             dialog = showOverlayDialog(context) {
@@ -221,11 +248,7 @@ class ScriptManager @Inject constructor(
                     AutoServantLevel.ExitReason.NoServantSelected ->
                         context.getString(R.string.servant_enhancement_none_selected)
 
-                    is AutoServantLevel.ExitReason.Unexpected -> {
-                        e.let {
-                            "${context.getString(R.string.unexpected_error)}: ${reason.exception.message}"
-                        }
-                    }
+                    is AutoServantLevel.ExitReason.Unexpected -> reason.exception.displayMessage(context)
 
                     AutoServantLevel.ExitReason.MaxLevelAchieved ->
                         context.getString(R.string.servant_enhancement_max_level)
@@ -245,6 +268,14 @@ class ScriptManager @Inject constructor(
                         context.getString(R.string.servant_enhancement_perform_ascension_failed)
                 }
                 messageBox.show(scriptExitedString, msg)
+            }
+
+            is AutoSkillUpgrade.ExitException -> {
+                if (e.reason !is AutoSkillUpgrade.ExitReason.Abort) {
+                    messages.notify(scriptExitedString)
+                }
+
+                showSkillExit(service, e)
             }
 
             is ScriptAbortException -> {
@@ -290,6 +321,7 @@ class ScriptManager @Inject constructor(
             ScriptModeEnum.SupportImageMaker -> entryPoint.supportImageMaker()
             ScriptModeEnum.CEBomb -> entryPoint.ceBomb()
             ScriptModeEnum.ServantLevel -> entryPoint.servantLevel()
+            ScriptModeEnum.Skill -> entryPoint.skill()
         }
 
     enum class PauseAction {
@@ -404,9 +436,7 @@ class ScriptManager @Inject constructor(
             } catch (e: Exception) {
                 Timber.e(e, "Screen detection failed")
 
-                val msg = if (e is KnownException)
-                    e.reason.msg(context)
-                else "${context.getString(R.string.unexpected_error)}: ${e.message}"
+                val msg = e.displayMessage(context)
 
                 uiStateHolder.isPlayButtonEnabled = true
                 releaseOcrService()
@@ -416,10 +446,14 @@ class ScriptManager @Inject constructor(
                 return@launch
             }
 
-            val resp = scriptPicker(context, detectedMode)
+            val skillUpgradeState = hiltEntryPoint.skillUpgradeState()
+            val resp = scriptPicker(context, detectedMode, skillUpgradeState)
 
             uiStateHolder.isPlayButtonEnabled = true
             launcherResponseHandler.handle(resp)
+            if (resp is ScriptLauncherResponse.Skill) {
+                skillUpgradeState.targetLevels = resp.targetLevels
+            }
 
             if (resp !is ScriptLauncherResponse.Cancel) {
                 delay(500.milliseconds)
@@ -481,7 +515,8 @@ class ScriptManager @Inject constructor(
 
     private suspend fun scriptPicker(
         context: Context,
-        detectedMode: ScriptModeEnum
+        detectedMode: ScriptModeEnum,
+        skillUpgradeState: SkillUpgradeState
     ) = withContext(Dispatchers.Main) {
         suspendCancellableCoroutine<ScriptLauncherResponse> { continuation ->
 
@@ -495,7 +530,8 @@ class ScriptManager @Inject constructor(
                         dialog?.dismiss()
                     },
                     prefs = preferences,
-                    prefsCore = prefsCore
+                    prefsCore = prefsCore,
+                    skillUpgradeState = skillUpgradeState
                 )
             }
 

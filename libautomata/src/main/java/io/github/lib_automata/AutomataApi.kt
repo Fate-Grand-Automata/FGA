@@ -60,7 +60,15 @@ interface AutomataApi {
 
     fun Region.isBlack(): Boolean
 
-    fun Region.detectText(outlinedText: Boolean = false): String
+    /**
+     * Reads the text in this region with OCR, after turning it into black text on white.
+     *
+     * @param outlinedText fills the holes of outlined glyphs before OCR
+     * @param upscale enlarges the image 2x before OCR. This fixes misreads of small, bold text,
+     * such as CN's skill levels, but can cause new ones elsewhere, so only use it where it was
+     * tested to help.
+     */
+    fun Region.detectText(outlinedText: Boolean = false, upscale: Boolean = false): String
 
     fun Map<Pattern, Region>.exists(
         timeout: Duration = Duration.ZERO,

@@ -507,6 +507,22 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
     <string name="servant_enhancement_aborted">Enhancement was aborted</string>
     <string name="note">"Note:"</string>
+    <string name="skill_upgrade">Skill Upgrade</string>
+    <string name="skill_upgrade_skill_number">"Skill %d"</string>
+    <string name="skill_upgrade_current_level">"Lv. %d"</string>
+    <string name="skill_upgrade_all_skills">All skills</string>
+    <string name="skill_upgrade_locked">Locked</string>
+    <string name="skill_upgrade_unreadable">"Couldn't read level"</string>
+    <string name="skill_upgrade_max_level">Max level</string>
+    <string name="skill_upgrade_nothing_selected">Raise a target level above the current level to start.</string>
+    <string name="skill_upgrade_done">Skill enhancement finished</string>
+    <string name="skill_upgrade_ran_out_of_qp">Ran out of QP</string>
+    <string name="skill_upgrade_servant_deselected">The Servant was deselected</string>
+    <string name="skill_upgrade_no_progress">The skill level stopped going up</string>
+    <string name="skill_upgrade_not_selected">Not selected</string>
+    <string name="skill_upgrade_out_of_materials">Insufficient materials</string>
+    <string name="skill_upgrade_out_of_qp">Insufficient QP</string>
+    <string name="skill_upgrade_not_finished">"Didn't reach Lv. %d"</string>
 
     <string name="p_battle_config_raid">"Raid"</string>
     <string name="p_battle_config_raid_delay">"Raid Turn Delay"</string>

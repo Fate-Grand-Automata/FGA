@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
+import io.github.fate_grand_automata.scripts.models.SkillUpgradeState
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.FgaScreen
 
@@ -22,7 +23,8 @@ fun ScriptLauncher(
     scriptMode: ScriptModeEnum,
     onResponse: (ScriptLauncherResponse) -> Unit,
     prefs: IPreferences,
-    prefsCore: PrefsCore
+    prefsCore: PrefsCore,
+    skillUpgradeState: SkillUpgradeState
 ) {
     FgaScreen {
         Column(
@@ -40,6 +42,7 @@ fun ScriptLauncher(
                 ScriptModeEnum.PresentBox -> giftBoxLauncher(prefs, modifier)
                 ScriptModeEnum.CEBomb -> ceBombLauncher(prefs, modifier)
                 ScriptModeEnum.ServantLevel -> servantLevelLauncher(prefsCore.servantEnhancement, modifier)
+                ScriptModeEnum.Skill -> skillLauncher(skillUpgradeState, modifier)
             }
 
             HorizontalDivider()
