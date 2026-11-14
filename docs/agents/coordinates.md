@@ -15,8 +15,11 @@ editor; the essentials:
   `minSimilarity` of 0.8. Give such templates an explicit `similarity` at the call site,
   chosen between the worst true-match score and the best false-match score inside the
   search region. Measure both by replaying the app's pipeline (INTER_AREA downscale to
-  720p, grayscale, `TM_CCOEFF_NORMED`) at fractional shifts from 0.0 to 0.9 px, on
+  720p, grayscale via `cvtColor`, `TM_CCOEFF_NORMED`) at fractional shifts from 0.0 to 0.9 px, on
   original-resolution screenshots: a resized copy adds a resampling step that skews scores.
+  Don't load screenshots with `IMREAD_GRAYSCALE`: for a PNG with an sRGB chunk, which device
+  screenshots usually have, libpng gamma-corrects the conversion and saturated colors such
+  as red text come out tens of levels off what the app sees.
 - **Coordinates are expressed at 1440p** (`scriptDimension` 1440p, `compareDimension`
   720p; `Scale` converts between script/screen/image space). Origin is the top-left of the
   *game area*, not the physical screen.
