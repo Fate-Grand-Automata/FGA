@@ -21,8 +21,10 @@ class SkillLevelParserTest {
     }
 
     @Test
-    fun fallsBackToFirstNumberWithoutSlash() {
-        assertThat(parseSkillLevel("Lv. 4 10")).isEqualTo(SkillLevel.Known(4))
+    fun rejectsTextWithoutSlash() {
+        assertThat(parseSkillLevel("Lv. 4 10")).isEqualTo(SkillLevel.Unreadable)
+        // Real misread of CN's "等级 9/10"
+        assertThat(parseSkillLevel("4 9N0")).isEqualTo(SkillLevel.Unreadable)
     }
 
     @Test

@@ -25,20 +25,22 @@ class SkillLevelReader @Inject constructor(
 ) : IFgoAutomataApi by api {
 
     /**
+     * Reads the level of one skill from the current screen.
+     *
      * @param skillNumber 1, 2 or 3
      */
     fun read(skillNumber: Int): SkillLevel =
-        parseSkillLevel(locations.skill.skillLevelRegion(skillNumber).detectText())
+        parseSkillLevel(locations.skill.skillLevelRegion(skillNumber).detectText(upscale = true))
 }
 
 private val levelBeforeSlash = Regex("""(\d+)\s*/""")
-private val anyNumber = Regex("""\d+""")
 
 /**
  * Extracts N from OCR text of a "Lv. N/10" label.
  *
- * With a slash, only the number in front of it counts, so the "/10" can't be mistaken for the
- * level. Without one, OCR lost the slash and the first number is taken.
+ * Only the number in front of the slash counts. Without a slash the text is unreadable rather
+ * than guessed at, since OCR turns the label prefix into stray digits, e.g. "4 9N0" for CN's
+ * "等级 9/10".
  */
 fun parseSkillLevel(text: String): SkillLevel {
     if (text.isBlank()) {
@@ -48,12 +50,7 @@ fun parseSkillLevel(text: String): SkillLevel {
     // OCR confuses these letters with digits
     val cleaned = text.replace('O', '0').replace('o', '0')
 
-    val number = if ('/' in cleaned) {
-        levelBeforeSlash.find(cleaned)?.groupValues?.get(1)
-    } else {
-        anyNumber.find(cleaned)?.value
-    }
-
+    val number = levelBeforeSlash.find(cleaned)?.groupValues?.get(1)
     val level = number?.toIntOrNull()?.takeIf { it in 1..maxSkillLevel }
         ?: return SkillLevel.Unreadable
 

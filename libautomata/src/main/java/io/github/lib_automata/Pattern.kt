@@ -11,7 +11,8 @@ interface Pattern : AutoCloseable {
     var tag: String
 
     /**
-     * Creates a resized image with the specified size.
+     * Creates a resized image with the specified size. Enlarging interpolates smoothly, so text
+     * stays readable for OCR.
      *
      * @param size the size of the new image
      */

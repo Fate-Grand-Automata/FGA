@@ -72,6 +72,8 @@ class AutoSkillUpgrade @Inject constructor(
     }
 
     /**
+     * What happened to one skill during the run, shown in the exit dialog.
+     *
      * @param startLevel null if the skill is locked or its level couldn't be read
      * @param endLevel the last level read from the screen, null if [startLevel] is
      */
@@ -83,6 +85,8 @@ class AutoSkillUpgrade @Inject constructor(
     )
 
     /**
+     * Thrown at the end of every run, with why it ended and what happened to each skill.
+     *
      * @param summaries one per skill, in skill order
      */
     class ExitException(val reason: ExitReason, val summaries: List<Summary>) : Exception(reason.cause)
@@ -165,6 +169,8 @@ class AutoSkillUpgrade @Inject constructor(
         data object ConfirmationDialog : Screen()
 
         /**
+         * The Skill Enhancement screen with no dialog in front of it.
+         *
          * @param level null if OCR couldn't read it, e.g. during the level-up animation
          */
         data class SkillMenu(
@@ -179,7 +185,7 @@ class AutoSkillUpgrade @Inject constructor(
     private fun detectScreen(skillNumber: Int): Screen = when {
         connectionRetry.needsToRetry() -> Screen.ConnectionError
         enhancementScreen.isNothingSelected() -> Screen.ServantEmpty
-        enhancementScreen.isTemporaryServantWarning() -> Screen.TemporaryServantDialog
+        isTemporaryServantWarning() -> Screen.TemporaryServantDialog
         enhancementScreen.isOkButtonIn(locations.skill.confirmationDialogRegion) -> Screen.ConfirmationDialog
         enhancementScreen.isSkillEnhancementMenu() -> Screen.SkillMenu(
             level = (skillLevelReader.read(skillNumber) as? SkillLevel.Known)?.level,
@@ -284,6 +290,14 @@ class AutoSkillUpgrade @Inject constructor(
     }
 
     private fun skipAnimation() = locations.enhancementSkipRapidClick.click(5)
+
+    /**
+     * On some servers, e.g. CN, this warning's button is the OK button instead of "Execute".
+     * The skill confirmation dialog's OK button sits lower, outside this region.
+     */
+    private fun isTemporaryServantWarning() =
+        enhancementScreen.isTemporaryServantWarning() ||
+                enhancementScreen.isOkButtonIn(locations.tempServantEnhancementRegion)
 
     /**
      * The warning shown above the skills when the selected skill lacks materials.
