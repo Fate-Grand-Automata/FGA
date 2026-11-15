@@ -20,13 +20,22 @@ class SkillLocations @Inject constructor(
             Location(576 * (skillNumber - 1), 0)
 
     /**
+     * The button that switches between the forms of Servants like Aozaki Aoko. Those Servants
+     * have an extra bar with the form's name above their skills.
+     */
+    val formChangeButtonRegion = Region(1100, 260, 160, 200).xFromCenter()
+
+    /**
      * The "Lv. N/10" text next to a skill icon, wide enough for "Lv. 10/10". It is empty when the
      * skill is locked.
+     *
      * @param skillNumber 1, 2 or 3
+     * @param hasFormBar whether the bar above the skills that comes with
+     * [formChangeButtonRegion] is shown, which moves the skills down
      */
-    fun skillLevelRegion(skillNumber: Int) =
+    fun skillLevelRegion(skillNumber: Int, hasFormBar: Boolean) =
         Region(-200, if (isWide) 545 else 585, 276, 56).xFromCenter() +
-                Location(575 * (skillNumber - 1), 0)
+                Location(575 * (skillNumber - 1), if (hasFormBar) 32 else 0)
 
     val insufficientMaterialsRegion = when (gameServer) {
         is GameServer.En -> when (isWide) {

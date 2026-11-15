@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.scripts.modules
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
+import io.github.fate_grand_automata.scripts.Images
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
@@ -29,8 +30,12 @@ class SkillLevelReader @Inject constructor(
      *
      * @param skillNumber 1, 2 or 3
      */
-    fun read(skillNumber: Int): SkillLevel =
-        parseSkillLevel(locations.skill.skillLevelRegion(skillNumber).detectText(upscale = true))
+    fun read(skillNumber: Int): SkillLevel {
+        val hasFormBar = images[Images.SkillFormChange] in locations.skill.formChangeButtonRegion
+        val region = locations.skill.skillLevelRegion(skillNumber, hasFormBar)
+
+        return parseSkillLevel(region.detectText(upscale = true))
+    }
 }
 
 private val levelBeforeSlash = Regex("""(\d+)\s*/""")
