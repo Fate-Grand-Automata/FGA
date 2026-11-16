@@ -1,13 +1,24 @@
-Friend Point Summon script won't do the daily free summon. You have to do the daily free summon yourself.
+Rolls Friend Point summons until your inventory is full or the roll limit is reached.
 
-<img src="img/free-summon.png" width="500">
+## Starting
 
-It can start after you've done the daily free summon:
+Press PLAY on the Friend Point summon screen. FGA also does the daily free summon if it's available:
 
-<img src="img/fp.jpg" width="500">
+<img src="img/free-summon.png" width="500" alt="Friend Point summon screen with the daily free summon">
 
-Or, you can also start it from the summon results screen:
+<img src="img/fp.jpg" width="500" alt="Friend Point summon screen">
 
-<img src="img/fp-new.jpg" width="500">
+You can also start from the summon results screen:
 
-This script won't start on Saint Quartz summon screen as a safeguard, unless you start from the summon results screen.
+<img src="img/fp-new.jpg" width="500" alt="Friend Point summon results screen">
+
+As a safeguard, the script isn't offered on the Saint Quartz summon screen.
+
+## Options
+
+**Limit number of rolls:** stop after this many rolls.
+
+## When it stops
+
+- **Inventory Full:** FGO says your inventory is full. This is only detected on NA, JP and KR. On CN and TW, use the roll limit.
+- **Rolled X time(s):** the roll limit was reached.

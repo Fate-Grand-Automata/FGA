@@ -1,134 +1,123 @@
-## Step 1
-Force-stop FGA or restart your phone and see if that works.  
-This is a quick-fix for battery optimization issues.
+- [First steps](#first-steps)
+- [Make sure the game looks the way FGA expects](#make-sure-the-game-looks-the-way-fga-expects)
+- [PLAY button](#play-button)
+- [Scripts](#scripts)
+- [Battle](#battle)
+- [Recording and screen recorders](#recording-and-screen-recorders)
+- [Other questions](#other-questions)
 
-## Other screen recorders
-Don't use other screen recorders with FGA, if you do, force-stop FGA if it doesn't work properly.  
-When recording for bug-reports for FGA, use the inbuilt recorder from `More options/Advanced/Record screen`.
+# First steps
 
-## Where's 'Script Mode', Lottery, FP, Support Image Maker?
-The app automatically detects which script can be run on the current screen.  
-It will show the relevant option when you click on the PLAY button.  
-Support Image Maker shows up as a button on the bottom-left corner of the popup if you click on the PLAY button on the support screen.
+Force-stop FGA or restart your phone and see if that fixes it. This is a quick fix for battery optimization issues.
+
+If FGA worked before and doesn't now, or keeps asking for Accessibility even though it's ON, see [#314](https://github.com/Fate-Grand-Automata/FGA/issues/314).
+
+Having trouble on an emulator? See [Running on Emulators](Running-on-Emulators).
+
+# Make sure the game looks the way FGA expects
+
+Most problems come from FGO not filling the screen the way FGA expects, for example black borders around the game.
+See [Game Area detection](Game-Area-detection).
+
+Also check that nothing covers the game, like overlays from other apps:
+
+<img src="img/overlay.jpg" width="300" alt="Support screen with an overlay from another app on top">
+
+# PLAY button
 
 ## Where's the PLAY button?
-The PLAY button only appears when you switch your phone to horizontal mode, for example when you start FGO. If it still doesn't appear you can try a combination of stopping and starting accessibility and force-closing FGA until it appears.
 
-If the button disappears overnight or when you lock your screen, then battery optimization is at fault. See [#314](https://github.com/Fate-Grand-Automata/FGA/issues/314).
+The PLAY button only appears when your phone is in landscape, for example when you open FGO. If it still doesn't appear, try stopping and starting the Accessibility Service, and force-closing FGA, until it appears.
 
-## The PLAY button is in the way when I watch videos
-
-On the FGA notification, press the arrow in the top right, then click Stop.
-If you want to enable the play button again, open the FGA app and start the service
-
-See [Example](https://discord.com/channels/1117873862500163684/1117932403571294228/1119641849032867971)
-
-
-## Having trouble on Emulators?
-
-See [Running on Emulators](Running-on-Emulators)
-
-## Can I run FGA on Apple devices?
-No, the app uses Android-only code. There are some auto-clickers for Apple, but it won't have the intelligence of FGA.
-
-If you still want to use FGA, run it on an emulator or use normal auto-clickers.
-
-Video guide for creating auto-clicker rules with voice controls: https://www.youtube.com/watch?v=JSFiys-j0JM
-
-## Why are newer FGA versions a different app on my phone?
-Starting with June 2023, the app is published under the package io.github.fate_grand_automata on Github and the Play Store.
-
-This means you'll have to transfer your settings from the old com.mathewsachin.fategrandautomata app manually.
-
-The package change was required so I can publish the app as beta-only in the play store. Google doesn't allow me to publish the old app as beta unless I also make it publicly available, which attracts users who refuse to read instructions and leave 1-2 star ratings.
-
-The Play Store version allows user to use the Accessibility Service feature without restrictions and to update FGA automatically.
-
-## I'm trying to use FGA for the first time and I can't click OK after clicking on the PLAY button
-You need to select a battle config on the left to use.
-
-## Where did the "Stop after CE drop" feature go?
-It's now part of the window appearing after pressing the PLAY button in FGO and allows you to set it to stop after X amount of CE drops
-
-## Can I migrate my settings from the Quick icon version to the Buster icon one?
-No, such a functionality was not implemented, but you can do it yourself:
-
-- Install the Buster version from the play store, but keep the Quick version for now
-- Export all battle configs in the Quick app
-- Import them to the Buster app
-- Transfer the rest of the settings manually by checking all settings in the old app and configuring the new app the same way
-
-## Will I get banned for using FGA?
-FGO's Terms of Service contains this line, so everything could be banworthy to them:
-(17) Any other act which Aniplex considers inappropriate.
-
-However, nobody got banned yet for using 3rd party apps. They mainly ban for account trading.
-
-## Do I need root mode for FGA? My phone is not rooted.
-You don't need root, but you can't record videos of FGA in Android 13 without it.
-
-Some emulators need root mode to work and if you have a rooted phone, you should enable root mode because you'll get fewer issues.
-See https://youtu.be/iIjZPjDcZeM for how to record on android 13 and up without root
-
-## Can you use FGA to do story nodes?
-No, because of several reasons:
-- FGO requires you to search for and select the next story node on the map, which requires complicated swiping and tapping. There's no way a computer knows where to find it and how to navigate to it.
-- Starting with Camelot, Story chapters become difficult and can't be beaten with Level 120 Servants consistently. At that point you'll have to look up enemy patterns and build specialized teams.
-- The SKIP button in the top right can't be detected reliably, so FGA will get stuck at dialogue options (top or bottom answer)
-
-# IMPORTANT: Make sure the game looks as FGA wants it to
-
-If you're having trouble, this is mostly related.
-See [Game Area detection](Game-Area-detection)
-
-## Clicking on PLAY doesn't open the popup to start scripts?
-Game booster/Game mode or other app blocking notifications/popups when a game (FGO) is running.
-Turn them OFF. Known to happen on some LG, Samsung and Motorola.
-
-For LG:
-Turn OFF Game Tools since it has the feature to prevent ALERTS from showing up.  
-This prevents the dialog which lets you pick AutoSkill config from showing up.  
-https://www.lg.com/us/support/help-library/lg-g7-thinq-gaming-tools-CT10000027-20150726480680
-
-On other phones, if you have something like a Game Booster that blocks alerts from other apps when playing a game, turn it OFF.
-Instructions would vary depending on your device, so Google.
-
-## Worked before, doesn't work now
-
-See [#314](https://github.com/Fate-Grand-Automata/FGA/issues/314)
-
-## Keeps asking for Accessibility even after turning it ON
-
-See [#314](https://github.com/Fate-Grand-Automata/FGA/issues/314)
-
-## Uses skills on the wrong servant or doesn't use skills at all
-
-Do you have skill confirmation ON in FGO?  
-If so, either turn that OFF or turn ON `More options/Skill confirmation` in FGA.
-
-## Not picking NP/cards on Attack screen OR Got stuck in some info screen
-
-Is it just your phone lagging badly? If so, either get a new phone or try increasing the delays in `More options/Fine-tune`.
-
-## Doesn't work on some screens
-
-1. Check that you're not placing the PLAY button in a weird place.  
-   See [Where should I place the PLAY button?](#where-should-i-place-the-play-button)
-
-2. Is there some overlay on your phone/emulator screen that can screw up image matching?  
-   For example:
-   
-   <img src="img/overlay.jpg" width="300">
+If the button disappears overnight or when you lock your screen, battery optimization is at fault. See [#314](https://github.com/Fate-Grand-Automata/FGA/issues/314).
 
 ## Where should I place the PLAY button?
 
-Bottom-left corner is ideal. While you can drag the button around to other places, there is a possibility of screwing things up if it comes in the way of image matching.
+The bottom-left corner is ideal. In other places it may cover something FGA needs to see.
 
-## Why is FGA opening Servant details at the start of the battle?
+## The PLAY button is in the way when I watch videos
 
-That's an intended feature for detecting which face cards belong to which Servant.
+In the FGA notification, press the arrow in the top right, then Stop.
+To get the PLAY button back, open FGA and start the service again.
 
-Every time a new Servant enters the field, FGA will also open up their details to take a screenshot of their face.
+## Pressing PLAY doesn't open the dialog
 
-It can be disabled in `More Options`, but you won't be able to use several features relying on face card matching.
+A game booster, game mode, or a similar feature is blocking popups while FGO runs. Turn it OFF. This is known to happen on some LG, Samsung and Motorola phones.
 
+On LG, turn OFF [Game Tools](https://www.lg.com/us/support/help-library/lg-g7-thinq-gaming-tools-CT10000027-20150726480680), which can block alerts.
+On other phones, look for something like a Game Booster in your settings.
+
+## "FGA couldn't detect which FGO server is running"
+
+Leave FGO, open it again and retry.
+If your FGO version isn't recognized, or it runs inside an app cloner, select your server in `More options` → `Battle` → `Game Server`.
+
+# Scripts
+
+## I can't press OK in the Battle dialog
+
+Select a battle config on the left. If the list is empty, create one first, see [Battle](Battle#battle-configs).
+The list only shows configs for the current game server, plus configs without a server.
+
+## The wrong script is offered
+
+FGA picks the script from the screen you're on. Check the table in [Getting Started](Getting-Started#run-a-script) for the screen each script needs.
+
+## Support images are missing or not found
+
+Extract the default images again with `More options` → `Storage` → `Extract Default Support Images`. For other Servants and CEs, create images with the [Support Image Maker](Support-Image-Maker).
+
+# Battle
+
+## FGA doesn't pick NPs or cards, or gets stuck on an info screen
+
+If your phone lags badly, increase the delays in [Fine-tune](Fine-tune), for example **Wait before Cards** or **Wait Multiplier**.
+
+## Skills are used in the wrong wave
+
+Try changing **Stage Counter Similarity** in [Fine-tune](Fine-tune#similarity), or turn on `Thresholded stage counter detection` in [More Options](More-Options#advanced).
+
+## Why does FGA open the Servant details at the start of a battle?
+
+That's intended. FGA takes a picture of each Servant's face so it knows which face cards belong to whom.
+It does this every time a new Servant enters the field.
+
+You can turn it off with `More options` → `Battle` → `Skip servant face-card checks`, but then Brave Chains, Servant Priority and Shuffle cards don't work.
+
+## Where did "Stop after CE drop" go?
+
+It's the **CEs** limit in the dialog after pressing PLAY. See [Limits](Battle#limits).
+
+# Recording and screen recorders
+
+Don't use other screen recorders together with FGA. If you do and FGA stops working properly, force-stop FGA.
+
+For bug reports, use FGA's own recorder: `More options` → `Advanced` → `Record Screen`.
+It isn't available on Android 13 and later, or with root screenshots. See [this video](https://youtu.be/iIjZPjDcZeM) for recording on Android 13 and later without root.
+
+# Other questions
+
+## Do I need root?
+
+No. Some emulators need root to work. If your phone is rooted, enabling `Use Root for Screenshots` can avoid some issues.
+
+## Can I run FGA on Apple devices?
+
+No, the app is Android-only. There are auto-clickers for Apple devices, but they don't have the intelligence of FGA.
+You can run FGA on an [emulator](Running-on-Emulators) instead.
+
+Video guide for creating auto-clicker rules with voice control: https://www.youtube.com/watch?v=JSFiys-j0JM
+
+## Will I get banned for using FGA?
+
+FGO's Terms of Service contain this line, so anything could be banworthy to them:
+(17) Any other act which Aniplex considers inappropriate.
+
+However, nobody has been banned for using third-party apps so far. Bans mainly happen for account trading.
+
+## Can FGA do story quests?
+
+No, because:
+- FGO requires you to find and select the next story node on the map, which needs complicated swiping and tapping.
+- From Camelot on, story chapters can't be beaten consistently with the same teams. You need to look up enemy patterns and build specific teams.
+- The SKIP button in the top right can't be detected reliably, so FGA gets stuck at dialogue choices.
