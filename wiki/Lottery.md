@@ -16,15 +16,3 @@ The script ends after receiving the embers, so press PLAY on the lottery screen 
 
 - **Ran out of lottery currency**
 - **Present Box Full:** only when **Receive embers** is off.
-
-## Template images
-
-Lottery screens change with every event. FGA needs two images per server to recognize them. If the script doesn't start or doesn't stop correctly, these may need updating:
-
-1. `lottery.png`
-
-   <img src="img/lottery.png" width="500" alt="Event lottery screen">
-
-2. `StopGifts.png`
-
-   <img src="img/StopGifts.png" width="500" alt="Dialog warning that the Present Box is full">
