@@ -232,7 +232,16 @@ class AutoSkillUpgrade @Inject constructor(
                     iterationsWithoutProgress = 0
                 }
 
-                Screen.ServantEmpty -> throw StopException(ExitReason.ServantDeselected)
+                Screen.ServantEmpty -> {
+                    // FGO deselects a Servant as soon as all of its skills are at the max level
+                    if (expectedLevel == maxSkillLevel && confirmedLevel < maxSkillLevel) {
+                        summaries[index] = summaries[index].copy(endLevel = maxSkillLevel)
+                        return SkillResult.TargetReached
+                    }
+
+                    throw StopException(ExitReason.ServantDeselected)
+                }
+
                 Screen.TemporaryServantDialog -> locations.tempServantEnhancementLocation.click()
 
                 Screen.ConfirmationDialog -> {
