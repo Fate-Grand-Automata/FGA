@@ -20,6 +20,7 @@ import java.io.InputStream
 import java.io.OutputStream
 import kotlin.math.roundToInt
 import org.opencv.core.Size as CvSize
+import androidx.core.graphics.createBitmap
 
 class DroidCvPattern(
     private var mat: Mat = Mat(),
@@ -53,11 +54,18 @@ class DroidCvPattern(
         }
     }
 
+    /**
+     * Shrinks with INTER_AREA, which the templates' similarity thresholds are tuned for. Enlarges
+     * with INTER_CUBIC, since INTER_AREA enlarges blockily and that breaks OCR of upscaled text.
+     */
     private fun resize(source: Mat, target: Mat, size: Size) {
+        val isEnlarging = size.width > source.width()
+        val interpolation = if (isEnlarging) Imgproc.INTER_CUBIC else Imgproc.INTER_AREA
+
         Imgproc.resize(
             source, target,
             CvSize(size.width.toDouble(), size.height.toDouble()),
-            0.0, 0.0, Imgproc.INTER_AREA
+            0.0, 0.0, interpolation
         )
     }
 
@@ -138,7 +146,7 @@ class DroidCvPattern(
     }
 
     fun asBitmap(): Bitmap {
-        val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val bmp = createBitmap(width, height)
 
         Mat().use {
             val conversion = if (mat.type() == CvType.CV_8UC1)

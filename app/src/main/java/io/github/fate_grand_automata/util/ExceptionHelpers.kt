@@ -15,6 +15,14 @@ val Exception.messageAndStackTrace
         return "${message}\n\n${sw}"
     }
 
+/**
+ * The localized message of a [KnownException], otherwise a generic error with this exception's
+ * message.
+ */
+fun Exception?.displayMessage(context: Context): String =
+    if (this is KnownException) reason.msg(context)
+    else "${context.getString(R.string.unexpected_error)}: ${this?.message}"
+
 fun ClipboardManager.set(context: Context, e: Exception) {
     val clipData = ClipData.newPlainText(
         context.getString(R.string.unexpected_error),

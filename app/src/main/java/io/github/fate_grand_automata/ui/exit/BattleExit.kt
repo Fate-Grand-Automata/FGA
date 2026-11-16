@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,6 +41,7 @@ import io.github.fate_grand_automata.ui.battle_config_item.Material
 import io.github.fate_grand_automata.ui.icon
 import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.util.KnownException
+import io.github.fate_grand_automata.util.displayMessage
 import io.github.fate_grand_automata.util.stringRes
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -56,12 +58,7 @@ private val Duration.stringify: String
 @Composable
 private fun AutoBattle.ExitReason.text(): String = when (this) {
     AutoBattle.ExitReason.Abort -> stringResource(R.string.stopped_by_user)
-    is AutoBattle.ExitReason.Unexpected -> {
-        cause.let {
-            if (it is KnownException) stringResource(it.reason.resId, *it.reason.args)
-            else "${stringResource(R.string.unexpected_error)}: ${cause?.message}"
-        }
-    }
+    is AutoBattle.ExitReason.Unexpected -> cause.displayMessage(LocalContext.current)
 
     AutoBattle.ExitReason.CEGet -> stringResource(R.string.ce_get)
     is AutoBattle.ExitReason.LimitCEs -> stringResource(R.string.ces_dropped, count)
