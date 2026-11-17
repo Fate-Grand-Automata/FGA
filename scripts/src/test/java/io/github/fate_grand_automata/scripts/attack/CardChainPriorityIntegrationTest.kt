@@ -792,4 +792,26 @@ class CardChainPriorityIntegrationTest {
             CommandCard.Face.B,
         )
     }
+
+    @Test
+    fun `MightyOutlier - lineup1 with a stunned card still makes a Mighty Chain`() {
+        // 1WB, 2WA, 3RA, 4 stunned (Unknown), 5WQ: the stunned card must not block the Mighty Chain
+        val cards = listOf(
+            AttackLineUps.MightyOutlier.scathach1WB,
+            AttackLineUps.MightyOutlier.scathach2WA,
+            AttackLineUps.MightyOutlier.nero3RA,
+            AttackLineUps.Unknown.nero4Unknown,
+            AttackLineUps.MightyOutlier.scathach5WQ,
+        )
+        val picked = AttackPriorityHandler.pick(
+            cards = cards,
+            braveChainEnum = BraveChainEnum.None,
+        ).map { it.card }
+
+        assertThat(picked.take(3)).containsExactly(
+            CommandCard.Face.A,
+            CommandCard.Face.B,
+            CommandCard.Face.E,
+        )
+    }
 }

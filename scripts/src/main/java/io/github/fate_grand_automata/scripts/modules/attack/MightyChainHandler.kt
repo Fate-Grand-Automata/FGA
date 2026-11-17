@@ -196,9 +196,6 @@ object MightyChainHandler {
         // just do the default since we can't guarantee a mighty chain anyway
         if (npUsageSize > 0 && npTypes.size != npUsageSize) return false
 
-        // Unable to make a Mighty Chain with Unknown cards in NP
-        if (npTypes.values.contains(CardTypeEnum.Unknown)) return false
-
         // Do not accept Unknown cards for Mighty Chain
         if (cardCountPerCardTypeMap.getOrElse(CardTypeEnum.Unknown) { 0 } > 0) return false
 

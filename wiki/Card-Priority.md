@@ -52,19 +52,21 @@ Then drag the team positions into the order you want. The positions are the same
 
 ![Chain priority on](img/attack/chain-priority-toggle.png)
 
-Turn on **Use Chain Priority** at the top to enable Chain Priority. It allows for attempts at `Mighty`, $${\color{red}Buster}$$, $${\color{blue}Arts}$$ or $${\color{green}Quick}$$ Chains, based on the order that the chains are chosen in. There is an additional option called "Avoid", which when used attempts to avoid any of the other chains. 
+Turn on **Use Chain Priority** at the top to enable Chain Priority. It allows for attempts at `Mighty`, **Buster**, **Arts** or **Quick** Chains, based on the order that the chains are chosen in. There is an additional option called "Avoid", which when used attempts to avoid any of the other chains. 
 
 | Sample orders                                                                       | Name                            | Description                                                                                                                                                                                                                          | 
 |:------------------------------------------------------------------------------------|:--------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ![Chain priority options default](img/attack/chain-priority-options-default.png) | Default order                   | The default order used when Chain Priority is turned on. This disables Avoid Chain.                                                                                                                                                  | 
-| ![Chain priority options buster](img/attack/chain-priority-options-buster.png)   | $${\color{red}Buster}$$ focused | This order disables all chains except $${\color{red}Buster}$$ (highest priority) and `Mighty` (second priority). Failure to execute any of these chains will result in no other chain being (actively) used.                         |
-| ![Chain priority options arts](img/attack/chain-priority-options-arts.png)       | $${\color{blue}Arts}$$ only     | Only $${\color{blue}Arts}$$ chains will be attempted. All other chain checks are skipped.                                                                                                                                            | 
-| ![Chain priority options avoid](img/attack/chain-priority-options-avoid.png)     | "Avoid" only                    | All chains will be avoided, unless it is absolutely impossible (e.g. all cards are $${\color{green}Quick}$$ cards).                                                                                                                  | 
+| ![Chain priority options buster](img/attack/chain-priority-options-buster.png)   | **Buster** focused | This order disables all chains except **Buster** (highest priority) and `Mighty` (second priority). Failure to execute any of these chains will result in no other chain being (actively) used.                         |
+| ![Chain priority options arts](img/attack/chain-priority-options-arts.png)       | **Arts** only     | Only **Arts** chains will be attempted. All other chain checks are skipped.                                                                                                                                            | 
+| ![Chain priority options avoid](img/attack/chain-priority-options-avoid.png)     | "Avoid" only                    | All chains will be avoided, unless it is absolutely impossible (e.g. all cards are **Quick** cards).                                                                                                                  | 
 | ![Chain priority options none](img/attack/chain-priority-options-none.png)       | None                            | This completely skips all checks. It is almost the same as turning Chain Priority off, except that it uses Chain Priority's [Brave Chain](#brave-chains) handling instead of the default (which allows usage of the 'Always' option). |
+
+Chain Priority needs [face-card checks](#face-card-checks) to know each Servant's cards and NP type, so it doesn't work when `Skip servant face-card checks` is on.
 
 The way Chain Priority works is that it checks for Chains in the order that is shown (from left to right). If it finds a chain, then it will use that chain immediately.
 
-E.g. If Chain Priority is on and `Default order` is used, it will attempt to check for a `Mighty` Chain first. If there is no valid `Mighty` Chain, then it will attempt to check for a $${\color{red}Buster}$$ Chain. If there is no valid $${\color{red}Buster}$$ Chain, it will attempt to check for an $${\color{blue}Arts}$$ Chain and so on and so forth. If an $${\color{blue}Arts}$$ Chain was found, it will skip checking for a $${\color{green}Quick}$$ Chain using the cards and will immediately use the $${\color{blue}Arts}$$ Chain. However, if all options fail to find any usable Chain, it will fallback to Servant Priority + Card Priority to determine the cards used.   
+E.g. If Chain Priority is on and `Default order` is used, it will attempt to check for a `Mighty` Chain first. If there is no valid `Mighty` Chain, then it will attempt to check for a **Buster** Chain. If there is no valid **Buster** Chain, it will attempt to check for an **Arts** Chain and so on and so forth. If an **Arts** Chain was found, it will skip checking for a **Quick** Chain using the cards and will immediately use the **Arts** Chain. However, if all options fail to find any usable Chain, it will fallback to Servant Priority + Card Priority to determine the cards used.   
 
 |                         Flowchart of entire system                         | 
 |:--------------------------------------------------------------------------:|
@@ -114,7 +116,7 @@ Mighty Chains, by definition, require all 3 card types in a single chain to be e
 |:-----------------------------------------------------------------:|
 | ![Color Chain flowchart](img/attack/color-chain-flowchart.png) |
 
-A $${\color{red}Buster}$$ / $${\color{blue}Arts}$$ / $${\color{green}Quick}$$ Chain is made by choosing 3 cards of the same type. This is referred to a Color Chain for this system. 
+A **Buster** / **Arts** / **Quick** Chain is made by choosing 3 cards of the same type. This is referred to a Color Chain for this system. 
 
 | Brave Chains options | Interactions                                                                                                                                                                                                                 |
 |:---------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -169,5 +171,5 @@ Without Rearrange Cards, the Arts card would be 2nd and the Castoria card last.
 
 ## Face-card checks
 
-Servant Priority, Brave Chains and [Shuffle cards](Battle#shuffle-cards) need to know which card belongs to which Servant. For this, FGA opens each Servant's details once when they enter the field, to see their face.
+Servant Priority, [Chain Priority](#chain-priority), Brave Chains and [Shuffle cards](Battle#shuffle-cards) need to know which card belongs to which Servant. For this, FGA opens each Servant's details once when they enter the field, to see their face.
 `Skip servant face-card checks` in [More Options](More-Options#battle) turns this off, but then those features don't work.

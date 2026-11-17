@@ -32,9 +32,12 @@ class ChainPriorityPerWave private constructor(
                         .map { priorityOnAWave ->
                             priorityOnAWave
                                 .split(SEPARATOR)
-                                .map {
-                                    ChainTypeEnum.valueOf(it)
+                                // Skip names that are not chain types (e.g. a corrupt or edited config)
+                                // instead of crashing while the config loads
+                                .mapNotNull { name ->
+                                    ChainTypeEnum.entries.firstOrNull { it.name == name }
                                 }
+                                // Keeps the first occurrence of each, in order
                                 .toSet()
                                 .plusElement(ChainTypeEnum.None)
                                 .toList()

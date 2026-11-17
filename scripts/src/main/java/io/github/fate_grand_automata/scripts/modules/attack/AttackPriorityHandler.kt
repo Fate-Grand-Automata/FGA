@@ -70,9 +70,11 @@ object AttackPriorityHandler {
             return finalFallback
         }
 
-        // Get all the supplementary data
-        val cardCountPerFieldSlotMap = AttackUtils.getCardsPerFieldSlotMap(cards, npUsage)
-        val cardCountPerCardTypeMap = AttackUtils.getCardsPerCardTypeMap(cards, npTypes)
+        // Get all the supplementary data.
+        // Count only the cards the handlers can pick from: a stunned (Unknown) card
+        // must not block a chain that the remaining cards can still make.
+        val cardCountPerFieldSlotMap = AttackUtils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
+        val cardCountPerCardTypeMap = AttackUtils.getCardsPerCardTypeMap(nonUnknownCards, npTypes)
 
         // Start
         var newCardOrder: List<ParsedCard>? = null

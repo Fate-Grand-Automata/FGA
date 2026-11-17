@@ -13,8 +13,6 @@ import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.lib_automata.Pattern
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.collections.component1
-import kotlin.collections.component2
 import kotlin.collections.mapValues
 import kotlin.time.Duration.Companion.milliseconds
 

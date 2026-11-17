@@ -16,7 +16,6 @@ import io.github.fate_grand_automata.scripts.modules.attack.AttackPriorityHandle
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.milliseconds
 
 @ScriptScope
 class Card @Inject constructor(
