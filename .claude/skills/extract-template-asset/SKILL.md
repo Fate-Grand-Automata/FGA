@@ -29,6 +29,9 @@ where this goes wrong.
    Those are stored at 720p; commit a contributed screenshot downscaled, not raw. The script
    downscales whatever it is given, so it works either way.
 
+   If no screenshot of a text label can be had, see
+   [`render-template-asset`](../render-template-asset/SKILL.md).
+
    The repo is public, so before committing a new screenshot black out other players' names
    (support list, friend lists) with `censor_names.py` (next to this file), then check the
    result by eye.
