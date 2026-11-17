@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -41,8 +42,17 @@ class ExitManager {
      *
      * @throws ScriptAbortException if the button has been pressed
      */
-    fun checkExitRequested() = runBlockingOnScope {
-        pauseMutex.withLock { }
+    fun checkExitRequested() {
+        /* Every image search, tap and highlight lands here, so the running-and-not-paused case
+           has to skip the dispatch below. Reading both states without locking is enough: this is
+           a polling checkpoint, and a stop or pause arriving just after is caught by the next. */
+        if (scope.isActive && !pauseMutex.isLocked) {
+            return
+        }
+
+        runBlockingOnScope {
+            pauseMutex.withLock { }
+        }
     }
 
     fun pause() = runBlocking { pauseMutex.lock() }

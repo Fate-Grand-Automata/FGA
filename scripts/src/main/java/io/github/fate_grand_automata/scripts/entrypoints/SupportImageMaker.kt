@@ -65,7 +65,6 @@ class SupportImageMaker @Inject constructor(
             }
             .filter { it in locations.scriptArea }
             .take(2)
-            .toList()
             .sorted()
 
         for ((i, region) in regionArray.withIndex()) {

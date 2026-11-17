@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.PrefsCore
-import io.github.fate_grand_automata.scripts.enums.GameServer
+import io.github.fate_grand_automata.scripts.enums.GameServers
 import io.github.fate_grand_automata.ui.icon
 import io.github.fate_grand_automata.ui.prefs.ListPreference
 import io.github.fate_grand_automata.ui.prefs.SingleSelectChipPreference
@@ -27,7 +27,7 @@ fun LazyListScope.battleGroup(
             entries =
             mapOf(PrefsCore.GAME_SERVER_AUTO_DETECT to stringResource(R.string.p_game_server_auto_detect))
                 .plus(
-                    GameServer.values.associate {
+                    GameServers.values.associate {
                         it.serialize() to stringResource(it.stringRes)
                     }
                 )

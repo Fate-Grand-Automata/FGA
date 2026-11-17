@@ -11,10 +11,14 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,11 +31,13 @@ import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.prefs.remember
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun ScriptRunnerUI(
     state: ScriptRunnerUIState,
     prefsCore: PrefsCore,
+    completedRuns: StateFlow<Int>,
     updateState: (ScriptRunnerUIAction) -> Unit,
     onDrag: (Float, Float) -> Unit,
     enabled: Boolean,
@@ -39,6 +45,8 @@ fun ScriptRunnerUI(
 ) {
     val hidePlayButton by prefsCore.hidePlayButton.remember()
     val script by prefsCore.scriptMode.remember()
+
+    val completedRunsCount by completedRuns.collectAsState()
 
     FGATheme(
         darkTheme = true,
@@ -87,19 +95,35 @@ fun ScriptRunnerUI(
                 enabled = enabled,
                 modifier = dragModifier
             ) {
-                Icon(
-                    painter = when (state) {
-                        ScriptRunnerUIState.Idle, is ScriptRunnerUIState.Paused -> painterResource(R.drawable.ic_play)
-                        ScriptRunnerUIState.Running -> painterResource(R.drawable.ic_pause)
+                BadgedBox(
+                    badge = {
+                        if (script == ScriptModeEnum.Battle && state == ScriptRunnerUIState.Running) {
+                            Badge(
+                                containerColor = Color.Transparent,
+                                contentColor = Color(0xFFA6EEFF),
+                                modifier = Modifier.offset(x = 8.dp)
+                            ) {
+                                Text(
+                                    text = "$completedRunsCount",
+                                    maxLines = 1
+                                )
+                            }
+                        }
                     },
-                    contentDescription = when (state) {
-                        ScriptRunnerUIState.Idle -> "start"
-                        is ScriptRunnerUIState.Paused -> "resume"
-                        ScriptRunnerUIState.Running -> "pause"
-                    },
-                    modifier = Modifier
-                        .padding(18.dp, 10.dp)
-                )
+                    modifier = Modifier.padding(18.dp, 10.dp)
+                ) {
+                    Icon(
+                        painter = when (state) {
+                            ScriptRunnerUIState.Idle, is ScriptRunnerUIState.Paused -> painterResource(R.drawable.ic_play)
+                            ScriptRunnerUIState.Running -> painterResource(R.drawable.ic_pause)
+                        },
+                        contentDescription = when (state) {
+                            ScriptRunnerUIState.Idle -> "start"
+                            is ScriptRunnerUIState.Paused -> "resume"
+                            ScriptRunnerUIState.Running -> "pause"
+                        }
+                    )
+                }
             }
 
             AnimatedVisibility(

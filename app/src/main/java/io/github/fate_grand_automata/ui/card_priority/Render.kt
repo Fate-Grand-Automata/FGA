@@ -1,9 +1,9 @@
 package io.github.fate_grand_automata.ui.card_priority
 
-import android.graphics.Color
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -14,9 +14,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
@@ -25,7 +27,7 @@ import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.ui.FGAListItemColors
 import io.github.fate_grand_automata.ui.drag_sort.DragSort
-import io.github.fate_grand_automata.ui.drag_sort.DragSortAdapter
+import io.github.fate_grand_automata.ui.drag_sort.DragSortItemStyle
 import io.github.fate_grand_automata.ui.prefs.listDialog
 import io.github.fate_grand_automata.util.stringRes
 
@@ -38,6 +40,8 @@ fun CardPriorityListItem.Render(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CardPriorityDragSort(scores)
+
+        ReorderHint()
 
         Card(
             modifier = Modifier
@@ -55,9 +59,8 @@ fun CardPriorityListItem.Render(
                 val braveChainDialog = listDialog(
                     selected = braveChains,
                     onSelectedChange = { braveChains = it },
-                    entries = BraveChainEnum.entries.filter {
-                            useChainPriority || it != BraveChainEnum.Always
-                        }
+                    entries = BraveChainEnum.entries
+                        .filter { useChainPriority || it != BraveChainEnum.Always }
                         .associateWith { stringResource(it.stringRes) },
                     title = stringResource(R.string.p_brave_chains)
                 )
@@ -65,9 +68,7 @@ fun CardPriorityListItem.Render(
                 ListItem(
                     modifier = Modifier
                         .weight(1f)
-                        .clickable {
-                            braveChainDialog.show()
-                        },
+                        .clickable { braveChainDialog.show() },
                     headlineContent = { Text(stringResource(R.string.p_brave_chains)) },
                     supportingContent = { Text(stringResource(braveChains.stringRes)) },
                     colors = FGAListItemColors()
@@ -107,7 +108,7 @@ fun CardPriorityListItem.Render(
 
 @Composable
 private fun ServantPriority(
-    priorities: MutableList<TeamSlot>
+    priorities: SnapshotStateList<TeamSlot>
 ) {
     Text(
         stringResource(R.string.p_servant_priority).uppercase(),
@@ -115,30 +116,34 @@ private fun ServantPriority(
             .padding(bottom = 5.dp, top = 16.dp)
     )
 
-    val context = LocalContext.current
-
     DragSort(
         items = priorities,
-        viewConfigGrabber = {
-            DragSortAdapter.ItemViewConfig(
-                foregroundColor = Color.WHITE,
-                backgroundColor = when (it.position) {
-                    1 -> R.color.colorArts
-                    2 -> R.color.colorQuick
-                    3 -> R.color.colorBuster
-                    4 -> R.color.colorArtsResist
-                    5 -> R.color.colorQuickResist
-                    else -> R.color.colorBusterResist
-                }.let { res -> context.getColor(res) },
+        key = { it.position },
+        style = {
+            DragSortItemStyle(
+                backgroundColor = colorResource(
+                    when (it.position) {
+                        1 -> R.color.colorArts
+                        2 -> R.color.colorQuick
+                        3 -> R.color.colorBuster
+                        4 -> R.color.colorArtsResist
+                        5 -> R.color.colorQuickResist
+                        else -> R.color.colorBusterResist
+                    }
+                ),
+                contentColor = Color.White,
                 text = "  ${it.position}  "
             )
-        }
+        },
+        modifier = Modifier.fillMaxWidth()
     )
+
+    ReorderHint()
 }
 
 @Composable
 private fun ChainPriority(
-    priorities: MutableList<ChainTypeEnum>
+    priorities: SnapshotStateList<ChainTypeEnum>
 ) {
     Text(
         stringResource(R.string.p_chain_priority).uppercase(),
@@ -146,47 +151,49 @@ private fun ChainPriority(
             .padding(bottom = 10.dp, top = 10.dp)
     )
 
-    val context = LocalContext.current
-
-    val getForegroundColor = fun (enum: ChainTypeEnum): Int {
-        return (if (priorities.isAfterCutoff(enum)) context.getColor(R.color.colorDisabledText)
-        else when (enum) {
-            ChainTypeEnum.None -> Color.BLACK
-            else -> Color.WHITE
-        })
-    }
-    val getBackgroundColor = fun (enum: ChainTypeEnum): Int {
-        return (if (priorities.isAfterCutoff(enum)) R.color.colorDisabledBackground
-            else when (enum) {
-                ChainTypeEnum.Arts -> R.color.colorArts
-                ChainTypeEnum.Quick -> R.color.colorQuick
-                ChainTypeEnum.Buster -> R.color.colorBuster
-                ChainTypeEnum.Mighty -> R.color.colorPrimaryDark
-                ChainTypeEnum.Avoid -> R.color.colorAvoid
-                ChainTypeEnum.None -> R.color.colorDisabledBackground
-            }
-        ).let { res -> context.getColor(res) }
-    }
-    val localizedStringMap: MutableMap<ChainTypeEnum, String> = mutableMapOf()
-    ChainTypeEnum.entries.forEach {
-        localizedStringMap[it] = if (it == ChainTypeEnum.None) "│" else stringResource(it.stringRes)
-    }
     DragSort(
         items = priorities,
-        viewConfigGrabber = {
-            DragSortAdapter.ItemViewConfig(
-                foregroundColor = getForegroundColor(it),
-                backgroundColor = getBackgroundColor(it),
-                text = localizedStringMap.getOrElse(it) { it.name },
+        key = { it },
+        style = {
+            val afterCutoff = priorities.isAfterCutoff(it)
+            DragSortItemStyle(
+                backgroundColor = colorResource(
+                    if (afterCutoff) R.color.colorDisabledBackground
+                    else when (it) {
+                        ChainTypeEnum.Arts -> R.color.colorArts
+                        ChainTypeEnum.Quick -> R.color.colorQuick
+                        ChainTypeEnum.Buster -> R.color.colorBuster
+                        ChainTypeEnum.Mighty -> R.color.colorPrimaryDark
+                        ChainTypeEnum.Avoid -> R.color.colorAvoid
+                        ChainTypeEnum.None -> R.color.colorDisabledBackground
+                    }
+                ),
+                contentColor = when {
+                    afterCutoff -> colorResource(R.color.colorDisabledText)
+                    it == ChainTypeEnum.None -> Color.Black
+                    else -> Color.White
+                },
+                text = if (it == ChainTypeEnum.None) "│" else stringResource(it.stringRes)
             )
         },
-        updateBackgroundColorOnMove = true
+        modifier = Modifier.fillMaxWidth()
     )
+
+    ReorderHint()
 }
 
-fun MutableList<ChainTypeEnum>.isAfterCutoff(chainTypeEnum: ChainTypeEnum, indexOfAvoid: Int? = null): Boolean {
+fun List<ChainTypeEnum>.isAfterCutoff(chainTypeEnum: ChainTypeEnum, indexOfAvoid: Int? = null): Boolean {
     val avoidIndex = indexOfAvoid ?: this.indexOf(ChainTypeEnum.Cutoff)
     val enumIndex = this.indexOf(chainTypeEnum)
     if (avoidIndex < 0) return false
     return enumIndex > avoidIndex
+}
+
+@Composable
+private fun ReorderHint() {
+    Text(
+        stringResource(R.string.card_priority_hint_move_item),
+        style = MaterialTheme.typography.bodySmall,
+        modifier = Modifier.padding(horizontal = 16.dp)
+    )
 }

@@ -1,16 +1,17 @@
 package io.github.fate_grand_automata.runner
 
-import android.annotation.SuppressLint
 import android.app.Service
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.widget.Toast
+import androidx.compose.runtime.Composable
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.accessibility.TapperService
+import io.github.fate_grand_automata.di.script.ScriptComponent
 import io.github.fate_grand_automata.di.script.ScriptComponentBuilder
 import io.github.fate_grand_automata.di.script.ScriptEntryPoint
 import io.github.fate_grand_automata.di.service.ServiceCoroutineScope
@@ -21,11 +22,14 @@ import io.github.fate_grand_automata.scripts.entrypoints.AutoFriendGacha
 import io.github.fate_grand_automata.scripts.entrypoints.AutoGiftBox
 import io.github.fate_grand_automata.scripts.entrypoints.AutoLottery
 import io.github.fate_grand_automata.scripts.entrypoints.AutoServantLevel
+import io.github.fate_grand_automata.scripts.entrypoints.AutoSkillUpgrade
 import io.github.fate_grand_automata.scripts.entrypoints.SupportImageMaker
-import io.github.fate_grand_automata.scripts.enums.GameServer
+import io.github.fate_grand_automata.scripts.enums.GameServers
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
+import io.github.fate_grand_automata.scripts.models.SkillUpgradeState
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.exit.BattleExit
+import io.github.fate_grand_automata.ui.exit.SkillExit
 import io.github.fate_grand_automata.ui.launcher.ScriptLauncher
 import io.github.fate_grand_automata.ui.launcher.ScriptLauncherResponse
 import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIState
@@ -36,11 +40,13 @@ import io.github.fate_grand_automata.util.ImageLoader
 import io.github.fate_grand_automata.util.KnownException
 import io.github.fate_grand_automata.util.ScriptMessages
 import io.github.fate_grand_automata.util.ScriptState
+import io.github.fate_grand_automata.util.displayMessage
 import io.github.fate_grand_automata.util.StorageProvider
 import io.github.fate_grand_automata.util.messageAndStackTrace
 import io.github.fate_grand_automata.util.set
 import io.github.fate_grand_automata.util.showOverlayDialog
 import io.github.lib_automata.EntryPoint
+import io.github.lib_automata.OcrService
 import io.github.lib_automata.ScreenshotService
 import io.github.lib_automata.ScriptAbortException
 import kotlinx.coroutines.CoroutineScope
@@ -52,13 +58,12 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 import kotlin.time.Duration.Companion.milliseconds
 
 @ServiceScoped
 class ScriptManager @Inject constructor(
     private val service: Service,
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val imageLoader: ImageLoader,
     private val preferences: IPreferences,
     private val prefsCore: PrefsCore,
@@ -67,29 +72,65 @@ class ScriptManager @Inject constructor(
     private val uiStateHolder: ScriptRunnerUIStateHolder,
     private val clipboardManager: ClipboardManager,
     private val messageBox: ScriptRunnerMessageBox,
-    @ServiceCoroutineScope private val scope: CoroutineScope,
+    @param:ServiceCoroutineScope private val scope: CoroutineScope,
     private val launcherResponseHandler: ScriptLauncherResponseHandler
 ) {
     var scriptState: ScriptState = ScriptState.Stopped
         private set
 
+    /**
+     * The OCR engine belonging to the current [ScriptComponent]. Held so its native Tesseract
+     * context can be freed as soon as the run ends instead of waiting on the finalizer.
+     */
+    private var ocrService: OcrService? = null
+
+    fun releaseOcrService() {
+        ocrService?.let {
+            ocrService = null
+            runCatching { it.close() }
+                .onFailure { e -> Timber.w(e, "Failed to release the OCR service") }
+        }
+    }
+
     private suspend fun showBattleExit(
         context: Context,
         exception: AutoBattle.ExitException
+    ) = showExitDialog(context) { onClose ->
+        BattleExit(
+            exception = exception,
+            prefs = preferences,
+            prefsCore = prefsCore,
+            onClose = onClose,
+            onCopy = {
+                clipboardManager.set(context, exception)
+            }
+        )
+    }
+
+    private suspend fun showSkillExit(
+        context: Context,
+        exception: AutoSkillUpgrade.ExitException
+    ) = showExitDialog(context) { onClose ->
+        SkillExit(
+            exception = exception,
+            onClose = onClose,
+            onCopy = { clipboardManager.set(context, exception) }
+        )
+    }
+
+    /**
+     * Shows [content] in an overlay dialog and suspends until the dialog is dismissed.
+     * @param content receives a callback that dismisses the dialog
+     */
+    private suspend fun showExitDialog(
+        context: Context,
+        content: @Composable (onClose: () -> Unit) -> Unit
     ) = withContext(Dispatchers.Main) {
         suspendCancellableCoroutine<Unit> { continuation ->
             var dialog: DialogInterface? = null
 
             val composeView = FakedComposeView(context) {
-                BattleExit(
-                    exception = exception,
-                    prefs = preferences,
-                    prefsCore = prefsCore,
-                    onClose = { dialog?.dismiss() },
-                    onCopy = {
-                        clipboardManager.set(context, exception)
-                    }
-                )
+                content { dialog?.dismiss() }
             }
 
             dialog = showOverlayDialog(context) {
@@ -103,12 +144,11 @@ class ScriptManager @Inject constructor(
         }
     }
 
-    // TODO remove suppression when AutoGiftBox exit message is localized
-    @SuppressLint("StringFormatMatches")
     private fun onScriptExit(e: Exception) = scope.launch {
         uiStateHolder.uiState = ScriptRunnerUIState.Idle
         uiStateHolder.isPlayButtonEnabled = false
         imageLoader.clearSupportCache()
+        releaseOcrService()
 
         // Stop recording
         scriptState.let { state ->
@@ -126,7 +166,7 @@ class ScriptManager @Inject constructor(
                 // A little bit of delay so the exit message can be recorded
                 launch {
                     try {
-                        delay(500)
+                        delay(500.milliseconds)
                         withContext(Dispatchers.Main) {
                             recording.close()
                         }
@@ -208,11 +248,7 @@ class ScriptManager @Inject constructor(
                     AutoServantLevel.ExitReason.NoServantSelected ->
                         context.getString(R.string.servant_enhancement_none_selected)
 
-                    is AutoServantLevel.ExitReason.Unexpected -> {
-                        e.let {
-                            "${context.getString(R.string.unexpected_error)}: ${reason.exception.message}"
-                        }
-                    }
+                    is AutoServantLevel.ExitReason.Unexpected -> reason.exception.displayMessage(context)
 
                     AutoServantLevel.ExitReason.MaxLevelAchieved ->
                         context.getString(R.string.servant_enhancement_max_level)
@@ -234,13 +270,21 @@ class ScriptManager @Inject constructor(
                 messageBox.show(scriptExitedString, msg)
             }
 
+            is AutoSkillUpgrade.ExitException -> {
+                if (e.reason !is AutoSkillUpgrade.ExitReason.Abort) {
+                    messages.notify(scriptExitedString)
+                }
+
+                showSkillExit(service, e)
+            }
+
             is ScriptAbortException -> {
                 // user aborted. do nothing
             }
 
             is AutoCEBomb.ExitException -> {
                 val msg = when (e.reason) {
-                    AutoCEBomb.ExitReason.NoSuitableTargetCEFound -> "No suitable target CE found"
+                    AutoCEBomb.ExitReason.NoSuitableTargetCEFound -> context.getString(R.string.error_no_suitable_target_ce_found)
                 }
 
                 messages.notify(msg)
@@ -250,7 +294,7 @@ class ScriptManager @Inject constructor(
             is KnownException -> {
                 messages.notify(scriptExitedString)
 
-                messageBox.show(scriptExitedString, e.reason.msg)
+                messageBox.show(scriptExitedString, e.reason.msg(context))
             }
 
             else -> {
@@ -277,6 +321,7 @@ class ScriptManager @Inject constructor(
             ScriptModeEnum.SupportImageMaker -> entryPoint.supportImageMaker()
             ScriptModeEnum.CEBomb -> entryPoint.ceBomb()
             ScriptModeEnum.ServantLevel -> entryPoint.servantLevel()
+            ScriptModeEnum.Skill -> entryPoint.skill()
         }
 
     enum class PauseAction {
@@ -307,23 +352,37 @@ class ScriptManager @Inject constructor(
         return false
     }
 
-    private fun updateGameServer() {
+    /**
+     * Sets [IPreferences.gameServer] from the Game Server setting.
+     *
+     * @return false if the setting is auto-detect and no FGO app has been detected,
+     * in which case the server is left unchanged.
+     */
+    private fun updateGameServer(): Boolean {
         val server = prefsCore.gameServerRaw.get()
 
+        if (server == PrefsCore.GAME_SERVER_AUTO_DETECT) {
+            val detected = TapperService.instance?.detectedFgoServer
+                ?: return false
+
+            Timber.d("Using auto-detected Game Server: $detected")
+            preferences.gameServer = detected
+
+            return true
+        }
+
         preferences.gameServer =
-            if (server == PrefsCore.GAME_SERVER_AUTO_DETECT)
-                (TapperService.instance?.detectedFgoServer ?: GameServer.default).also {
-                    Timber.d("Using auto-detected Game Server: $it")
-                }
-            else try {
-                GameServer.deserialize(server)?.also {
+            try {
+                GameServers.deserialize(server)?.also {
                     Timber.d("Using Game Server: $it")
-                } ?: GameServer.default
+                } ?: GameServers.default
             } catch (e: Exception) {
                 Timber.e(e, "Game Server: Falling back to NA")
 
-                GameServer.default
+                GameServers.default
             }
+
+        return true
     }
 
     fun startScript(
@@ -331,9 +390,27 @@ class ScriptManager @Inject constructor(
         screenshotService: ScreenshotService,
         componentBuilder: ScriptComponentBuilder
     ) {
-        updateGameServer()
+        val isGameServerKnown = updateGameServer()
 
         if (scriptState !is ScriptState.Stopped) {
+            return
+        }
+
+        if (!isGameServerKnown) {
+            Timber.w("Game Server: auto-detect found no FGO app, not starting")
+
+            scope.launch {
+                messageBox.show(
+                    context.getString(R.string.p_game_server),
+                    context.getString(
+                        R.string.error_game_server_not_detected,
+                        context.getString(R.string.p_more_options),
+                        context.getString(R.string.p_script_mode_battle),
+                        context.getString(R.string.p_game_server)
+                    )
+                )
+            }
+
             return
         }
 
@@ -344,20 +421,49 @@ class ScriptManager @Inject constructor(
             .build()
 
         val hiltEntryPoint = EntryPoints.get(scriptComponent, ScriptEntryPoint::class.java)
-        val detectedMode = hiltEntryPoint.autoDetect().get()
+
+        // A fresh ScriptComponent means a fresh OCR engine; drop the previous one first
+        releaseOcrService()
+        ocrService = hiltEntryPoint.ocrService()
 
         scope.launch {
-            val resp = scriptPicker(context, detectedMode)
+            /*
+             * Screen detection needs a screenshot, which can fail when the projection never
+             * delivered a frame. Don't let that take the whole app down.
+             */
+            val detectedMode = try {
+                hiltEntryPoint.autoDetect().get()
+            } catch (e: Exception) {
+                Timber.e(e, "Screen detection failed")
+
+                val msg = e.displayMessage(context)
+
+                uiStateHolder.isPlayButtonEnabled = true
+                releaseOcrService()
+
+                messageBox.show(context.getString(R.string.unexpected_error), msg)
+
+                return@launch
+            }
+
+            val skillUpgradeState = hiltEntryPoint.skillUpgradeState()
+            val resp = scriptPicker(context, detectedMode, skillUpgradeState)
 
             uiStateHolder.isPlayButtonEnabled = true
             launcherResponseHandler.handle(resp)
+            if (resp is ScriptLauncherResponse.Skill) {
+                skillUpgradeState.targetLevels = resp.targetLevels
+            }
 
             if (resp !is ScriptLauncherResponse.Cancel) {
-                delay(500)
+                delay(500.milliseconds)
                 runEntryPoint(
                     screenshotService = screenshotService,
                     entryPointProvider = { getEntryPoint(hiltEntryPoint) }
                 )
+            } else {
+                // onScriptExit never runs on this path
+                releaseOcrService()
             }
         }
     }
@@ -409,9 +515,10 @@ class ScriptManager @Inject constructor(
 
     private suspend fun scriptPicker(
         context: Context,
-        detectedMode: ScriptModeEnum
+        detectedMode: ScriptModeEnum,
+        skillUpgradeState: SkillUpgradeState
     ) = withContext(Dispatchers.Main) {
-        suspendCoroutine<ScriptLauncherResponse> { continuation ->
+        suspendCancellableCoroutine<ScriptLauncherResponse> { continuation ->
 
             var dialog: DialogInterface? = null
 
@@ -423,7 +530,8 @@ class ScriptManager @Inject constructor(
                         dialog?.dismiss()
                     },
                     prefs = preferences,
-                    prefsCore = prefsCore
+                    prefsCore = prefsCore,
+                    skillUpgradeState = skillUpgradeState
                 )
             }
 

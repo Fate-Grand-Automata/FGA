@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,10 +15,7 @@ import androidx.compose.material3.CardDefaults.cardElevation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,28 +23,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
-import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.prefs.remember
 
 @Composable
-fun PartySelection(config: BattleConfigCore) {
+fun PartySelection(
+    config: BattleConfigCore,
+    modifier: Modifier = Modifier
+) {
     var party by config.party.remember()
-    val server by config.server.remember()
-
-    val isSelectionExtended by remember {
-        derivedStateOf {
-            when (server.asGameServer()) {
-                is GameServer.Tw -> false
-                else -> true
-            }
-        }
-    }
-    LaunchedEffect(key1 = server) {
-        if (!isSelectionExtended && party > 9) {
-            party = 9
-        }
-    }
 
     val dialog = FgaDialog()
 
@@ -58,7 +41,6 @@ fun PartySelection(config: BattleConfigCore) {
         title(stringResource(R.string.p_battle_config_party))
 
         PartySelectionDialogContent(
-            isSelectionExtended = isSelectionExtended,
             selected = party,
             onSelectedChange = {
                 party = it
@@ -68,28 +50,20 @@ fun PartySelection(config: BattleConfigCore) {
 
         buttons(
             showCancel = false,
-            // TODO: Localize
-            okLabel = "CLEAR",
+            okLabel = stringResource(R.string.clear).uppercase(),
             onSubmit = { party = -1 }
         )
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxHeight()
-            .clickable(onClick = { dialog.show() })
-            .padding(8.dp, 5.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+    ConfigSummaryCell(
+        label = stringResource(R.string.p_battle_config_party),
+        onClick = { dialog.show() },
+        modifier = modifier
     ) {
-        Text(
-            stringResource(R.string.p_battle_config_party).uppercase(),
-            style = MaterialTheme.typography.bodySmall
-        )
-
-        Text(
-            if (party == -1) "--" else (party + 1).toString(),
-            style = MaterialTheme.typography.bodySmall
+        ConfigSummaryValue(
+            if (party == -1)
+                stringResource(R.string.battle_config_party_default)
+            else (party + 1).toString()
         )
     }
 }
@@ -126,12 +100,11 @@ private fun PartySelectionItem(
 
 @Composable
 fun PartySelectionDialogContent(
-    isSelectionExtended: Boolean = false,
     selected: Int,
     onSelectedChange: (Int) -> Unit
 ) {
     Column {
-        val partyRange = if (isSelectionExtended) 0..14 else 0..9
+        val partyRange = 0..14
 
         partyRange
             .chunked(5)

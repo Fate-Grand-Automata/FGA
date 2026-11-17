@@ -1,0 +1,92 @@
+name: PR Build Comment
+
+on:
+  workflow_run:
+    workflows: ["PR Build"]
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
+
+jobs:
+  comment:
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.actor.login != 'renovate[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve PR number and verify repo
+        id: pr
+        uses: actions/github-script@v9.0.0
+        with:
+          script: |
+            // GitHub leaves this array empty for workflow_run events triggered by PRs
+            // from forks, so treat that as "not a same-repo PR" and skip commenting.
+            const prs = context.payload.workflow_run.pull_requests || [];
+            if (prs.length === 0) {
+              core.notice('No PR association (likely a fork PR), skipping comment');
+              core.setOutput('skip', 'true');
+              return;
+            }
+            const prNumber = prs[0].number;
+            core.setOutput('number', String(prNumber));
+
+      - name: Resolve APK artifact direct URL
+        if: steps.pr.outputs.skip != 'true'
+        id: artifact
+        uses: actions/github-script@v9.0.0
+        with:
+          script: |
+            const run_id = context.payload.workflow_run.id;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const { data } = await github.rest.actions.listWorkflowRunArtifacts({
+              owner,
+              repo,
+              run_id,
+              per_page: 100
+            });
+
+            const apk = (data.artifacts || []).find(a =>
+              !a.expired && a.name && a.name.startsWith('FGA-apk-PR-')
+            );
+
+            if (!apk) {
+              core.setFailed('APK artifact not found on workflow run');
+              return;
+            }
+
+            const artifactUrl = `https://github.com/${owner}/${repo}/actions/runs/${run_id}/artifacts/${apk.id}`;
+            core.setOutput('artifact_url', artifactUrl);
+
+      - name: Find Build APK Comment
+        if: steps.pr.outputs.skip != 'true'
+        uses: peter-evans/find-comment@v4.0.0
+        id: find-comment
+        with:
+          issue-number: ${{ steps.pr.outputs.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: '<!-- apk-build-comment -->'
+
+      - name: Comment the Build APK
+        if: steps.pr.outputs.skip != 'true'
+        uses: peter-evans/create-or-update-comment@v5.0.0
+        with:
+          issue-number: ${{ steps.pr.outputs.number }}
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          edit-mode: replace
+          body: |
+            <!-- apk-build-comment -->
+            # [Build ${{ github.event.workflow_run.run_number }}](${{ github.event.workflow_run.html_url }})
+
+            Download the latest APK for testing [here](${{ steps.artifact.outputs.artifact_url }})
+
+            > [!NOTE]
+            > You need a GitHub account to download the APK.
+            >
+            > This URL is valid as long as the artifact has not expired yet.
+

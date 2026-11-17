@@ -6,8 +6,10 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -145,14 +147,36 @@ fun Pref<String>.EditTextPreference(
             modifier = modifier
         )
     } else {
+        /*
+         * The String overload of Preference fixes its summary at bodySmall; here the summary is
+         * the value itself, so it gets the same weight as a dropdown's selected value.
+         */
+        val summaryText = summary(state)
+
         Preference(
-            title = title,
-            summary = summary(state),
-            singleLineTitle = singleLineTitle,
+            title = {
+                StatusWrapper(enabled) {
+                    Text(text = title, maxLines = if (singleLineTitle) 1 else Int.MAX_VALUE)
+                }
+            },
+            summary = if (summaryText.isNotBlank()) {
+                {
+                    StatusWrapper(enabled) {
+                        Text(text = summaryText, style = MaterialTheme.typography.bodyMedium)
+                    }
+                }
+            } else null,
             icon = icon,
             enabled = enabled,
             onClick = { editing = true },
-            modifier = modifier
+            modifier = modifier,
+            trailing = {
+                Icon(
+                    Icons.Default.Edit,
+                    contentDescription = null,
+                    tint = LocalContentColor.current.copy(alpha = 0.6f)
+                )
+            }
         )
     }
 }

@@ -9,6 +9,7 @@ import android.view.WindowManager
 import androidx.compose.ui.platform.ComposeView
 import dagger.hilt.android.scopes.ServiceScoped
 import io.github.fate_grand_automata.di.script.ScriptComponentBuilder
+import io.github.fate_grand_automata.prefs.core.CompletedRunsHolder
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.ui.highlight.HighlightManager
 import io.github.fate_grand_automata.ui.runner.ScriptRunnerUI
@@ -19,6 +20,7 @@ import io.github.fate_grand_automata.util.FakedComposeView
 import io.github.fate_grand_automata.util.ScriptState
 import io.github.fate_grand_automata.util.overlayType
 import io.github.lib_automata.Location
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -29,6 +31,7 @@ class ScriptRunnerOverlay @Inject constructor(
     private val windowManager: WindowManager,
     private val highlightManager: HighlightManager,
     private val prefsCore: PrefsCore,
+    private val completedRunsHolder: CompletedRunsHolder,
     private val uiStateHolder: ScriptRunnerUIStateHolder,
     private val scriptManager: ScriptManager,
     private val screenshotServiceHolder: ScreenshotServiceHolder,
@@ -57,6 +60,7 @@ class ScriptRunnerOverlay @Inject constructor(
             ScriptRunnerUI(
                 state = uiStateHolder.uiState,
                 prefsCore = prefsCore,
+                completedRuns = completedRunsHolder.completedRuns,
                 updateState = { act(it) },
                 isRecording = uiStateHolder.isRecording,
                 enabled = uiStateHolder.isPlayButtonEnabled,
@@ -107,17 +111,30 @@ class ScriptRunnerOverlay @Inject constructor(
             restorePlayButtonLocation()
 
             highlightManager.show()
-            windowManager.addView(layout, scriptCtrlBtnLayoutParams)
+
+            try {
+                windowManager.addView(layout, scriptCtrlBtnLayoutParams)
+            } catch (e: Exception) {
+                // The overlay permission can be revoked between the check above and this call,
+                // and some ROMs reject the window for their own reasons. Either way it isn't
+                // worth taking the service down over.
+                Timber.e(e, "Failed to add the play button overlay")
+                highlightManager.hide()
+                return
+            }
 
             shown = true
         }
     }
 
     fun hide() {
-        if (shown && Settings.canDrawOverlays(service)) {
+        if (shown) {
             savePlayButtonLocation()
 
-            windowManager.removeView(layout)
+            // Don't gate this on canDrawOverlays: if the user revokes the permission while
+            // the overlay is up, we still have to take the views down or they leak.
+            runCatching { windowManager.removeView(layout) }
+                .onFailure { Timber.w(it, "Failed to remove the play button overlay") }
             highlightManager.hide()
 
             shown = false

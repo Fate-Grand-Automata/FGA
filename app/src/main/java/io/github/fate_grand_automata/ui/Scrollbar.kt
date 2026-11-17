@@ -1,9 +1,11 @@
 package io.github.fate_grand_automata.ui
 
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawWithContent
@@ -13,6 +15,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.flow.collectLatest
 
 /**
  * Renders a scrollbar.
@@ -85,37 +88,25 @@ fun Modifier.scrollbar(
         "Fade out animation delay must be greater than or equal to 0."
     }
 
-    val targetAlpha =
-        if (state.isScrollInProgress) {
-            visibleAlpha
-        } else {
-            hiddenAlpha
+    val alpha = remember { Animatable(hiddenAlpha) }
+    LaunchedEffect(state) {
+        snapshotFlow { state.isScrollInProgress }.collectLatest { scrolling ->
+            alpha.animateTo(
+                targetValue = if (scrolling) visibleAlpha else hiddenAlpha,
+                animationSpec = tween(
+                    delayMillis = if (scrolling) 0 else fadeOutAnimationDelayMs,
+                    durationMillis = if (scrolling) fadeInAnimationDurationMs
+                    else fadeOutAnimationDurationMs
+                )
+            )
         }
-    val animationDurationMs =
-        if (state.isScrollInProgress) {
-            fadeInAnimationDurationMs
-        } else {
-            fadeOutAnimationDurationMs
-        }
-    val animationDelayMs =
-        if (state.isScrollInProgress) {
-            0
-        } else {
-            fadeOutAnimationDelayMs
-        }
-
-    val alpha by
-    animateFloatAsState(
-        targetValue = targetAlpha,
-        animationSpec =
-        tween(delayMillis = animationDelayMs, durationMillis = animationDurationMs)
-    )
+    }
 
     drawWithContent {
         drawContent()
 
         state.layoutInfo.visibleItemsInfo.firstOrNull()?.let { firstVisibleItem ->
-            if (state.isScrollInProgress || alpha > 0f) {
+            if (state.isScrollInProgress || alpha.value > 0f) {
                 // Size of the viewport, the entire size of the scrollable composable we are decorating with
                 // this scrollbar.
                 val viewportSize =
@@ -171,7 +162,7 @@ fun Modifier.scrollbar(
                     } else {
                         Size(thickness.toPx(), size.height - padding.toPx() * 2)
                     },
-                    alpha = alpha,
+                    alpha = alpha.value,
                     cornerRadius = CornerRadius(x = trackCornerRadius.toPx(), y = trackCornerRadius.toPx()),
                 )
 
@@ -195,7 +186,7 @@ fun Modifier.scrollbar(
                     } else {
                         Size(thickness.toPx(), knobSize)
                     },
-                    alpha = alpha,
+                    alpha = alpha.value,
                     cornerRadius = CornerRadius(x = knobCornerRadius.toPx(), y = knobCornerRadius.toPx()),
                 )
             }

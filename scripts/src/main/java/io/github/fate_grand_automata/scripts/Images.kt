@@ -77,6 +77,10 @@ enum class Images(val path: String) {
     SkillUse("skill_use.png"),
     RankUp("rank_up.png"),
     Close("close.png"),
+    SkillInsufficientQP("skill_insufficient_qp.png"),
+    SkillInsufficientMaterials("skill_insufficient_mats.png"),
+    SkillMenuBanner("skill_menu_banner.png"),
+    SkillFormChange("skill_form_change.png"),
     ServantAutoSelect("servant_auto_select.png"),
     ServantAutoSelectOff("servant_auto_select_off.png"),
     ServantMaxLevel("servant_max_level.png"),
@@ -97,4 +101,6 @@ enum class Images(val path: String) {
     GrandCeLabel("grand_ce_label.png"),
     BondCeEffectDefault("bond_ce_effect_default.png"),
     BondCeEffectNP("bond_ce_effect_np.png"),
+    CommandSpell("command_spell.png"),
+    Cancel("cancel.png")
 }

@@ -51,7 +51,6 @@ If you want to contribute, read the [Contribution Guide](CONTRIBUTING.md).
 
 - [FGO-Lua][FGOLua] developers are the real deal. Without them this app won't exist.
 - The icons are from https://materialdesignicons.com/
-- Drag-sort logic on Card Priority screen is thanks to https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-6a6f0c422efd
 
 [FGOLua]: https://github.com/29988122/Fate-Grand-Order_Lua
 

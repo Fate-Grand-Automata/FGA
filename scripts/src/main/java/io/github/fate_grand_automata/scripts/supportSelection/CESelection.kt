@@ -16,6 +16,21 @@ class CESelection @Inject constructor(
     private val starChecker: SupportSelectionStarChecker,
     private val grandChecker: SupportSelectionGrandChecker
 ) : IFgoAutomataApi by api {
+    private companion object {
+        /*
+         * Bond CE effect images are pretty small, so we need to lower the similarity threshold to
+         * avoid false negatives when images are offset by half a pixel.
+         */
+        const val bondEffectSimilarity = 0.6
+    }
+
+    // These options are only shown in the UI while Grand Servant is enabled
+    private val bondCEEffect
+        get() = if (supportPrefs.grandServant) supportPrefs.bondCEEffect else BondCEEffectEnum.Ignore
+
+    private val requireBothNormalAndRewardMatch
+        get() = supportPrefs.grandServant && supportPrefs.requireBothNormalAndRewardMatch
+
     fun check(ces: List<String>, bounds: SupportBounds): Boolean {
         // TODO: Only check the lower part (excluding Servant)
         val searchRegion = bounds.region.clip(locations.support.listRegion)
@@ -38,30 +53,27 @@ class CESelection @Inject constructor(
 
             val grandCeRegion1 = locations.support.grandCeRegion1.copy(y = searchRegion.y + locations.support.grandCeRegion1.y)
             val grandCeRegion3 = locations.support.grandCeRegion3.copy(y = searchRegion.y + locations.support.grandCeRegion3.y)
-            val bondRegion = locations.support.bondCeRegion.copy(y = searchRegion.y + locations.support.bondCeRegion.y)
 
             val normalMatch = matched.any { grandCeRegion1.contains(it.region) }
             val rewardMatch = matched.any { grandCeRegion3.contains(it.region) }
 
-            val ceSlotMatch = if (supportPrefs.requireBothNormalAndRewardMatch) {
+            val ceSlotMatch = if (requireBothNormalAndRewardMatch) {
                 normalMatch && rewardMatch
             } else {
                 normalMatch || rewardMatch
             }
-
-            val bondEffectMatch = when (supportPrefs.bondCEEffect) {
-                BondCEEffectEnum.Default -> {
-                    bondRegion.find(images[Images.BondCeEffectDefault]) != null
-                }
-                BondCEEffectEnum.NP -> {
-                    bondRegion.find(images[Images.BondCeEffectNP]) != null
-                }
-                else -> {
-                    true
-                }
+            if (!ceSlotMatch) {
+                return false
             }
 
-            return ceSlotMatch && bondEffectMatch
+            val bondEffectImage = when (bondCEEffect) {
+                BondCEEffectEnum.Ignore -> return true
+                BondCEEffectEnum.Default -> Images.BondCeEffectDefault
+                BondCEEffectEnum.NP -> Images.BondCeEffectNP
+            }
+            val bondRegion = locations.support.bondCeRegion.copy(y = searchRegion.y + locations.support.bondCeRegion.y)
+
+            return bondRegion.exists(images[bondEffectImage], similarity = bondEffectSimilarity)
         } else {
             val matched = ces
                 .flatMap { entry -> images.loadSupportPattern(SupportImageKind.CE, entry) }
@@ -72,8 +84,8 @@ class CESelection @Inject constructor(
                     !supportPrefs.mlb || isLimitBroken(it.region)
                 }
             return matched.isNotEmpty()
-                && !supportPrefs.requireBothNormalAndRewardMatch
-                && supportPrefs.bondCEEffect == BondCEEffectEnum.Ignore
+                && !requireBothNormalAndRewardMatch
+                && bondCEEffect == BondCEEffectEnum.Ignore
         }
     }
 

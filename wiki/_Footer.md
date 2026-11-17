@@ -1,4 +1,4 @@
-[Privacy Policy](Privacy-Policy) - [License](https://github.com/MathewSachin/Fate-Grand-Automata/blob/master/LICENSE) - [Donations](Donations)
+[Privacy Policy](Privacy-Policy) - [License](https://github.com/Fate-Grand-Automata/FGA/blob/master/LICENSE) - [Donations](Donations)
 
 Google Play and the Google Play logo are trademarks of Google LLC.
 

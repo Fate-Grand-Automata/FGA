@@ -15,10 +15,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,6 +38,8 @@ import io.github.fate_grand_automata.ui.prefs.Preference
 import io.github.fate_grand_automata.ui.prefs.PreferenceGroupHeader
 import io.github.fate_grand_automata.ui.prefs.SwitchPreference
 import io.github.fate_grand_automata.ui.prefs.remember
+import io.github.fate_grand_automata.util.SupportNameResources.getLocalizedCEName
+import io.github.fate_grand_automata.util.SupportNameResources.getLocalizedServantName
 import io.github.fate_grand_automata.util.stringRes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -70,6 +74,21 @@ private fun PreferredSupport(
 ) {
     val prefServants by config.preferredServants.remember()
     val prefCEs by config.preferredCEs.remember()
+    val grandServant by config.grandServant.remember()
+
+    val context = LocalContext.current
+    val configuration = LocalConfiguration.current
+
+    // Localizing the entries builds a new map, and `Map` is unstable to the Compose compiler,
+    // so doing it inline re-ran on every recomposition of this screen — including on every
+    // toggle in the multi-select dialogs. Keyed on the configuration so that a locale change
+    // still re-resolves the names.
+    val servantEntries = remember(vm.servants, configuration) {
+        vm.servants.mapValues { (name, _) -> getLocalizedServantName(context, name) }
+    }
+    val ceEntries = remember(vm.ces, configuration) {
+        vm.ces.mapValues { (_, displayName) -> getLocalizedCEName(context, displayName) }
+    }
 
     LazyColumn {
         item {
@@ -95,7 +114,7 @@ private fun PreferredSupport(
 
                     config.preferredServants.SupportSelectPreference(
                         title = stringResource(R.string.p_battle_config_support_pref_servants),
-                        entries = vm.servants
+                        entries = servantEntries
                     )
 
                     if (prefServants.isNotEmpty()) {
@@ -148,7 +167,7 @@ private fun PreferredSupport(
 
                     config.preferredCEs.SupportSelectPreference(
                         title = stringResource(R.string.p_battle_config_support_pref_ces),
-                        entries = vm.ces
+                        entries = ceEntries
                     )
 
                     if (prefCEs.isNotEmpty()) {
@@ -156,15 +175,19 @@ private fun PreferredSupport(
                             title = stringResource(R.string.p_battle_config_support_mlb)
                         )
 
-                        config.bondCEEffect.ListPreference(
-                            title = stringResource(R.string.p_battle_config_support_bond_ce_effect_preference),
-                            entries = BondCEEffectEnum.entries
-                                .associateWith { stringResource(it.stringRes) }
-                        )
+                        AnimatedVisibility(grandServant) {
+                            Column {
+                                config.bondCEEffect.ListPreference(
+                                    title = stringResource(R.string.p_battle_config_support_bond_ce_effect_preference),
+                                    entries = BondCEEffectEnum.entries
+                                        .associateWith { stringResource(it.stringRes) }
+                                )
 
-                        config.requireBothNormalAndRewardMatch.SwitchPreference(
-                            title = stringResource(R.string.p_battle_config_support_require_both_normal_and_reward_match)
-                        )
+                                config.requireBothNormalAndRewardMatch.SwitchPreference(
+                                    title = stringResource(R.string.p_battle_config_support_require_both_normal_and_reward_match)
+                                )
+                            }
+                        }
                     }
                 }
             }

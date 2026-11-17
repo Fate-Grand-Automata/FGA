@@ -32,8 +32,20 @@ class ScreenshotManager @Inject constructor(
      * The screenshot image can be retrieved using [getScreenshot].
      */
     fun snapshot() {
-        previousPattern = getScaledScreenshot()
+        keepAsPrevious(getScaledScreenshot())
         usePreviousSnap = true
+    }
+
+    /**
+     * [getScaledScreenshot] crops, and a crop is a fresh native image that has to be released.
+     * Nothing hands the previous one back out - callers use it within the expression they got
+     * it from, and [AutomataApi.getPattern] clones it - so it can be dropped here.
+     */
+    private fun keepAsPrevious(pattern: Pattern): Pattern {
+        previousPattern?.close()
+        previousPattern = pattern
+
+        return pattern
     }
 
     /**
@@ -49,9 +61,7 @@ class ScreenshotManager @Inject constructor(
             previousPattern?.let { return it }
         }
 
-        return getScaledScreenshot().also {
-            previousPattern = it
-        }
+        return keepAsPrevious(getScaledScreenshot())
     }
 
     /**

@@ -4,6 +4,7 @@ import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.modules.ConnectionRetry
+import io.github.fate_grand_automata.scripts.modules.EnhancementScreen
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
 import io.github.lib_automata.Highlighter
@@ -12,10 +13,18 @@ import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
+/*
+ * The greyed out auto select button is a dimmed copy of the enabled one, and template matching
+ * normalizes brightness away, so each state scores around 0.82 against the other one's image.
+ * At the default similarity either image matches either state.
+ */
+private const val autoSelectSimilarity = 0.85
+
 
 @ScriptScope
 class AutoServantLevel @Inject constructor(
     private val connectionRetry: ConnectionRetry,
+    private val enhancementScreen: EnhancementScreen,
     exitManager: ExitManager,
     api: IFgoAutomataApi
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
@@ -95,34 +104,44 @@ class AutoServantLevel @Inject constructor(
     private var isInAscension = false
 
     /**
-     * JP Update from 2025-07-30
-     * that supports the auto filling of the embers making enhancement faster.
-     *
-     * This is used to check if the script is in the auto fill state.
+     * On the servers with the reworked enhancement screen, the ember selection dialog can auto
+     * fill the embers, which makes the enhancement faster. This tracks whether that toggle is
+     * currently ON.
      */
     private var stateAutoFill = false
 
     /**
-     * JP Update from 2025-08-03. After leveling up a servant,
-     * it will now refund the extra embers/qp used for the enhancement.
+     * On the servers with the reworked enhancement screen, leveling up a servant refunds the
+     * extra embers/QP that went unused, which shows another prompt on top of the one for
+     * running out of embers/QP.
      */
     private var isRefundWindowClicked = false
 
+    /**
+     * Whether the server's enhancement screen has the auto fill toggle. On those servers an
+     * enhancement is followed by the ember/QP refund prompt.
+     */
+    private val hasAutoFillEnhancement
+        get() = when (prefs.gameServer) {
+            is GameServer.Tw -> false
+            else -> true
+        }
+
     private fun loop(): Nothing {
-        if (isServantEmpty()) {
+        if (enhancementScreen.isNothingSelected()) {
             throw ServantUpgradeException(ExitReason.NoServantSelected)
         }
 
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { isMaxLevel() } to { checkMaxLevelRedirectOrExit() },
-            { isAutoSelectMinimumEmberForLowQP(prefs.gameServer) } to { performMinimumEmberForLowQPEnhancement() },
+            { isAutoSelectMinimumEmberForLowQP() } to { performMinimumEmberForLowQPEnhancement() },
             { isEmberSelectionDialogVisible() } to { performEnhancement() },
-            { isTemporaryServant() } to { locations.tempServantEnhancementLocation.click() },
+            { enhancementScreen.isTemporaryServantWarning() } to { locations.tempServantEnhancementLocation.click() },
             { isEmptyEmberOrQPDialogVisible() } to {
                 handlePromptDialog()
             },
-            { isFinalConfirmDialogVisible(prefs.gameServer) } to { confirmEnhancement() },
+            { isFinalConfirmDialogVisible() } to { confirmEnhancement() },
             { isAutoSelectVisible() } to { performAutoSelect() },
             { isAutoSelectOff() } to { throw ServantUpgradeException(ExitReason.MaxLevelAchieved) },
             { isInAscensionMenu() } to { handlePerformedAscension() },
@@ -220,12 +239,7 @@ class AutoServantLevel @Inject constructor(
         run ascension@{
             repeat(retry) {
                 locations.enhancementClick.click()
-                confirmationVisible = mapOf(
-                    images[Images.Ok] to locations.servant.finalConfirmRegion,
-                    images[Images.Execute] to locations.tempServantEnhancementRegion
-                ).exists(
-                    timeout = 3.seconds
-                )
+                confirmationVisible = waitForEnhancementConfirmation()
 
                 if (confirmationVisible) {
                     return@ascension
@@ -270,13 +284,7 @@ class AutoServantLevel @Inject constructor(
         if (stateAutoFill) {
             locations.enhancementClick.click()
             0.5.seconds.wait()
-            val exist = mapOf(
-                images[Images.Ok] to locations.servant.finalConfirmRegion,
-                images[Images.Execute] to locations.tempServantEnhancementRegion
-            ).exists(
-                timeout = 3.seconds
-            )
-            if (!exist) {
+            if (!waitForEnhancementConfirmation()) {
                 throw ServantUpgradeException(ExitReason.NoEmbersOrQPLeft)
             }
             return
@@ -289,12 +297,11 @@ class AutoServantLevel @Inject constructor(
     /**
      * This function will attempt to enable the auto fill feature if it is available.
      * It checks if the feature is already ON, and if not, it tries to click the toggle.
-     * This is only applicable for the JP server.
      *
      * @see stateAutoFill
      */
     private fun tryEnableAutoFill() {
-        if (prefs.gameServer !is GameServer.Jp) return
+        if (!hasAutoFillEnhancement) return
 
         stateAutoFill = images[Images.StateON] in locations.servant.autoFillStateRegion
 
@@ -352,27 +359,23 @@ class AutoServantLevel @Inject constructor(
     }
 
     /**
-     * This function will check if the servant is empty.
-     */
-    private fun isServantEmpty() = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
-
-    /**
      * This function will check if the auto select is visible to start the selection of embers.
      */
-    private fun isAutoSelectVisible(): Boolean = images[Images.ServantAutoSelect] in
-            locations.servant.servantAutoSelectRegion
+    private fun isAutoSelectVisible() = locations.servant.servantAutoSelectRegion.exists(
+        images[Images.ServantAutoSelect],
+        similarity = autoSelectSimilarity
+    )
 
     /**
      * This function will check if the ember selection dialog is visible.
      */
     private fun isEmberSelectionDialogVisible(): Boolean {
         val pattern = when (prefs.gameServer) {
-            is GameServer.Jp -> images[Images.Execute]
+            is GameServer.Jp, is GameServer.Kr, is GameServer.Cn -> images[Images.Execute]
             else -> images[Images.Ok]
         }
         return pattern in locations.servant.emberConfirmationDialogRegion
     }
-            
 
     /**
      * This function will check if the empty ember or QP dialog is visible.
@@ -391,10 +394,9 @@ class AutoServantLevel @Inject constructor(
             locations.servant.emptyEmberOrQPDialogRegion.click()
             return
         }
-        // If the script is in the JP server, it will check if the refund window is clicked.
-        // If it is, it will throw an exception to exit the script.
-        // If it is not, it will click the refund window.
-        val isRefundAvailable = prefs.gameServer is GameServer.Jp && !isRefundWindowClicked
+        /* On the servers with the refund prompt, the first prompt is the refund one, so it gets
+           dismissed. Only the next prompt means there are no embers or QP left. */
+        val isRefundAvailable = hasAutoFillEnhancement && !isRefundWindowClicked
         if (isRefundAvailable) {
             isRefundWindowClicked = true
             locations.servant.emptyEmberOrQPDialogRegion.click()
@@ -408,8 +410,8 @@ class AutoServantLevel @Inject constructor(
      * This function will check if the final confirmation dialog is visible.
      * After clicking the button, it would then perform the enhancement.
      */
-    private fun isFinalConfirmDialogVisible(gameServer: GameServer) =
-        okButtonPatterns(gameServer) in locations.servant.finalConfirmRegion
+    private fun isFinalConfirmDialogVisible() =
+        enhancementScreen.isOkButtonIn(locations.servant.finalConfirmRegion)
 
     /**
      * This function will check if the servant is max level.
@@ -422,24 +424,20 @@ class AutoServantLevel @Inject constructor(
     private fun isMaxLevel() = images[Images.ServantMaxLevel] in locations.servant.servantMaxLevelRegion
 
     /**
-     * This function will check if the servant is temporary.
-     * Temporary servants have additional check to ensure that they are going to be enhanced.
-     */
-    private fun isTemporaryServant() = images[Images.Execute] in locations.tempServantEnhancementRegion
-
-    /**
      * This function will check if the servant can auto select the minimum ember for low QP.
      */
-    private fun isAutoSelectMinimumEmberForLowQP(gameServer: GameServer) =
-        okButtonPatterns(gameServer) in locations.servant.autoSelectMinEmberLowQPRegion
+    private fun isAutoSelectMinimumEmberForLowQP() =
+        enhancementScreen.isOkButtonIn(locations.servant.autoSelectMinEmberLowQPRegion)
 
 
     /**
      * This function is for the temporary servants as they cannot do palingenesis and
      * thus needed another way to check if they are max level at FA.
      */
-    private fun isAutoSelectOff() = images[Images.ServantAutoSelectOff] in
-            locations.servant.servantAutoSelectRegion
+    private fun isAutoSelectOff() = locations.servant.servantAutoSelectRegion.exists(
+        images[Images.ServantAutoSelectOff],
+        similarity = autoSelectSimilarity
+    )
 
     /**
      * This function will check if the servant can redirect to the grail menu.
@@ -489,9 +487,15 @@ class AutoServantLevel @Inject constructor(
     private fun isReturnToLevel() = images[Images.ServantAscensionReturnToLevel] in
             locations.servant.ascensionReturnToLevelRegion
 
-    private fun okButtonPatterns(gameServer: GameServer) = when (gameServer) {
-        // KR has 2 OK buttons
-        is GameServer.Kr -> listOf(images[Images.Ok], images[Images.OkKR])
-        else -> listOf(images[Images.Ok])
+    /**
+     * Waits for either dialog that a click on the enhancement button can bring up: the final
+     * confirmation, or the extra one temporary servants get.
+     */
+    private fun waitForEnhancementConfirmation(): Boolean {
+        val dialogs = enhancementScreen.okButtonPatterns
+            .associateWith { locations.servant.finalConfirmRegion } +
+                mapOf(images[Images.Execute] to locations.tempServantEnhancementRegion)
+
+        return dialogs.exists(timeout = 3.seconds)
     }
 }

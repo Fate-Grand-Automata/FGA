@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.ui.prefs
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,6 +26,7 @@ fun ChipPreferenceItem(
     text: String,
     isSelected: Boolean,
     onSelect: () -> Unit,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true
 ) {
     StatusWrapper(enabled) {
@@ -34,7 +36,7 @@ fun ChipPreferenceItem(
                 contentColor = if (isSelected) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurfaceVariant
             ),
             elevation = cardElevation(2.dp),
-            modifier = Modifier
+            modifier = modifier
                 .defaultMinSize(minWidth = 30.dp),
             onClick = onSelect,
             enabled = enabled
@@ -58,23 +60,43 @@ fun <T> SingleSelectChip(
     modifier: Modifier = Modifier,
     icon: VectorIcon? = null,
     entries: Map<T, String> = emptyMap(),
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    singleRow: Boolean = false
 ) {
     Preference(
         title = { Text(title) },
         summary = {
-            FlowRow(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(0.dp),
-                verticalArrangement = Arrangement.spacedBy(0.dp)
-            ) {
-                entries.forEach { (key, value) ->
-                    ChipPreferenceItem(
-                        text = value,
-                        isSelected = key == selected,
-                        onSelect = { onSelectedChange(key) },
-                        enabled = enabled
-                    )
+            if (singleRow) {
+                // The chips share the width evenly instead of wrapping, so a narrow
+                // column or a long translation can't push one of them onto its own line.
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    entries.forEach { (key, value) ->
+                        ChipPreferenceItem(
+                            text = value,
+                            isSelected = key == selected,
+                            onSelect = { onSelectedChange(key) },
+                            enabled = enabled,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                }
+            } else {
+                FlowRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(0.dp),
+                    verticalArrangement = Arrangement.spacedBy(0.dp)
+                ) {
+                    entries.forEach { (key, value) ->
+                        ChipPreferenceItem(
+                            text = value,
+                            isSelected = key == selected,
+                            onSelect = { onSelectedChange(key) },
+                            enabled = enabled
+                        )
+                    }
                 }
             }
         },
@@ -90,7 +112,8 @@ fun <T> Pref<T>.SingleSelectChipPreference(
     modifier: Modifier = Modifier,
     icon: VectorIcon? = null,
     entries: Map<T, String> = emptyMap(),
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    singleRow: Boolean = false
 ) {
     var selected by remember()
 
@@ -101,7 +124,8 @@ fun <T> Pref<T>.SingleSelectChipPreference(
         icon = icon,
         entries = entries,
         enabled = enabled,
-        modifier = modifier
+        modifier = modifier,
+        singleRow = singleRow
     )
 }
 

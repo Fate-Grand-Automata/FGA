@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
 import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
-import io.github.fate_grand_automata.ui.prefs.ListPreference
+import io.github.fate_grand_automata.ui.prefs.DropdownPreference
 import io.github.fate_grand_automata.ui.prefs.PreferenceGroupHeader
 import io.github.fate_grand_automata.ui.prefs.StepperPreference
 import io.github.fate_grand_automata.ui.prefs.remember
@@ -43,7 +43,7 @@ fun ShuffleCardsGroup(config: BattleConfigCore) {
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                config.shuffleCards.ListPreference(
+                config.shuffleCards.DropdownPreference(
                     title = stringResource(R.string.p_shuffle_cards_when),
                     entries = ShuffleCardsEnum.entries
                         .associateWith { stringResource(it.stringRes) },

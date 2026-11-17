@@ -5,22 +5,30 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.fate_grand_automata.scripts.models.AutoSkillAction
 import io.github.fate_grand_automata.scripts.models.EnemyTarget
 import io.github.fate_grand_automata.scripts.models.OrderChangeMember
 import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.scripts.models.Skill
-import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
-import javax.inject.Inject
 
-@HiltViewModel
-class SkillMakerViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = SkillMakerViewModel.Factory::class)
+class SkillMakerViewModel @AssistedInject constructor(
     val prefs: IPreferences,
-    val battleConfig: IBattleConfig,
-    val savedState: SavedStateHandle
+    val savedState: SavedStateHandle,
+    @Assisted id: String
 ) : ViewModel() {
+    val battleConfig = prefs.forBattleConfig(id)
+
+    @AssistedFactory
+    interface Factory {
+        fun create(id: String): SkillMakerViewModel
+    }
+
     val navigation = mutableStateOf<SkillMakerNav>(SkillMakerNav.Main)
 
     val state = savedState[::savedState.name]
@@ -50,6 +58,29 @@ class SkillMakerViewModel @Inject constructor(
         m
     }
 
+    // A hand-edited skill command can contain more command spells than a quest actually grants.
+    private val _commandSpellRemaining = mutableIntStateOf(
+        (MAX_COMMAND_SPELLS - model.skillCommand.count {
+            it is SkillMakerEntry.Action && it.action is AutoSkillAction.CommandSpell
+        }).coerceIn(0..MAX_COMMAND_SPELLS)
+    )
+    val commandSpellRemaining: State<Int> = _commandSpellRemaining
+
+    /**
+     * The only command spell FGA supports is the NP charge, so the button on the main screen goes
+     * straight to picking the servant to charge instead of offering a list of one.
+     */
+    fun initCommandSpell() {
+        if (_commandSpellRemaining.intValue <= 0) {
+            navigation.value = SkillMakerNav.CommandSpellUnavailable
+            return
+        }
+
+        currentSkill = Skill.CommandSpell.NpCharge.autoSkillCode
+
+        navigation.value = SkillMakerNav.CommandSpellTarget
+    }
+
     private val _wave = mutableIntStateOf(
         if (state.skillString != null) {
             state.wave
@@ -65,7 +96,7 @@ class SkillMakerViewModel @Inject constructor(
         }
     )
 
-    private val _currentIndex = mutableStateOf(
+    private val _currentIndex = mutableIntStateOf(
         if (state.skillString != null) {
             state.currentIndex
         } else model.skillCommand.lastIndex
@@ -88,8 +119,6 @@ class SkillMakerViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        super.onCleared()
-
         saveState()
     }
 
@@ -98,19 +127,19 @@ class SkillMakerViewModel @Inject constructor(
     private fun getSkillCmdString() = model.toString()
 
     fun setCurrentIndex(index: Int) {
-        _currentIndex.value = index
+        _currentIndex.intValue = index
 
         revertToPreviousEnemyTarget()
     }
 
     private fun add(entry: SkillMakerEntry) {
         model.skillCommand.add(currentIndex.value + 1, entry)
-        ++_currentIndex.value
+        ++_currentIndex.intValue
     }
 
     private fun deleteSelected() {
         model.skillCommand.removeAt(currentIndex.value)
-        --_currentIndex.value
+        --_currentIndex.intValue
     }
 
     private fun isEmpty() = currentIndex.value == 0
@@ -156,11 +185,11 @@ class SkillMakerViewModel @Inject constructor(
     fun unSelectTargets() = setEnemyTarget(null)
 
     val wave: State<Int> = _wave
-    private fun prevStage() = --_wave.value
+    private fun prevStage() = --_wave.intValue
 
     val turn: State<Int> = _turn
 
-    private fun prevTurn() = --_turn.value
+    private fun prevTurn() = --_turn.intValue
 
     fun initSkill(skill: Skill) {
         currentSkill = skill.autoSkillCode
@@ -183,7 +212,7 @@ class SkillMakerViewModel @Inject constructor(
     }
 
     fun targetSkill(targets: List<ServantTarget>) {
-        val skill = (Skill.Servant.list + Skill.Master.list)
+        val skill = (Skill.Servant.list + Skill.Master.list + Skill.CommandSpell.list)
             .first { it.autoSkillCode == currentSkill }
 
         add(
@@ -191,6 +220,10 @@ class SkillMakerViewModel @Inject constructor(
                 when (skill) {
                     is Skill.Servant -> AutoSkillAction.ServantSkill(skill, targets)
                     is Skill.Master -> AutoSkillAction.MasterSkill(skill, targets.firstOrNull())
+                    is Skill.CommandSpell -> {
+                        --_commandSpellRemaining.intValue
+                        AutoSkillAction.CommandSpell(skill, targets.firstOrNull())
+                    }
                 }
             )
         )
@@ -199,7 +232,7 @@ class SkillMakerViewModel @Inject constructor(
     }
 
     fun finish(): String {
-        _currentIndex.value = model.skillCommand.lastIndex
+        _currentIndex.intValue = model.skillCommand.lastIndex
 
         while (last.let { l -> l is SkillMakerEntry.Next && l.action == AutoSkillAction.Atk.noOp() }) {
             deleteSelected()
@@ -209,7 +242,7 @@ class SkillMakerViewModel @Inject constructor(
     }
 
     fun nextTurn(atk: AutoSkillAction.Atk) {
-        ++_turn.value
+        ++_turn.intValue
 
         add(SkillMakerEntry.Next.Turn(atk))
 
@@ -217,8 +250,8 @@ class SkillMakerViewModel @Inject constructor(
     }
 
     fun nextWave(atk: AutoSkillAction.Atk) {
-        ++_wave.value
-        ++_turn.value
+        ++_wave.intValue
+        ++_turn.intValue
 
         // Uncheck selected targets
         unSelectTargets()
@@ -234,8 +267,8 @@ class SkillMakerViewModel @Inject constructor(
     ) {
         // some users first click on l and then on order change
         // removes the last action if it was l
-        if (_currentIndex.value > 0) {
-            val lastAction = model.skillCommand[_currentIndex.value]
+        if (_currentIndex.intValue > 0) {
+            val lastAction = model.skillCommand[_currentIndex.intValue]
             if (lastAction is SkillMakerEntry.Action &&
                 lastAction.action is AutoSkillAction.MasterSkill &&
                 lastAction.action.skill == Skill.Master.C
@@ -298,7 +331,7 @@ class SkillMakerViewModel @Inject constructor(
     }
 
     fun clearAll() {
-        _currentIndex.value = model.skillCommand.lastIndex
+        _currentIndex.intValue = model.skillCommand.lastIndex
 
         while (!isEmpty()) {
             onDeleteSelected()
@@ -315,13 +348,20 @@ class SkillMakerViewModel @Inject constructor(
                 }
 
                 is SkillMakerEntry.Action -> {
-                    if (last.action is AutoSkillAction.TargetEnemy) {
-                        deleteSelected()
-                        revertToPreviousEnemyTarget()
-                    } else deleteSelected()
+                    when(last.action) {
+                        is AutoSkillAction.TargetEnemy -> {
+                            deleteSelected()
+                            revertToPreviousEnemyTarget()
+                        }
+                        is AutoSkillAction.CommandSpell -> {
+                            ++_commandSpellRemaining.intValue
+                            deleteSelected()
+                        }
+                        else -> deleteSelected()
+                    }
                 }
-                // Do nothing
                 is SkillMakerEntry.Start -> {
+                    // Do nothing
                 }
             }
         }
@@ -329,5 +369,9 @@ class SkillMakerViewModel @Inject constructor(
 
     init {
         revertToPreviousEnemyTarget()
+    }
+
+    companion object {
+        private const val MAX_COMMAND_SPELLS = 3
     }
 }
