@@ -95,14 +95,14 @@ class Caster @Inject constructor(
         locations.battle.extraInfoWindowCloseClick.click()
 
         if (targets.contains(ServantTarget.Transform)) {
-            // wait extra for Mélusine and then add her 3rd Ascension image
+            // The transformation animation is long
             waitForAnimationToFinish(15.seconds)
             val slot = when (skill) {
                 Skill.Servant.B3 -> FieldSlot.B
                 Skill.Servant.C3 -> FieldSlot.C
                 else -> FieldSlot.A
             }
-            servantTracker.melusineChangedAscension(slot)
+            servantTracker.servantTransformed(slot)
         } else {
             waitForAnimationToFinish()
         }

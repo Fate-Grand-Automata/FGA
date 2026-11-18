@@ -25,6 +25,15 @@ class ServantTracker @Inject constructor(
     private val _deployed = mutableMapOf<FieldSlot, TeamSlot>()
     val deployed: Map<FieldSlot, TeamSlot> = _deployed
 
+    /**
+     * Servants like Mélusine and Ptolemaios change their NP type when they transform with their skill,
+     * so the NP type is tracked per form: [npCardTypes] for the form the Servant entered the field in,
+     * [transformedNpCardTypes] for the other form, and [transformedServants] for who is currently in the other form.
+     */
+    private val npCardTypes = mutableMapOf<TeamSlot, CardTypeEnum>()
+    private val transformedNpCardTypes = mutableMapOf<TeamSlot, CardTypeEnum>()
+    private val transformedServants = mutableSetOf<TeamSlot>()
+
     fun nextRun() {
         servantQueue.clear()
         servantQueue.addAll(
@@ -39,6 +48,9 @@ class ServantTracker @Inject constructor(
                 FieldSlot.C to TeamSlot.C
             )
         )
+
+        // Every run starts with all Servants in the form they entered the field in
+        transformedServants.clear()
     }
 
     init {
@@ -60,26 +72,24 @@ class ServantTracker @Inject constructor(
 
     private val faceCardImages = mutableMapOf<TeamSlot, MutableList<Pattern>>()
 
-    /**
-     * NP card type handling
-     */
-    private val npCardImages = mutableMapOf<TeamSlot, MutableList<Pattern>>()
     private val npSplashImages = mapOf(
         CardTypeEnum.Buster to images[Images.NpBuster],
         CardTypeEnum.Arts to images[Images.NpArts],
         CardTypeEnum.Quick to images[Images.NpQuick],
     )
-    val npCardTypes = mutableMapOf<TeamSlot, CardTypeEnum>()
 
     fun getNpCardType(teamSlot: TeamSlot): CardTypeEnum {
-        return npCardTypes.getOrElse(teamSlot) { CardTypeEnum.Unknown }
+        val npCardType =
+            if (teamSlot in transformedServants) transformedNpCardTypes[teamSlot]
+            else npCardTypes[teamSlot]
+
+        return npCardType ?: CardTypeEnum.Unknown
     }
 
 
     override fun close() {
         checkImages.values.forEach { it.close() }
         faceCardImages.values.flatten().forEach { it.close() }
-        npCardImages.values.flatten().forEach { it.close() }
         checkImages.clear()
     }
 
@@ -115,34 +125,42 @@ class ServantTracker @Inject constructor(
             supportSlot = teamSlot
         }
 
-        // We now always want to init the face card, so that we can check the npType
+        // Supports also get a face card, so that their NP type is known
         // Don't useSameSnapIn here, since we open a dialog
-        initFaceCard(teamSlot, slot)
-
-        // After initFaceCard, we need to check npType for servant here
-        if (npCardImages.contains(teamSlot)) {
-            val patternList = npCardImages[teamSlot]
-            val scores = npSplashImages
-                .mapValues {
-                    (_, image) -> patternList?.maxOf {
-                        pattern -> pattern.find(image, prefs.npCardTypeSimilarity)?.score ?: 0.0
-                    } ?: 0.0
-                }
-            // Get type by comparing the patterns we have with the splash arts
-            val type = scores
-                .filterValues { it > 0.0 }
-                .maxByOrNull { it.value }
-                ?.key
-
-            if (type != null) {
-                npCardTypes.put(teamSlot, type)
-            }
-        }
+        initFaceCard(teamSlot, slot)?.let { npCardTypes[teamSlot] = it }
     }
 
-    private fun initFaceCard(teamSlot: TeamSlot, slot: FieldSlot, addAnotherImage: Boolean = false) {
+    /**
+     * Compares the NP area of the Servant details dialog with the Buster/Arts/Quick splash images.
+     *
+     * @return The best matching type, or null if none matches.
+     */
+    private fun detectNpCardType(npImage: Pattern) =
+        npSplashImages
+            .mapValues { (_, splashImage) -> npImage.find(splashImage, prefs.npCardTypeSimilarity)?.score ?: 0.0 }
+            .filterValues { it > 0.0 }
+            .maxByOrNull { it.value }
+            ?.key
+
+    /**
+     * Drops the cached face card and NP types of [teamSlot], so that the next [initFaceCard] captures them again.
+     */
+    private fun forgetFaceCard(teamSlot: TeamSlot) {
+        faceCardImages.remove(teamSlot)?.forEach { it.close() }
+        npCardTypes.remove(teamSlot)
+        transformedNpCardTypes.remove(teamSlot)
+        transformedServants.remove(teamSlot)
+    }
+
+    /**
+     * Captures the face card of the Servant in [slot] from their details dialog.
+     *
+     * @param addAnotherImage Capture even if [teamSlot] already has a face card, for a second form.
+     * @return The NP type shown in the details dialog, or null if nothing was captured or no type matched.
+     */
+    private fun initFaceCard(teamSlot: TeamSlot, slot: FieldSlot, addAnotherImage: Boolean = false): CardTypeEnum? {
         if (prefs.skipServantFaceCardCheck || (!addAnotherImage && teamSlot in faceCardImages))
-            return
+            return null
 
         // Open details dialog and click on INFO
         locations.battle.servantOpenDetailsClick(slot).click()
@@ -158,10 +176,12 @@ class ServantTracker @Inject constructor(
 
         faceCardImages.getOrPut(teamSlot) { mutableListOf() }
             .add(image)
-        npCardImages.getOrPut(teamSlot) { mutableListOf() }
-            .add(npImage)
+
+        val npCardType = npImage.use { detectNpCardType(it) }
 
         250.milliseconds.wait()
+
+        return npCardType
     }
 
     private fun check(slot: FieldSlot) {
@@ -190,6 +210,7 @@ class ServantTracker @Inject constructor(
 
         // New run with different support
         if (wasSupport && isSupport && isDifferentServant) {
+            forgetFaceCard(teamSlot)
             init(teamSlot, slot)
         } else if (isDifferentServant || (wasSupport != isSupport)) {
             val newTeamSlot = servantQueue.removeFirstOrNull()
@@ -321,19 +342,37 @@ class ServantTracker @Inject constructor(
     }
 
     /**
-     * Adds the 3rd Ascension Melusine image to the existing 1st/2nd Ascension
-     * image so both are detected as the same Servant.
+     * Updates the form of the Servant in [fieldSlot] after a skill like Mélusine's or Ptolemaios's 3rd skill.
+     * The form is read from the portrait, so a skill that was rejected (e.g. on cooldown) changes nothing.
+     *
+     * The first time the portrait changes, the other form's image is added to the existing one so both are
+     * detected as the same Servant, and that form's face card and NP type are captured.
      */
-    fun melusineChangedAscension(fieldSlot: FieldSlot) {
-        val teamSlot = _deployed[fieldSlot]!!
-        val teamSlotData = checkImages[teamSlot]
-        if (teamSlotData != null && teamSlotData.checkImage.size == 1) {
-            teamSlotData.checkImage.add(
-                locations.battle.servantChangeCheckRegion(fieldSlot)
-                    .getPattern("Melusine Asc3")
-            )
+    fun servantTransformed(fieldSlot: FieldSlot) {
+        val teamSlot = _deployed[fieldSlot] ?: return
+        val checkImage = checkImages[teamSlot]?.checkImage ?: return
+        val portraitRegion = locations.battle.servantChangeCheckRegion(fieldSlot)
+
+        // checkImage[0] is the form the Servant entered the field in, checkImage[1] the other form once known
+        val originalForm = checkImage.first()
+        val otherForm = checkImage.getOrNull(1)
+
+        if (otherForm == null) {
+            if (originalForm in portraitRegion) return
+
+            checkImage.add(portraitRegion.getPattern("Servant $teamSlot transformed"))
+            transformedServants += teamSlot
 
             initFaceCard(teamSlot, fieldSlot, addAnotherImage = true)
+                ?.let { transformedNpCardTypes[teamSlot] = it }
+            return
+        }
+
+        useSameSnapIn {
+            when {
+                otherForm in portraitRegion -> transformedServants += teamSlot
+                originalForm in portraitRegion -> transformedServants -= teamSlot
+            }
         }
     }
 
