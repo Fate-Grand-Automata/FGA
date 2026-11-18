@@ -727,7 +727,7 @@ class AttackUtilsTest {
             npTypes = mapOf(
                 FieldSlot.A to CardTypeEnum.Quick,
                 FieldSlot.B to CardTypeEnum.Quick,
-                FieldSlot.B to CardTypeEnum.Arts,
+                FieldSlot.C to CardTypeEnum.Arts,
             ),
         )
 
@@ -743,7 +743,7 @@ class AttackUtilsTest {
             npTypes = mapOf(
                 FieldSlot.A to CardTypeEnum.Quick,
                 FieldSlot.B to CardTypeEnum.Quick,
-                FieldSlot.B to CardTypeEnum.Unknown,
+                FieldSlot.C to CardTypeEnum.Unknown,
             ),
         )
 

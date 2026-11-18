@@ -939,7 +939,7 @@ class MightyChainTest {
                 braveChainEnum = braveChainEnum,
                 npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
                 npTypes = mapOf(
-                    FieldSlot.A to CardTypeEnum.Quick,
+                    FieldSlot.B to CardTypeEnum.Quick,
                 )
             )?.map { it.card } ?: emptyList()
 
