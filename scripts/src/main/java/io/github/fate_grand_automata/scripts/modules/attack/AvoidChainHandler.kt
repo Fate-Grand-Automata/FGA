@@ -6,7 +6,6 @@ import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
-import kotlin.collections.set
 
 object AvoidChainHandler {
     fun pick(
@@ -60,88 +59,87 @@ object AvoidChainHandler {
         // If only a ColorChain is possible
         if (avoidCardChains && cardCountPerCardTypeMap.size == 1) return null
 
-        // For tracking
-        val selectedFieldSlots = mutableMapOf<FieldSlot, Int>()
-        val selectedCardTypes = mutableMapOf<CardTypeEnum, Int>()
+        val npFieldSlotCounts =
+            if (avoidBraveChains) npUsage.nps.groupingBy { it.toFieldSlot() }.eachCount()
+            else emptyMap()
+        val npCardTypeCounts =
+            if (avoidCardChains) npTypes.values.groupingBy { it }.eachCount()
+            else emptyMap()
 
-        if (avoidBraveChains) {
-            for (np in npUsage.nps) {
-                val fieldSlot = np.toFieldSlot()
-                val currentValue = selectedFieldSlots.getOrElse(fieldSlot) { 0 }
-                selectedFieldSlots[fieldSlot] = currentValue + 1
-            }
-        }
-        if (avoidCardChains) {
-            for (npType in npTypes.values) {
-                val currentValue = selectedCardTypes.getOrElse(npType) { 0 }
-                selectedCardTypes[npType] = currentValue + 1
-            }
-        }
-
-        var cachedFilteredCards: List<ParsedCard> = cardsToUse
-        var previousFieldSlot: FieldSlot? = null
-
-        // Otherwise, calculate
-        val cardsNeeded = 3 - npUsage.nps.size
-        val selectedCards = mutableListOf<ParsedCard>()
-        while (selectedCards.size < cardsNeeded) {
-            // Loop through all the cards at least one time so that the next pass is easier
-            var filteredCards = mutableListOf<ParsedCard>()
-            for (card in cachedFilteredCards) {
-                if (card in selectedCards) continue
-                val fieldSlot = card.fieldSlot
-                if (fieldSlot == null) continue
-                val fieldSlotCount = selectedFieldSlots.getOrElse(fieldSlot) { 0 }
-                if (avoidBraveChains
-                    && (
-                        // If there are already 2 selected cards with the same card slot
-                        fieldSlotCount >= 2
-                        // and there are still valid targets, skip
-                        && cardCountPerFieldSlotMap.size > 1
-                    )
-                ) continue
-
-                val cardType = card.type
-                val cardTypeCount = selectedCardTypes.getOrElse(cardType) { 0 }
-                if (avoidCardChains
-                    && (
-                        cardTypeCount >= 2
-                        // Or if it would make a Mighty Chain
-                        || (cardTypeCount == 0 && selectedCardTypes.size >= 2)
-                    )
-                ) continue
-                // If reach here, add to filteredList
-                filteredCards.add(card)
-            }
-
-            // Cache the filteredCards to make the next check faster
-            cachedFilteredCards = filteredCards
-
-            // Try to make the next card different from the previous card's fieldSlot, if possible
-            // and there must not be a valid BraveChain for WithNP and Always
-            if (previousFieldSlot != null && braveChainFieldSlot == null) {
-                val fieldSlotFilter = filteredCards.filter {
-                    it.fieldSlot != previousFieldSlot
-                }
-                if (fieldSlotFilter.isNotEmpty()) filteredCards = fieldSlotFilter.toMutableList()
-            }
-
-            val filteredCard = filteredCards.firstOrNull()
-            if (filteredCard == null || filteredCard.fieldSlot == null) break // If cannot find, leave
-
-            // If reach here, card can be added
-            selectedCards.add(filteredCard)
-            selectedFieldSlots[filteredCard.fieldSlot] = selectedFieldSlots.getOrElse(filteredCard.fieldSlot) { 0 } + 1
-            selectedCardTypes[filteredCard.type] = selectedCardTypes.getOrElse(filteredCard.type) { 0 } + 1
-            previousFieldSlot = filteredCard.fieldSlot
-        }
-
-        // Return empty if cannot fulfill
-        if (selectedCards.size < cardsNeeded) return null
+        val selectedCards = selectCards(
+            candidates = cardsToUse,
+            cardsNeeded = 3 - npUsage.nps.size,
+            selected = emptyList(),
+            fieldSlotCounts = npFieldSlotCounts,
+            cardTypeCounts = npCardTypeCounts,
+            avoidBraveChains = avoidBraveChains,
+            avoidCardChains = avoidCardChains,
+            // A required Brave Chain must not be broken up
+            preferDifferentServant = braveChainFieldSlot == null,
+        ) ?: return null
 
         val remainder = (cardsToUse - selectedCards) + (cards - cardsToUse)
         val combinedCards = selectedCards + remainder
 
         return combinedCards
+    }
+
+    /**
+     * Depth-first search for [cardsNeeded] cards that avoid Brave and/or card chains.
+     * Candidates are tried in priority order, preferring a different Servant than the previous card,
+     * so the first complete selection found is the highest-priority valid one.
+     *
+     * @param selected Cards picked so far, in click order.
+     * @param fieldSlotCounts Cards per Servant picked so far, including NPs when avoiding Brave Chains.
+     * @param cardTypeCounts Cards per type picked so far, including NPs when avoiding card chains.
+     * @return The selected cards, or null if no valid selection exists.
+     */
+    private fun selectCards(
+        candidates: List<ParsedCard>,
+        cardsNeeded: Int,
+        selected: List<ParsedCard>,
+        fieldSlotCounts: Map<FieldSlot, Int>,
+        cardTypeCounts: Map<CardTypeEnum, Int>,
+        avoidBraveChains: Boolean,
+        avoidCardChains: Boolean,
+        preferDifferentServant: Boolean,
+    ): List<ParsedCard>? {
+        if (selected.size >= cardsNeeded) return selected
+
+        val allowedCards = candidates.filter { card ->
+            val fieldSlot = card.fieldSlot ?: return@filter false
+            val wouldMakeBraveChain = fieldSlotCounts.getOrElse(fieldSlot) { 0 } >= 2
+
+            val cardTypeCount = cardTypeCounts.getOrElse(card.type) { 0 }
+            val wouldMakeColorChain = cardTypeCount >= 2
+            val wouldMakeMightyChain = cardTypeCount == 0 && cardTypeCounts.size >= 2
+
+            card !in selected
+                && !(avoidBraveChains && wouldMakeBraveChain)
+                && !(avoidCardChains && (wouldMakeColorChain || wouldMakeMightyChain))
+        }
+
+        val previousFieldSlot = selected.lastOrNull()?.fieldSlot
+        // sortedBy is stable, so priority order is kept within each group
+        val orderedCards =
+            if (preferDifferentServant && previousFieldSlot != null) allowedCards.sortedBy { it.fieldSlot == previousFieldSlot }
+            else allowedCards
+
+        for (card in orderedCards) {
+            val fieldSlot = card.fieldSlot ?: continue
+            val result = selectCards(
+                candidates = candidates,
+                cardsNeeded = cardsNeeded,
+                selected = selected + card,
+                fieldSlotCounts = fieldSlotCounts + (fieldSlot to fieldSlotCounts.getOrElse(fieldSlot) { 0 } + 1),
+                cardTypeCounts = cardTypeCounts + (card.type to cardTypeCounts.getOrElse(card.type) { 0 } + 1),
+                avoidBraveChains = avoidBraveChains,
+                avoidCardChains = avoidCardChains,
+                preferDifferentServant = preferDifferentServant,
+            )
+            if (result != null) return result
+        }
+
+        return null
     }
 }

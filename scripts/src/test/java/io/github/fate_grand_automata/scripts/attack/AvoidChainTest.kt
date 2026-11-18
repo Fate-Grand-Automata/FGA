@@ -631,4 +631,30 @@ class AvoidChainTest {
             assertThat(picked, braveChainEnum.toString()).isEmpty()
         }
     }
+
+    @Test
+    fun `Avoid needs backtracking - (1SB,2KQ,3NA,4NA,5 Unknown)`() {
+        // Picking Kama's Quick second leaves only Arts cards, which would make a Mighty Chain
+        val cards = listOf(
+            AttackLineUps.Standard.scathach1WB,
+            AttackLineUps.Standard.kama2Q,
+            AttackLineUps.Standard.nero3RA,
+            AttackLineUps.Standard.nero4RA,
+            AttackLineUps.Unknown.scathach5Unknown,
+        )
+        for (braveChainEnum in braveChainEnums) {
+            val picked = AvoidChainHandler.pick(
+                cards = cards,
+                braveChainEnum = braveChainEnum,
+            )?.map { it.card } ?: emptyList()
+
+            assertThat(picked, braveChainEnum.toString()).containsExactly(
+                CommandCard.Face.A,
+                CommandCard.Face.C,
+                CommandCard.Face.D,
+                CommandCard.Face.B,
+                CommandCard.Face.E,
+            )
+        }
+    }
 }
