@@ -1,6 +1,5 @@
 package io.github.fate_grand_automata.scripts.locations
 
-import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.models.EnemyTarget
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.OrderChangeMember
@@ -120,10 +119,12 @@ class BattleScreenLocations @Inject constructor(
     
     val servantDetailsFaceCardRegion = Region(-685, 410, 110, 60).xFromCenter()
 
-    val servantNpCardTypeRegion = when (gameServer) {
-        is GameServer.Jp, GameServer.Cn -> 410
-        else -> 330
-    }.let { y -> Region(-735, y + 350, 100, 50) }.xFromCenter()
+    /**
+     * The corner of the NP card art that shows the NP's card type, in the same dialog as
+     * [servantDetailsFaceCardRegion]. Both are part of the NP card image, so this one is placed
+     * relative to the face card and follows it when the dialog layout changes.
+     */
+    val servantNpCardTypeRegion = Region(-50, 350, 100, 50) + servantDetailsFaceCardRegion.location
 
     val battleSafeMiddleOfScreenClick = Location(0, 550).xFromCenter()
 }
