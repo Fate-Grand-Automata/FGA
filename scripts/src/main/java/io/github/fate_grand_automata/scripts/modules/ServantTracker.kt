@@ -132,15 +132,26 @@ class ServantTracker @Inject constructor(
 
     /**
      * Compares the NP area of the Servant details dialog with the Buster/Arts/Quick splash images.
+     * Logs a warning with all scores if no type matches.
      *
      * @return The best matching type, or null if none matches.
      */
-    private fun detectNpCardType(npImage: Pattern) =
-        npSplashImages
-            .mapValues { (_, splashImage) -> npImage.find(splashImage, prefs.npCardTypeSimilarity)?.score ?: 0.0 }
-            .filterValues { it > 0.0 }
+    private fun detectNpCardType(teamSlot: TeamSlot, npImage: Pattern): CardTypeEnum? {
+        // Similarity 0 returns the best score even when it is too low, so the warning can show it
+        val scores = npSplashImages
+            .mapValues { (_, splashImage) -> npImage.find(splashImage, 0.0)?.score ?: 0.0 }
+
+        val npCardType = scores
+            .filterValues { it >= prefs.npCardTypeSimilarity }
             .maxByOrNull { it.value }
             ?.key
+
+        if (npCardType == null) {
+            messages.log(ScriptLog.NpCardTypeNotDetected(teamSlot, scores, prefs.npCardTypeSimilarity))
+        }
+
+        return npCardType
+    }
 
     /**
      * Drops the cached face card and NP types of [teamSlot], so that the next [initFaceCard] captures them again.
@@ -177,7 +188,7 @@ class ServantTracker @Inject constructor(
         faceCardImages.getOrPut(teamSlot) { mutableListOf() }
             .add(image)
 
-        val npCardType = npImage.use { detectNpCardType(it) }
+        val npCardType = npImage.use { detectNpCardType(teamSlot, it) }
 
         250.milliseconds.wait()
 
