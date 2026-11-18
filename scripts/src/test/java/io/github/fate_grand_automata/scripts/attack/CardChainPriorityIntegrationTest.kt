@@ -814,4 +814,25 @@ class CardChainPriorityIntegrationTest {
             CommandCard.Face.E,
         )
     }
+
+    @Test
+    fun `BusterFocus - lineup01 (1KB,2KB,3NA,4NA,5KB) + 2Kiyo-NP of unknown type, Avoid Brave Chains`() {
+        // Without the NP type, the chain handlers can't run; Avoid must still keep Kiyohime from getting both cards
+        val picked = AttackPriorityHandler.pick(
+            cards = AttackLineUps.BusterFocus.lineup01,
+            braveChainEnum = BraveChainEnum.Avoid,
+            npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+            npTypes = mapOf(
+                FieldSlot.B to CardTypeEnum.Unknown,
+            ),
+        ).map { it.card }
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.A,
+            CommandCard.Face.C,
+            CommandCard.Face.B,
+            CommandCard.Face.D,
+            CommandCard.Face.E,
+        )
+    }
 }

@@ -7,6 +7,7 @@ import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
+import io.github.fate_grand_automata.scripts.modules.ApplyBraveChains
 import java.util.Collections
 
 object AttackPriorityHandler {
@@ -67,7 +68,14 @@ object AttackPriorityHandler {
                 npUsage = npUsage,
                 npTypes = npTypes,
             )) {
-            return finalFallback
+            // Without NP types or enough known cards, the chain handlers can't plan this turn.
+            // Fall back to the logic used without Chain Priority, so Brave Chains and Rearrange Cards still apply.
+            return ApplyBraveChains.pick(
+                cards = finalFallback,
+                braveChains = braveChainEnum,
+                rearrange = rearrange,
+                npUsage = npUsage,
+            )
         }
 
         // Get all the supplementary data.
