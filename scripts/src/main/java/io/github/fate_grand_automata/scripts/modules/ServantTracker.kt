@@ -253,12 +253,11 @@ class ServantTracker @Inject constructor(
             }
         }
 
-        // Fallback for if the support servant is not found
-        val currentSupportSlot = supportSlot
-        val isSupportFound = if (currentSupportSlot != null) (result.getOrElse(currentSupportSlot) { emptySet() }).isNotEmpty() else false
+        // If no card has the support label (e.g. hidden by too many buffs), match the support by its face instead
+        val isSupportFound = result[supportSlot].orEmpty().isNotEmpty()
 
         val ownedServants = faceCardImages
-            .filterKeys { (isSupportFound || it != supportSlot) && it in deployed.values }
+            .filterKeys { (!isSupportFound || it != supportSlot) && it in deployed.values }
         cardsRemaining
             .groupBy { card ->
                 // find the best matching Servant which isn't the support
