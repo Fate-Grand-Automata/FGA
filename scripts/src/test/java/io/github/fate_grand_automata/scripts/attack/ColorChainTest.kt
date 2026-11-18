@@ -891,7 +891,9 @@ class ColorChainTest {
                 when (cardType to braveChainEnum) {
                     CardTypeEnum.Buster to BraveChainEnum.None,
                     CardTypeEnum.Buster to BraveChainEnum.Always,
-                    CardTypeEnum.Buster to BraveChainEnum.WithNP, ->
+                    CardTypeEnum.Buster to BraveChainEnum.WithNP,
+                    // Kama's NP with Kiyohime's cards is no Brave Chain
+                    CardTypeEnum.Buster to BraveChainEnum.Avoid, ->
                         assertThat(result, "$braveChainEnum, $cardType").containsExactly(
                             CommandCard.Face.B,
                             CommandCard.Face.E,
@@ -954,6 +956,15 @@ class ColorChainTest {
                         CommandCard.Face.C,
                         CommandCard.Face.D,
                     )
+                // The NP user is not the owner of the Arts cards, so this is no Brave Chain
+                CardTypeEnum.Arts ->
+                    assertThat(result, cardType.toString()).containsExactly(
+                        CommandCard.Face.C,
+                        CommandCard.Face.D,
+                        CommandCard.Face.A,
+                        CommandCard.Face.B,
+                        CommandCard.Face.E,
+                    )
                 else -> assertThat(result, cardType.toString()).isEmpty()
             }
         }
@@ -977,6 +988,15 @@ class ColorChainTest {
                         CommandCard.Face.A,
                         CommandCard.Face.C,
                         CommandCard.Face.D,
+                    )
+                // The NP user is not the owner of the Arts cards, so this is no Brave Chain
+                CardTypeEnum.Arts ->
+                    assertThat(result, cardType.toString()).containsExactly(
+                        CommandCard.Face.C,
+                        CommandCard.Face.D,
+                        CommandCard.Face.A,
+                        CommandCard.Face.B,
+                        CommandCard.Face.E,
                     )
                 else -> assertThat(result, cardType.toString()).isEmpty()
             }
@@ -1026,6 +1046,15 @@ class ColorChainTest {
                         CommandCard.Face.C,
                         CommandCard.Face.D,
                     )
+                // The NP user is not the owner of the Arts cards, so this is no Brave Chain
+                CardTypeEnum.Arts ->
+                    assertThat(result, cardType.toString()).containsExactly(
+                        CommandCard.Face.C,
+                        CommandCard.Face.D,
+                        CommandCard.Face.A,
+                        CommandCard.Face.E,
+                        CommandCard.Face.B,
+                    )
                 else -> assertThat(result, cardType.toString()).isEmpty()
             }
         }
@@ -1049,6 +1078,15 @@ class ColorChainTest {
                         CommandCard.Face.A,
                         CommandCard.Face.C,
                         CommandCard.Face.D,
+                    )
+                // The NP user is not the owner of the Arts cards, so this is no Brave Chain
+                CardTypeEnum.Arts ->
+                    assertThat(result, cardType.toString()).containsExactly(
+                        CommandCard.Face.C,
+                        CommandCard.Face.D,
+                        CommandCard.Face.A,
+                        CommandCard.Face.E,
+                        CommandCard.Face.B,
                     )
                 else -> assertThat(result, cardType.toString()).isEmpty()
             }
@@ -1103,5 +1141,30 @@ class ColorChainTest {
 
             assertThat(result, cardType.toString()).isEmpty()
         }
+    }
+
+    @Test
+    fun `Avoid Brave Chain keeps the chain color - (3NA,1KB,2KB,5KB,4NB)`() {
+        // The first 3 Busters are Kiyohime's, so a Buster of another Servant has to be moved up
+        val cards = listOf(
+            AttackLineUps.BusterFocus.nero3RA,
+            AttackLineUps.BusterFocus.kiyohime1B,
+            AttackLineUps.BusterFocus.kiyohime2B,
+            AttackLineUps.BusterFocus.kiyohime5B,
+            AttackLineUps.BusterFocus.nero4BAlt,
+        )
+        val picked = ColorChainHandler.pick(
+            cards = cards,
+            cardType = CardTypeEnum.Buster,
+            braveChainEnum = BraveChainEnum.Avoid,
+        )?.map { it.card } ?: emptyList()
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.A,
+            CommandCard.Face.D,
+            CommandCard.Face.B,
+            CommandCard.Face.E,
+            CommandCard.Face.C,
+        )
     }
 }

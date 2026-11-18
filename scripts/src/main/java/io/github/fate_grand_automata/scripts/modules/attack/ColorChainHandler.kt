@@ -126,11 +126,13 @@ object ColorChainHandler {
         // If there is 2 or more NP, it will never be a BraveChain, so any cards are valid
         if (npFieldSlots.size >= 2) return selectedCards
 
-        val selectedCardsFieldSlotSet = selectedCards.mapNotNull { it.fieldSlot }.toSet()
-        // If the cards available are not 1 fieldSlot, but the selected cards are 1 fieldSlot only
-        if (selectedCardsFieldSlotSet.size == 1) return null // invalid
-
         val npFieldSlot = npFieldSlots.firstOrNull()
+
+        val selectedCardsFieldSlotSet = selectedCards.mapNotNull { it.fieldSlot }.toSet()
+        // The selected cards all belong to one Servant who is also the NP user (or there is no NP)
+        if (selectedCardsFieldSlotSet.size == 1
+            && (npFieldSlot == null || npFieldSlot in selectedCardsFieldSlotSet)
+        ) return null
 
         // Otherwise, a valid list of cards exist, but the correct cards must be selected
         val filteredCards = selectedCards.take(cardsNeeded).toMutableList()
@@ -144,8 +146,8 @@ object ColorChainHandler {
                 || npFieldSlot == null
             )
         ) {
-            // Attempt to fetch a different field slot
-            val differentCard = cards.firstOrNull { it.fieldSlot != filteredCardsSet.first() }
+            // Attempt to fetch a card of the same color from a different field slot
+            val differentCard = selectedCards.firstOrNull { it.fieldSlot != filteredCardsSet.first() }
             // If there is no different card (even though there should, by this stage), return null
             if (differentCard == null) return null
             // Just add new card to index 1, aka 2nd card
