@@ -1,0 +1,5 @@
+reviews:
+  auto_review:
+    ignore_usernames:
+      - "renovate[bot]"
+      - "dependabot[bot]"
