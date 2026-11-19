@@ -271,7 +271,7 @@
     <string name="p_fine_tune_skill_delay">"스킬 딜레이 (ms)"</string>
     <string name="p_fine_tune_stage_counter_similarity">"스테이지 카운터 유사도 (%)"</string>
     <string name="p_fine_tune_np_card_type_similarity">"보구랑 Buster/Arts/Quick 유사도 (%)"</string>
-    <string name="p_fine_tune_np_card_detection_similarity">"반복 모드 보구랑 유사도 (%)"</string>
+    <string name="p_fine_tune_np_card_detection_similarity">"보구 카드 감지 유사도 (%)"</string>
     <string name="p_fine_tune_support">"서포트"</string>
     <string name="p_fine_tune_support_max_updates">"최대 갱신 수"</string>
     <string name="p_fine_tune_support_swipes_per_update">"갱신당 스와이프 수"</string>

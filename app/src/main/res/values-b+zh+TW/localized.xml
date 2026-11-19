@@ -233,7 +233,7 @@
     <string name="p_fine_tune_skill_delay">"施放技能後等待時間（ms）"</string>
     <string name="p_fine_tune_stage_counter_similarity">"關卡計數相似度（%）"</string>
     <string name="p_fine_tune_np_card_type_similarity">"Buster/Arts/Quick寶具施相似度（%）"</string>
-    <string name="p_fine_tune_np_card_detection_similarity">"自動模式寶具施相似度（%）"</string>
+    <string name="p_fine_tune_np_card_detection_similarity">"寶具卡識別相似度（%）"</string>
     <string name="p_fine_tune_support">"支援從者列表"</string>
     <string name="p_fine_tune_support_max_updates">"支援列表更新次數限制"</string>
     <string name="p_fine_tune_support_swipes_per_update">"支援列表更新後滑動次數"</string>
