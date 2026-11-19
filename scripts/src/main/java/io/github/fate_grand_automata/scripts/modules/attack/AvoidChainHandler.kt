@@ -115,8 +115,10 @@ object AvoidChainHandler {
         if (selected.size >= cardsNeeded) return selected
 
         val allowedCards = candidates.filter { card ->
-            val fieldSlot = card.fieldSlot ?: return@filter false
-            val wouldMakeBraveChain = fieldSlotCounts.getOrElse(fieldSlot) { 0 } >= 2
+            // A card whose Servant isn't known can only be used when Brave Chains don't matter
+            val fieldSlot = card.fieldSlot
+            if (fieldSlot == null && avoidBraveChains) return@filter false
+            val wouldMakeBraveChain = fieldSlot != null && fieldSlotCounts.getOrElse(fieldSlot) { 0 } >= 2
 
             val cardTypeCount = cardTypeCounts.getOrElse(card.type) { 0 }
             val wouldMakeColorChain = cardTypeCount >= 2
@@ -134,12 +136,14 @@ object AvoidChainHandler {
             else allowedCards
 
         for (card in orderedCards) {
-            val fieldSlot = card.fieldSlot ?: continue
+            val fieldSlot = card.fieldSlot
             val result = selectCards(
                 candidates = candidates,
                 cardsNeeded = cardsNeeded,
                 selected = selected + card,
-                fieldSlotCounts = fieldSlotCounts + (fieldSlot to fieldSlotCounts.getOrElse(fieldSlot) { 0 } + 1),
+                fieldSlotCounts =
+                    if (fieldSlot == null) fieldSlotCounts
+                    else fieldSlotCounts + (fieldSlot to fieldSlotCounts.getOrElse(fieldSlot) { 0 } + 1),
                 cardTypeCounts = cardTypeCounts + (card.type to cardTypeCounts.getOrElse(card.type) { 0 } + 1),
                 avoidBraveChains = avoidBraveChains,
                 avoidCardChains = avoidCardChains,
