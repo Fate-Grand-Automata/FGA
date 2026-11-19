@@ -38,17 +38,15 @@ class ServantTracker @Inject constructor(
 
     /**
      * NP types changed by a skill for a limited time (e.g. Emiya's or BB Dubai's skill with a choice).
-     * They take precedence over the type of the form, and are read again every turn until the type matches the form's.
+     * They take precedence over the type of the form until a read confirms the form's type again.
      */
     private val changedNpCardTypes = mutableMapOf<TeamSlot, CardTypeEnum>()
 
     /**
-     * Servants whose NP type may have changed but couldn't be read yet.
-     * Their last known type is used until the next read, at the start of the next turn or when Order Change
-     * brings them back. A failed read keeps the last known type, and is only retried while
-     * the Servant has an entry in [changedNpCardTypes].
+     * Tracks when to reopen each Servant's details. A readable counter delays the next check
+     * until the banner should expire. While waiting, planning continues to use the last known type.
      */
-    private val npCardTypesToReadAgain = mutableSetOf<TeamSlot>()
+    private val npCardTypesToReadAgain = NpCardTypeRechecks()
 
     fun nextRun() {
         servantQueue.clear()
@@ -100,8 +98,10 @@ class ServantTracker @Inject constructor(
         changedNpCardTypes[teamSlot] ?: formNpCardType(teamSlot) ?: CardTypeEnum.Unknown
 
     private fun formNpCardType(teamSlot: TeamSlot): CardTypeEnum? =
-        if (teamSlot in transformedServants) transformedNpCardTypes[teamSlot]
-        else npCardTypes[teamSlot]
+        formNpCardTypes(teamSlot)[teamSlot]
+
+    private fun formNpCardTypes(teamSlot: TeamSlot) =
+        if (teamSlot in transformedServants) transformedNpCardTypes else npCardTypes
 
 
     override fun close() {
@@ -229,9 +229,9 @@ class ServantTracker @Inject constructor(
      * Reads the NP type of the Servant in [fieldSlot] again from their details dialog, after a skill that lets
      * the player choose an option, such as Emiya's or BB Dubai's, which can change the NP type without changing the portrait.
      *
-     * A type that differs from the form's is kept in [changedNpCardTypes] and read again at the start of each turn,
-     * since the skill's effect wears off. If no type matches, the last known type is kept,
-     * since most choice skills don't change the NP type.
+     * A type that differs from the form's is kept in [changedNpCardTypes] and checked next turn.
+     * If the banner hides the type, its turn counter schedules the next read. An unreadable
+     * counter means retry next turn. Checks end when a read confirms or establishes the form's type.
      */
     fun refreshNpCardType(fieldSlot: FieldSlot) {
         // Only Chain Priority plans around the NP type
@@ -239,21 +239,34 @@ class ServantTracker @Inject constructor(
         // An unrecognized Servant has no NP type to plan around
         val teamSlot = _deployed[fieldSlot]?.takeUnless { it is TeamSlot.Unknown } ?: return
 
-        val npImage = readDetailsDialog(fieldSlot) {
-            locations.battle.servantNpCardTypeRegion.getPattern("NP type $teamSlot")
+        val (npCardType, remainingTurns) = readDetailsDialog(fieldSlot) {
+            useSameSnapIn {
+                val type = locations.battle.servantNpCardTypeRegion.getPattern("NP type $teamSlot")
+                    .use { detectNpCardType(teamSlot, it) }
+                // Read the small banner digit on the same frame only if the splash was unreadable.
+                val turns = if (type == null) parseNpChangeTurns(
+                    locations.battle.servantNpChangeTurnsRegion.detectText(upscale = true)
+                ) else null
+                type to turns
+            }
         }
-        val npCardType = npImage.use { detectNpCardType(teamSlot, it) }
 
         // Give the battle screen time to settle after the dialog closes.
         250.milliseconds.wait()
 
-        npCardTypesToReadAgain.remove(teamSlot)
-        if (npCardType == null) return
-
-        // If the form's type was never read, the read can't be told apart from a temporary change,
-        // so it is kept as a change and read again each turn
-        if (npCardType == formNpCardType(teamSlot)) changedNpCardTypes.remove(teamSlot)
-        else changedNpCardTypes[teamSlot] = npCardType
+        val formTypes = formNpCardTypes(teamSlot)
+        val formType = formTypes[teamSlot]
+        // The change banner covers the NP read region during the effect, so a readable type
+        // can fill in a missing baseline for the current form.
+        val confirmedType = confirmedFormNpCardType(npCardType, formType)
+        if (confirmedType != null) {
+            if (formType == null) formTypes[teamSlot] = confirmedType
+            changedNpCardTypes.remove(teamSlot)
+            npCardTypesToReadAgain.remove(teamSlot)
+        } else {
+            if (npCardType != null) changedNpCardTypes[teamSlot] = npCardType
+            npCardTypesToReadAgain.schedule(teamSlot, remainingTurns ?: 1)
+        }
     }
 
     /**
@@ -264,12 +277,13 @@ class ServantTracker @Inject constructor(
         if (prefs.skipServantFaceCardCheck || !battleConfig.useChainPriority) return
         val teamSlot = _deployed[fieldSlot]?.takeUnless { it is TeamSlot.Unknown } ?: return
 
-        npCardTypesToReadAgain += teamSlot
+        // No dialog was available after the skill. Read at the next opportunity, including Order Change.
+        npCardTypesToReadAgain.schedule(teamSlot, 0)
     }
 
     private fun needsNpCardTypeRead(fieldSlot: FieldSlot): Boolean {
         val teamSlot = _deployed[fieldSlot] ?: return false
-        return teamSlot in changedNpCardTypes || teamSlot in npCardTypesToReadAgain
+        return npCardTypesToReadAgain.isDue(teamSlot)
     }
 
     private fun check(slot: FieldSlot) {
@@ -321,6 +335,7 @@ class ServantTracker @Inject constructor(
     }
 
     fun beginTurn() {
+        npCardTypesToReadAgain.beginTurn()
         FieldSlot.list.forEach {
             check(it)
         }
@@ -346,7 +361,8 @@ class ServantTracker @Inject constructor(
 
                 check(startingSlot)
 
-                // beginTurn() only re-reads changed NP types of the Servants on the field at that time
+                // beginTurn() only runs NP type re-checks for the Servants on the field at that time,
+                // so a Servant brought in here with a changed type or a due re-check is read now
                 if (needsNpCardTypeRead(startingSlot)) {
                     refreshNpCardType(startingSlot)
                 }
