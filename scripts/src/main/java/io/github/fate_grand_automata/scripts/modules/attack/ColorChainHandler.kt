@@ -23,6 +23,9 @@ object ColorChainHandler {
         // NEVER want to make a chain of Unknown cards
         if (cardType == CardTypeEnum.Unknown) return null
 
+        // The chain's color depends on every NP in the attack, so each needs a known type
+        if (npUsage.nps.any { it.toFieldSlot() !in npTypes }) return null
+
         val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: AttackUtils.getCardsPerCardTypeMap(cards, npTypes)
         if (!isColorChainAllowed(cardType, cards, npTypes, cardCountPerCardTypeMap)) return null
 
