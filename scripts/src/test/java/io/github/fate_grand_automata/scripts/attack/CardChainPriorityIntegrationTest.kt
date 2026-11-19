@@ -803,7 +803,7 @@ class CardChainPriorityIntegrationTest {
             AttackLineUps.MightyOutlier.scathach1WB,
             AttackLineUps.MightyOutlier.scathach2WA,
             AttackLineUps.MightyOutlier.nero3RA,
-            AttackLineUps.Unknown.nero4Unknown,
+            AttackLineUps.Unknown.nero4Unknown.copy(isStunned = true),
             AttackLineUps.MightyOutlier.scathach5WQ,
         )
         val picked = AttackPriorityHandler.pick(
@@ -811,10 +811,12 @@ class CardChainPriorityIntegrationTest {
             braveChainEnum = BraveChainEnum.None,
         ).map { it.card }
 
-        assertThat(picked.take(3)).containsExactly(
+        assertThat(picked).containsExactly(
             CommandCard.Face.A,
             CommandCard.Face.B,
             CommandCard.Face.E,
+            CommandCard.Face.C,
+            CommandCard.Face.D,
         )
     }
 
