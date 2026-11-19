@@ -97,6 +97,7 @@ Skills"</string>
     <string name="p_battle_config_server">"Server"</string>
     <string name="p_battle_config_card_priority">"Card Priority"</string>
     <string name="p_battle_config_use_servant_priority">"Use Servant Priority"</string>
+    <string name="p_battle_config_use_chain_priority">"Use Chain Priority"</string>
     <string name="p_battle_config_support">"Support"</string>
     <string name="p_battle_config_support_selection_mode">"Selection Mode"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"Fallback"</string>
@@ -131,6 +132,8 @@ Skills"</string>
     <string name="p_screenshot_drops_unmodified">"Save unmodified screenshots"</string>
     <string name="p_screenshot_drops_unmodified_summary">"Save unmodified full-screen screenshots instead of cropped and rescaled screenshots"</string>
     <string name="p_boost_item">"Boost Item"</string>
+    <string name="p_servant_priority">"Servant Priority"</string>
+    <string name="p_chain_priority">"Chain Priority"</string>
     <string name="p_brave_chains">"Brave Chains"</string>
     <string name="p_rearrange_cards">"Rearrange Cards"</string>
     <string name="p_skip_servant_face_checks">"Skip servant face-card checks"</string>
@@ -168,6 +171,8 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_fine_tune_min_similarity">"Min Similarity"</string>
     <string name="p_fine_tune_mlb_similarity">"MLB Similarity"</string>
     <string name="p_fine_tune_stage_counter_similarity">"Stage Counter Similarity"</string>
+    <string name="p_fine_tune_np_card_type_similarity">"NP Card Type Similarity"</string>
+    <string name="p_fine_tune_np_card_detection_similarity">"NP card detection similarity"</string>
     <string name="p_fine_tune_clicks">"Clicks"</string>
     <string name="p_fine_tune_wait_after_clicking">"Wait after clicking"</string>
     <string name="p_fine_tune_click_duration">"Click duration"</string>
@@ -179,6 +184,8 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_fine_tune_wait">"Wait"</string>
     <string name="p_fine_tune_skill_delay">"Skill Delay"</string>
     <string name="p_fine_tune_wait_before_turn">"Wait before Turn"</string>
+    <string name="p_fine_tune_servant_details_wait">"Servant details wait"</string>
+    <string name="p_fine_tune_wait_after_order_change">"Wait after Order Change"</string>
     <string name="p_fine_tune_wait_before_cards">"Wait before Cards"</string>
     <string name="p_fine_tune_wait_multiplier">"Wait Multiplier"</string>
     <string name="p_fine_tune_default_value">"Default: %1$s"</string>
@@ -187,6 +194,8 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_fine_tune_min_similarity_hint">"The similarity threshold used for all image matching. Don't unnecessarily change this."</string>
     <string name="p_fine_tune_mlb_similarity_hint">"Similarity threshold used for matching MLB star. Reduce this by a bit if MLB CEs are not detected."</string>
     <string name="p_fine_tune_stage_counter_similarity_hint">"Similarity threshold for detecting wave change. If your skill commands are used in the wrong wave, tweaking this might help."</string>
+    <string name="p_fine_tune_np_card_type_similarity_hint">"Similarity threshold used for the NP card type detection (Buster, Arts, Quick). Only used when Chain Priority is on."</string>
+    <string name="p_fine_tune_np_card_detection_similarity_hint">"Minimum similarity required to recognize a Servant\'s portrait on an NP card and treat that NP as available. Chain Priority currently uses this to decide which spam NPs to include when planning a chain. Needs servant face-card checks."</string>
     <string name="p_fine_tune_wait_after_clicking_hint">"Delay after each click/tap unless clicking repeatedly. Some time is needed for the game's animations to finish."</string>
     <string name="p_fine_tune_click_duration_hint">"Every tap/click is like a hold and release performed quickly. This sets the time difference between the two."</string>
     <string name="p_fine_tune_click_delay_hint">"Delay between individual taps/clicks when doing so repeatedly like at the end of battles, friend point summon and lottery script."</string>
@@ -195,6 +204,8 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_fine_tune_swipe_multiplier_hint">"The distance of each swipe is scaled by this. Use it along with swipe duration to tweak it to your needs."</string>
     <string name="p_fine_tune_skill_delay_hint">"Delay between pressing on skill and pressing on target servant."</string>
     <string name="p_fine_tune_wait_before_turn_hint">"Delay before the skill sequence starts after Battle screen is detected. Slower devices might need longer delay."</string>
+    <string name="p_fine_tune_servant_details_wait_hint">"Delay after tapping the INFO tab before reading the Servant details."</string>
+    <string name="p_fine_tune_wait_after_order_change_hint">"Delay before the skill sequence starts after Order Change has been used. Slower devices might need longer delay."</string>
     <string name="p_fine_tune_wait_before_cards_hint">"Delay between clicking on Attack button and clicking on face-cards/NP. Slower devices might need longer delay."</string>
     <string name="p_fine_tune_wait_multiplier_hint">"Scales every wait and delay. Raise it to slow the whole script down, lower it to speed it up."</string>
     <string name="troubleshoot">"Troubleshooting"</string>
@@ -207,7 +218,13 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_refill_type_sq">"SQ"</string>
     <string name="p_brave_chains_don_t_care">"Don't care"</string>
     <string name="p_brave_chains_with_np">"With NP"</string>
+    <string name="p_brave_chains_always">"Always"</string>
     <string name="p_brave_chains_avoid">"Avoid"</string>
+    <string name="p_chain_type_quick">"Quick"</string>
+    <string name="p_chain_type_arts">"Arts"</string>
+    <string name="p_chain_type_buster">"Buster"</string>
+    <string name="p_chain_type_mighty">"Mighty"</string>
+    <string name="p_chain_type_avoid">"Avoid"</string>
     <string name="p_boost_item_disabled">"Disabled"</string>
     <string name="p_boost_item_skip">"Skip"</string>
     <string name="spam">"Spam mode"</string>

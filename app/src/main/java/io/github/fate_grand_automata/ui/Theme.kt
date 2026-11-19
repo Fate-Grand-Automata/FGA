@@ -160,6 +160,10 @@ private val DarkColors = darkColorScheme(
 fun FGAListItemColors() = ListItemDefaults.colors(
     containerColor = MaterialTheme.colorScheme.surfaceVariant
 )
+@Composable
+fun FGAListItemColorsDisabled() = ListItemDefaults.colors(
+    containerColor = Color.Gray
+)
 
 /**
  * Menus default to `surfaceContainer`, which this scheme leaves unset — Material then falls

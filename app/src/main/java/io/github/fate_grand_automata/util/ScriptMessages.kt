@@ -97,6 +97,12 @@ class ScriptMessages @Inject constructor(
                 val supportText = if (item.isSupport) "Support " else ""
                 Timber.d("${item.cards} belong to ${supportText}${item.servant}")
             }
+
+            // Warning level, so that it also shows up in release and CI builds
+            is ScriptLog.NpCardTypeNotDetected -> {
+                val scores = item.scores.entries.joinToString { (type, score) -> "$type: %.2f".format(score) }
+                Timber.w("Could not detect the NP card type of ${item.servant} (needs %.2f). Scores: $scores".format(item.minSimilarity))
+            }
         }
 
     override fun notify(action: ScriptNotify) =

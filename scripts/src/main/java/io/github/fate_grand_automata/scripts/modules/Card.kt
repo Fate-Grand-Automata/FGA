@@ -3,12 +3,16 @@ package io.github.fate_grand_automata.scripts.modules
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.ScriptLog
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.SpamConfigPerTeamSlot
+import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.scripts.models.battle.BattleState
+import io.github.fate_grand_automata.scripts.models.toFieldSlot
+import io.github.fate_grand_automata.scripts.modules.attack.AttackPriorityHandler
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
@@ -22,7 +26,6 @@ class Card @Inject constructor(
     private val caster: Caster,
     private val parser: CardParser,
     private val priority: FaceCardPriority,
-    private val braveChains: ApplyBraveChains,
     private val battleConfig: IBattleConfig
 ) : IFgoAutomataApi by api {
 
@@ -57,11 +60,37 @@ class Card @Inject constructor(
         val braveChainsPerWave = battleConfig.braveChains
         val rearrangeCardsPerWave = battleConfig.rearrangeCards
 
-        return braveChains.pick(
+        val useChainPriority = battleConfig.useChainPriority
+        if (useChainPriority) {
+            // Only the NPs that fit after the cards clicked before them are part of the attack
+            val npUsageToUse = NPUsage(
+                (npUsage.nps + spamNps.detected())
+                    .take((3 - npUsage.cardsBeforeNP).coerceAtLeast(0))
+                    .toSet(),
+                npUsage.cardsBeforeNP
+            )
+
+            val npTypes = npUsageToUse.nps.associate { it.toFieldSlot() to it.type() }
+            val chainPriority = battleConfig.chainPriority.atWave(state.stage)
+            return AttackPriorityHandler.pick(
+                cards = cards,
+                priorityOrder = cardsOrderedByPriority,
+                npUsage = npUsageToUse,
+                braveChainEnum = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
+                chainPriority = chainPriority,
+                rearrange = rearrangeCardsPerWave.inCurrentWave(false),
+                npTypes = npTypes,
+            ).map { it.card }
+        }
+
+        // Always is only offered with Chain Priority. Without it, a saved Always acts as With NP.
+        val braveChains = braveChainsPerWave.inCurrentWave(BraveChainEnum.None)
+            .let { if (it == BraveChainEnum.Always) BraveChainEnum.WithNP else it }
+        return ApplyBraveChains.pick(
             cards = cardsOrderedByPriority,
             npUsage = npUsage,
-            braveChains = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
-            rearrange = rearrangeCardsPerWave.inCurrentWave(false)
+            braveChains = braveChains,
+            rearrange = rearrangeCardsPerWave.inCurrentWave(false),
         ).map { it.card }
     }
 
@@ -91,5 +120,29 @@ class Card @Inject constructor(
             .drop(npUsage.cardsBeforeNP)
             .also { messages.log(ScriptLog.ClickingCards(it)) }
             .forEach { caster.use(it) }
+    }
+
+    fun CommandCard.NP.type(): CardTypeEnum {
+        val fieldSlot = this.toFieldSlot()
+        val teamSlot = servantTracker.deployed[fieldSlot] ?: return CardTypeEnum.Unknown
+        if (teamSlot is TeamSlot.Unknown) return CardTypeEnum.Unknown
+        return servantTracker.getNpCardType(teamSlot)
+    }
+
+    // TODO: Use this to filter NPs for chain planning once NP card detection is reliable.
+    // This helper is intentionally unused for now. In pickCards, scripted NPs are assumed
+    // ready and only spam NPs are filtered by detection.
+    fun NPUsage.detected (): NPUsage {
+        val validNPs = (this.nps + spamNps).detected()
+        return NPUsage(validNPs, this.cardsBeforeNP)
+    }
+
+    fun Set<CommandCard.NP>.detected (): Set<CommandCard.NP> {
+        // Matching the NP portraits is slow, so it is skipped when there are no NPs to check
+        if (isEmpty()) return emptySet()
+        val npCardsDetected = servantTracker.npCardsDetectedUsingServantFaces()
+        return this
+            .filter { it in npCardsDetected }
+            .toSet()
     }
 }

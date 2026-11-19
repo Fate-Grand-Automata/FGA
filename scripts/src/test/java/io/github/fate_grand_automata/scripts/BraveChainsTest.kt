@@ -11,10 +11,8 @@ import kotlin.test.Test
 
 class BraveChainsTest {
     private fun shouldReturnSame(mode: BraveChainEnum) {
-        val braveChains = ApplyBraveChains()
-
         val cards = FaceCardPriorityTest.lineup1
-        val picked = braveChains.pick(
+        val picked = ApplyBraveChains.pick(
             cards = cards,
             braveChains = mode
         )
@@ -28,10 +26,8 @@ class BraveChainsTest {
     }
 
     private fun justRearrange(mode: BraveChainEnum) {
-        val braveChains = ApplyBraveChains()
-
         val cards = FaceCardPriorityTest.lineup1
-        val picked = braveChains.pick(
+        val picked = ApplyBraveChains.pick(
             cards = cards,
             braveChains = mode,
             rearrange = true
@@ -57,10 +53,8 @@ class BraveChainsTest {
 
     @Test
     fun braveChainsWith1MatchingCard() {
-        val braveChains = ApplyBraveChains()
-
         val cards = FaceCardPriorityTest.lineup1
-        val picked = braveChains.pick(
+        val picked = ApplyBraveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0)
@@ -71,10 +65,8 @@ class BraveChainsTest {
 
     @Test
     fun braveChainsRearrangeWith1MatchingCard() {
-        val braveChains = ApplyBraveChains()
-
         val cards = FaceCardPriorityTest.lineup1
-        val picked = braveChains.pick(
+        val picked = ApplyBraveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNP,
             rearrange = true,
@@ -86,10 +78,8 @@ class BraveChainsTest {
 
     @Test
     fun braveChainsWith2MatchingCards() {
-        val braveChains = ApplyBraveChains()
-
         val cards = FaceCardPriorityTest.lineup1
-        val picked = braveChains.pick(
+        val picked = ApplyBraveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNP,
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0)
@@ -100,10 +90,8 @@ class BraveChainsTest {
 
     @Test
     fun braveChainsRearrangeWith2MatchingCards() {
-        val braveChains = ApplyBraveChains()
-
         val cards = FaceCardPriorityTest.lineup1
-        val picked = braveChains.pick(
+        val picked = ApplyBraveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNP,
             rearrange = true,
@@ -115,10 +103,8 @@ class BraveChainsTest {
 
     @Test
     fun avoidBraveChains3DiffCards() {
-        val braveChains = ApplyBraveChains()
-
         val cards = FaceCardPriorityTest.lineup1
-        val picked = braveChains.pick(
+        val picked = ApplyBraveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.Avoid
         ).map { it.card }
@@ -133,10 +119,8 @@ class BraveChainsTest {
 
     @Test
     fun avoidBraveChainsWith2DiffCards() {
-        val braveChains = ApplyBraveChains()
-
         val cards = FaceCardPriorityTest.lineup2
-        val picked = braveChains.pick(
+        val picked = ApplyBraveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.Avoid
         ).map { it.card }
@@ -146,10 +130,8 @@ class BraveChainsTest {
 
     @Test
     fun avoidBraveChainsRearrangeWith2DiffCards() {
-        val braveChains = ApplyBraveChains()
-
         val cards = FaceCardPriorityTest.lineup2
-        val picked = braveChains.pick(
+        val picked = ApplyBraveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.Avoid,
             rearrange = true

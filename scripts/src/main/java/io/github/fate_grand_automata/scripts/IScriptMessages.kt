@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.scripts
 
+import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.TeamSlot
@@ -39,6 +40,18 @@ sealed class ScriptLog {
         val cards: Iterable<CommandCard.Face>,
         val servant: TeamSlot,
         val isSupport: Boolean = false
+    ) : ScriptLog()
+
+    /**
+     * No NP card type matched in the Servant details dialog.
+     *
+     * @param scores Best match score per type, 0 when the template couldn't be matched at all.
+     * @param minSimilarity The score a type needs to be detected.
+     */
+    class NpCardTypeNotDetected(
+        val servant: TeamSlot,
+        val scores: Map<CardTypeEnum, Double>,
+        val minSimilarity: Double
     ) : ScriptLog()
 }
 

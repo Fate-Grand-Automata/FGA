@@ -7,6 +7,7 @@ import io.github.fate_grand_automata.scripts.models.AutoSkillCommand
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.SpamConfigPerTeamSlot
+import io.github.fate_grand_automata.scripts.models.battle.ChainPriorityPerWave
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferences
@@ -50,4 +51,9 @@ class PreferencesModule {
     @Provides
     fun provideServantPriority(battleConfig: IBattleConfig): ServantPriorityPerWave? =
         if (battleConfig.useServantPriority) battleConfig.servantPriority else null
+
+    @ScriptScope
+    @Provides
+    fun provideChainPriority(battleConfig: IBattleConfig): ChainPriorityPerWave? =
+        if (battleConfig.useChainPriority) battleConfig.chainPriority else null
 }

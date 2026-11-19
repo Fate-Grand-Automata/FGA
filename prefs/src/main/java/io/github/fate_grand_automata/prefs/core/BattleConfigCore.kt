@@ -13,6 +13,7 @@ import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantSpamConfig
+import io.github.fate_grand_automata.scripts.models.battle.ChainPriorityPerWave
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 
@@ -119,6 +120,19 @@ class BattleConfigCore(
                 value.toString()
         },
         default = ServantPriorityPerWave.default
+    )
+
+    val useChainPriority = maker.bool("use_chain_priority")
+    val chainPriority = maker.serialized(
+        "chain_priority",
+        serializer = object : Serializer<ChainPriorityPerWave> {
+            override fun deserialize(serialized: String): ChainPriorityPerWave =
+                ChainPriorityPerWave.of(serialized)
+
+            override fun serialize(value: ChainPriorityPerWave) =
+                value.toString()
+        },
+        default = ChainPriorityPerWave.default
     )
 
     private val defaultSpamConfig = (1..6).map { ServantSpamConfig() }

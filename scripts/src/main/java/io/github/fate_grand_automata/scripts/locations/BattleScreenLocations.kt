@@ -119,5 +119,15 @@ class BattleScreenLocations @Inject constructor(
     
     val servantDetailsFaceCardRegion = Region(-685, 410, 110, 60).xFromCenter()
 
+    /**
+     * The corner of the NP card art that shows the NP's card type, in the same dialog as
+     * [servantDetailsFaceCardRegion]. Both are part of the NP card image, so this one is placed
+     * relative to the face card and follows it when the dialog layout changes.
+     */
+    val servantNpCardTypeRegion = Region(-50, 350, 100, 50) + servantDetailsFaceCardRegion.location
+
+    /** Digits on the remaining-turns line of the banner covering the NP card art. */
+    val servantNpChangeTurnsRegion = Region(29, 354, 28, 34) + servantDetailsFaceCardRegion.location
+
     val battleSafeMiddleOfScreenClick = Location(0, 550).xFromCenter()
 }

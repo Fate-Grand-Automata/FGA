@@ -100,6 +100,14 @@ class PreferencesImpl @Inject constructor(
 
     override val waitBeforeCards by prefs.waitBeforeCards.map { it.milliseconds }
 
+    override val waitAfterOrderChange by prefs.waitAfterOrderChange.map { it.milliseconds }
+
+    override val servantDetailsWait by prefs.servantDetailsWait.map { it.milliseconds }
+
+    override val npCardDetectionSimilarity by prefs.npCardDetectionSimilarity.map { it / 100.0 }
+
+    override val npCardTypeSimilarity by prefs.npCardTypeSimilarity.map { it / 100.0 }
+
     override var maxGoldEmberStackSize by prefs.maxGoldEmberSetSize
 
     override var maxGoldEmberTotalCount by prefs.maxGoldEmberTotalCount

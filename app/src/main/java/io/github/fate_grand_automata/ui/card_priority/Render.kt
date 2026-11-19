@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.ui.FGAListItemColors
 import io.github.fate_grand_automata.ui.drag_sort.DragSort
@@ -32,7 +33,8 @@ import io.github.fate_grand_automata.util.stringRes
 
 @Composable
 fun CardPriorityListItem.Render(
-    useServantPriority: Boolean
+    useServantPriority: Boolean,
+    useChainPriority: Boolean
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -53,11 +55,17 @@ fun CardPriorityListItem.Render(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 var braveChains by braveChains
+                // Always runs as With NP without Chain Priority, so that is what is shown. The saved value is kept.
+                val shownBraveChains =
+                    if (!useChainPriority && braveChains == BraveChainEnum.Always) BraveChainEnum.WithNP
+                    else braveChains
 
                 val braveChainDialog = listDialog(
-                    selected = braveChains,
-                    onSelectedChange = { braveChains = it },
+                    selected = shownBraveChains,
+                    // Choosing the shown value again keeps the saved one
+                    onSelectedChange = { if (it != shownBraveChains) braveChains = it },
                     entries = BraveChainEnum.entries
+                        .filter { useChainPriority || it != BraveChainEnum.Always }
                         .associateWith { stringResource(it.stringRes) },
                     title = stringResource(R.string.p_brave_chains)
                 )
@@ -67,7 +75,7 @@ fun CardPriorityListItem.Render(
                         .weight(1f)
                         .clickable { braveChainDialog.show() },
                     headlineContent = { Text(stringResource(R.string.p_brave_chains)) },
-                    supportingContent = { Text(stringResource(braveChains.stringRes)) },
+                    supportingContent = { Text(stringResource(shownBraveChains.stringRes)) },
                     colors = FGAListItemColors()
                 )
 
@@ -89,6 +97,12 @@ fun CardPriorityListItem.Render(
             }
         }
 
+        if (useChainPriority) {
+            ChainPriority(
+                priorities = chainPriority
+            )
+        }
+
         if (useServantPriority) {
             ServantPriority(
                 priorities = servantPriority
@@ -102,7 +116,7 @@ private fun ServantPriority(
     priorities: SnapshotStateList<TeamSlot>
 ) {
     Text(
-        "Servant Priority".uppercase(),
+        stringResource(R.string.p_servant_priority).uppercase(),
         modifier = Modifier
             .padding(bottom = 5.dp, top = 16.dp)
     )
@@ -130,6 +144,54 @@ private fun ServantPriority(
     )
 
     ReorderHint()
+}
+
+@Composable
+private fun ChainPriority(
+    priorities: SnapshotStateList<ChainTypeEnum>
+) {
+    Text(
+        stringResource(R.string.p_chain_priority).uppercase(),
+        modifier = Modifier
+            .padding(bottom = 10.dp, top = 10.dp)
+    )
+
+    DragSort(
+        items = priorities,
+        key = { it },
+        style = {
+            val afterCutoff = priorities.isAfterCutoff(it)
+            DragSortItemStyle(
+                backgroundColor = colorResource(
+                    if (afterCutoff) R.color.colorDisabledBackground
+                    else when (it) {
+                        ChainTypeEnum.Arts -> R.color.colorArts
+                        ChainTypeEnum.Quick -> R.color.colorQuick
+                        ChainTypeEnum.Buster -> R.color.colorBuster
+                        ChainTypeEnum.Mighty -> R.color.colorPrimaryDark
+                        ChainTypeEnum.Avoid -> R.color.colorAvoid
+                        ChainTypeEnum.None -> R.color.colorDisabledBackground
+                    }
+                ),
+                contentColor = when {
+                    afterCutoff -> colorResource(R.color.colorDisabledText)
+                    it == ChainTypeEnum.None -> Color.Black
+                    else -> Color.White
+                },
+                text = if (it == ChainTypeEnum.None) "│" else stringResource(it.stringRes)
+            )
+        },
+        modifier = Modifier.fillMaxWidth()
+    )
+
+    ReorderHint()
+}
+
+fun List<ChainTypeEnum>.isAfterCutoff(chainTypeEnum: ChainTypeEnum, indexOfAvoid: Int? = null): Boolean {
+    val avoidIndex = indexOfAvoid ?: this.indexOf(ChainTypeEnum.Cutoff)
+    val enumIndex = this.indexOf(chainTypeEnum)
+    if (avoidIndex < 0) return false
+    return enumIndex > avoidIndex
 }
 
 @Composable

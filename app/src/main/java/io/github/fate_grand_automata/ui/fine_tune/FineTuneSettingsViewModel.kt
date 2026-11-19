@@ -59,6 +59,22 @@ class FineTuneSettingsViewModel @Inject constructor(
                     valueRange = 50..100,
                     valueRepresentation = { "$it%" },
                     hint = R.string.p_fine_tune_stage_counter_similarity_hint
+                ),
+                FineTuneItem(
+                    pref = prefs.npCardTypeSimilarity,
+                    name = R.string.p_fine_tune_np_card_type_similarity,
+                    icon = icon(Icons.Default.Star),
+                    valueRange = 30..100,
+                    valueRepresentation = { "$it%" },
+                    hint = R.string.p_fine_tune_np_card_type_similarity_hint
+                ),
+                FineTuneItem(
+                    pref = prefs.npCardDetectionSimilarity,
+                    name = R.string.p_fine_tune_np_card_detection_similarity,
+                    icon = icon(Icons.Default.Star),
+                    valueRange = 30..100,
+                    valueRepresentation = { "$it%" },
+                    hint = R.string.p_fine_tune_np_card_detection_similarity_hint
                 )
             )
         ),
@@ -142,10 +158,19 @@ class FineTuneSettingsViewModel @Inject constructor(
                     pref = prefs.waitBeforeTurn,
                     name = R.string.p_fine_tune_wait_before_turn,
                     icon = icon(R.drawable.ic_time),
-                    valueRange = 50..2000,
+                    valueRange = 50..5000,
                     step = 50,
                     valueRepresentation = { "${it}ms" },
                     hint = R.string.p_fine_tune_wait_before_turn_hint
+                ),
+                FineTuneItem(
+                    pref = prefs.waitAfterOrderChange,
+                    name = R.string.p_fine_tune_wait_after_order_change,
+                    icon = icon(R.drawable.ic_time),
+                    valueRange = 0..5000,
+                    step = 50,
+                    valueRepresentation = { "${it}ms" },
+                    hint = R.string.p_fine_tune_wait_after_order_change_hint
                 ),
                 FineTuneItem(
                     pref = prefs.waitBeforeCards,
@@ -155,6 +180,15 @@ class FineTuneSettingsViewModel @Inject constructor(
                     step = 50,
                     valueRepresentation = { "${it}ms" },
                     hint = R.string.p_fine_tune_wait_before_cards_hint
+                ),
+                FineTuneItem(
+                    pref = prefs.servantDetailsWait,
+                    name = R.string.p_fine_tune_servant_details_wait,
+                    icon = icon(R.drawable.ic_time),
+                    valueRange = 0..2000,
+                    step = 50,
+                    valueRepresentation = { "${it}ms" },
+                    hint = R.string.p_fine_tune_servant_details_wait_hint
                 ),
                 FineTuneItem(
                     pref = prefs.waitMultiplier,
