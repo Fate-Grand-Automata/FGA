@@ -299,12 +299,15 @@ class BraveChainTest {
             )?.map { it.card } ?: emptyList()
 
             when (braveChainEnum) {
-                BraveChainEnum.Avoid -> assertDefaultAvoidChain(
-                    cards = cards,
-                    braveChainEnum = braveChainEnum,
-                    npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
-                    picked = picked,
-                )
+                BraveChainEnum.Avoid ->
+                    // Faces A and B would make a Brave Chain with Kiyohime's NP
+                    assertThat(picked, braveChainEnum.toString()).containsExactly(
+                        CommandCard.Face.A,
+                        CommandCard.Face.C,
+                        CommandCard.Face.B,
+                        CommandCard.Face.D,
+                        CommandCard.Face.E,
+                    )
                 BraveChainEnum.WithNP,
                 BraveChainEnum.Always, ->
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
