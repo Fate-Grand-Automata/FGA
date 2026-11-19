@@ -62,7 +62,13 @@ class Card @Inject constructor(
 
         val useChainPriority = battleConfig.useChainPriority
         if (useChainPriority) {
-            val npUsageToUse = NPUsage(npUsage.nps + spamNps.detected(), npUsage.cardsBeforeNP)
+            // Only the NPs that fit after the cards clicked before them are part of the attack
+            val npUsageToUse = NPUsage(
+                (npUsage.nps + spamNps.detected())
+                    .take((3 - npUsage.cardsBeforeNP).coerceAtLeast(0))
+                    .toSet(),
+                npUsage.cardsBeforeNP
+            )
 
             val npTypes = npUsageToUse.nps.associate { it.toFieldSlot() to it.type() }
             val chainPriority = battleConfig.chainPriority.atWave(state.stage)
