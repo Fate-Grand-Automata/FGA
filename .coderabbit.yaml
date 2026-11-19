@@ -67,6 +67,8 @@ knowledge_base:
         applyTo: "scripts/src/main/java/**/locations/*.kt,app/src/main/assets/**,libautomata/**"
       - files: "docs/agents/dependencies.md"
         applyTo: "gradle/libs.versions.toml,gradle/wrapper/**,**/build.gradle.kts,settings.gradle.kts,Gemfile,Gemfile.lock,.github/workflows/**"
+      - files: "docs/agents/game-data.md"
+        applyTo: ".claude/skills/find-apk-sprite/**,.claude/skills/render-template-asset/**"
       - files: "docs/agents/github-workflows.md"
         applyTo: ".github/workflows/**"
       - files: "docs/agents/servers-and-assets.md"

@@ -1,6 +1,6 @@
 ---
 name: render-template-asset
-description: Render a 720p template image of a UI text label from FGO's own font and string tables, for a server with no screenshot of that label. Use when a template is missing for a server (En, Jp, Cn, Tw, Kr) and users can't easily reproduce the screen - e.g. "we have no CN screenshot of the QP warning", "can we get the text from the APK?" - or to look up a label's exact text and color in the game files.
+description: Render a 720p template image of a UI text label from FGO's own font and string tables, for a server with no screenshot of that label. Use when a template is missing for a server (En, Jp, Cn, Tw, Kr) and users can't easily reproduce the screen - e.g. "we have no CN screenshot of the QP warning", "can we get the text from the APK?" - or to look up a label's exact text and color in the game files. Needs the private ../FGO-game-data repo.
 ---
 
 # Rendering a template asset from the game's font
@@ -12,21 +12,16 @@ first, and find the Region and its caller as described in that skill.
 
 ## Getting the font and the text
 
-Ask the user for the server's `.apk` or `.xapk`. They're each over 100 MB (CN's is ~2 GB) and
-usually only downloadable from a browser. Then:
+Both are in the private repo `../FGO-game-data`. If it's missing, tell the user and stop;
+[`docs/agents/game-data.md`](../../../docs/agents/game-data.md) says how to get it.
 
-```bash
-python3 .claude/skills/render-template-asset/extract_game_data.py ~/Downloads/fgo-cn.apk \
-    --out-dir <scratchpad>/fgo-cn
-```
+Each server's folder `../FGO-game-data/<Server>/` has the UI font `FGO-Main-Font.*`, which
+differs per server except that EN and JP share one, and the UI strings in `strings.json`.
+Find a label's key by searching for text you can read on any screenshot, then look the same
+key up in the target server's file. To refresh them from a newer APK, follow
+`../FGO-game-data/AGENTS.md`.
 
-- The UI font is `fonts/FGO-Main-Font.*` and differs per server.
-- The strings are JSON-like `"KEY": "text"` lines in `text/Localization*.txt`. CN and TW also
-  ship an untranslated Japanese table; the table in the server's language is the one to use.
-  Find the key by searching for a label you can read on any screenshot.
 - `[RRGGBB]` at the start of a string is the label's color; leave it out of `--text`.
-- Fonts and string tables are the game's copyrighted files. Keep them in the scratchpad, never
-  in the repo.
 
 ## Rendering
 
@@ -36,7 +31,7 @@ to the glyphs. `--check` scores it with the app's pipeline at half-pixel shifts.
 
 ```bash
 python3 .claude/skills/render-template-asset/render_template.py \
-    --font <scratchpad>/fgo-kr/fonts/FGO-Main-Font.otf --text "QP가 부" --color DB0052 \
+    --font ../FGO-game-data/Kr/FGO-Main-Font.otf --text "QP가 부" --color DB0052 \
     --region -500,222,397,47 --anchor center \
     --check docs/reference-images/Kr/skill-enhancement/skill-enhancement-insufficient-qp.png \
     --check docs/reference-images/Kr/skill-enhancement/skill-enhancement-mixed-levels.png \

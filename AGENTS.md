@@ -12,6 +12,7 @@ Fate/Grand Automata (FGA) — an Android app that automates farming in the game 
 - **`gradle/libs.versions.toml`, the Gradle wrapper, any `build.gradle.kts`** — [`docs/agents/dependencies.md`](docs/agents/dependencies.md). The AGP/Gradle/Kotlin/androidx bumps only succeed in one order; it also holds the JDK, bytecode-target and `compileSdk` pins.
 - **Automation logic in `scripts/`, or the Hilt wiring in `app/di/` and `app/runner/`** — [`docs/agents/automation-scripts.md`](docs/agents/automation-scripts.md). Every run gets its own Hilt component, and `script()` never returns normally.
 - **Any file in `app/src/main/assets/`** — [`docs/agents/servers-and-assets.md`](docs/agents/servers-and-assets.md). Template images are per-server with an `En` fallback; server choice and app language are independent.
+- **Atlases, UI strings or fonts extracted from the game's APKs, or the skills that use them** — [`docs/agents/game-data.md`](docs/agents/game-data.md). They live in the private sibling repo `../FGO-game-data`, which documents its own refresh process.
 - **Strings under `app/src/main/res/`** — [`docs/agents/translations.md`](docs/agents/translations.md). English strings live in `values/localized.xml`; the translated `values-*` copies are synced from POEditor.
 - **Any file in `.github/workflows/`** — [`docs/agents/github-workflows.md`](docs/agents/github-workflows.md). Changing a workflow's `uses:` lines, or adding, removing or renaming a workflow, must regenerate `actions.lock` with `gh actions-lock`.
 

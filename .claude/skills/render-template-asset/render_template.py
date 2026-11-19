@@ -100,7 +100,7 @@ def scores(region: np.ndarray, template: np.ndarray) -> list[float] | None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--font", required=True, help="font file from extract_game_data.py")
+    parser.add_argument("--font", required=True, help="FGO-Main-Font.* from ../FGO-game-data/<Server>/")
     parser.add_argument("--text", required=True, help="the label text, without color markup")
     parser.add_argument("--color", required=True, help="text color as RRGGBB, from the string's [RRGGBB] markup")
     parser.add_argument("--size", type=float, default=25, help="font size in 720p pixels (default: 25)")

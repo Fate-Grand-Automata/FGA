@@ -18,6 +18,9 @@ bars that leaves the image itself taller. That is the resolution matching runs a
 taken from a reference image is exactly the pixels the script compares, with no resampling in
 between. Downscale a contributed screenshot before committing it.
 
+To check a server's art or text without a screenshot from it, use the files extracted from
+its APK — see [`game-data.md`](game-data.md).
+
 Server choice and app language are independent: a user can run the JP server with the app's
 UI in English, or the EN server in Korean. Don't assume they're coupled when reading prefs or
 adding server-specific behavior.
