@@ -184,6 +184,7 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_fine_tune_wait">"Wait"</string>
     <string name="p_fine_tune_skill_delay">"Skill Delay"</string>
     <string name="p_fine_tune_wait_before_turn">"Wait before Turn"</string>
+    <string name="p_fine_tune_servant_details_wait">"Servant details wait"</string>
     <string name="p_fine_tune_wait_after_order_change">"Wait after Order Change"</string>
     <string name="p_fine_tune_wait_before_cards">"Wait before Cards"</string>
     <string name="p_fine_tune_wait_multiplier">"Wait Multiplier"</string>
@@ -203,6 +204,7 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_fine_tune_swipe_multiplier_hint">"The distance of each swipe is scaled by this. Use it along with swipe duration to tweak it to your needs."</string>
     <string name="p_fine_tune_skill_delay_hint">"Delay between pressing on skill and pressing on target servant."</string>
     <string name="p_fine_tune_wait_before_turn_hint">"Delay before the skill sequence starts after Battle screen is detected. Slower devices might need longer delay."</string>
+    <string name="p_fine_tune_servant_details_wait_hint">"Delay after tapping the INFO tab before reading the Servant details."</string>
     <string name="p_fine_tune_wait_after_order_change_hint">"Delay before the skill sequence starts after Order Change has been used. Slower devices might need longer delay."</string>
     <string name="p_fine_tune_wait_before_cards_hint">"Delay between clicking on Attack button and clicking on face-cards/NP. Slower devices might need longer delay."</string>
     <string name="p_fine_tune_wait_multiplier_hint">"Scales every wait and delay. Raise it to slow the whole script down, lower it to speed it up."</string>

@@ -182,6 +182,15 @@ class FineTuneSettingsViewModel @Inject constructor(
                     hint = R.string.p_fine_tune_wait_before_cards_hint
                 ),
                 FineTuneItem(
+                    pref = prefs.servantDetailsWait,
+                    name = R.string.p_fine_tune_servant_details_wait,
+                    icon = icon(R.drawable.ic_time),
+                    valueRange = 0..2000,
+                    step = 50,
+                    valueRepresentation = { "${it}ms" },
+                    hint = R.string.p_fine_tune_servant_details_wait_hint
+                ),
+                FineTuneItem(
                     pref = prefs.waitMultiplier,
                     name = R.string.p_fine_tune_wait_multiplier,
                     icon = icon(R.drawable.ic_time),

@@ -102,6 +102,8 @@ class PreferencesImpl @Inject constructor(
 
     override val waitAfterOrderChange by prefs.waitAfterOrderChange.map { it.milliseconds }
 
+    override val servantDetailsWait by prefs.servantDetailsWait.map { it.milliseconds }
+
     override val npSpamCardDetectionSimilarity by prefs.npSpamCardDetectionSimilarity.map { it / 100.0 }
 
     override val npCardTypeSimilarity by prefs.npCardTypeSimilarity.map { it / 100.0 }

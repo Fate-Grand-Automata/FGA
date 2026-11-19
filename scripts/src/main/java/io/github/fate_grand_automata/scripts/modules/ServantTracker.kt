@@ -10,6 +10,7 @@ import io.github.fate_grand_automata.scripts.models.OrderChangeMember
 import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.scripts.models.skills
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
+import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.lib_automata.Pattern
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
@@ -18,7 +19,8 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @ScriptScope
 class ServantTracker @Inject constructor(
-    api: IFgoAutomataApi
+    api: IFgoAutomataApi,
+    private val battleConfig: IBattleConfig
 ) : IFgoAutomataApi by api, AutoCloseable {
 
     private val servantQueue = mutableListOf<TeamSlot>()
@@ -33,6 +35,20 @@ class ServantTracker @Inject constructor(
     private val npCardTypes = mutableMapOf<TeamSlot, CardTypeEnum>()
     private val transformedNpCardTypes = mutableMapOf<TeamSlot, CardTypeEnum>()
     private val transformedServants = mutableSetOf<TeamSlot>()
+
+    /**
+     * NP types changed by a skill for a limited time (e.g. Emiya's or BB Dubai's skill with a choice).
+     * They take precedence over the type of the form, and are read again every turn until the type matches the form's.
+     */
+    private val changedNpCardTypes = mutableMapOf<TeamSlot, CardTypeEnum>()
+
+    /**
+     * Servants whose NP type may have changed but couldn't be read yet.
+     * Their last known type is used until the next read, at the start of the next turn or when Order Change
+     * brings them back. A failed read keeps the last known type, and is only retried while
+     * the Servant has an entry in [changedNpCardTypes].
+     */
+    private val npCardTypesToReadAgain = mutableSetOf<TeamSlot>()
 
     fun nextRun() {
         servantQueue.clear()
@@ -51,6 +67,8 @@ class ServantTracker @Inject constructor(
 
         // Every run starts with all Servants in the form they entered the field in
         transformedServants.clear()
+        changedNpCardTypes.clear()
+        npCardTypesToReadAgain.clear()
     }
 
     init {
@@ -78,13 +96,12 @@ class ServantTracker @Inject constructor(
         CardTypeEnum.Quick to images[Images.NpQuick],
     )
 
-    fun getNpCardType(teamSlot: TeamSlot): CardTypeEnum {
-        val npCardType =
-            if (teamSlot in transformedServants) transformedNpCardTypes[teamSlot]
-            else npCardTypes[teamSlot]
+    fun getNpCardType(teamSlot: TeamSlot): CardTypeEnum =
+        changedNpCardTypes[teamSlot] ?: formNpCardType(teamSlot) ?: CardTypeEnum.Unknown
 
-        return npCardType ?: CardTypeEnum.Unknown
-    }
+    private fun formNpCardType(teamSlot: TeamSlot): CardTypeEnum? =
+        if (teamSlot in transformedServants) transformedNpCardTypes[teamSlot]
+        else npCardTypes[teamSlot]
 
 
     override fun close() {
@@ -161,6 +178,8 @@ class ServantTracker @Inject constructor(
         npCardTypes.remove(teamSlot)
         transformedNpCardTypes.remove(teamSlot)
         transformedServants.remove(teamSlot)
+        changedNpCardTypes.remove(teamSlot)
+        npCardTypesToReadAgain.remove(teamSlot)
     }
 
     /**
@@ -173,26 +192,84 @@ class ServantTracker @Inject constructor(
         if (prefs.skipServantFaceCardCheck || (!addAnotherImage && teamSlot in faceCardImages))
             return null
 
-        // Open details dialog and click on INFO
-        locations.battle.servantOpenDetailsClick(slot).click()
-        locations.battle.servantDetailsInfoClick.click()
-
-        250.milliseconds.wait()
-
-        val image = locations.battle.servantDetailsFaceCardRegion.getPattern("Face $teamSlot")
-        val npImage = locations.battle.servantNpCardTypeRegion.getPattern("NP type $teamSlot")
-
-        // Close dialog
-        locations.battle.extraInfoWindowCloseClick.click()
+        val (image, npImage) = readDetailsDialog(slot) {
+            locations.battle.servantDetailsFaceCardRegion.getPattern("Face $teamSlot") to
+                    locations.battle.servantNpCardTypeRegion.getPattern("NP type $teamSlot")
+        }
 
         faceCardImages.getOrPut(teamSlot) { mutableListOf() }
             .add(image)
 
         val npCardType = npImage.use { detectNpCardType(teamSlot, it) }
 
+        // Give the battle screen time to settle after the dialog closes.
         250.milliseconds.wait()
 
         return npCardType
+    }
+
+    /**
+     * Opens the details dialog of the Servant in [slot] on its INFO tab, runs [read] and closes the dialog again.
+     * Waits for the INFO tab to render before [read] captures the screen.
+     */
+    private fun <T> readDetailsDialog(slot: FieldSlot, read: () -> T): T {
+        locations.battle.servantOpenDetailsClick(slot).click()
+        locations.battle.servantDetailsInfoClick.click()
+
+        prefs.servantDetailsWait.wait()
+
+        val result = read()
+
+        locations.battle.extraInfoWindowCloseClick.click()
+
+        return result
+    }
+
+    /**
+     * Reads the NP type of the Servant in [fieldSlot] again from their details dialog, after a skill that lets
+     * the player choose an option, such as Emiya's or BB Dubai's, which can change the NP type without changing the portrait.
+     *
+     * A type that differs from the form's is kept in [changedNpCardTypes] and read again at the start of each turn,
+     * since the skill's effect wears off. If no type matches, the last known type is kept,
+     * since most choice skills don't change the NP type.
+     */
+    fun refreshNpCardType(fieldSlot: FieldSlot) {
+        // Only Chain Priority plans around the NP type
+        if (prefs.skipServantFaceCardCheck || !battleConfig.useChainPriority) return
+        // An unrecognized Servant has no NP type to plan around
+        val teamSlot = _deployed[fieldSlot]?.takeUnless { it is TeamSlot.Unknown } ?: return
+
+        val npImage = readDetailsDialog(fieldSlot) {
+            locations.battle.servantNpCardTypeRegion.getPattern("NP type $teamSlot")
+        }
+        val npCardType = npImage.use { detectNpCardType(teamSlot, it) }
+
+        // Give the battle screen time to settle after the dialog closes.
+        250.milliseconds.wait()
+
+        npCardTypesToReadAgain.remove(teamSlot)
+        if (npCardType == null) return
+
+        // If the form's type was never read, the read can't be told apart from a temporary change,
+        // so it is kept as a change and read again each turn
+        if (npCardType == formNpCardType(teamSlot)) changedNpCardTypes.remove(teamSlot)
+        else changedNpCardTypes[teamSlot] = npCardType
+    }
+
+    /**
+     * Marks the NP type of the Servant in [fieldSlot] to be read again (see [npCardTypesToReadAgain]),
+     * when it may have changed but couldn't be read now. The last known type is used until then.
+     */
+    fun npCardTypeMayHaveChanged(fieldSlot: FieldSlot) {
+        if (prefs.skipServantFaceCardCheck || !battleConfig.useChainPriority) return
+        val teamSlot = _deployed[fieldSlot]?.takeUnless { it is TeamSlot.Unknown } ?: return
+
+        npCardTypesToReadAgain += teamSlot
+    }
+
+    private fun needsNpCardTypeRead(fieldSlot: FieldSlot): Boolean {
+        val teamSlot = _deployed[fieldSlot] ?: return false
+        return teamSlot in changedNpCardTypes || teamSlot in npCardTypesToReadAgain
     }
 
     private fun check(slot: FieldSlot) {
@@ -243,10 +320,16 @@ class ServantTracker @Inject constructor(
         }
     }
 
-    fun beginTurn() =
+    fun beginTurn() {
         FieldSlot.list.forEach {
             check(it)
         }
+
+        // An NP type changed by a skill reverts when the skill's effect ends
+        FieldSlot.list
+            .filter { needsNpCardTypeRead(it) }
+            .forEach { refreshNpCardType(it) }
+    }
 
     fun orderChanged(starting: OrderChangeMember.Starting, sub: OrderChangeMember.Sub) {
         val startingSlot = when (starting) {
@@ -262,6 +345,11 @@ class ServantTracker @Inject constructor(
                 servantQueue[subIndex] = swapOut
 
                 check(startingSlot)
+
+                // beginTurn() only re-reads changed NP types of the Servants on the field at that time
+                if (needsNpCardTypeRead(startingSlot)) {
+                    refreshNpCardType(startingSlot)
+                }
             }
         }
     }

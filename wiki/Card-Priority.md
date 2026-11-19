@@ -63,6 +63,7 @@ Turn on **Use Chain Priority** at the top to enable Chain Priority. It allows fo
 | ![Chain priority options none](img/attack/chain-priority-options-none.png)       | None                            | This completely skips all checks. It is almost the same as turning Chain Priority off, except that it uses Chain Priority's [Brave Chain](#brave-chains) handling instead of the default (which allows usage of the 'Always' option). |
 
 Chain Priority needs [face-card checks](#face-card-checks) to know each Servant's cards and NP type, so it doesn't work when `Skip servant face-card checks` is on.
+The NP type is read when a Servant enters the field, and again after a skill where an option is chosen (such as Emiya's or BB Dubai's), since those can change it. A changed NP type is read again at the start of each turn until it changes back (or every turn, if the Servant's usual NP type was never read). If the NP type can't be read, the last known one is used, or it's unknown if none was read yet. Known limitation: while an NP type change is active, the game can cover the part of the NP card that FGA reads with a banner, so the changed type may not be recognized and the last known type is used.
 
 The way Chain Priority works is that it checks for Chains in the order that is shown (from left to right). If it finds a chain, then it will use that chain immediately.
 

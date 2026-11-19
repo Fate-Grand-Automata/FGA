@@ -72,6 +72,7 @@ class PrefsCore @Inject constructor(
     val waitBeforeTurn = maker.int("wait_before_turn", 500)
     val waitBeforeCards = maker.int("wait_before_cards", 2000)
     val waitAfterOrderChange = maker.int("wait_after_order_change", 1000)
+    val servantDetailsWait = maker.int("servant_details_wait", 250)
 
     val clickWaitTime = maker.int("click_wait_time", 300)
     val clickDuration = maker.int("click_duration", 50)
