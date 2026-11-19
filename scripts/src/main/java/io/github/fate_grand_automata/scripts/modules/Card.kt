@@ -125,6 +125,8 @@ class Card @Inject constructor(
     }
 
     fun Set<CommandCard.NP>.detected (): Set<CommandCard.NP> {
+        // Matching the NP portraits is slow, so it is skipped when there are no NPs to check
+        if (isEmpty()) return emptySet()
         val npCardsDetected = servantTracker.npCardsDetectedUsingServantFaces()
         return this
             .filter { it in npCardsDetected }
