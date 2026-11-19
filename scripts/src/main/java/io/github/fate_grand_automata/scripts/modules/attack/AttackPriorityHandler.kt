@@ -11,6 +11,7 @@ import io.github.fate_grand_automata.scripts.modules.ApplyBraveChains
 import java.util.Collections
 
 object AttackPriorityHandler {
+    // TODO: Share these rearrangement rules with ApplyBraveChains.rearrange if the default picker can adopt these rules.
     fun rearrange(
         cards: List<ParsedCard>,
         rearrange: Boolean,
