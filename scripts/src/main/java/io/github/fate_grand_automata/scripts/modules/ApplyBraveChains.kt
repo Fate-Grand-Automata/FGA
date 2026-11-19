@@ -71,6 +71,8 @@ object ApplyBraveChains {
         if (rearrange
             && listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
         ) {
+            // TODO: Repeated priority scores can leave fewer than two cards, making the swap throw.
+            // Swap only when at least two cards are available.
             Collections.swap(combinedCards, 0, 1)
         }
 

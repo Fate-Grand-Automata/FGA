@@ -23,6 +23,7 @@ object AttackPriorityHandler {
          */
         val shouldSwapForNpUsageScenario = listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
         if (rearrange && shouldSwapForNpUsageScenario) {
+            if (cards.size < 2) return cards
             return cards.toMutableList().also {
                 Collections.swap(it, 0, 1)
             }
