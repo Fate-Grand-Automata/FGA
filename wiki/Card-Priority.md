@@ -108,7 +108,7 @@ Mighty Chains, by definition, require all 3 card types in a single chain to be e
 | Don't care           | The default output of Mighty Chains will be used, regardless of whether a Brave Chain is used or not. A Mighty Chain will be used if there is one available, otherwise it will skip to the next Chain option.                   | 
 | With NP              | Will always attempt to make a Mighty Brave Chain only when a single NP is being used.<br>If there is both a Brave Chain and a Mighty Chain separately available, the Brave Chain will be used over the Mighty Chain.            |
 | Always               | Will always attempt to make a Mighty Brave Chain if one is available, regardless of the Servant.<br>If there is both a Brave Chain and a Mighty Chain separately available, the Brave Chain will be used over the Mighty Chain. |
-| Avoid                | Will actively avoid making Brave Chains. If the only Mighty Chain is a Mighty Brave Chain, it will be skipped.                                                                                                                  |
+| Avoid                | Will actively avoid making Brave Chains. If the only Mighty Chain is a Mighty Brave Chain, it will be skipped, unless a Brave Chain can't be avoided at all with the cards whose color and Servant were recognized (for example when they all belong to one Servant). Then the Mighty Brave Chain is played.                                                                                                                  |
 
 ### Buster / Arts / Quick Chain
 
