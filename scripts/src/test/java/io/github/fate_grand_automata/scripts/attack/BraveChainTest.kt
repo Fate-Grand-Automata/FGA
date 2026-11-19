@@ -313,9 +313,9 @@ class BraveChainTest {
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
                         CommandCard.Face.A,
                         CommandCard.Face.B,
+                        CommandCard.Face.E,
                         CommandCard.Face.C,
                         CommandCard.Face.D,
-                        CommandCard.Face.E,
                     )
                 else -> assertThat(picked, braveChainEnum.toString()).isEmpty()
             }
@@ -581,8 +581,8 @@ class BraveChainTest {
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
                         CommandCard.Face.A,
                         CommandCard.Face.B,
-                        CommandCard.Face.D,
                         CommandCard.Face.E,
+                        CommandCard.Face.D,
                         CommandCard.Face.C,
                     )
                 else -> assertThat(picked, braveChainEnum.toString()).isEmpty()
@@ -591,7 +591,7 @@ class BraveChainTest {
     }
 
     @Test
-    fun `Unknown - lineup6 (2 Unknown, no Brave Chain available)`() {
+    fun `Unknown - lineup6 (2 Unknown, Brave Chain available)`() {
         val cards = AttackLineUps.Unknown.lineup6
         for (braveChainEnum in braveChainEnums) {
             val picked = BraveChainHandler.pick(
@@ -605,9 +605,29 @@ class BraveChainTest {
                     braveChainEnum = braveChainEnum,
                     picked = picked,
                 )
+                BraveChainEnum.Always -> assertThat(picked, braveChainEnum.toString()).containsExactly(
+                    CommandCard.Face.B,
+                    CommandCard.Face.E,
+                    CommandCard.Face.A,
+                    CommandCard.Face.D,
+                    CommandCard.Face.C,
+                )
                 else -> assertThat(picked, braveChainEnum.toString()).isEmpty()
             }
         }
+    }
+
+    @Test
+    fun `Always can select three unreadable face cards from the same slot`() {
+        val picked = BraveChainHandler.pick(
+            cards = AttackLineUps.Unknown.twoReadableNeroCardsAndThreeUnreadableKiyohimeCards,
+            braveChainEnum = BraveChainEnum.Always,
+        ).orEmpty().map { it.card }
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E,
+            CommandCard.Face.C, CommandCard.Face.D,
+        )
     }
 
     @Test
@@ -632,8 +652,8 @@ class BraveChainTest {
                     assertThat(picked, braveChainEnum.toString()).containsExactly(
                         CommandCard.Face.B,
                         CommandCard.Face.E,
-                        CommandCard.Face.D,
                         CommandCard.Face.A,
+                        CommandCard.Face.D,
                         CommandCard.Face.C,
                     )
                 else -> assertThat(picked, braveChainEnum.toString()).isEmpty()

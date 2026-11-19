@@ -373,7 +373,7 @@ class AttackLineUps {
             BusterFocus.kiyohime5B,
         )
         /**
-         * Special option for Buster/Brave Chain. 2 Unknown, only valid BraveChain with NP.
+         * Three playable cards in field slot B, one with an unreadable color.
          */
         val lineup6 = listOf(
             scathach1Unknown,
@@ -381,6 +381,14 @@ class AttackLineUps {
             nero3Unknown,
             BusterFocus.nero4RA,
             BusterFocus.kiyohime5B,
+        )
+
+        val twoReadableNeroCardsAndThreeUnreadableKiyohimeCards = listOf(
+            BusterFocus.nero3RA,
+            BusterFocus.nero4RA,
+            BusterFocus.kiyohime1B.copy(type = CardTypeEnum.Unknown),
+            BusterFocus.kiyohime2B.copy(type = CardTypeEnum.Unknown),
+            BusterFocus.kiyohime5B.copy(type = CardTypeEnum.Unknown),
         )
     }
 }

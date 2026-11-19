@@ -149,7 +149,7 @@ With Chain Priority off, FGA picks cards the same way it did before Chain Priori
 
 - **Don't care:** pick cards only by priority.
 - **With NP:** prefer cards of the Servant whose NP is used, to make a Brave Chain.
-- **Always:** make a Brave Chain whenever one is available, whichever Servant it is. Only offered when [Chain Priority](#chain-priority) is on. If Chain Priority is turned off later, it is shown and used as **With NP**. It also acts as **With NP** on turns Chain Priority can't plan, for example when too few card colors were recognized.
+- **Always:** make a Brave Chain whenever one is available, whichever Servant it is. Only offered when [Chain Priority](#chain-priority) is on. With Chain Priority on, a playable face card can count as long as its Servant is recognized, even if its color is unreadable. A single NP can also count by its Servant when its color is unknown. If Chain Priority is turned off later, this option is shown and used as **With NP**.
 - **Avoid:** avoid Brave Chains, unless it is impossible (e.g. all cards belong to a single Servant).
 
 How each option combines with Chain Priority is described under [Chain Priority](#chain-priority).

@@ -8,7 +8,9 @@ import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import kotlin.collections.plus
 
-object CardChainPriorityHandler {
+internal object CardChainPriorityHandler {
+    data class Plan(val cards: List<ParsedCard>, val chainType: ChainTypeEnum?)
+
     fun pick(
         cards: List<ParsedCard>,
         chainPriority: List<ChainTypeEnum> = ChainTypeEnum.defaultOrder,
@@ -18,7 +20,7 @@ object CardChainPriorityHandler {
         cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
         cardCountPerCardTypeMap: Map<CardTypeEnum, Int>? = null,
         forceBraveChain: Boolean = false,
-    ): List<ParsedCard>? {
+    ): Plan? {
         // Try to ensure unknown is handled
         val nonUnknownCards = AttackUtils.getValidNonUnknownCards(cards)
         if (!AttackUtils.isChainable(
@@ -26,10 +28,9 @@ object CardChainPriorityHandler {
             npUsage = npUsage,
             npTypes = npTypes,
         )) {
-            return nonUnknownCards + (cards - nonUnknownCards)
+            return Plan(nonUnknownCards + (cards - nonUnknownCards), chainType = null)
         }
 
-        var newCardOrder: List<ParsedCard>? = null
         val cardCountPerFieldSlotMap = cardCountPerFieldSlotMap ?: AttackUtils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
         val cardCountPerCardTypeMap = cardCountPerCardTypeMap ?: AttackUtils.getCardsPerCardTypeMap(nonUnknownCards, npTypes)
 
@@ -37,8 +38,7 @@ object CardChainPriorityHandler {
         val braveChainEnum = if (forceBraveChain) BraveChainEnum.Always else braveChainEnum
 
         for (chain in chainPriority) {
-            if (newCardOrder != null) continue
-            newCardOrder = when (chain) {
+            val order = when (chain) {
                 ChainTypeEnum.None -> break
                 ChainTypeEnum.Mighty -> MightyChainHandler.pick(
                     cards = nonUnknownCards,
@@ -74,8 +74,9 @@ object CardChainPriorityHandler {
                     avoidCardChains = true,
                 )
             }
+            if (order != null) return Plan(order, chain)
         }
 
-        return newCardOrder
+        return null
     }
 }

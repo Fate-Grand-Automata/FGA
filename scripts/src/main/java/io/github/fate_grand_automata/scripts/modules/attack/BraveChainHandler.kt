@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.scripts.modules.attack
 
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
@@ -11,7 +12,6 @@ object BraveChainHandler {
         npUsage: NPUsage = NPUsage.none,
         cards: List<ParsedCard>,
         braveChainEnum: BraveChainEnum,
-        cardCountPerFieldSlotMap: Map<FieldSlot, Int>? = null,
     ): List<ParsedCard>? {
         if (braveChainEnum == BraveChainEnum.Avoid) {
             return AvoidChainHandler.pick(
@@ -22,31 +22,30 @@ object BraveChainHandler {
             )
         }
 
-        // Try to ensure unknown is handled
-        val nonUnknownCards = AttackUtils.getValidNonUnknownCards(cards)
-        if (!AttackUtils.isChainable(
-            cards = nonUnknownCards,
-            npUsage = npUsage,
-        )) {
-            return null
-        }
+        // Prefer readable cards when there is a choice, and keep stunned cards at the end of the hand.
+        val orderedCards = cards.sortedWith(
+            compareBy<ParsedCard> { it.isStunned }.thenBy { it.type == CardTypeEnum.Unknown }
+        )
+        // A Brave Chain only needs the Servant's slot. Count every selectable card with a known slot,
+        // including unreadable colors, and let the shared count include a single NP by its slot.
+        val usableCards = orderedCards.filter { !it.isStunned && it.fieldSlot != null }
 
-        val cardsPerFieldSlotMap = cardCountPerFieldSlotMap ?: AttackUtils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
+        val cardsPerFieldSlotMap = AttackUtils.getCardsPerFieldSlotMap(usableCards, npUsage)
         if (!isBraveChainAllowed(braveChainEnum, npUsage, cardsPerFieldSlotMap)) return null
 
-        // Always returns a valid field slot if there is one for BraveChain
         val priorityFieldSlot = AttackUtils.getBraveChainFieldSlot(
             braveChainEnum = braveChainEnum,
-            cards = nonUnknownCards,
+            cards = usableCards,
             npUsage = npUsage,
         )
         if (priorityFieldSlot == null) return null
 
-        val selectedCards = nonUnknownCards
-            .filter { it.fieldSlot == priorityFieldSlot }
-            .take((3 - npUsage.nps.size).coerceAtLeast(0))
-        val remainder = (nonUnknownCards - selectedCards) + (cards - nonUnknownCards)
-        return selectedCards + remainder
+        // Keep spare playable cards from the same Servant next in line so they can complete
+        // a face-card Brave Chain if the planned NP fails to activate.
+        val (braveCards, remainingCards) = orderedCards.partition {
+            !it.isStunned && it.fieldSlot == priorityFieldSlot
+        }
+        return braveCards + remainingCards
     }
 
     private fun isBraveChainAllowed (

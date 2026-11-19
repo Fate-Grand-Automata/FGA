@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.scripts.attack
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
+import io.github.fate_grand_automata.scripts.enums.AttackPriorityEnum
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.CardAffinityEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
@@ -899,8 +900,187 @@ class CardChainPriorityIntegrationTest {
     }
 
     @Test
+    fun `Always finds Kiyohime's Brave Chain when only Nero's card colors are readable`() {
+        val cards = AttackLineUps.Unknown.twoReadableNeroCardsAndThreeUnreadableKiyohimeCards
+        val picked = AttackPriorityHandler.pick(cards, braveChainEnum = BraveChainEnum.Always).map { it.card }
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E,
+            CommandCard.Face.C, CommandCard.Face.D,
+        )
+    }
+
+    @Test
+    fun `Always keeps priority order when no Servant has three cards with known slots`() {
+        val hand = AttackLineUps.Unknown.twoReadableNeroCardsAndThreeUnreadableKiyohimeCards
+        val cards = hand.dropLast(1) + hand.last().copy(fieldSlot = null)
+        val picked = AttackPriorityHandler.pick(cards, braveChainEnum = BraveChainEnum.Always).map { it.card }
+
+        assertThat(picked).isEqualTo(cards.map { it.card })
+    }
+
+    @Test
+    fun `Always excludes stunned cards from the Brave Chain and places them last`() {
+        val hand = AttackLineUps.Unknown.twoReadableNeroCardsAndThreeUnreadableKiyohimeCards
+        val cards = hand.take(2) + hand[2].copy(isStunned = true) + hand.drop(3)
+        val picked = AttackPriorityHandler.pick(cards, braveChainEnum = BraveChainEnum.Always).map { it.card }
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.B,
+            CommandCard.Face.E, CommandCard.Face.A,
+        )
+    }
+
+    @Test
+    fun `A readable color chain cannot override a required Brave Chain using unreadable cards`() {
+        val hand = AttackLineUps.Unknown.twoReadableNeroCardsAndThreeUnreadableKiyohimeCards
+        val cards = listOf(
+            AttackLineUps.BusterFocus.nero3BAlt,
+            AttackLineUps.BusterFocus.nero4BAlt,
+            AttackLineUps.BusterFocus.kiyohime1B,
+        ) + hand.takeLast(2)
+        val picked = AttackPriorityHandler.pick(
+            cards = cards,
+            chainPriority = listOf(ChainTypeEnum.Buster),
+            braveChainEnum = BraveChainEnum.Always,
+        ).map { it.card }
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E,
+            CommandCard.Face.C, CommandCard.Face.D,
+        )
+    }
+
+    @Test
+    fun `An NP Brave Chain keeps a third matching face card if the NP fails`() {
+        val lineup = AttackLineUps.BusterFocus
+        val cards = listOf(lineup.nero3RA, lineup.nero4RA, lineup.kiyohime1B, lineup.kiyohime2B, lineup.kiyohime5B)
+
+        // An unreadable NP uses the early fallback. A readable Arts NP reaches the chain planner,
+        // where only Nero's face cards are Arts, so the required Brave Chain takes precedence.
+        for (npType in listOf(CardTypeEnum.Unknown, CardTypeEnum.Arts)) {
+            for (braveChain in listOf(BraveChainEnum.WithNP, BraveChainEnum.Always)) {
+                val picked = AttackPriorityHandler.pick(
+                    cards = cards,
+                    chainPriority = listOf(ChainTypeEnum.Arts),
+                    braveChainEnum = braveChain,
+                    npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+                    npTypes = mapOf(FieldSlot.B to npType),
+                    rearrange = false,
+                ).map { it.card }
+
+                assertThat(picked, "$braveChain, $npType NP").containsExactly(
+                    CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E,
+                    CommandCard.Face.C, CommandCard.Face.D,
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `With NP uses the slot of an unknown-type NP and rearranges its two face cards`() {
+        val picked = AttackPriorityHandler.pick(
+            cards = AttackLineUps.Unknown.twoReadableNeroCardsAndThreeUnreadableKiyohimeCards,
+            braveChainEnum = BraveChainEnum.WithNP,
+            npUsage = NPUsage(setOf(CommandCard.NP.B), 1),
+            npTypes = mapOf(FieldSlot.B to CardTypeEnum.Unknown),
+            rearrange = true,
+        ).map { it.card }
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.B, CommandCard.Face.A, CommandCard.Face.E,
+            CommandCard.Face.C, CommandCard.Face.D,
+        )
+    }
+
+    @Test
+    fun `A Mighty Brave Chain keeps Scathach's third face card if her Quick NP fails`() {
+        val picked = AttackPriorityHandler.pick(
+            cards = AttackLineUps.MightyOutlier.lineup1,
+            chainPriority = listOf(ChainTypeEnum.Mighty),
+            braveChainEnum = BraveChainEnum.WithNP,
+            npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+            npTypes = mapOf(FieldSlot.B to CardTypeEnum.Quick),
+        ).map { it.card }
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E,
+            CommandCard.Face.C, CommandCard.Face.D,
+        )
+    }
+
+    @Test
+    fun `A Buster NP Brave Chain can use a different or unreadable color as backup`() {
+        val hand = AttackLineUps.BusterFocus.lineup01
+        for (backupType in listOf(CardTypeEnum.Arts, CardTypeEnum.Unknown)) {
+            val picked = AttackPriorityHandler.pick(
+                cards = hand.dropLast(1) + hand.last().copy(type = backupType),
+                chainPriority = listOf(ChainTypeEnum.Buster),
+                braveChainEnum = BraveChainEnum.Always,
+                npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+                npTypes = mapOf(FieldSlot.B to CardTypeEnum.Buster),
+            ).map { it.card }
+
+            assertThat(picked, "$backupType backup").containsExactly(
+                CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E,
+                CommandCard.Face.C, CommandCard.Face.D,
+            )
+        }
+    }
+
+    @Test
+    fun `A Mighty NP Brave Chain keeps its original order when the only spare is stunned`() {
+        val hand = AttackLineUps.MightyOutlier.lineup1
+        val cards = hand.dropLast(1) + hand.last().copy(isStunned = true)
+        val picked = AttackPriorityHandler.pick(
+            cards = cards,
+            chainPriority = listOf(ChainTypeEnum.Mighty),
+            braveChainEnum = BraveChainEnum.WithNP,
+            npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+            npTypes = mapOf(FieldSlot.B to CardTypeEnum.Quick),
+        )
+
+        assertThat(picked).isEqualTo(cards)
+    }
+
+    @Test
+    fun `Rearrange keeps the third face card for a Mighty NP Brave Chain without forced Brave priority`() {
+        for (cardsBeforeNP in 0..1) {
+            val picked = AttackPriorityHandler.pick(
+                cards = AttackLineUps.MightyOutlier.lineup1,
+                attackPriorityOrder = listOf(AttackPriorityEnum.CardChainPriority, AttackPriorityEnum.BraveChainPriority),
+                chainPriority = listOf(ChainTypeEnum.Mighty),
+                braveChainEnum = BraveChainEnum.WithNP,
+                npUsage = NPUsage(setOf(CommandCard.NP.B), cardsBeforeNP),
+                npTypes = mapOf(FieldSlot.B to CardTypeEnum.Quick),
+                rearrange = true,
+            ).map { it.card }
+
+            assertThat(picked, "$cardsBeforeNP cards before NP").containsExactly(
+                CommandCard.Face.B, CommandCard.Face.A, CommandCard.Face.E,
+                CommandCard.Face.C, CommandCard.Face.D,
+            )
+        }
+    }
+
+    @Test
+    fun `An Avoid card chain plan does not promote an unreadable Brave backup`() {
+        val hand = AttackLineUps.MightyOutlier.lineup1
+        val cards = hand.dropLast(1) + hand.last().copy(type = CardTypeEnum.Unknown)
+        val picked = AttackPriorityHandler.pick(
+            cards = cards,
+            chainPriority = listOf(ChainTypeEnum.Avoid),
+            braveChainEnum = BraveChainEnum.WithNP,
+            npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+            npTypes = mapOf(FieldSlot.B to CardTypeEnum.Buster),
+        )
+
+        assertThat(picked).isEqualTo(cards)
+    }
+
+    @Test
     fun `BusterFocus - lineup01 (1KB,2KB,3NA,4NA,5KB) + 2Kiyo-NP of unknown type, Avoid Brave Chains`() {
-        // Without the NP type, the chain handlers can't run; Avoid must still keep Kiyohime from getting both cards
+        // With an unreadable NP color, the fallback can still split the selected face cards across Servants.
         val picked = AttackPriorityHandler.pick(
             cards = AttackLineUps.BusterFocus.lineup01,
             braveChainEnum = BraveChainEnum.Avoid,

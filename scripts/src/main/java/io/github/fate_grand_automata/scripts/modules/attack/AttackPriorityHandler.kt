@@ -7,6 +7,7 @@ import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
+import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import io.github.fate_grand_automata.scripts.modules.ApplyBraveChains
 import java.util.Collections
 
@@ -33,6 +34,18 @@ object AttackPriorityHandler {
                 npUsage = npUsage,
                 npTypes = npTypes,
             )) {
+            // Slot information can still form a Brave Chain when colors are missing, including for an NP.
+            // Avoid uses the default picker here, which can reorder a hand even with too few readable colors.
+            if (braveChainEnum != BraveChainEnum.Avoid) {
+                val braveChainOrder = BraveChainHandler.pick(
+                    cards = finalFallback,
+                    braveChainEnum = braveChainEnum,
+                    npUsage = npUsage,
+                )
+                if (braveChainOrder != null) {
+                    return rearrange(braveChainOrder, rearrange, npUsage)
+                }
+            }
             val picked = ApplyBraveChains.pick(
                 cards = finalFallback,
                 braveChains = braveChainEnum,
@@ -50,22 +63,23 @@ object AttackPriorityHandler {
         val cardCountPerFieldSlotMap = AttackUtils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
         val cardCountPerCardTypeMap = AttackUtils.getCardsPerCardTypeMap(nonUnknownCards, npTypes)
 
-        var newCardOrder: List<ParsedCard>? = null
+        var cardChainPlan: CardChainPriorityHandler.Plan? = null
         var braveChainFallback: List<ParsedCard>? = null
         for (attackPriority in attackPriorityOrder) {
             when (attackPriority) {
                 AttackPriorityEnum.BraveChainPriority -> {
                     braveChainFallback = BraveChainHandler.pick(
-                        cards = nonUnknownCards,
+                        cards = if (braveChainEnum == BraveChainEnum.Avoid) nonUnknownCards else finalFallback,
                         braveChainEnum = braveChainEnum,
                         npUsage = npUsage,
-                        cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
                     )
                 }
                 AttackPriorityEnum.CardChainPriority -> {
-                    if (newCardOrder != null) continue
+                    if (cardChainPlan != null) continue
 
-                    newCardOrder = CardChainPriorityHandler.pick(
+                    val requiredBraveSlot = braveChainFallback?.firstOrNull()?.fieldSlot
+                        ?.takeIf { braveChainEnum == BraveChainEnum.WithNP || braveChainEnum == BraveChainEnum.Always }
+                    val candidate = CardChainPriorityHandler.pick(
                         cards = nonUnknownCards,
                         chainPriority = chainPriority,
                         braveChainEnum = braveChainEnum,
@@ -73,19 +87,36 @@ object AttackPriorityHandler {
                         npTypes = npTypes,
                         cardCountPerFieldSlotMap = cardCountPerFieldSlotMap,
                         cardCountPerCardTypeMap = cardCountPerCardTypeMap,
-                        // BraveChain is higher priority than color chain
-                        forceBraveChain = braveChainFallback != null
-                                && (braveChainEnum == BraveChainEnum.WithNP || braveChainEnum == BraveChainEnum.Always)
+                        forceBraveChain = requiredBraveSlot != null,
                     )
+                    // A color-based plan can miss the required Servant if their Brave Chain uses unreadable cards.
+                    // Accept it only if the face cards it will click still complete that Brave Chain.
+                    val cardsNeeded = 3 - npUsage.nps.size
+                    cardChainPlan = candidate?.takeIf { (order) ->
+                        requiredBraveSlot == null || (
+                            order.size >= cardsNeeded && order.take(cardsNeeded).all { it.fieldSlot == requiredBraveSlot }
+                        )
+                    }
                 }
                 else -> continue
             }
         }
 
         // Append cards omitted by the selected planner in fallback order, which keeps stunned cards last.
-        val pickedOrder = newCardOrder ?: braveChainFallback ?: finalFallback
+        val pickedOrder = cardChainPlan?.cards ?: braveChainFallback ?: finalFallback
         val fullOrder = pickedOrder + (finalFallback - pickedOrder.toSet())
-        return rearrange(fullOrder, rearrange, npUsage)
+        val chainType = cardChainPlan?.chainType
+        val npOwner = npUsage.nps.singleOrNull()?.toFieldSlot()
+        val orderWithBackup = if (
+            chainType != null && chainType != ChainTypeEnum.Avoid && npOwner != null &&
+            (braveChainEnum == BraveChainEnum.WithNP || braveChainEnum == BraveChainEnum.Always)
+        ) {
+            keepBraveChainBackup(fullOrder, npOwner)
+        } else {
+            fullOrder
+        }
+
+        return rearrange(orderWithBackup, rearrange, npUsage)
     }
 
     // Lower ranks are safer to click: unreadable faces can still be selected, stunned faces cannot.
@@ -125,5 +156,17 @@ object AttackPriorityHandler {
             if (displacesEarlier) return cards
         }
         return rearranged
+    }
+
+    private fun keepBraveChainBackup(cards: List<ParsedCard>, npOwner: FieldSlot): List<ParsedCard> {
+        // A single NP leaves two face-card slots. If those cards share its owner, a playable
+        // third card from that Servant preserves the Brave Chain when the NP fails to select.
+        val selected = cards.take(2)
+        if (selected.size < 2 || selected.any { it.fieldSlot != npOwner }) return cards
+
+        val remaining = cards.drop(2)
+        val backup = remaining.firstOrNull { !it.isStunned && it.fieldSlot == npOwner } ?: return cards
+        // Rearrange Cards can swap the two planned faces with one NP, leaving this backup third.
+        return selected + backup + (remaining - backup)
     }
 }
