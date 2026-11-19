@@ -73,7 +73,8 @@ class Card @Inject constructor(
             val npTypes = npUsageToUse.nps.associate { it.toFieldSlot() to it.type() }
             val chainPriority = battleConfig.chainPriority.atWave(state.stage)
             return AttackPriorityHandler.pick(
-                cards = cardsOrderedByPriority,
+                cards = cards,
+                priorityOrder = cardsOrderedByPriority,
                 npUsage = npUsageToUse,
                 braveChainEnum = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
                 chainPriority = chainPriority,

@@ -11,46 +11,6 @@ import io.github.fate_grand_automata.scripts.modules.ApplyBraveChains
 import java.util.Collections
 
 object AttackPriorityHandler {
-    // TODO: Share these rearrangement rules with ApplyBraveChains.rearrange if the default picker can adopt these rules.
-    fun rearrange(
-        cards: List<ParsedCard>,
-        rearrange: Boolean,
-        npUsage: NPUsage
-    ): List<ParsedCard> {
-        /*
-          When rearrange is active and there is 1 NP and 1 Card before NP,
-          we want the best or matching face-card after NP.
-         */
-        val shouldSwapForNpUsageScenario = listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
-        if (rearrange && shouldSwapForNpUsageScenario) {
-            if (cards.size < 2 || cards[1].isStunned) return cards
-            return cards.toMutableList().also {
-                Collections.swap(it, 0, 1)
-            }
-        }
-
-        if (rearrange
-            // If there are cards before NP, at max there's only 1 card after NP
-            && npUsage.cardsBeforeNP == 0
-            // If there are more than 1 NPs, only 1 card after NPs at max
-            && npUsage.nps.size <= 1
-        ) {
-            val cardsToRearrange = List(cards.size) { index -> index }
-                .take((3 - npUsage.nps.size).coerceAtLeast(0))
-                .reversed()
-
-            // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
-            // Do the same when clicking 2 cards unless they're used before NPs.
-            if (cardsToRearrange.size in 2..3) {
-                return cards.toMutableList().also {
-                    Collections.swap(it, cardsToRearrange[1], cardsToRearrange[0])
-                }
-            }
-        }
-
-        return cards
-    }
-
     fun pick(
         cards: List<ParsedCard>,
         attackPriorityOrder: List<AttackPriorityEnum> = AttackPriorityEnum.defaultOrder,
@@ -59,34 +19,37 @@ object AttackPriorityHandler {
         npUsage: NPUsage = NPUsage.none,
         npTypes: Map<FieldSlot, CardTypeEnum> = emptyMap(),
         rearrange: Boolean = false,
+        priorityOrder: List<ParsedCard> = cards,
     ): List<ParsedCard> {
-        // All stunned cards are categorized as Unknown.
-        // Filter all of them since those cards are to be avoided if possible
-        // and the system does not deal with CardTypeEnum.Unknown
-        val nonUnknownCards = cards.filter { it.type != CardTypeEnum.Unknown }
-        val finalFallback = nonUnknownCards + (cards - nonUnknownCards)
+        // A saved priority can omit or repeat scores. Restore unranked faces from the parsed
+        // hand and deduplicate by face button before counting cards for any chain.
+        val rankedCards = (priorityOrder + cards).distinct()
+        // Color and Mighty Chains require readable, playable cards. Keep the other faces
+        // in hand order within each group so unreadable but playable faces fill slots first.
+        val nonUnknownCards = rankedCards.filter { usability(it) == 0 }
+        val finalFallback = nonUnknownCards + (cards.distinct() - nonUnknownCards).sortedBy(::usability)
         if (!AttackUtils.isChainable(
                 cards = nonUnknownCards,
                 npUsage = npUsage,
                 npTypes = npTypes,
             )) {
-            // Without NP types or enough known cards, the chain handlers can't plan this turn.
-            // Fall back to the logic used without Chain Priority, so Brave Chains and Rearrange Cards still apply.
-            return ApplyBraveChains.pick(
+            val picked = ApplyBraveChains.pick(
                 cards = finalFallback,
                 braveChains = braveChainEnum,
-                rearrange = rearrange,
                 npUsage = npUsage,
             )
+            if (!rearrange) return picked
+
+            // The fallback's Avoid mode can change the selected faces when rearranging.
+            // Compare with its unrearranged pick so that case gets the same usability guard.
+            val rearranged = ApplyBraveChains.pick(finalFallback, braveChainEnum, rearrange = true, npUsage = npUsage)
+            return keepUsableOrder(picked, rearranged)
         }
 
-        // Get all the supplementary data.
-        // Count only the cards the handlers can pick from: a stunned (Unknown) card
-        // must not block a chain that the remaining cards can still make.
+        // Color and Mighty planners count only the cards available to their search.
         val cardCountPerFieldSlotMap = AttackUtils.getCardsPerFieldSlotMap(nonUnknownCards, npUsage)
         val cardCountPerCardTypeMap = AttackUtils.getCardsPerCardTypeMap(nonUnknownCards, npTypes)
 
-        // Start
         var newCardOrder: List<ParsedCard>? = null
         var braveChainFallback: List<ParsedCard>? = null
         for (attackPriority in attackPriorityOrder) {
@@ -119,10 +82,48 @@ object AttackPriorityHandler {
             }
         }
 
-        return rearrange(
-            cards = newCardOrder ?: braveChainFallback ?: finalFallback,
-            rearrange = rearrange,
-            npUsage = npUsage
-        )
+        // Append cards omitted by the selected planner in fallback order, which keeps stunned cards last.
+        val pickedOrder = newCardOrder ?: braveChainFallback ?: finalFallback
+        val fullOrder = pickedOrder + (finalFallback - pickedOrder.toSet())
+        return rearrange(fullOrder, rearrange, npUsage)
+    }
+
+    // Lower ranks are safer to click: unreadable faces can still be selected, stunned faces cannot.
+    private fun usability(card: ParsedCard): Int = when {
+        card.isStunned -> 2
+        card.type == CardTypeEnum.Unknown -> 1
+        else -> 0
+    }
+
+    // TODO: Share these rearrangement rules with ApplyBraveChains.rearrange if the default picker can adopt these rules.
+    internal fun rearrange(cards: List<ParsedCard>, rearrange: Boolean, npUsage: NPUsage): List<ParsedCard> {
+        if (!rearrange || cards.size < 2) return cards
+
+        val swapWith = when {
+            // Keep the highest ranked or matching face directly after the NP in every Brave Chains mode.
+            npUsage.nps.size == 1 && npUsage.cardsBeforeNP == 1 -> {
+                if (cards[1].isStunned) return cards
+                1
+            }
+            // Move the next strongest face to the final position. If the NP opens, move the strongest there.
+            npUsage.nps.size <= 1 && npUsage.cardsBeforeNP == 0 -> minOf(cards.size, 3 - npUsage.nps.size) - 1
+            else -> return cards
+        }
+        val reordered = cards.toMutableList().also { Collections.swap(it, swapWith - 1, swapWith) }
+        return keepUsableOrder(cards, reordered)
+    }
+
+    private fun keepUsableOrder(cards: List<ParsedCard>, rearranged: List<ParsedCard>): List<ParsedCard> {
+        // Spam NPs can consume a slot even when their portraits weren't detected for planning.
+        // Reject a rearrangement that puts a worse face ahead of a better one that was earlier.
+        val newPositions = rearranged.withIndex().associate { (index, card) -> card to index }
+        for ((index, earlier) in cards.withIndex()) {
+            val displacesEarlier = cards.drop(index + 1).any { later ->
+                usability(later) > usability(earlier) &&
+                    newPositions.getValue(later) < newPositions.getValue(earlier)
+            }
+            if (displacesEarlier) return cards
+        }
+        return rearranged
     }
 }

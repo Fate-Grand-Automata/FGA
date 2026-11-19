@@ -149,8 +149,10 @@ object ColorChainHandler {
                 || npFieldSlot == null
             )
         ) {
-            // Attempt to fetch a card of the same color from a different field slot
-            val differentCard = selectedCards.firstOrNull { it.fieldSlot != filteredCardsSet.first() }
+            // A face with an unknown owner can already be in the selection. Each face can be clicked only once.
+            val differentCard = selectedCards.firstOrNull {
+                it.fieldSlot != filteredCardsSet.first() && it !in filteredCards
+            }
             // If there is no different card (even though there should, by this stage), return null
             if (differentCard == null) return null
             // Just add new card to index 1, aka 2nd card

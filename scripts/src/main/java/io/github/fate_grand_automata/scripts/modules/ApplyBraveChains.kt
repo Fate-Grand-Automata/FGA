@@ -89,6 +89,8 @@ object ApplyBraveChains {
         cards: List<ParsedCard>,
         rearrange: Boolean
     ): List<ParsedCard> {
+        // TODO: Both paths can pick stunned cards, and the rearranged path assumes three faces.
+        // Pick only from playable faces, append stunned faces afterward, and rearrange only with at least three playable faces.
         val cardsGroupedByServant = cards.groupBy { it.servant }.values
 
         if (cardsGroupedByServant.size > 1) {

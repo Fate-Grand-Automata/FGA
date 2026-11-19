@@ -10,6 +10,7 @@ import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
+import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.scripts.modules.attack.BraveChainHandler
 import kotlin.test.Test
 import io.github.fate_grand_automata.scripts.modules.attack.ColorChainHandler
@@ -18,6 +19,25 @@ class ColorChainTest {
     val cardTypeList = CardTypeEnum.entries
 
     val braveChainEnums = BraveChainEnum.entries
+
+    @Test
+    fun `Avoid Brave Chain selects a different face when an unidentified face is already selected`() {
+        val cards = listOf(
+            AttackLineUps.BusterFocus.kiyohime1B,
+            AttackLineUps.BusterFocus.kiyohime2B.copy(servant = TeamSlot.Unknown, fieldSlot = null),
+            AttackLineUps.BusterFocus.nero4BAlt.copy(card = CommandCard.Face.C),
+        )
+
+        val picked = ColorChainHandler.pick(
+            cards = cards,
+            cardType = CardTypeEnum.Buster,
+            npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+            npTypes = mapOf(FieldSlot.B to CardTypeEnum.Buster),
+            braveChainEnum = BraveChainEnum.Avoid,
+        )?.map { it.card } ?: emptyList()
+
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B)
+    }
 
     @Test
     fun `Standard - lineup1 (1SB,2KQ,3NA,4NA,5SQ)`() {

@@ -144,6 +144,8 @@ The default implementation of this system attempts to stagger Servant cards if t
 
 ## Brave Chains
 
+With Chain Priority off, FGA picks cards the same way it did before Chain Priority was added.
+
 - **Don't care:** pick cards only by priority.
 - **With NP:** prefer cards of the Servant whose NP is used, to make a Brave Chain.
 - **Always:** make a Brave Chain whenever one is available, whichever Servant it is. Only offered when [Chain Priority](#chain-priority) is on.
@@ -161,7 +163,7 @@ Rearrange Cards changes the order of the ranked face cards based on where the NP
 
 - With no NP, it moves the second-ranked face card behind the third when three faces are available and swaps the two faces when only two are available. With one NP played first, it swaps the first two faces so the highest-ranked face plays last. **Don't care** and **With NP** both use these rules when Chain Priority is off.
 - With one NP and one [card before it](Skill-Maker#noble-phantasms), it swaps the first two faces so the highest-ranked face plays right after the NP. With Chain Priority off, this swap applies only to **With NP**, including a saved **Always** setting.
-- With Chain Priority on, its own card orders use both rules in every Brave Chains mode. The one-card-before-NP swap requires at least two faces and a playable second face.
+- With Chain Priority on, its own card orders use both rules in every Brave Chains mode. The one-card-before-NP swap requires at least two faces and a playable second face. Rearranging also preserves the order whenever a proposed change would move an unreadable face ahead of a readable, playable face, or a stunned face ahead of any playable face. When Chain Priority falls back to the default picker, it uses the default rules and applies the same usability check to the rearranged result.
 
 With [Brave Chains](#brave-chains) set to **Avoid**, the default picker has its own rearrangement rule. It tries to stagger the top face cards across Servants, drawing from further down the priority list if the top three all belong to one Servant. This also applies when Chain Priority falls back to the default picker. It needs [face-card checks](#face-card-checks) to tell which cards belong to which Servants.
 

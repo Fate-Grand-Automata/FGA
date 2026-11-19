@@ -4,12 +4,15 @@ import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import io.github.fate_grand_automata.scripts.enums.CardAffinityEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
+import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
+import io.github.fate_grand_automata.scripts.modules.FaceCardPriority
 import io.github.fate_grand_automata.scripts.modules.attack.MightyChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.AttackPriorityHandler
 import io.github.fate_grand_automata.scripts.modules.attack.AvoidChainHandler
@@ -812,6 +815,84 @@ class CardChainPriorityIntegrationTest {
             CommandCard.Face.A,
             CommandCard.Face.B,
             CommandCard.Face.E,
+        )
+    }
+
+    @Test
+    fun `Too few readable colors leave unreadable cards ahead of stunned cards`() {
+        val (first, second, third, fourth, fifth) = AttackLineUps.MightyOutlier.lineup1
+        val cards = listOf(
+            first,
+            second.copy(type = CardTypeEnum.Unknown, isStunned = true),
+            third,
+            fourth.copy(type = CardTypeEnum.Unknown, isStunned = true),
+            fifth.copy(type = CardTypeEnum.Unknown),
+        )
+
+        val picked = AttackPriorityHandler.pick(cards).map { it.card }
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.D,
+        )
+    }
+
+    @Test
+    fun `Rearranging a fallback cannot move a stunned card ahead of an unreadable card`() {
+        val (first, second, third, fourth, fifth) = AttackLineUps.MightyOutlier.lineup1
+        val cards = listOf(
+            first,
+            second.copy(type = CardTypeEnum.Unknown, isStunned = true),
+            third.copy(type = CardTypeEnum.Unknown, isStunned = true),
+            fourth.copy(type = CardTypeEnum.Unknown, isStunned = true),
+            fifth.copy(type = CardTypeEnum.Unknown),
+        )
+
+        val picked = AttackPriorityHandler.pick(cards, rearrange = true).map { it.card }
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D,
+        )
+    }
+
+    @Test
+    fun `Rearranging keeps both readable faces available after an undetected spam NP`() {
+        val (first, second, third, fourth, fifth) = AttackLineUps.MightyOutlier.lineup1
+        val cards = listOf(
+            first,
+            second,
+            third.copy(type = CardTypeEnum.Unknown, isStunned = true),
+            fourth.copy(type = CardTypeEnum.Unknown),
+            fifth.copy(type = CardTypeEnum.Unknown, isStunned = true),
+        )
+
+        // The clicker still attempts the spam NP even though the planner sees no NPs.
+        val picked = AttackPriorityHandler.pick(cards, rearrange = true).map { it.card }
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.D, CommandCard.Face.C, CommandCard.Face.E,
+        )
+    }
+
+    @Test
+    fun `Chain Priority recovers omitted faces and uses repeated scores only once`() {
+        val (first, second, third, fourth, fifth) = AttackLineUps.MightyOutlier.lineup1
+        val cards = listOf(
+            first,
+            second,
+            third.copy(type = CardTypeEnum.Quick, affinity = CardAffinityEnum.Weak),
+            fourth.copy(type = CardTypeEnum.Unknown, affinity = CardAffinityEnum.Resist),
+            fifth.copy(type = CardTypeEnum.Unknown, affinity = CardAffinityEnum.Normal, isStunned = true),
+        )
+        val priority = FaceCardPriority(CardPriorityPerWave.of("WB, WA, WA, B, A, Q, RB, RA, RQ"), null)
+        val ranked = priority.sort(cards, stage = 0)
+        assertThat(ranked.map { it.card }).containsExactly(
+            CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.B, CommandCard.Face.E,
+        )
+
+        val picked = AttackPriorityHandler.pick(cards, priorityOrder = ranked).map { it.card }
+
+        assertThat(picked).containsExactly(
+            CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E,
         )
     }
 
