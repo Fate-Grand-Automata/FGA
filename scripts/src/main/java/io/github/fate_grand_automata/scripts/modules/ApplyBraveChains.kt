@@ -59,6 +59,7 @@ object ApplyBraveChains {
         val firstNp = npUsage.nps.firstOrNull() ?: return justRearranged
         val fieldSlot = firstNp.toFieldSlot()
 
+        // TODO: Stunned cards can precede playable cards from other Servants. Move only the NP owner's playable cards.
         val matchingCards = cards
             .filter { it.fieldSlot == fieldSlot }
             .toMutableList()
