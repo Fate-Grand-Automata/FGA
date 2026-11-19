@@ -42,7 +42,7 @@ interface AutomataApi {
     fun Pattern.find(
         pattern: Pattern,
         similarity: Double? = null
-    ): Match? = this.findMatches(pattern, similarity ?: 0.0).firstOrNull()
+    ): Match? = this.findBestMatch(pattern, similarity ?: 0.0)
 
     fun Region.exists(
         image: Pattern,

@@ -133,6 +133,27 @@ class DroidCvPattern(
         }
     }
 
+    // Reads only the best score, so the result Mat is released before returning
+    // instead of staying open in a suspended findMatches sequence
+    override fun findBestMatch(template: Pattern, similarity: Double): Match? =
+        match(template)?.use {
+            val minMaxLocResult = Core.minMaxLoc(it)
+            val score = minMaxLocResult.maxVal
+
+            if (score >= similarity) {
+                val loc = minMaxLocResult.maxLoc
+                Match(
+                    Region(
+                        loc.x.roundToInt(),
+                        loc.y.roundToInt(),
+                        template.width,
+                        template.height
+                    ),
+                    score
+                ).also { match -> Timber.d("Matched $template with a score of ${match.score}") }
+            } else null
+        }
+
     override val width get() = mat.width()
     override val height get() = mat.height()
 
