@@ -255,7 +255,7 @@
     <string name="p_fine_tune_skill_delay">"スキル使用後の待機時間"</string>
     <string name="p_fine_tune_stage_counter_similarity">"ウェーブカウンターの類似度"</string>
     <string name="p_fine_tune_np_card_type_similarity">"宝具Buster/Arts/Quickの類似度"</string>
-    <string name="p_fine_tune_np_spam_card_detection_similarity">"リピートモード宝具の類似度"</string>
+    <string name="p_fine_tune_np_card_detection_similarity">"リピートモード宝具の類似度"</string>
     <string name="p_fine_tune_support">"サポート"</string>
     <string name="p_fine_tune_support_max_updates">"更新回数上限"</string>
     <string name="p_fine_tune_support_swipes_per_update">"更新までのスワイプ回数"</string>

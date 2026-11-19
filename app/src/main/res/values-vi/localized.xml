@@ -213,7 +213,7 @@ LƯU Ý: Bạn có thể phải sử dụng 'Hiển thị bộ nhớ trong' tron
     <string name="p_fine_tune_skill_delay">"Độ trễ kỹ năng"</string>
     <string name="p_fine_tune_stage_counter_similarity">"Sự tương đồng của bộ đếm giai đoạn"</string>
     <string name="p_fine_tune_np_card_type_similarity">"NP Buster/Arts/Quick tương tự"</string>
-    <string name="p_fine_tune_np_spam_card_detection_similarity">"Độ tương đồng nhận diện thẻ NP ở chế độ Spam"</string>
+    <string name="p_fine_tune_np_card_detection_similarity">"Độ tương đồng nhận diện thẻ NP ở chế độ Spam"</string>
     <string name="p_fine_tune_support">"Support"</string>
     <string name="p_fine_tune_support_max_updates">"Cập nhật tối đa"</string>
     <string name="p_fine_tune_support_swipes_per_update">"Vuốt mỗi lần cập nhật danh sách support"</string>

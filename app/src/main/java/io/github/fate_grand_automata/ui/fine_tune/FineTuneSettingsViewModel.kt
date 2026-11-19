@@ -69,12 +69,12 @@ class FineTuneSettingsViewModel @Inject constructor(
                     hint = R.string.p_fine_tune_np_card_type_similarity_hint
                 ),
                 FineTuneItem(
-                    pref = prefs.npSpamCardDetectionSimilarity,
-                    name = R.string.p_fine_tune_np_spam_card_detection_similarity,
+                    pref = prefs.npCardDetectionSimilarity,
+                    name = R.string.p_fine_tune_np_card_detection_similarity,
                     icon = icon(Icons.Default.Star),
                     valueRange = 30..100,
                     valueRepresentation = { "$it%" },
-                    hint = R.string.p_fine_tune_np_spam_card_detection_similarity_hint
+                    hint = R.string.p_fine_tune_np_card_detection_similarity_hint
                 )
             )
         ),

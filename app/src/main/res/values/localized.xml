@@ -172,7 +172,7 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_fine_tune_mlb_similarity">"MLB Similarity"</string>
     <string name="p_fine_tune_stage_counter_similarity">"Stage Counter Similarity"</string>
     <string name="p_fine_tune_np_card_type_similarity">"NP Card Type Similarity"</string>
-    <string name="p_fine_tune_np_spam_card_detection_similarity">"NP Spam Detection Similarity"</string>
+    <string name="p_fine_tune_np_card_detection_similarity">"NP card detection similarity"</string>
     <string name="p_fine_tune_clicks">"Clicks"</string>
     <string name="p_fine_tune_wait_after_clicking">"Wait after clicking"</string>
     <string name="p_fine_tune_click_duration">"Click duration"</string>
@@ -195,7 +195,7 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_fine_tune_mlb_similarity_hint">"Similarity threshold used for matching MLB star. Reduce this by a bit if MLB CEs are not detected."</string>
     <string name="p_fine_tune_stage_counter_similarity_hint">"Similarity threshold for detecting wave change. If your skill commands are used in the wrong wave, tweaking this might help."</string>
     <string name="p_fine_tune_np_card_type_similarity_hint">"Similarity threshold used for the NP card type detection (Buster, Arts, Quick). Only used when Chain Priority is on."</string>
-    <string name="p_fine_tune_np_spam_card_detection_similarity_hint">"Similarity threshold used for automatically detecting NPs in Spam mode. Only used when Chain Priority is on."</string>
+    <string name="p_fine_tune_np_card_detection_similarity_hint">"Minimum similarity required to recognize a Servant\'s portrait on an NP card and treat that NP as available. Chain Priority currently uses this to decide which spam NPs to include when planning a chain. Needs servant face-card checks."</string>
     <string name="p_fine_tune_wait_after_clicking_hint">"Delay after each click/tap unless clicking repeatedly. Some time is needed for the game's animations to finish."</string>
     <string name="p_fine_tune_click_duration_hint">"Every tap/click is like a hold and release performed quickly. This sets the time difference between the two."</string>
     <string name="p_fine_tune_click_delay_hint">"Delay between individual taps/clicks when doing so repeatedly like at the end of battles, friend point summon and lottery script."</string>

@@ -44,7 +44,7 @@ interface IPreferences {
     val waitAfterOrderChange: Duration
     val servantDetailsWait: Duration
 
-    val npSpamCardDetectionSimilarity: Double
+    val npCardDetectionSimilarity: Double
     val npCardTypeSimilarity: Double
 
     val support: ISupportPreferencesCommon

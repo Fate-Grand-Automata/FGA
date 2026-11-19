@@ -64,7 +64,7 @@ class PrefsCore @Inject constructor(
     val mlbSimilarity = maker.int("mlb_similarity", 70)
     val stageCounterSimilarity = maker.int("stage_counter_similarity", 85)
     val npCardTypeSimilarity = maker.int("card_type_similarity", 50)
-    val npSpamCardDetectionSimilarity = maker.int("np_card_detection_similarity", 80)
+    val npCardDetectionSimilarity = maker.int("np_card_detection_similarity", 80)
     val stageCounterNew = maker.bool("stage_counter_new")
 
     val skillDelay = maker.int("skill_delay", 500)

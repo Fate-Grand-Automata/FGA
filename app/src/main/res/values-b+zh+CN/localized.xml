@@ -254,7 +254,7 @@
     <string name="p_fine_tune_skill_delay">"施放技能后等待时间（ms）"</string>
     <string name="p_fine_tune_stage_counter_similarity">"战斗场次识别阈值（%）"</string>
     <string name="p_fine_tune_np_card_type_similarity">"宝具类型识别阈值（%）"</string>
-    <string name="p_fine_tune_np_spam_card_detection_similarity">"宝具瞎打模式识别阈值（%）"</string>
+    <string name="p_fine_tune_np_card_detection_similarity">"宝具瞎打模式识别阈值（%）"</string>
     <string name="p_fine_tune_support">"助战从者列表"</string>
     <string name="p_fine_tune_support_max_updates">"助战列表更新次数限制"</string>
     <string name="p_fine_tune_support_swipes_per_update">"助战列表更新后滑动次数"</string>
