@@ -9,6 +9,7 @@ on:
       - '.github/copilot-instructions.md'
       - '.gitattributes'
       - '.gitignore'
+      - '.coderabbit.yaml'
       - '*.md'
       - 'LICENSE'
       - 'custom-game-area/**'

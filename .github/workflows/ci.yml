@@ -9,6 +9,7 @@ on:
       - '.github/**'
       - '.gitattributes'
       - '.gitignore'
+      - '.coderabbit.yaml'
       - '*.md'
       - 'LICENSE'
       - 'renovate.json'

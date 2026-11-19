@@ -1,5 +1,75 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
 reviews:
+  profile: chill
+  sequence_diagrams: false
+  estimate_code_review_effort: false
+  related_prs: false
+  suggested_reviewers: false
   auto_review:
     ignore_usernames:
       - "renovate[bot]"
       - "dependabot[bot]"
+  path_instructions:
+    - path: "app/src/main/res/values-*/**"
+      instructions: |
+        Translations belong on POEditor (https://poeditor.com/join/project/67PXOyBGI0); the
+        "Translations go through POEditor" pre-merge check handles PRs that change many strings.
+        Small fixes are fine in a PR. The maintainers can't read most of these languages, so review them in detail:
+        - Compare every added or changed string with the English source of the same `name` in
+          `app/src/main/res/values/localized.xml`. Flag translations whose meaning differs, that drop
+          or add information, or that are machine-translation artifacts.
+        - Format placeholders (`%s`, `%d`, `%1$s`, `%%`) and markup must match the English source exactly.
+        - Apostrophes and double quotes must be escaped (`\'`, `\"`); `&` and `<` must be XML entities.
+        - `<string-array>` entries must have the same number of `<item>`s as the source, in the same order.
+        - `<plurals>` must use the quantities that language needs, not just a copy of the English ones.
+        - Flag strings whose `name` doesn't exist in the English source, and changes that remove existing
+          translations.
+        - Keep terminology consistent with the other strings in the same file.
+  pre_merge_checks:
+    custom_checks:
+      - name: "Translations go through POEditor"
+        mode: warning
+        instructions: |
+          Consider only the files `app/src/main/res/values-*/localized.xml` changed by this PR.
+          Count, per language folder, the `<string>`, `<string-array>` and `<plurals>` elements that the PR
+          adds or modifies; a changed element counts once regardless of how many of its lines changed.
+          Pass if no such file changed, if the PR's head branch is `translations` (the POEditor sync),
+          or if every language has at most 5 added or modified elements.
+          Otherwise fail, list the count per language, and ask the author to remove those translation
+          changes from the PR and submit them on POEditor instead: https://poeditor.com/join/project/67PXOyBGI0
+
+code_generation:
+  unit_tests:
+    path_instructions:
+      - path: "scripts/**"
+        instructions: |
+          Put tests in `scripts/src/test/java/` under the same package as the code under test.
+          Use `kotlin.test.Test`, assertk assertions (`assertThat(...)`) and mockk; follow the style of the
+          existing tests there. Run them with `./gradlew :scripts:test`.
+      - path: "app/**"
+        instructions: &no-tests |
+          This module has no unit test setup. Don't generate tests here; if the logic is worth testing,
+          suggest moving it into `scripts/`.
+      - path: "prefs/**"
+        instructions: *no-tests
+      - path: "libautomata/**"
+        instructions: *no-tests
+
+knowledge_base:
+  learnings:
+    scope: local
+  # The vendor stubs in .claude/rules/ and .github/instructions/ only point at these guides.
+  code_guidelines:
+    filePatterns:
+      - files: "docs/agents/automation-scripts.md"
+        applyTo: "scripts/**,app/src/main/java/io/github/fate_grand_automata/di/**,app/src/main/java/io/github/fate_grand_automata/runner/**"
+      - files: "docs/agents/coordinates.md"
+        applyTo: "scripts/src/main/java/**/locations/*.kt,app/src/main/assets/**,libautomata/**"
+      - files: "docs/agents/dependencies.md"
+        applyTo: "gradle/libs.versions.toml,gradle/wrapper/**,**/build.gradle.kts,settings.gradle.kts,Gemfile,Gemfile.lock,.github/workflows/**"
+      - files: "docs/agents/github-workflows.md"
+        applyTo: ".github/workflows/**"
+      - files: "docs/agents/servers-and-assets.md"
+        applyTo: "app/src/main/assets/**"
+      - files: "docs/agents/translations.md"
+        applyTo: "app/src/main/res/**,app/src/main/assets/Support/**"
