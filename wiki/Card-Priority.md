@@ -157,8 +157,13 @@ How each option combines with Chain Priority is described under [Chain Priority]
 
 In FGO, the position of a card changes its effect, and the first card gives a bonus to all three. For example, a Buster card first boosts the damage of all cards.
 
-With Rearrange Cards, FGA plays the strongest card first and the 2nd strongest card last.
-It only rearranges when at most one NP and no [cards before NP](Skill-Maker#noble-phantasms) are used that turn.
+Rearrange Cards changes the order of the ranked face cards based on where the NPs go.
+
+- With no NP, it moves the second-ranked face card behind the third when three faces are available and swaps the two faces when only two are available. With one NP played first, it swaps the first two faces so the highest-ranked face plays last. **Don't care** and **With NP** both use these rules when Chain Priority is off.
+- With one NP and one [card before it](Skill-Maker#noble-phantasms), it swaps the first two faces so the highest-ranked face plays right after the NP. With Chain Priority off, this swap applies only to **With NP**, including a saved **Always** setting.
+- With Chain Priority on, its own card orders use both rules in every Brave Chains mode. The one-card-before-NP swap requires at least two faces and a playable second face.
+
+With [Brave Chains](#brave-chains) set to **Avoid**, the default picker has its own rearrangement rule. It tries to stagger the top face cards across Servants, drawing from further down the priority list if the top three all belong to one Servant. This also applies when Chain Priority falls back to the default picker. It needs [face-card checks](#face-card-checks) to tell which cards belong to which Servants.
 
 ![Face Cards](img/face-cards.jpg)
 

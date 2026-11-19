@@ -73,6 +73,7 @@ object ApplyBraveChains {
         ) {
             // TODO: Repeated priority scores can leave fewer than two cards, making the swap throw.
             // Swap only when at least two cards are available.
+            // TODO: The swap can place a stunned face before the NP. Skip the swap if the second face is stunned.
             Collections.swap(combinedCards, 0, 1)
         }
 
