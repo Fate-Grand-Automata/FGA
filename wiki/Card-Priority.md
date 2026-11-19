@@ -123,7 +123,7 @@ A **Buster** / **Arts** / **Quick** Chain is made by choosing 3 cards of the sam
 | Don't care           | The default output of Color Chains will be used, regardless of whether a Brave Chain is used or not. A Color Chain will be used if there is one available, otherwise it will skip to the next Chain option.                  | 
 | With NP              | Will always attempt to make a Color Brave Chain only when a single NP is being used.<br>If there is both a Brave Chain and a Color Chain separately available, the Brave Chain will be used over the Color Chain.            |
 | Always               | Will always attempt to make a Color Brave Chain if one is available, regardless of the Servant.<br>If there is both a Brave Chain and a Color Chain separately available, the Brave Chain will be used over the Color Chain. |
-| Avoid                | Will actively avoid making Brave Chains. If the only Color Chain is a Color Brave Chain, it will be skipped.                                                                                                                 |
+| Avoid                | Will actively avoid making Brave Chains. If the only Color Chain is a Color Brave Chain, it will be skipped, unless a Brave Chain can't be avoided at all with the cards whose color and Servant were recognized (for example when they all belong to one Servant). Then the Color Brave Chain is played.                                                                                                                 |
 
 ### Avoid Chain
 
