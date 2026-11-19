@@ -148,14 +148,14 @@ class AttackLineUps {
             affinity = CardAffinityEnum.Weak
         )
         val nero3BAlt = ParsedCard(
-            card = CommandCard.Face.E,
+            card = CommandCard.Face.C,
             servant = TeamSlot.C,
             fieldSlot = FieldSlot.C,
             type = CardTypeEnum.Buster,
             affinity = CardAffinityEnum.Resist
         )
         val nero3QAlt = ParsedCard(
-            card = CommandCard.Face.E,
+            card = CommandCard.Face.C,
             servant = TeamSlot.C,
             fieldSlot = FieldSlot.C,
             type = CardTypeEnum.Quick,
