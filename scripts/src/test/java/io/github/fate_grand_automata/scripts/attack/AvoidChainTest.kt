@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.scripts.attack
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
+import assertk.assertions.isNull
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
@@ -352,6 +353,51 @@ class AvoidChainTest {
                     )
             }
         }
+    }
+
+    @Test
+    fun `Avoid selects a face card with two NPs from other Servants`() {
+        val cards = AttackLineUps.SingleServantOnly.lineup1
+        val picked = AvoidChainHandler.pick(
+            cards = cards,
+            npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.C), 0),
+            npTypes = mapOf(
+                FieldSlot.A to CardTypeEnum.Quick,
+                FieldSlot.C to CardTypeEnum.Arts,
+            ),
+        )
+
+        assertThat(picked?.map { it.card } ?: emptyList()).containsExactly(
+            CommandCard.Face.B,
+            CommandCard.Face.A,
+            CommandCard.Face.C,
+            CommandCard.Face.D,
+            CommandCard.Face.E,
+        )
+    }
+
+    @Test
+    fun `Avoid returns null when the NP and all face cards share a Servant`() {
+        val picked = AvoidChainHandler.pick(
+            cards = AttackLineUps.SingleServantOnly.lineup1,
+            npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+            avoidCardChains = false,
+        )
+
+        assertThat(picked).isNull()
+    }
+
+    @Test
+    fun `Avoid returns null when the NP and all face cards share a color`() {
+        val picked = AvoidChainHandler.pick(
+            cards = AttackLineUps.BusterFocus.lineup11,
+            braveChainEnum = BraveChainEnum.None,
+            npUsage = NPUsage(setOf(CommandCard.NP.B), 0),
+            npTypes = mapOf(FieldSlot.B to CardTypeEnum.Buster),
+            avoidCardChains = true,
+        )
+
+        assertThat(picked).isNull()
     }
 
     /**

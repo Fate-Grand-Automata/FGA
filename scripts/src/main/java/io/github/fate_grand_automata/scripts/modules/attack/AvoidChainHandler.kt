@@ -50,15 +50,23 @@ object AvoidChainHandler {
         // Filter BraveChain-able only cards or skip filter (if there is no BraveChain required)
         val cardsToUse = nonUnknownCards.filter { braveChainFieldSlot == null || it.fieldSlot == braveChainFieldSlot }
 
-        val cardCountPerFieldSlotMap = AttackUtils.getCardsPerFieldSlotMap(cardsToUse, npUsage)
-        val cardCountPerCardTypeMap = AttackUtils.getCardsPerCardTypeMap(cardsToUse, npTypes)
+        // The search rejects face cards with unknown slots when avoiding Brave Chains.
+        // If all usable face cards and every NP share a slot, any complete pick is a Brave Chain.
+        val singleFaceCardSlot = cardsToUse.firstNotNullOfOrNull { it.fieldSlot }
+        val onlyBraveChainPossible = avoidBraveChains && singleFaceCardSlot != null &&
+            cardsToUse.all { it.fieldSlot == null || it.fieldSlot == singleFaceCardSlot } &&
+            npUsage.nps.all { it.toFieldSlot() == singleFaceCardSlot }
+        if (onlyBraveChainPossible) return null
 
-        // If only a BraveChain is possible and it is avoidBraveChains
-        if (avoidBraveChains && cardCountPerFieldSlotMap.size == 1) return null
+        // A Color Chain is forced when every face card and every scheduled NP has the same type.
+        // Each NP must have a matching type because the search counts only supplied NP types.
+        val singleFaceCardType = cardsToUse.firstOrNull()?.type
+        val onlyColorChainPossible = avoidCardChains && singleFaceCardType != null &&
+            cardsToUse.all { it.type == singleFaceCardType } &&
+            npUsage.nps.all { npTypes[it.toFieldSlot()] == singleFaceCardType }
+        if (onlyColorChainPossible) return null
 
-        // If only a ColorChain is possible
-        if (avoidCardChains && cardCountPerCardTypeMap.size == 1) return null
-
+        // Let selectCards evaluate the remaining combinations using the NP counts as its starting state.
         val npFieldSlotCounts =
             if (avoidBraveChains) npUsage.nps.groupingBy { it.toFieldSlot() }.eachCount()
             else emptyMap()
