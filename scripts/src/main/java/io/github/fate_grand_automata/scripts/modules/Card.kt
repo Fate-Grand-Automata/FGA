@@ -129,6 +129,9 @@ class Card @Inject constructor(
         return servantTracker.getNpCardType(teamSlot)
     }
 
+    // TODO: Use this to filter NPs for chain planning once NP card detection is reliable.
+    // This helper is intentionally unused for now. In pickCards, scripted NPs are assumed
+    // ready and only spam NPs are filtered by detection.
     fun NPUsage.detected (): NPUsage {
         val validNPs = (this.nps + spamNps).detected()
         return NPUsage(validNPs, this.cardsBeforeNP)
