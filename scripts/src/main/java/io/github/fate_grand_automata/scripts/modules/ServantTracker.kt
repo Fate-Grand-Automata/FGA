@@ -336,15 +336,16 @@ class ServantTracker @Inject constructor(
                     .filterKeys { it.toFieldSlot() == npCard.toFieldSlot() }
                     .mapValues { (_, images) ->
                         images.maxOf { image ->
+                            // Searching at the configured similarity makes every value of the setting take effect
                             locations.attack.servantNPMatchRegion(npCard)
-                                .find(image, 0.4)?.score ?: 0.0
+                                .find(image, prefs.npSpamCardDetectionSimilarity)?.score ?: 0.0
                         }
                     }
                     .values
             }
         val result = scores
             .filter { (_, values) ->
-                values.filter { it > prefs.npSpamCardDetectionSimilarity }.maxByOrNull { it } != null
+                values.filter { it >= prefs.npSpamCardDetectionSimilarity }.maxByOrNull { it } != null
             }
             .map { it.first }
             .toSet()
