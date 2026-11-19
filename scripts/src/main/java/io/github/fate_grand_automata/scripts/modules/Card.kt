@@ -83,10 +83,13 @@ class Card @Inject constructor(
             ).map { it.card }
         }
 
+        // Always is only offered with Chain Priority. Without it, a saved Always acts as With NP.
+        val braveChains = braveChainsPerWave.inCurrentWave(BraveChainEnum.None)
+            .let { if (it == BraveChainEnum.Always) BraveChainEnum.WithNP else it }
         return ApplyBraveChains.pick(
             cards = cardsOrderedByPriority,
             npUsage = npUsage,
-            braveChains = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
+            braveChains = braveChains,
             rearrange = rearrangeCardsPerWave.inCurrentWave(false),
         ).map { it.card }
     }

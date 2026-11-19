@@ -55,10 +55,15 @@ fun CardPriorityListItem.Render(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 var braveChains by braveChains
+                // Always runs as With NP without Chain Priority, so that is what is shown. The saved value is kept.
+                val shownBraveChains =
+                    if (!useChainPriority && braveChains == BraveChainEnum.Always) BraveChainEnum.WithNP
+                    else braveChains
 
                 val braveChainDialog = listDialog(
-                    selected = braveChains,
-                    onSelectedChange = { braveChains = it },
+                    selected = shownBraveChains,
+                    // Choosing the shown value again keeps the saved one
+                    onSelectedChange = { if (it != shownBraveChains) braveChains = it },
                     entries = BraveChainEnum.entries
                         .filter { useChainPriority || it != BraveChainEnum.Always }
                         .associateWith { stringResource(it.stringRes) },
@@ -70,7 +75,7 @@ fun CardPriorityListItem.Render(
                         .weight(1f)
                         .clickable { braveChainDialog.show() },
                     headlineContent = { Text(stringResource(R.string.p_brave_chains)) },
-                    supportingContent = { Text(stringResource(braveChains.stringRes)) },
+                    supportingContent = { Text(stringResource(shownBraveChains.stringRes)) },
                     colors = FGAListItemColors()
                 )
 
