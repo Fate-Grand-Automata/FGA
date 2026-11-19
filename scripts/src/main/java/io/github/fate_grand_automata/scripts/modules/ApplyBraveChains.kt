@@ -6,28 +6,24 @@ import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
 import java.util.Collections
 
+/**
+ * The default card picker, used when Chain Priority is off and as Chain Priority's fallback.
+ *
+ * This file is intentionally left unchanged and unfixed so that turning Chain Priority off keeps the
+ * original card picking behaviour. The only addition is [BraveChainEnum.Always], which every `when`
+ * over the enum has to handle and which is treated exactly like [BraveChainEnum.WithNP].
+ * Known issues are documented as TODO comments with the fix that would solve each, instead of being fixed here.
+ * Chain Priority's own fixes live in its handlers under `modules/attack`.
+ */
 object ApplyBraveChains {
     private fun rearrange(
         cards: List<ParsedCard>,
         rearrange: Boolean,
         npUsage: NPUsage
     ): List<ParsedCard> {
-        // Get this out of the way asap
-        if (!rearrange) return cards
-
-        /*
-          If there is 1 NP and 1 Card before NP,
-          we want the best or matching face-card after NP immediately
-         */
-        if (listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }) {
-            return cards.toMutableList().also {
-                Collections.swap(it, 0, 1)
-            }
-        }
-
-        if (
+        if (rearrange
             // If there are cards before NP, at max there's only 1 card after NP
-            npUsage.cardsBeforeNP == 0
+            && npUsage.cardsBeforeNP == 0
             // If there are more than 1 NPs, only 1 card after NPs at max
             && npUsage.nps.size <= 1
         ) {
@@ -68,6 +64,15 @@ object ApplyBraveChains {
             .toMutableList()
         val nonMatchingCards = cards - matchingCards
         val combinedCards = matchingCards + nonMatchingCards
+        /*
+          When rearrange is active and there is 1 NP and 1 Card before NP,
+          we want the best or matching face-card after NP.
+         */
+        if (rearrange
+            && listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
+        ) {
+            Collections.swap(combinedCards, 0, 1)
+        }
 
         return rearrange(
             cards = combinedCards,
