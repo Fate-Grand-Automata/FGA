@@ -12,5 +12,7 @@ data class CardPriorityListItem(
     val servantPriority: SnapshotStateList<TeamSlot>,
     val chainPriority: SnapshotStateList<ChainTypeEnum>,
     var rearrangeCards: MutableState<Boolean>,
-    var braveChains: MutableState<BraveChainEnum>
+    var braveChains: MutableState<BraveChainEnum>,
+    val useServantPriority: MutableState<Boolean>,
+    val useChainPriority: MutableState<Boolean>
 )

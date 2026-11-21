@@ -291,7 +291,8 @@
     <string name="p_max_skills">"スキルレベル最大"</string>
     <string name="p_more_options">"その他の設定"</string>
     <string name="p_not_set">"未設定"</string>
-    <string name="p_rearrange_cards">"優先順位を逆転する"</string>
+    <string name="p_rearrange_cards">"カードの並べ替え"</string>
+    <string name="p_rearrange_cards_summary">"優先順位の高いカードを最後に出してボーナスを高める"</string>
     <string name="p_receive_embers">"種火を受け取る"</string>
     <string name="p_record_screen">"画面録画"</string>
     <string name="p_record_screen_summary">"画面録画し 'record.mp4' を出力フォルダに保存します。

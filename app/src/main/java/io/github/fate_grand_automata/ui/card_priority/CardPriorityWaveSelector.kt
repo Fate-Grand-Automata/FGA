@@ -111,7 +111,9 @@ fun CardPriorityWaveSelector(
                                         items[0].servantPriority.toMutableStateList(),
                                         items[0].chainPriority.toMutableStateList(),
                                         mutableStateOf(false),
-                                        mutableStateOf(BraveChainEnum.None)
+                                        mutableStateOf(BraveChainEnum.None),
+                                        mutableStateOf(items[0].useServantPriority.value),
+                                        mutableStateOf(items[0].useChainPriority.value)
                                     )
                                 )
                             }

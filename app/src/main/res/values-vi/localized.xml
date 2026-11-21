@@ -246,6 +246,7 @@ LƯU Ý: Bạn có thể phải sử dụng 'Hiển thị bộ nhớ trong' tron
     <string name="p_more_options">"Các lựa chọn khác"</string>
     <string name="p_not_set">"Không được thiết lập"</string>
     <string name="p_rearrange_cards">"Sắp xếp lại thẻ"</string>
+    <string name="p_rearrange_cards_summary">"Đánh thẻ ưu tiên cao cuối cùng để nhận thưởng lớn hơn"</string>
     <string name="p_receive_embers">"Thẻ EXP nhận được"</string>
     <string name="p_record_screen">"Quay màn hình"</string>
     <string name="p_record_screen_summary">"Một tệp có tên 'record.mp4' sẽ được lưu vào thư mục đầu ra.

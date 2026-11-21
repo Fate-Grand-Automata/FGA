@@ -2,7 +2,6 @@ package io.github.fate_grand_automata.ui.card_priority
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -12,6 +11,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -32,10 +32,10 @@ import io.github.fate_grand_automata.ui.prefs.listDialog
 import io.github.fate_grand_automata.util.stringRes
 
 @Composable
-fun CardPriorityListItem.Render(
-    useServantPriority: Boolean,
-    useChainPriority: Boolean
-) {
+fun CardPriorityListItem.Render() {
+    val isServantPriorityOn by useServantPriority
+    val isChainPriorityOn by useChainPriority
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -51,64 +51,98 @@ fun CardPriorityListItem.Render(
                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant
             )
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                var braveChains by braveChains
-                // Always runs as With NP without Chain Priority, so that is what is shown. The saved value is kept.
-                val shownBraveChains =
-                    if (!useChainPriority && braveChains == BraveChainEnum.Always) BraveChainEnum.WithNP
-                    else braveChains
+            CheckboxItem(
+                title = stringResource(R.string.p_servant_priority),
+                state = useServantPriority,
+                modifier = Modifier.fillMaxWidth()
+            )
 
-                val braveChainDialog = listDialog(
-                    selected = shownBraveChains,
-                    // Choosing the shown value again keeps the saved one
-                    onSelectedChange = { if (it != shownBraveChains) braveChains = it },
-                    entries = BraveChainEnum.entries
-                        .filter { useChainPriority || it != BraveChainEnum.Always }
-                        .associateWith { stringResource(it.stringRes) },
-                    title = stringResource(R.string.p_brave_chains)
-                )
+            CheckboxItem(
+                title = stringResource(R.string.p_chain_priority),
+                state = useChainPriority,
+                modifier = Modifier.fillMaxWidth()
+            )
 
-                ListItem(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clickable { braveChainDialog.show() },
-                    headlineContent = { Text(stringResource(R.string.p_brave_chains)) },
-                    supportingContent = { Text(stringResource(shownBraveChains.stringRes)) },
-                    colors = FGAListItemColors()
-                )
+            BraveChainsItem(
+                state = braveChains,
+                isChainPriorityOn = isChainPriorityOn
+            )
 
-                var rearrange by rearrangeCards
-
-                ListItem(
-                    modifier = Modifier
-                        .weight(1.1f)
-                        .clickable { rearrange = !rearrange },
-                    headlineContent = { Text(stringResource(R.string.p_rearrange_cards)) },
-                    trailingContent = {
-                        Checkbox(
-                            checked = rearrange,
-                            onCheckedChange = { rearrange = it }
-                        )
-                    },
-                    colors = FGAListItemColors()
-                )
-            }
+            CheckboxItem(
+                title = stringResource(R.string.p_rearrange_cards),
+                summary = stringResource(R.string.p_rearrange_cards_summary),
+                state = rearrangeCards,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
 
-        if (useChainPriority) {
+        if (isChainPriorityOn) {
             ChainPriority(
                 priorities = chainPriority
             )
         }
 
-        if (useServantPriority) {
+        if (isServantPriorityOn) {
             ServantPriority(
                 priorities = servantPriority
             )
         }
     }
+}
+
+@Composable
+private fun BraveChainsItem(
+    state: MutableState<BraveChainEnum>,
+    isChainPriorityOn: Boolean
+) {
+    var braveChains by state
+    // Always runs as With NP without Chain Priority, so that is what is shown. The saved value is kept.
+    val shownBraveChains =
+        if (!isChainPriorityOn && braveChains == BraveChainEnum.Always) BraveChainEnum.WithNP
+        else braveChains
+
+    val braveChainDialog = listDialog(
+        selected = shownBraveChains,
+        // Choosing the shown value again keeps the saved one
+        onSelectedChange = { if (it != shownBraveChains) braveChains = it },
+        entries = BraveChainEnum.entries
+            .filter { isChainPriorityOn || it != BraveChainEnum.Always }
+            .associateWith { stringResource(it.stringRes) },
+        title = stringResource(R.string.p_brave_chains)
+    )
+
+    ListItem(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { braveChainDialog.show() },
+        headlineContent = { Text(stringResource(R.string.p_brave_chains)) },
+        supportingContent = { Text(stringResource(shownBraveChains.stringRes)) },
+        colors = FGAListItemColors()
+    )
+}
+
+@Composable
+private fun CheckboxItem(
+    title: String,
+    state: MutableState<Boolean>,
+    modifier: Modifier = Modifier,
+    summary: String? = null
+) {
+    var checked by state
+
+    ListItem(
+        modifier = modifier
+            .clickable { checked = !checked },
+        headlineContent = { Text(title) },
+        supportingContent = summary?.let { { Text(it) } },
+        trailingContent = {
+            Checkbox(
+                checked = checked,
+                onCheckedChange = { checked = it }
+            )
+        },
+        colors = FGAListItemColors()
+    )
 }
 
 @Composable

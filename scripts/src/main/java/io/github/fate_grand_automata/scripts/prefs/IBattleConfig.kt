@@ -14,9 +14,11 @@ interface IBattleConfig {
     var name: String
     var skillCommand: String
     var cardPriority: CardPriorityPerWave
-    val useServantPriority: Boolean
+    /** One value per wave. Waves past the end use the last value. */
+    val useServantPriority: List<Boolean>
     val servantPriority: ServantPriorityPerWave
-    val useChainPriority: Boolean
+    /** One value per wave. Waves past the end use the last value. */
+    val useChainPriority: List<Boolean>
     val chainPriority: ChainPriorityPerWave
     val rearrangeCards: List<Boolean>
     val braveChains: List<BraveChainEnum>

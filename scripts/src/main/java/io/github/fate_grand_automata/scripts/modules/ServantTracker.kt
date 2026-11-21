@@ -234,8 +234,8 @@ class ServantTracker @Inject constructor(
      * counter means retry next turn. Checks end when a read confirms or establishes the form's type.
      */
     fun refreshNpCardType(fieldSlot: FieldSlot) {
-        // Only Chain Priority plans around the NP type
-        if (prefs.skipServantFaceCardCheck || !battleConfig.useChainPriority) return
+        // Only Chain Priority plans around the NP type. Any wave may use it, so the type has to stay current.
+        if (prefs.skipServantFaceCardCheck || battleConfig.useChainPriority.none { it }) return
         // An unrecognized Servant has no NP type to plan around
         val teamSlot = _deployed[fieldSlot]?.takeUnless { it is TeamSlot.Unknown } ?: return
 
@@ -274,7 +274,7 @@ class ServantTracker @Inject constructor(
      * when it may have changed but couldn't be read now. The last known type is used until then.
      */
     fun npCardTypeMayHaveChanged(fieldSlot: FieldSlot) {
-        if (prefs.skipServantFaceCardCheck || !battleConfig.useChainPriority) return
+        if (prefs.skipServantFaceCardCheck || battleConfig.useChainPriority.none { it }) return
         val teamSlot = _deployed[fieldSlot]?.takeUnless { it is TeamSlot.Unknown } ?: return
 
         // No dialog was available after the skill. Read at the next opportunity, including Order Change.

@@ -50,17 +50,21 @@ class Card @Inject constructor(
         cards: List<ParsedCard>,
         npUsage: NPUsage
     ): List<CommandCard.Face> {
-        val cardsOrderedByPriority = priority.sort(cards, state.stage)
-
         fun <T> List<T>.inCurrentWave(default: T) =
             if (isNotEmpty())
                 this[state.stage.coerceIn(indices)]
             else default
 
+        val cardsOrderedByPriority = priority.sort(
+            cards,
+            state.stage,
+            useServantPriority = battleConfig.useServantPriority.inCurrentWave(false)
+        )
+
         val braveChainsPerWave = battleConfig.braveChains
         val rearrangeCardsPerWave = battleConfig.rearrangeCards
 
-        val useChainPriority = battleConfig.useChainPriority
+        val useChainPriority = battleConfig.useChainPriority.inCurrentWave(false)
         if (useChainPriority) {
             // Only the NPs that fit after the cards clicked before them are part of the attack
             val npUsageToUse = NPUsage(

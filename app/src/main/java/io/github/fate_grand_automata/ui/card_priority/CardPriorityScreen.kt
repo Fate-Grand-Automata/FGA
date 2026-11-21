@@ -9,9 +9,7 @@ fun CardPriorityScreen(
     vm: CardPriorityViewModel = viewModel()
 ) {
     CardPriorityView(
-        items = vm.cardPriorityItems,
-        useServantPriority = vm.useServantPriority,
-        useChainPriority = vm.useChainPriority
+        items = vm.cardPriorityItems
     )
 
     DisposableEffect(vm) {

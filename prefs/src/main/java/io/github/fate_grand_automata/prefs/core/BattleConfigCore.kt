@@ -60,22 +60,24 @@ class BattleConfigCore(
         default = CardPriorityPerWave.default
     )
 
+    private val booleanListSerializer = object : Serializer<List<Boolean>> {
+        private val separator = ","
+        private val Yes = "T"
+        private val No = "F"
+
+        override fun deserialize(serialized: String) =
+            serialized
+                .split(separator)
+                .map { m -> m == Yes }
+
+        override fun serialize(value: List<Boolean>) =
+            value
+                .joinToString(separator) { m -> if (m) Yes else No }
+    }
+
     val rearrangeCards = maker.serialized(
         "auto_skill_rearrange_cards",
-        serializer = object : Serializer<List<Boolean>> {
-            private val separator = ","
-            private val Yes = "T"
-            private val No = "F"
-
-            override fun deserialize(serialized: String) =
-                serialized
-                    .split(separator)
-                    .map { m -> m == Yes }
-
-            override fun serialize(value: List<Boolean>) =
-                value
-                    .joinToString(separator) { m -> if (m) Yes else No }
-        },
+        serializer = booleanListSerializer,
         default = emptyList()
     )
 
@@ -105,7 +107,10 @@ class BattleConfigCore(
     val shuffleCards = maker.enum("shuffle_cards", ShuffleCardsEnum.None)
     val shuffleCardsWave = maker.int("shuffle_cards_wave", 3)
 
-    val useServantPriority = maker.bool("use_servant_priority")
+    val useServantPriority = PerWaveSwitch(
+        perWave = maker.serialized("use_servant_priority_per_wave", booleanListSerializer, default = emptyList()),
+        allWaves = maker.bool("use_servant_priority")
+    )
     val servantPriority = maker.serialized(
         "servant_priority",
         serializer = object : Serializer<ServantPriorityPerWave> {
@@ -122,7 +127,10 @@ class BattleConfigCore(
         default = ServantPriorityPerWave.default
     )
 
-    val useChainPriority = maker.bool("use_chain_priority")
+    val useChainPriority = PerWaveSwitch(
+        perWave = maker.serialized("use_chain_priority_per_wave", booleanListSerializer, default = emptyList()),
+        allWaves = maker.bool("use_chain_priority")
+    )
     val chainPriority = maker.serialized(
         "chain_priority",
         serializer = object : Serializer<ChainPriorityPerWave> {

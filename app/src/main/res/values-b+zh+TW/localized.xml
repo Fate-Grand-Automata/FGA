@@ -265,8 +265,8 @@
     <string name="p_max_skills">"滿技能"</string>
     <string name="p_more_options">"更多選項"</string>
     <string name="p_not_set">"未設定"</string>
-    <string name="p_rearrange_cards">"調換順序
-（優先性高的卡後出）"</string>
+    <string name="p_rearrange_cards">"調換順序"</string>
+    <string name="p_rearrange_cards_summary">"優先性高的卡後出"</string>
     <string name="p_receive_embers">"領取種火"</string>
     <string name="p_record_screen">"螢幕錄影"</string>
     <string name="p_record_screen_summary">"將在存放資料的資料夾儲存 'record.mp4' 為名的螢幕錄影檔案

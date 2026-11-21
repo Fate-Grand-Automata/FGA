@@ -288,8 +288,8 @@
     <string name="p_max_skills">"满技能"</string>
     <string name="p_more_options">"更多选项"</string>
     <string name="p_not_set">"未设定"</string>
-    <string name="p_rearrange_cards">"调换顺序
-（优先级高的卡后出）"</string>
+    <string name="p_rearrange_cards">"调换顺序"</string>
+    <string name="p_rearrange_cards_summary">"优先级高的卡后出"</string>
     <string name="p_receive_embers">"收取种火"</string>
     <string name="p_record_screen">"屏幕录像"</string>
     <string name="p_record_screen_summary">"将在存放文件的文件夹储存 'record.mp4' 为名的屏幕录像档案

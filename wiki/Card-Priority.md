@@ -34,25 +34,25 @@ Examples:
 
 Wave 1 applies to the whole battle. Add waves (up to 3) with `+` only if you want a different priority in later waves.
 
-![Battle Configs - Card Priority | Default](https://i.imgur.com/N6WfLVB.jpeg "Battle Configs - Card Priority | Default")
+![Battle Configs - Card Priority | Waves](img/attack/card-priority-waves.png "Battle Configs - Card Priority | Waves")
 
-Each wave has its own card order, [Brave Chains](#brave-chains) and [Rearrange Cards](#rearrange-cards) settings.
+Each wave has its own card order, [Servant Priority](#servant-priority), [Chain Priority](#chain-priority), [Brave Chains](#brave-chains) and [Rearrange Cards](#rearrange-cards) settings. A new wave starts with the Servant Priority and Chain Priority settings of wave 1.
 
 ## Servant Priority
 
-Turn on **Use Servant Priority** at the top to prefer the cards of some Servants over others. Servant Priority comes before card priority.
+Turn on **Servant Priority** in a wave to prefer the cards of some Servants over others in that wave. Servant Priority comes before card priority.
 
-![Servant priority on](https://i.imgur.com/KSXE36s.png)
+![Servant priority on](img/attack/servant-priority-toggle.png)
 
 Then drag the team positions into the order you want. The positions are the same as in the [Skill Maker](Skill-Maker#positions).
 
-![Servant priority](https://i.imgur.com/fz9BBtX.png)
+![Servant priority](img/attack/servant-priority.png)
 
 ## Chain Priority
 
 ![Chain priority on](img/attack/chain-priority-toggle.png)
 
-Turn on **Use Chain Priority** at the top to enable Chain Priority. It allows for attempts at `Mighty`, **Buster**, **Arts** or **Quick** Chains, based on the order that the chains are chosen in. There is an additional option called "Avoid", which when used attempts to avoid any of the other chains. 
+Turn on **Chain Priority** in a wave to enable Chain Priority for that wave. It allows for attempts at `Mighty`, **Buster**, **Arts** or **Quick** Chains, based on the order that the chains are chosen in. There is an additional option called "Avoid", which when used attempts to avoid any of the other chains. 
 
 | Sample orders                                                                       | Name                            | Description                                                                                                                                                                                                                          | 
 |:------------------------------------------------------------------------------------|:--------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

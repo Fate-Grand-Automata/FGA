@@ -13,6 +13,7 @@ import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
+import io.github.fate_grand_automata.scripts.models.ServantPriorityPerWave
 import io.github.fate_grand_automata.scripts.modules.FaceCardPriority
 import io.github.fate_grand_automata.scripts.modules.attack.MightyChainHandler
 import io.github.fate_grand_automata.scripts.modules.attack.AttackPriorityHandler
@@ -886,8 +887,8 @@ class CardChainPriorityIntegrationTest {
             fourth.copy(type = CardTypeEnum.Unknown, affinity = CardAffinityEnum.Resist),
             fifth.copy(type = CardTypeEnum.Unknown, affinity = CardAffinityEnum.Normal, isStunned = true),
         )
-        val priority = FaceCardPriority(CardPriorityPerWave.of("WB, WA, WA, B, A, Q, RB, RA, RQ"), null)
-        val ranked = priority.sort(cards, stage = 0)
+        val priority = FaceCardPriority(CardPriorityPerWave.of("WB, WA, WA, B, A, Q, RB, RA, RQ"), ServantPriorityPerWave.default)
+        val ranked = priority.sort(cards, stage = 0, useServantPriority = false)
         assertThat(ranked.map { it.card }).containsExactly(
             CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.B, CommandCard.Face.E,
         )

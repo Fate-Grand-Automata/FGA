@@ -19,10 +19,10 @@ internal class BattleConfig(
     override val braveChains by prefs.braveChains
 
     override val servantPriority by prefs.servantPriority
-    override val useServantPriority by prefs.useServantPriority
+    override val useServantPriority get() = prefs.useServantPriority.get()
 
     override val chainPriority by prefs.chainPriority
-    override val useChainPriority by prefs.useChainPriority
+    override val useChainPriority get() = prefs.useChainPriority.get()
 
     override val party by prefs.party
     override val materials by prefs.materials

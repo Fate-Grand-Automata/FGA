@@ -306,6 +306,7 @@
     <string name="p_more_options">"더 많은 옵션"</string>
     <string name="p_not_set">"설정 안함"</string>
     <string name="p_rearrange_cards">"카드 재배열"</string>
+    <string name="p_rearrange_cards_summary">"우선순위가 높은 카드를 마지막에 내서 보너스를 키움"</string>
     <string name="p_receive_embers">"종화 자동 수령"</string>
     <string name="p_record_screen">"화면 녹화"</string>
     <string name="p_record_screen_summary">"'record.mp4'라는 파일이 지정된 폴더에 저장됩니다.
