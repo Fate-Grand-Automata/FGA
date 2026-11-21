@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import sh.calvin.reorderable.ReorderableItem
@@ -37,13 +39,17 @@ data class DragSortItemStyle(
  * Dragging starts on a long press. A plain swipe has to stay free for the row's own scrolling,
  * or items that start off-screen can never be brought into view to be dragged at all. The item
  * being dragged shrinks and vibrates, since the long press is otherwise invisible.
+ *
+ * @param fillWidth Splits the width evenly between the items instead of scrolling, so that every
+ * item stays in view while dragging. Only suits rows with a few short labels.
  */
 @Composable
 fun <T> DragSort(
     items: SnapshotStateList<T>,
     key: (T) -> Any,
     style: @Composable (T) -> DragSortItemStyle,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    fillWidth: Boolean = false
 ) {
     val listState = rememberLazyListState()
     val reorderableState = rememberReorderableLazyListState(listState) { from, to ->
@@ -55,6 +61,7 @@ fun <T> DragSort(
 
     LazyRow(
         state = listState,
+        userScrollEnabled = !fillWidth,
         modifier = modifier
     ) {
         itemsIndexed(items, key = { index, _ -> itemKeys[index] }) { index, item ->
@@ -68,7 +75,14 @@ fun <T> DragSort(
                     text = itemStyle.text,
                     color = itemStyle.contentColor,
                     fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
+                        .then(
+                            if (fillWidth) Modifier.fillParentMaxWidth(1f / items.size)
+                            else Modifier
+                        )
                         .longPressDraggableHandle(
                             onDragStarted = {
                                 haptics.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -85,7 +99,7 @@ fun <T> DragSort(
                          * so a shadow or a scale would be painted over by the next chip.
                          */
                         .border(2.dp, inset)
-                        .padding(horizontal = 20.dp, vertical = 10.dp)
+                        .padding(horizontal = if (fillWidth) 4.dp else 20.dp, vertical = 10.dp)
                 )
             }
         }

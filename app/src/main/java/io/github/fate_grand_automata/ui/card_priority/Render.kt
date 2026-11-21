@@ -174,7 +174,8 @@ private fun ServantPriority(
                 text = "  ${it.position}  "
             )
         },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        fillWidth = true
     )
 
     ReorderHint()
@@ -215,7 +216,8 @@ private fun ChainPriority(
                 text = if (it == ChainTypeEnum.None) "│" else stringResource(it.stringRes)
             )
         },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        fillWidth = true
     )
 
     ReorderHint()
