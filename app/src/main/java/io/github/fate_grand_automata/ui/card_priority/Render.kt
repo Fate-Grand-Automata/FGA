@@ -2,7 +2,6 @@ package io.github.fate_grand_automata.ui.card_priority
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -12,6 +11,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -23,7 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.TeamSlot
+import io.github.fate_grand_automata.scripts.models.battle.ChainPriorityItem
 import io.github.fate_grand_automata.ui.FGAListItemColors
 import io.github.fate_grand_automata.ui.drag_sort.DragSort
 import io.github.fate_grand_automata.ui.drag_sort.DragSortItemStyle
@@ -31,9 +33,10 @@ import io.github.fate_grand_automata.ui.prefs.listDialog
 import io.github.fate_grand_automata.util.stringRes
 
 @Composable
-fun CardPriorityListItem.Render(
-    useServantPriority: Boolean
-) {
+fun CardPriorityListItem.Render() {
+    val isServantPriorityOn by useServantPriority
+    val isChainPriorityOn by useChainPriority
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -49,47 +52,38 @@ fun CardPriorityListItem.Render(
                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant
             )
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                var braveChains by braveChains
+            CheckboxItem(
+                title = stringResource(R.string.p_servant_priority),
+                state = useServantPriority,
+                modifier = Modifier.fillMaxWidth()
+            )
 
-                val braveChainDialog = listDialog(
-                    selected = braveChains,
-                    onSelectedChange = { braveChains = it },
-                    entries = BraveChainEnum.entries
-                        .associateWith { stringResource(it.stringRes) },
-                    title = stringResource(R.string.p_brave_chains)
-                )
+            CheckboxItem(
+                title = stringResource(R.string.p_chain_priority),
+                state = useChainPriority,
+                modifier = Modifier.fillMaxWidth()
+            )
 
-                ListItem(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clickable { braveChainDialog.show() },
-                    headlineContent = { Text(stringResource(R.string.p_brave_chains)) },
-                    supportingContent = { Text(stringResource(braveChains.stringRes)) },
-                    colors = FGAListItemColors()
-                )
+            BraveChainsItem(
+                state = braveChains,
+                isChainPriorityOn = isChainPriorityOn
+            )
 
-                var rearrange by rearrangeCards
-
-                ListItem(
-                    modifier = Modifier
-                        .weight(1.1f)
-                        .clickable { rearrange = !rearrange },
-                    headlineContent = { Text(stringResource(R.string.p_rearrange_cards)) },
-                    trailingContent = {
-                        Checkbox(
-                            checked = rearrange,
-                            onCheckedChange = { rearrange = it }
-                        )
-                    },
-                    colors = FGAListItemColors()
-                )
-            }
+            CheckboxItem(
+                title = stringResource(R.string.p_rearrange_cards),
+                summary = stringResource(R.string.p_rearrange_cards_summary),
+                state = rearrangeCards,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
 
-        if (useServantPriority) {
+        if (isChainPriorityOn) {
+            ChainPriority(
+                priorities = chainPriority
+            )
+        }
+
+        if (isServantPriorityOn) {
             ServantPriority(
                 priorities = servantPriority
             )
@@ -98,11 +92,66 @@ fun CardPriorityListItem.Render(
 }
 
 @Composable
+private fun BraveChainsItem(
+    state: MutableState<BraveChainEnum>,
+    isChainPriorityOn: Boolean
+) {
+    var braveChains by state
+    // Always runs as With NP without Chain Priority, so that is what is shown. The saved value is kept.
+    val shownBraveChains =
+        if (!isChainPriorityOn && braveChains == BraveChainEnum.Always) BraveChainEnum.WithNP
+        else braveChains
+
+    val braveChainDialog = listDialog(
+        selected = shownBraveChains,
+        // Choosing the shown value again keeps the saved one
+        onSelectedChange = { if (it != shownBraveChains) braveChains = it },
+        entries = BraveChainEnum.entries
+            .filter { isChainPriorityOn || it != BraveChainEnum.Always }
+            .associateWith { stringResource(it.stringRes) },
+        title = stringResource(R.string.p_brave_chains)
+    )
+
+    ListItem(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { braveChainDialog.show() },
+        headlineContent = { Text(stringResource(R.string.p_brave_chains)) },
+        supportingContent = { Text(stringResource(shownBraveChains.stringRes)) },
+        colors = FGAListItemColors()
+    )
+}
+
+@Composable
+private fun CheckboxItem(
+    title: String,
+    state: MutableState<Boolean>,
+    modifier: Modifier = Modifier,
+    summary: String? = null
+) {
+    var checked by state
+
+    ListItem(
+        modifier = modifier
+            .clickable { checked = !checked },
+        headlineContent = { Text(title) },
+        supportingContent = summary?.let { { Text(it) } },
+        trailingContent = {
+            Checkbox(
+                checked = checked,
+                onCheckedChange = { checked = it }
+            )
+        },
+        colors = FGAListItemColors()
+    )
+}
+
+@Composable
 private fun ServantPriority(
     priorities: SnapshotStateList<TeamSlot>
 ) {
     Text(
-        "Servant Priority".uppercase(),
+        stringResource(R.string.p_servant_priority).uppercase(),
         modifier = Modifier
             .padding(bottom = 5.dp, top = 16.dp)
     )
@@ -126,10 +175,62 @@ private fun ServantPriority(
                 text = "  ${it.position}  "
             )
         },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        fillWidth = true
     )
 
     ReorderHint()
+}
+
+@Composable
+private fun ChainPriority(
+    priorities: SnapshotStateList<ChainPriorityItem>
+) {
+    Text(
+        stringResource(R.string.p_chain_priority).uppercase(),
+        modifier = Modifier
+            .padding(bottom = 10.dp, top = 10.dp)
+    )
+
+    DragSort(
+        items = priorities,
+        key = { it.type },
+        style = {
+            if (it.isEnabled) {
+                DragSortItemStyle(
+                    backgroundColor = colorResource(
+                        when (it.type) {
+                            ChainTypeEnum.Arts -> R.color.colorArts
+                            ChainTypeEnum.Quick -> R.color.colorQuick
+                            ChainTypeEnum.Buster -> R.color.colorBuster
+                            ChainTypeEnum.Mighty -> R.color.colorPrimaryDark
+                            ChainTypeEnum.Avoid -> R.color.colorAvoid
+                        }
+                    ),
+                    contentColor = Color.White,
+                    text = stringResource(it.type.stringRes)
+                )
+            } else {
+                DragSortItemStyle(
+                    backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                    text = stringResource(it.type.stringRes)
+                )
+            }
+        },
+        modifier = Modifier.fillMaxWidth(),
+        fillWidth = true,
+        onClick = { index ->
+            val item = priorities[index]
+            priorities[index] = item.copy(isEnabled = !item.isEnabled)
+        }
+    )
+
+    Text(
+        stringResource(R.string.chain_priority_hint),
+        style = MaterialTheme.typography.bodySmall,
+        modifier = Modifier.padding(horizontal = 16.dp)
+    )
 }
 
 @Composable

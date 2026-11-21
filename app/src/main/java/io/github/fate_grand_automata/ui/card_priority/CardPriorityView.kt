@@ -14,7 +14,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
@@ -22,16 +21,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
-import io.github.fate_grand_automata.prefs.core.Pref
 import io.github.fate_grand_automata.ui.Heading
-import io.github.fate_grand_automata.ui.prefs.SwitchPreference
-import io.github.fate_grand_automata.ui.prefs.remember
 import kotlinx.coroutines.launch
 
 @Composable
 fun CardPriorityView(
-    items: SnapshotStateList<CardPriorityListItem>,
-    useServantPriority: Pref<Boolean>
+    items: SnapshotStateList<CardPriorityListItem>
 ) {
     val pagerState = rememberPagerState(pageCount = {items.size},)
     val scope = rememberCoroutineScope()
@@ -46,13 +41,6 @@ fun CardPriorityView(
                 .verticalScroll(rememberScrollState())
         ) {
             Heading(stringResource(R.string.card_priority))
-
-            val servantPriority by useServantPriority.remember()
-            useServantPriority.SwitchPreference(
-                title = stringResource(R.string.p_battle_config_use_servant_priority),
-                modifier = Modifier
-                    .padding(bottom = 16.dp)
-            )
 
             CardPriorityWaveSelector(
                 items = items,
@@ -80,9 +68,7 @@ fun CardPriorityView(
                         Text(stringResource(R.string.card_priority_low))
                     }
 
-                    items.getOrNull(it)?.Render(
-                        useServantPriority = servantPriority
-                    )
+                    items.getOrNull(it)?.Render()
                 }
             }
         }

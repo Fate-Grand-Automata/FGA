@@ -48,6 +48,6 @@ class PreferencesModule {
 
     @ScriptScope
     @Provides
-    fun provideServantPriority(battleConfig: IBattleConfig): ServantPriorityPerWave? =
-        if (battleConfig.useServantPriority) battleConfig.servantPriority else null
+    fun provideServantPriority(battleConfig: IBattleConfig): ServantPriorityPerWave =
+        battleConfig.servantPriority
 }

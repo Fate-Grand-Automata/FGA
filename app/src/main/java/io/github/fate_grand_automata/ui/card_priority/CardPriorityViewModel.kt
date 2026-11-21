@@ -13,6 +13,7 @@ import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.models.CardPriority
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantPriorityPerWave
+import io.github.fate_grand_automata.scripts.models.battle.ChainPriorityPerWave
 
 @HiltViewModel(assistedFactory = CardPriorityViewModel.Factory::class)
 class CardPriorityViewModel @AssistedInject constructor(
@@ -28,9 +29,12 @@ class CardPriorityViewModel @AssistedInject constructor(
     val cardPriorityItems: SnapshotStateList<CardPriorityListItem> by lazy {
         val cardPriority = battleConfig.cardPriority.get()
         val servantPriority = battleConfig.servantPriority.get()
+        val chainPriority = battleConfig.chainPriority.get()
 
         val rearrangeCards = battleConfig.rearrangeCards.get()
         val braveChains = battleConfig.braveChains.get()
+        val useServantPriority = battleConfig.useServantPriority.get()
+        val useChainPriority = battleConfig.useChainPriority.get()
 
         cardPriority
             .take(3)
@@ -40,14 +44,16 @@ class CardPriorityViewModel @AssistedInject constructor(
                 CardPriorityListItem(
                     it.value,
                     servantPriority.atWave(it.index).toMutableStateList(),
+                    chainPriority.atWave(it.index).toMutableStateList(),
                     mutableStateOf(rearrangeCards.getOrElse(it.index) { false }),
-                    mutableStateOf(braveChains.getOrElse(it.index) { BraveChainEnum.None })
+                    mutableStateOf(braveChains.getOrElse(it.index) { BraveChainEnum.None }),
+                    // Waves past the end use the last value, as in a battle
+                    mutableStateOf(useServantPriority[it.index.coerceAtMost(useServantPriority.lastIndex)]),
+                    mutableStateOf(useChainPriority[it.index.coerceAtMost(useChainPriority.lastIndex)])
                 )
             }
             .toMutableStateList()
     }
-
-    val useServantPriority = battleConfig.useServantPriority
 
     fun save() {
         battleConfig.cardPriority.set(
@@ -62,7 +68,15 @@ class CardPriorityViewModel @AssistedInject constructor(
             )
         )
 
+        battleConfig.chainPriority.set(
+            ChainPriorityPerWave.from(
+                cardPriorityItems.map { it.chainPriority.toList() }
+            )
+        )
+
         battleConfig.rearrangeCards.set(cardPriorityItems.map { it.rearrangeCards.value })
         battleConfig.braveChains.set(cardPriorityItems.map { it.braveChains.value })
+        battleConfig.useServantPriority.set(cardPriorityItems.map { it.useServantPriority.value })
+        battleConfig.useChainPriority.set(cardPriorityItems.map { it.useChainPriority.value })
     }
 }

@@ -61,9 +61,9 @@ class FaceCardPriorityTest {
 
     @Test
     fun defaultPriority() {
-        val priority = FaceCardPriority(CardPriorityPerWave.default, null)
+        val priority = FaceCardPriority(CardPriorityPerWave.default, ServantPriorityPerWave.default)
 
-        val sorted = priority.sort(lineup1, 0).map { it.card }
+        val sorted = priority.sort(lineup1, 0, useServantPriority = false).map { it.card }
 
         assertThat(sorted).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D)
     }
@@ -72,7 +72,7 @@ class FaceCardPriorityTest {
     fun defaultServantPriority() {
         val priority = FaceCardPriority(CardPriorityPerWave.default, ServantPriorityPerWave.default)
 
-        val sorted = priority.sort(lineup1, 0).map { it.card }
+        val sorted = priority.sort(lineup1, 0, useServantPriority = true).map { it.card }
 
         assertThat(sorted).containsExactly(CommandCard.Face.B, CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D)
     }

@@ -7,14 +7,19 @@ import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantSpamConfig
+import io.github.fate_grand_automata.scripts.models.battle.ChainPriorityPerWave
 
 interface IBattleConfig {
     val id: String
     var name: String
     var skillCommand: String
     var cardPriority: CardPriorityPerWave
-    val useServantPriority: Boolean
+    /** One value per wave. Waves past the end use the last value. */
+    val useServantPriority: List<Boolean>
     val servantPriority: ServantPriorityPerWave
+    /** One value per wave. Waves past the end use the last value. */
+    val useChainPriority: List<Boolean>
+    val chainPriority: ChainPriorityPerWave
     val rearrangeCards: List<Boolean>
     val braveChains: List<BraveChainEnum>
     val party: Int

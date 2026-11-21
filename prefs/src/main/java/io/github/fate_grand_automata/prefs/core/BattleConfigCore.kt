@@ -13,6 +13,7 @@ import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantSpamConfig
+import io.github.fate_grand_automata.scripts.models.battle.ChainPriorityPerWave
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 
@@ -59,22 +60,24 @@ class BattleConfigCore(
         default = CardPriorityPerWave.default
     )
 
+    private val booleanListSerializer = object : Serializer<List<Boolean>> {
+        private val separator = ","
+        private val Yes = "T"
+        private val No = "F"
+
+        override fun deserialize(serialized: String) =
+            serialized
+                .split(separator)
+                .map { m -> m == Yes }
+
+        override fun serialize(value: List<Boolean>) =
+            value
+                .joinToString(separator) { m -> if (m) Yes else No }
+    }
+
     val rearrangeCards = maker.serialized(
         "auto_skill_rearrange_cards",
-        serializer = object : Serializer<List<Boolean>> {
-            private val separator = ","
-            private val Yes = "T"
-            private val No = "F"
-
-            override fun deserialize(serialized: String) =
-                serialized
-                    .split(separator)
-                    .map { m -> m == Yes }
-
-            override fun serialize(value: List<Boolean>) =
-                value
-                    .joinToString(separator) { m -> if (m) Yes else No }
-        },
+        serializer = booleanListSerializer,
         default = emptyList()
     )
 
@@ -104,7 +107,10 @@ class BattleConfigCore(
     val shuffleCards = maker.enum("shuffle_cards", ShuffleCardsEnum.None)
     val shuffleCardsWave = maker.int("shuffle_cards_wave", 3)
 
-    val useServantPriority = maker.bool("use_servant_priority")
+    val useServantPriority = PerWaveSwitch(
+        perWave = maker.serialized("use_servant_priority_per_wave", booleanListSerializer, default = emptyList()),
+        allWaves = maker.bool("use_servant_priority")
+    )
     val servantPriority = maker.serialized(
         "servant_priority",
         serializer = object : Serializer<ServantPriorityPerWave> {
@@ -119,6 +125,22 @@ class BattleConfigCore(
                 value.toString()
         },
         default = ServantPriorityPerWave.default
+    )
+
+    val useChainPriority = PerWaveSwitch(
+        perWave = maker.serialized("use_chain_priority_per_wave", booleanListSerializer, default = emptyList()),
+        allWaves = maker.bool("use_chain_priority")
+    )
+    val chainPriority = maker.serialized(
+        "chain_priority",
+        serializer = object : Serializer<ChainPriorityPerWave> {
+            override fun deserialize(serialized: String): ChainPriorityPerWave =
+                ChainPriorityPerWave.of(serialized)
+
+            override fun serialize(value: ChainPriorityPerWave) =
+                value.toString()
+        },
+        default = ChainPriorityPerWave.default
     )
 
     private val defaultSpamConfig = (1..6).map { ServantSpamConfig() }

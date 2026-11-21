@@ -4,12 +4,18 @@ import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.toFieldSlot
-import io.github.lib_automata.dagger.ScriptScope
 import java.util.Collections
-import javax.inject.Inject
 
-@ScriptScope
-class ApplyBraveChains @Inject constructor() {
+/**
+ * The default card picker, used when Chain Priority is off and as Chain Priority's fallback.
+ *
+ * This file is intentionally left unchanged and unfixed so that turning Chain Priority off keeps the
+ * original card picking behaviour. The only addition is [BraveChainEnum.Always], which every `when`
+ * over the enum has to handle and which is treated exactly like [BraveChainEnum.WithNP].
+ * Known issues are documented as TODO comments with the fix that would solve each, instead of being fixed here.
+ * Chain Priority's own fixes live in its handlers under `modules/attack`.
+ */
+object ApplyBraveChains {
     private fun rearrange(
         cards: List<ParsedCard>,
         rearrange: Boolean,
@@ -53,6 +59,7 @@ class ApplyBraveChains @Inject constructor() {
         val firstNp = npUsage.nps.firstOrNull() ?: return justRearranged
         val fieldSlot = firstNp.toFieldSlot()
 
+        // TODO: Stunned cards can precede playable cards from other Servants. Move only the NP owner's playable cards.
         val matchingCards = cards
             .filter { it.fieldSlot == fieldSlot }
             .toMutableList()
@@ -65,6 +72,9 @@ class ApplyBraveChains @Inject constructor() {
         if (rearrange
             && listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
         ) {
+            // TODO: Repeated priority scores can leave fewer than two cards, making the swap throw.
+            // Swap only when at least two cards are available.
+            // TODO: The swap can place a stunned face before the NP. Skip the swap if the second face is stunned.
             Collections.swap(combinedCards, 0, 1)
         }
 
@@ -79,6 +89,8 @@ class ApplyBraveChains @Inject constructor() {
         cards: List<ParsedCard>,
         rearrange: Boolean
     ): List<ParsedCard> {
+        // TODO: Both paths can pick stunned cards, and the rearranged path assumes three faces.
+        // Pick only from playable faces, append stunned faces afterward, and rearrange only with at least three playable faces.
         val cardsGroupedByServant = cards.groupBy { it.servant }.values
 
         if (cardsGroupedByServant.size > 1) {
@@ -166,6 +178,7 @@ class ApplyBraveChains @Inject constructor() {
                 npUsage = npUsage
             )
 
+            BraveChainEnum.Always,
             BraveChainEnum.WithNP -> withNp(
                 cards = cards,
                 rearrange = rearrange,

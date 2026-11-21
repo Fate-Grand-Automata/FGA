@@ -34,25 +34,129 @@ Examples:
 
 Wave 1 applies to the whole battle. Add waves (up to 3) with `+` only if you want a different priority in later waves.
 
-![Battle Configs - Card Priority | Default](https://i.imgur.com/N6WfLVB.jpeg "Battle Configs - Card Priority | Default")
+![Battle Configs - Card Priority | Waves](img/attack/card-priority-waves.png "Battle Configs - Card Priority | Waves")
 
-Each wave has its own card order, [Brave Chains](#brave-chains) and [Rearrange Cards](#rearrange-cards) settings.
+Each wave has its own card order, [Servant Priority](#servant-priority), [Chain Priority](#chain-priority), [Brave Chains](#brave-chains) and [Rearrange Cards](#rearrange-cards) settings. A new wave starts with the Servant Priority and Chain Priority settings of wave 1.
 
 ## Servant Priority
 
-Turn on **Use Servant Priority** at the top to prefer the cards of some Servants over others. Servant Priority comes before card priority.
+Turn on **Servant Priority** in a wave to prefer the cards of some Servants over others in that wave. Servant Priority comes before card priority.
 
-![Servant priority on](https://i.imgur.com/KSXE36s.png)
+![Servant priority on](img/attack/servant-priority-toggle.png)
 
 Then drag the team positions into the order you want. The positions are the same as in the [Skill Maker](Skill-Maker#positions).
 
-![Servant priority](https://i.imgur.com/fz9BBtX.png)
+![Servant priority](img/attack/servant-priority.png)
+
+## Chain Priority
+
+![Chain priority on](img/attack/chain-priority-toggle.png)
+
+Turn on **Chain Priority** in a wave to enable Chain Priority for that wave. It allows for attempts at `Mighty`, **Buster**, **Arts** or **Quick** Chains, based on the order that the chains are chosen in. There is an additional option called "Avoid", which when used attempts to avoid any of the other chains. 
+
+| Sample orders                                                                       | Name                            | Description                                                                                                                                                                                                                          | 
+|:------------------------------------------------------------------------------------|:--------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ![Chain priority options default](img/attack/chain-priority-options-default.png) | Default order                   | The default order used when Chain Priority is turned on. This disables Avoid Chain.                                                                                                                                                  | 
+| ![Chain priority options buster](img/attack/chain-priority-options-buster.png)   | **Buster** focused | This order disables all chains except **Buster** (highest priority) and `Mighty` (second priority). Failure to execute any of these chains will result in no other chain being (actively) used.                         |
+| ![Chain priority options arts](img/attack/chain-priority-options-arts.png)       | **Arts** only     | Only **Arts** chains will be attempted. All other chain checks are skipped.                                                                                                                                            | 
+| ![Chain priority options avoid](img/attack/chain-priority-options-avoid.png)     | "Avoid" only                    | Mighty and Color Chains will be avoided, unless it is absolutely impossible (e.g. all cards are **Quick** cards). To also avoid Brave Chains, set [Brave Chains](#brave-chains) to "Avoid".                            | 
+| ![Chain priority options none](img/attack/chain-priority-options-none.png)       | None                            | All chains are grey, so no chain is attempted, but cards are still picked by Chain Priority's own [Brave Chains](#brave-chains) and [Rearrange Cards](#rearrange-cards) handling: **Always** is available, **With NP** only prefers the NP owner's cards when they complete a Brave Chain, and **Avoid** tries more card combinations to avoid one. NP types are also still read again after skills that change them. To pick cards as without Chain Priority, untick **Chain Priority** for the wave instead. |
+
+Chain Priority needs [face-card checks](#face-card-checks) to know each Servant's cards and NP type, so it doesn't work when `Skip servant face-card checks` is on.
+FGA reads the NP type when a Servant enters the field and checks it again after a skill with a choice, such as Emiya's or BB Dubai's. Space Ishtar's NP type choice is not recognized, so Chain Priority keeps using the type FGA read when she entered the field. If it reads a different type, Chain Priority uses that type and checks again next turn. Checks end when FGA reads the current form's usual NP type. If the usual type was never recorded, FGA saves the first readable type for that form and stops checking.
+
+The game's NP type change banner can hide the changed type. When the type is unreadable, FGA tries to read the banner's turn counter and checks again when the effect should end. One turn left means a check at the start of the next turn. If the counter is unreadable, FGA retries each turn. Until it recognizes the type, Chain Priority uses the last known type, which may differ from the active one, or treats it as unknown if it has never been read.
+
+Tap a chain to turn it on or off. Grey chains are never tried, but keep their place in the order. Hold and drag a chain to change the order.
+
+The way Chain Priority works is that it checks for Chains in the order that is shown (from left to right). If it finds a chain, then it will use that chain immediately.
+
+E.g. If Chain Priority is on and `Default order` is used, it will attempt to check for a `Mighty` Chain first. If there is no valid `Mighty` Chain, then it will attempt to check for a **Buster** Chain. If there is no valid **Buster** Chain, it will attempt to check for an **Arts** Chain and so on and so forth. If an **Arts** Chain was found, it will skip checking for a **Quick** Chain using the cards and will immediately use the **Arts** Chain. However, if all options fail to find any usable Chain, it will fallback to Servant Priority + Card Priority to determine the cards used.   
+
+|                         Flowchart of entire system                         | 
+|:--------------------------------------------------------------------------:|
+| ![Attack Priority flow chart](img/attack/attack-priority-flowchart.png) |
+
+### Interaction with other priorities
+
+In general, the priority of card handling is in this order:
+
+```
+Brave Chains > Chain Priority > Servant Priority (if on) > Card Priority 
+```
+
+This means that the [Brave Chain](#brave-chains) option is of the highest importance. This interaction with Chain Priority will be elaborated on in the corresponding sections.
+
+|         Simplified Brave Chain flowchart / decision tree          | 
+|:-----------------------------------------------------------------:|
+| ![Brave Chain flowchart](img/attack/brave-chain-flowchart.png) |
+
+Please refer to the [Brave Chain](#brave-chains) section for more information on what each Brave Chain option entails. 
+
+### Mighty Chain
+
+|                  Simplified Mighty Chain flowchart                  | 
+|:-------------------------------------------------------------------:|
+| ![Mighty Chain flowchart](img/attack/mighty-chain-flowchart.png) |
+
+Mighty Chains, by definition, require all 3 card types in a single chain to be executed. Mighty Chains can be done with multiple Servants or with a single Servant (thus forming a Brave Chain). The order of Mighty Chain cards is currently determined using the [Card Priority](#card-order). Thus, the default order is BAQ (Buster, Arts, Quick). 
+
+<details><summary>Advanced note</summary>
+
+> Since the default order is determined using Card Priority, it also takes into account Weak and Resist. Thus, if a weak card happens to be an Arts card and there is no weak Buster, since weak Arts is before a neutral Buster, the Mighty Chain will be ABQ.
+> This slightly strange interaction is something to note when preparing the configuration, though it should rarely occur.
+
+</details>
+
+| Brave Chains options | Interactions                                                                                                                                                                                                                    |
+|:---------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Don't care           | The default output of Mighty Chains will be used, regardless of whether a Brave Chain is used or not. A Mighty Chain will be used if there is one available, otherwise it will skip to the next Chain option.                   | 
+| With NP              | Will always attempt to make a Mighty Brave Chain only when a single NP is being used.<br>If there is both a Brave Chain and a Mighty Chain separately available, the Brave Chain will be used over the Mighty Chain.            |
+| Always               | Will always attempt to make a Mighty Brave Chain if one is available, regardless of the Servant.<br>If there is both a Brave Chain and a Mighty Chain separately available, the Brave Chain will be used over the Mighty Chain. |
+| Avoid                | Will actively avoid making Brave Chains. If the only Mighty Chain is a Mighty Brave Chain, it will be skipped, unless a Brave Chain can't be avoided at all with the cards whose color and Servant were recognized (for example when they all belong to one Servant). Then the Mighty Brave Chain is played.                                                                                                                  |
+
+### Buster / Arts / Quick Chain
+
+|         Simplified Buster / Arts / Quick Chain flowchart          | 
+|:-----------------------------------------------------------------:|
+| ![Color Chain flowchart](img/attack/color-chain-flowchart.png) |
+
+A **Buster** / **Arts** / **Quick** Chain is made by choosing 3 cards of the same type. This is referred to a Color Chain for this system. 
+
+| Brave Chains options | Interactions                                                                                                                                                                                                                 |
+|:---------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Don't care           | The default output of Color Chains will be used, regardless of whether a Brave Chain is used or not. A Color Chain will be used if there is one available, otherwise it will skip to the next Chain option.                  | 
+| With NP              | Will always attempt to make a Color Brave Chain only when a single NP is being used.<br>If there is both a Brave Chain and a Color Chain separately available, the Brave Chain will be used over the Color Chain.            |
+| Always               | Will always attempt to make a Color Brave Chain if one is available, regardless of the Servant.<br>If there is both a Brave Chain and a Color Chain separately available, the Brave Chain will be used over the Color Chain. |
+| Avoid                | Will actively avoid making Brave Chains. If the only Color Chain is a Color Brave Chain, it will be skipped, unless a Brave Chain can't be avoided at all with the cards whose color and Servant were recognized (for example when they all belong to one Servant). Then the Color Brave Chain is played.                                                                                                                 |
+
+### Avoid Chain
+
+|                 Simplified Avoid Chain flowchart                  | 
+|:-----------------------------------------------------------------:|
+| ![Avoid Chain flowchart](img/attack/avoid-chain-flowchart.png) |
+
+The default behaviour of Avoid Chain in the system is to only avoid Mighty Chain and Color Chain as much as possible. This is the option, that, when combined with 'Avoid Brave Chains', tries its best to completely avoid any kind of chain possible. When it is not possible to avoid a Chain, it will be skipped over.
+
+The default implementation of this system attempts to stagger Servant cards if there are at least 2 Servants available that can make a non-Chain. This is due to the expected use case being to use this option only when face cards are to be used for efficient farming of simple and easy maps like Fuyuki.
+
+| Brave Chains options | Interactions                                                                                                                                                          |
+|:---------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Don't care           | The default only avoids Mighty and Color Chains. Thus, Brave Chains will occasionally occur with this option picked.                                                  | 
+| With NP              | Attempts to make a Brave Chain (if one is available) only when a single NP is used, while avoiding Mighty and Color Chains.<br>                                       |
+| Always               | Will attempt a Brave Chain while still avoiding a Mighty or Color Chain.<br>While the use-case of this option is near zero, it is still something that can be picked. |
+| Avoid                | Will actively avoid making Brave Chains. The most common use case.                                                                                                    |
 
 ## Brave Chains
 
+With Chain Priority off, FGA picks cards the same way it did before Chain Priority was added.
+
 - **Don't care:** pick cards only by priority.
 - **With NP:** prefer cards of the Servant whose NP is used, to make a Brave Chain.
-- **Avoid:** avoid Brave Chains.
+- **Always:** make a Brave Chain whenever one is available, whichever Servant it is. Only offered when [Chain Priority](#chain-priority) is on. With Chain Priority on, a playable face card can count as long as its Servant is recognized, even if its color is unreadable. A single NP can also count by its Servant when its color is unknown. If Chain Priority is turned off later, this option is shown and used as **With NP**.
+- **Avoid:** avoid Brave Chains, unless it is impossible (e.g. all cards belong to a single Servant).
+
+How each option combines with Chain Priority is described under [Chain Priority](#chain-priority).
 
 ![Battle Configs - Card Priority | Brave Chain options](https://i.imgur.com/nhPPIM0.jpeg "Battle Configs - Card Priority | Brave Chain options")
 
@@ -60,8 +164,13 @@ Then drag the team positions into the order you want. The positions are the same
 
 In FGO, the position of a card changes its effect, and the first card gives a bonus to all three. For example, a Buster card first boosts the damage of all cards.
 
-With Rearrange Cards, FGA plays the strongest card first and the 2nd strongest card last.
-It only rearranges when at most one NP and no [cards before NP](Skill-Maker#noble-phantasms) are used that turn.
+Rearrange Cards changes the order of the ranked face cards based on where the NPs go.
+
+- With no NP, it moves the second-ranked face card behind the third when three faces are available and swaps the two faces when only two are available. With one NP played first, it swaps the first two faces so the highest-ranked face plays last. **Don't care** and **With NP** both use these rules when Chain Priority is off.
+- With one NP and one [card before it](Skill-Maker#noble-phantasms), it swaps the first two faces so the highest-ranked face plays right after the NP. With Chain Priority off, this swap applies only to **With NP**, including a saved **Always** setting.
+- With Chain Priority on, its own card orders use both rules in every Brave Chains mode. The one-card-before-NP swap requires at least two faces and a playable second face. Rearranging also preserves the order whenever a proposed change would move an unreadable face ahead of a readable, playable face, or a stunned face ahead of any playable face. When Chain Priority falls back to the default picker, it uses the default rules and applies the same usability check to the rearranged result.
+
+With [Brave Chains](#brave-chains) set to **Avoid**, the default picker has its own rearrangement rule. It tries to stagger the top face cards across Servants, drawing from further down the priority list if the top three all belong to one Servant. This also applies when Chain Priority falls back to the default picker. It needs [face-card checks](#face-card-checks) to tell which cards belong to which Servants.
 
 ![Face Cards](img/face-cards.jpg)
 
@@ -74,5 +183,5 @@ Without Rearrange Cards, the Arts card would be 2nd and the Castoria card last.
 
 ## Face-card checks
 
-Servant Priority, Brave Chains and [Shuffle cards](Battle#shuffle-cards) need to know which card belongs to which Servant. For this, FGA opens each Servant's details once when they enter the field, to see their face.
+Servant Priority, [Chain Priority](#chain-priority), Brave Chains and [Shuffle cards](Battle#shuffle-cards) need to know which card belongs to which Servant. For this, FGA opens each Servant's details once when they enter the field, to see their face.
 `Skip servant face-card checks` in [More Options](More-Options#battle) turns this off, but then those features don't work.

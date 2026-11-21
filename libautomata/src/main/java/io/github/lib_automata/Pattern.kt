@@ -37,6 +37,19 @@ interface Pattern : AutoCloseable {
     fun findMatches(template: Pattern, similarity: Double): Sequence<Match>
 
     /**
+     * Finds an image match if its similarity is high enough.
+     * The default implementation returns the first match of [findMatches], which is the best one
+     * when that yields matches from the highest score down.
+     * Implementations that hold resources while matching should override this to release them before returning,
+     * since taking the first of [findMatches] leaves its sequence suspended.
+     *
+     * @param template the image to match with
+     * @param similarity the minimum similarity
+     */
+    fun findBestMatch(template: Pattern, similarity: Double): Match? =
+        findMatches(template, similarity).firstOrNull()
+
+    /**
      * Crops the image to be within the bounds of the given [region].
      *
      * Note that the resulting [Pattern] can have a smaller size than the [region] if the [region]

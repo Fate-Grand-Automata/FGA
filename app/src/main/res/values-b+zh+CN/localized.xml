@@ -213,14 +213,21 @@
     <string name="p_battle_config_support_pref_servants">"偏好从者"</string>
     <string name="p_battle_config_support_require_both_normal_and_reward_match">"同时匹配常规礼装槽和加成礼装（牵绊/友情点/QP/经验值）槽"</string>
     <string name="p_battle_config_support_selection_mode">"助战从者选取方式"</string>
-    <string name="p_battle_config_use_servant_priority">"使用从者优先级"</string>
     <string name="p_boost_item">"加速道具"</string>
+    <string name="p_servant_priority">"从者优先级"</string>
+    <string name="p_chain_priority">"指令卡连携优先级"</string>
     <string name="p_boost_item_disabled">"关闭"</string>
     <string name="p_boost_item_skip">"跳过"</string>
     <string name="p_brave_chains">"追击连携"</string>
     <string name="p_brave_chains_avoid">"避免追击连携"</string>
+    <string name="p_chain_type_quick">"迅击"</string>
+    <string name="p_chain_type_arts">"技击"</string>
+    <string name="p_chain_type_buster">"力击"</string>
+    <string name="p_chain_type_mighty">"Mighty"</string>
+    <string name="p_chain_type_avoid">"避免"</string>
     <string name="p_brave_chains_don_t_care">"无偏好"</string>
     <string name="p_brave_chains_with_np">"宝具施放后"</string>
+    <string name="p_brave_chains_always">"始终追求链接"</string>
     <string name="p_ces">"礼装"</string>
     <string name="p_choose_app_language">"选择语言"</string>
     <string name="p_choose_folder_action">"选择"</string>
@@ -244,6 +251,8 @@
     <string name="p_fine_tune_similarity">"图像比对"</string>
     <string name="p_fine_tune_skill_delay">"施放技能后等待时间（ms）"</string>
     <string name="p_fine_tune_stage_counter_similarity">"战斗场次识别阈值（%）"</string>
+    <string name="p_fine_tune_np_card_type_similarity">"宝具类型识别阈值（%）"</string>
+    <string name="p_fine_tune_np_card_detection_similarity">"宝具卡识别阈值（%）"</string>
     <string name="p_fine_tune_support">"助战从者列表"</string>
     <string name="p_fine_tune_support_max_updates">"助战列表更新次数限制"</string>
     <string name="p_fine_tune_support_swipes_per_update">"助战列表更新后滑动次数"</string>
@@ -255,6 +264,7 @@
     <string name="p_fine_tune_wait_after_swiping">"滑动后暂停（ms）"</string>
     <string name="p_fine_tune_wait_before_cards">"选择指令卡前等待时间（ms）"</string>
     <string name="p_fine_tune_wait_before_turn">"回合间等待时间（ms）"</string>
+    <string name="p_fine_tune_wait_after_order_change">"换人（Order Change）后等待时间（ms）"</string>
     <string name="p_fine_tune_wait_multiplier">"等待时间加乘（%）"</string>
     <string name="p_folder">"更改存放助战图片、掉落截图等的文件夹位置"</string>
     <string name="p_game_area_custom">"自定义"</string>
@@ -276,8 +286,8 @@
     <string name="p_max_skills">"满技能"</string>
     <string name="p_more_options">"更多选项"</string>
     <string name="p_not_set">"未设定"</string>
-    <string name="p_rearrange_cards">"调换顺序
-（优先级高的卡后出）"</string>
+    <string name="p_rearrange_cards">"调换顺序"</string>
+    <string name="p_rearrange_cards_summary">"优先级高的卡后出"</string>
     <string name="p_receive_embers">"收取种火"</string>
     <string name="p_record_screen">"屏幕录像"</string>
     <string name="p_record_screen_summary">"将在存放文件的文件夹储存 'record.mp4' 为名的屏幕录像档案

@@ -35,11 +35,15 @@ class Caster @Inject constructor(
         return weCanSpam || weAreInDanger
     }
 
-    private fun waitForAnimationToFinish(timeout: Duration = 5.seconds) {
+    /**
+     * @return true if the battle screen is shown within [timeout].
+     * A short animation can end before the screen is seen to vanish, so only the screen's return is checked.
+     */
+    private fun waitForAnimationToFinish(timeout: Duration = 5.seconds): Boolean {
         val img = images[Images.BattleScreen]
         // slow devices need this. do not remove.
         locations.battle.screenCheckRegion.waitVanish(img, 2.seconds)
-        locations.battle.screenCheckRegion.exists(img, timeout)
+        return locations.battle.screenCheckRegion.exists(img, timeout)
     }
 
     private fun confirmCommandSpell(): Boolean = locations.battle.master.cancelCommandSpellRegion.exists(
@@ -95,17 +99,35 @@ class Caster @Inject constructor(
         locations.battle.extraInfoWindowCloseClick.click()
 
         if (targets.contains(ServantTarget.Transform)) {
-            // wait extra for Mélusine and then add her 3rd Ascension image
+            // The transformation animation is long
             waitForAnimationToFinish(15.seconds)
             val slot = when (skill) {
                 Skill.Servant.B3 -> FieldSlot.B
                 Skill.Servant.C3 -> FieldSlot.C
                 else -> FieldSlot.A
             }
-            servantTracker.melusineChangedAscension(slot)
+            servantTracker.servantTransformed(slot)
         } else {
-            waitForAnimationToFinish()
+            val isBattleScreenBack = waitForAnimationToFinish()
+
+            // A skill with a choice can change the NP type (e.g. Emiya's or BB Dubai's).
+            // The details dialog can only be opened once the battle screen is back.
+            if (skill is Skill.Servant && targets.any { it.isChoice() }) {
+                if (isBattleScreenBack) servantTracker.refreshNpCardType(skill.fieldSlot())
+                else servantTracker.npCardTypeMayHaveChanged(skill.fieldSlot())
+            }
         }
+    }
+
+    private fun ServantTarget.isChoice() = when (this) {
+        ServantTarget.A, ServantTarget.B, ServantTarget.C, ServantTarget.Transform -> false
+        else -> true
+    }
+
+    private fun Skill.Servant.fieldSlot() = when (this) {
+        in Skill.Servant.list.take(3) -> FieldSlot.A
+        in Skill.Servant.list.slice(3..5) -> FieldSlot.B
+        else -> FieldSlot.C
     }
 
     fun castServantSkill(skill: Skill.Servant, target: ServantTarget?) =
@@ -203,7 +225,7 @@ class Caster @Inject constructor(
         waitForAnimationToFinish(15.seconds)
 
         // Extra wait for the lag introduced by Order change
-        1.seconds.wait()
+        prefs.waitAfterOrderChange.wait()
 
         servantTracker.orderChanged(action.starting, action.sub)
     }
