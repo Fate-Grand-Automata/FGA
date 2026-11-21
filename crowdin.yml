@@ -1,4 +1,13 @@
 files:
-  - source: app/src/main/res/values/localized.xml
-    translation: app/src/main/res/values-%android_code%/localized.xml
+  - source: /app/src/main/res/values/localized.xml
+    translation: /app/src/main/res/values-%android_code%/%original_file_name%
     translate_attributes: 0
+    # The repo uses plain language folders (values-ja) and BCP 47 folders for Chinese (values-b+zh+CN),
+    # not Crowdin's default region-qualified codes (values-ja-rJP, values-zh-rCN).
+    languages_mapping:
+      android_code:
+        ja: ja
+        ko: ko
+        vi: vi
+        zh-CN: b+zh+CN
+        zh-TW: b+zh+TW
