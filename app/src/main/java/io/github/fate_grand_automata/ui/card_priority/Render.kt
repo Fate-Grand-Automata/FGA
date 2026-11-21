@@ -25,6 +25,7 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.ChainTypeEnum
 import io.github.fate_grand_automata.scripts.models.TeamSlot
+import io.github.fate_grand_automata.scripts.models.battle.ChainPriorityItem
 import io.github.fate_grand_automata.ui.FGAListItemColors
 import io.github.fate_grand_automata.ui.drag_sort.DragSort
 import io.github.fate_grand_automata.ui.drag_sort.DragSortItemStyle
@@ -183,7 +184,7 @@ private fun ServantPriority(
 
 @Composable
 private fun ChainPriority(
-    priorities: SnapshotStateList<ChainTypeEnum>
+    priorities: SnapshotStateList<ChainPriorityItem>
 ) {
     Text(
         stringResource(R.string.p_chain_priority).uppercase(),
@@ -193,41 +194,43 @@ private fun ChainPriority(
 
     DragSort(
         items = priorities,
-        key = { it },
+        key = { it.type },
         style = {
-            val afterCutoff = priorities.isAfterCutoff(it)
-            DragSortItemStyle(
-                backgroundColor = colorResource(
-                    if (afterCutoff) R.color.colorDisabledBackground
-                    else when (it) {
-                        ChainTypeEnum.Arts -> R.color.colorArts
-                        ChainTypeEnum.Quick -> R.color.colorQuick
-                        ChainTypeEnum.Buster -> R.color.colorBuster
-                        ChainTypeEnum.Mighty -> R.color.colorPrimaryDark
-                        ChainTypeEnum.Avoid -> R.color.colorAvoid
-                        ChainTypeEnum.None -> R.color.colorDisabledBackground
-                    }
-                ),
-                contentColor = when {
-                    afterCutoff -> colorResource(R.color.colorDisabledText)
-                    it == ChainTypeEnum.None -> Color.Black
-                    else -> Color.White
-                },
-                text = if (it == ChainTypeEnum.None) "│" else stringResource(it.stringRes)
-            )
+            if (it.isEnabled) {
+                DragSortItemStyle(
+                    backgroundColor = colorResource(
+                        when (it.type) {
+                            ChainTypeEnum.Arts -> R.color.colorArts
+                            ChainTypeEnum.Quick -> R.color.colorQuick
+                            ChainTypeEnum.Buster -> R.color.colorBuster
+                            ChainTypeEnum.Mighty -> R.color.colorPrimaryDark
+                            ChainTypeEnum.Avoid -> R.color.colorAvoid
+                        }
+                    ),
+                    contentColor = Color.White,
+                    text = stringResource(it.type.stringRes)
+                )
+            } else {
+                DragSortItemStyle(
+                    backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                    text = stringResource(it.type.stringRes)
+                )
+            }
         },
         modifier = Modifier.fillMaxWidth(),
-        fillWidth = true
+        fillWidth = true,
+        onClick = { index ->
+            val item = priorities[index]
+            priorities[index] = item.copy(isEnabled = !item.isEnabled)
+        }
     )
 
-    ReorderHint()
-}
-
-fun List<ChainTypeEnum>.isAfterCutoff(chainTypeEnum: ChainTypeEnum, indexOfAvoid: Int? = null): Boolean {
-    val avoidIndex = indexOfAvoid ?: this.indexOf(ChainTypeEnum.Cutoff)
-    val enumIndex = this.indexOf(chainTypeEnum)
-    if (avoidIndex < 0) return false
-    return enumIndex > avoidIndex
+    Text(
+        stringResource(R.string.chain_priority_hint),
+        style = MaterialTheme.typography.bodySmall,
+        modifier = Modifier.padding(horizontal = 16.dp)
+    )
 }
 
 @Composable

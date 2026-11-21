@@ -5,12 +5,10 @@ enum class ChainTypeEnum {
     Buster,
     Arts,
     Quick,
-    None,
     Avoid;
 
     companion object {
-        val Cutoff = None
-        val defaultOrder = listOf(Mighty, Buster, Arts, Quick, None, Avoid)
-        val allPermitted = listOf(Mighty, Buster, Arts, Quick, Avoid)
+        /** The chains tried when Chain Priority is first turned on, in order. */
+        val defaultOrder = listOf(Mighty, Buster, Arts, Quick)
     }
 }

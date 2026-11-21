@@ -75,7 +75,7 @@ class Card @Inject constructor(
             )
 
             val npTypes = npUsageToUse.nps.associate { it.toFieldSlot() to it.type() }
-            val chainPriority = battleConfig.chainPriority.atWave(state.stage)
+            val chainPriority = battleConfig.chainPriority.enabledAtWave(state.stage)
             return AttackPriorityHandler.pick(
                 cards = cards,
                 priorityOrder = cardsOrderedByPriority,

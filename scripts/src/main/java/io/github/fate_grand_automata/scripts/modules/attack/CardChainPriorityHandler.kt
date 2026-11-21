@@ -39,7 +39,6 @@ internal object CardChainPriorityHandler {
 
         for (chain in chainPriority) {
             val order = when (chain) {
-                ChainTypeEnum.None -> break
                 ChainTypeEnum.Mighty -> MightyChainHandler.pick(
                     cards = nonUnknownCards,
                     npUsage = npUsage,

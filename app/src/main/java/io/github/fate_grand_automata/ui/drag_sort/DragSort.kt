@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.ui.drag_sort
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -42,6 +43,7 @@ data class DragSortItemStyle(
  *
  * @param fillWidth Splits the width evenly between the items instead of scrolling, so that every
  * item stays in view while dragging. Only suits rows with a few short labels.
+ * @param onClick Called with the index of a tapped item. Tapping does nothing when it is null.
  */
 @Composable
 fun <T> DragSort(
@@ -49,7 +51,8 @@ fun <T> DragSort(
     key: (T) -> Any,
     style: @Composable (T) -> DragSortItemStyle,
     modifier: Modifier = Modifier,
-    fillWidth: Boolean = false
+    fillWidth: Boolean = false,
+    onClick: ((index: Int) -> Unit)? = null
 ) {
     val listState = rememberLazyListState()
     val reorderableState = rememberReorderableLazyListState(listState) { from, to ->
@@ -81,6 +84,10 @@ fun <T> DragSort(
                     modifier = Modifier
                         .then(
                             if (fillWidth) Modifier.fillParentMaxWidth(1f / items.size)
+                            else Modifier
+                        )
+                        .then(
+                            if (onClick != null) Modifier.clickable { onClick(index) }
                             else Modifier
                         )
                         .longPressDraggableHandle(

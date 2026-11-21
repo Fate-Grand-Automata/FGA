@@ -67,6 +67,8 @@ FGA reads the NP type when a Servant enters the field and checks it again after 
 
 The game's NP type change banner can hide the changed type. When the type is unreadable, FGA tries to read the banner's turn counter and checks again when the effect should end. One turn left means a check at the start of the next turn. If the counter is unreadable, FGA retries each turn. Until it recognizes the type, Chain Priority uses the last known type, which may differ from the active one, or treats it as unknown if it has never been read.
 
+Tap a chain to turn it on or off. Grey chains are never tried, but keep their place in the order. Hold and drag a chain to change the order.
+
 The way Chain Priority works is that it checks for Chains in the order that is shown (from left to right). If it finds a chain, then it will use that chain immediately.
 
 E.g. If Chain Priority is on and `Default order` is used, it will attempt to check for a `Mighty` Chain first. If there is no valid `Mighty` Chain, then it will attempt to check for a **Buster** Chain. If there is no valid **Buster** Chain, it will attempt to check for an **Arts** Chain and so on and so forth. If an **Arts** Chain was found, it will skip checking for a **Quick** Chain using the cards and will immediately use the **Arts** Chain. However, if all options fail to find any usable Chain, it will fallback to Servant Priority + Card Priority to determine the cards used.   
