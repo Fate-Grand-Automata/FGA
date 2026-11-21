@@ -173,8 +173,6 @@ Sau khi nhấn nút, hãy chuyển bộ lọc ứng dụng từ \"Không đượ
     <string name="p_battle_config_support_pref_ces">"CEs được ưu tiên"</string>
     <string name="p_battle_config_support_pref_servants">"Servants được ưu tiên"</string>
     <string name="p_battle_config_support_selection_mode">"Lựa chọn chế độ"</string>
-    <string name="p_battle_config_use_servant_priority">"Sử dụng ưu tiên Servant"</string>
-    <string name="p_battle_config_use_chain_priority">"Sử dụng ưu tiên Chain"</string>
     <string name="p_boost_item">"Vật phẩm tăng cường"</string>
     <string name="p_servant_priority">"Ưu tiên Servant"</string>
     <string name="p_chain_priority">"Ưu tiên Chain"</string>

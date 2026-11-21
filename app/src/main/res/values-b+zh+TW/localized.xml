@@ -195,8 +195,6 @@
     <string name="p_battle_config_support_pref_ces">"偏好禮裝"</string>
     <string name="p_battle_config_support_pref_servants">"偏好從者"</string>
     <string name="p_battle_config_support_selection_mode">"支援從者選取方式"</string>
-    <string name="p_battle_config_use_servant_priority">"偏好從者"</string>
-    <string name="p_battle_config_use_chain_priority">"偏好Chain"</string>
     <string name="p_boost_item">"加速道具"</string>
     <string name="p_servant_priority">"偏好從者"</string>
     <string name="p_chain_priority">"偏好Chain"</string>

@@ -213,8 +213,6 @@
     <string name="p_battle_config_support_pref_servants">"偏好从者"</string>
     <string name="p_battle_config_support_require_both_normal_and_reward_match">"同时匹配常规礼装槽和加成礼装（牵绊/友情点/QP/经验值）槽"</string>
     <string name="p_battle_config_support_selection_mode">"助战从者选取方式"</string>
-    <string name="p_battle_config_use_servant_priority">"使用从者优先级"</string>
-    <string name="p_battle_config_use_chain_priority">"使用指令卡连携优先级"</string>
     <string name="p_boost_item">"加速道具"</string>
     <string name="p_servant_priority">"从者优先级"</string>
     <string name="p_chain_priority">"指令卡连携优先级"</string>

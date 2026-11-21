@@ -214,8 +214,6 @@
     <string name="p_battle_config_support_pref_servants">"選択するサーヴァント"</string>
     <string name="p_battle_config_support_require_both_normal_and_reward_match">"通常礼装＆報酬アップ(絆/FP/QP/EXP)礼装の両方に一致"</string>
     <string name="p_battle_config_support_selection_mode">"選択モード"</string>
-    <string name="p_battle_config_use_servant_priority">"サーヴァントの優先順位を設定する"</string>
-    <string name="p_battle_config_use_chain_priority">"チェインの優先順位を設定する"</string>
     <string name="p_boost_item">"ブーストアイテム"</string>
     <string name="p_servant_priority">"サーヴァントの優先順位"</string>
     <string name="p_chain_priority">"チェインの優先順位"</string>

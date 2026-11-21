@@ -230,8 +230,6 @@
     <string name="p_battle_config_support_pref_ces">"개념예장 선호"</string>
     <string name="p_battle_config_support_pref_servants">"서번트 선호"</string>
     <string name="p_battle_config_support_selection_mode">"선택 모드"</string>
-    <string name="p_battle_config_use_servant_priority">"서번트 우선순위 사용"</string>
-    <string name="p_battle_config_use_chain_priority">"체인 우선순위 사용"</string>
     <string name="p_boost_item">"부스트 아이템"</string>
     <string name="p_servant_priority">"서번트 우선순위"</string>
     <string name="p_chain_priority">"체인 우선순위"</string>
