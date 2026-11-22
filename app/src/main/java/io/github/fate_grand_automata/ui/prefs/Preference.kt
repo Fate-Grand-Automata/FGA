@@ -11,10 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.prefs.core.Pref
@@ -26,24 +25,26 @@ import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun <T> Pref<T>.remember(): MutableState<T> {
-    var state by remember { mutableStateOf(defaultValue) }
+    val state = remember { mutableStateOf(defaultValue) }
 
     LaunchedEffect(this) {
         asFlow()
-            .onEach { state = it }
+            .onEach { state.value = it }
             .collect()
     }
 
-    return object : MutableState<T> {
-        override var value: T
-            get() = state
-            set(value) {
-                state = value
-                set(value)
-            }
+    return remember(this) {
+        object : MutableState<T> {
+            override var value: T
+                get() = state.value
+                set(value) {
+                    state.value = value
+                    set(value)
+                }
 
-        override fun component1() = value
-        override fun component2(): (T) -> Unit = { value = it }
+            override fun component1() = value
+            override fun component2(): (T) -> Unit = { value = it }
+        }
     }
 }
 
@@ -91,7 +92,6 @@ fun Preference(
 ) {
     StatusWrapper(enabled) {
         ListItem(
-            headlineContent = title,
             supportingContent = summary,
             colors = FGAListItemColors(),
             leadingContent = icon?.let {
@@ -109,7 +109,10 @@ fun Preference(
                 enabled = onClick != null && enabled,
                 onClick = { onClick?.invoke() }
             ),
-            trailingContent = trailing
+            trailingContent = trailing,
+            // The default top-aligns rows with long summaries, which leaves trailing switches off-center.
+            verticalAlignment = Alignment.CenterVertically,
+            content = title
         )
     }
 }

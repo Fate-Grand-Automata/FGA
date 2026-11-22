@@ -11,10 +11,10 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.SliderState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -56,11 +56,12 @@ fun FineTuneItem.FineTuneSetter() {
     Column {
         Row {
             ListItem(
-                headlineContent = { Text(stringResource(name)) },
                 supportingContent = { Text(defaultString) },
                 modifier = Modifier.weight(1f),
                 colors = FGAListItemColors()
-            )
+            ) {
+                Text(stringResource(name))
+            }
 
             IconButton(
                 onClick = { hintDialog.show() }
@@ -90,7 +91,17 @@ private fun FineTuneItem.ValueSlider(
      * The slider moves continuously but only writes on release, so a drag doesn't hit storage on
      * every frame. Re-keying on `value` snaps the thumb to what was committed.
      */
-    var sliderValue by remember(value) { mutableFloatStateOf(value.toFloat()) }
+    val sliderState = remember(value) {
+        SliderState(
+            value = value.toFloat(),
+            /*
+             * `steps` counts the positions between the ends, not the intervals, and Slider
+             * rejects a negative count for a range narrower than two steps.
+             */
+            steps = ((valueRange.last - valueRange.first) / step - 1).coerceAtLeast(0),
+            trackRange = valueRange.first.toFloat()..valueRange.last.toFloat()
+        )
+    }
     val interactionSource = remember { MutableInteractionSource() }
     val colors = FGASliderColors()
 
@@ -101,15 +112,10 @@ private fun FineTuneItem.ValueSlider(
             .padding(start = 16.dp, end = 16.dp, bottom = 12.dp)
     ) {
         Slider(
-            value = sliderValue,
-            onValueChange = { sliderValue = it },
-            onValueChangeFinished = { onValueChange(snapToStep(sliderValue)) },
-            valueRange = valueRange.first.toFloat()..valueRange.last.toFloat(),
-            /*
-             * `steps` counts the positions between the ends, not the intervals, and Slider
-             * rejects a negative count for a range narrower than two steps.
-             */
-            steps = ((valueRange.last - valueRange.first) / step - 1).coerceAtLeast(0),
+            state = sliderState,
+            // SliderState leaves its value unchanged when an onValueChange is given.
+            onValueChange = { sliderState.value = it },
+            onValueChangeFinished = { onValueChange(snapToStep(sliderState.value)) },
             colors = colors,
             interactionSource = interactionSource,
             // The default thumb is 44dp tall, which overhangs this row and crowds the card edge.
@@ -135,7 +141,7 @@ private fun FineTuneItem.ValueSlider(
         )
 
         Text(
-            valueRepresentation(snapToStep(sliderValue)),
+            valueRepresentation(snapToStep(sliderState.value)),
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier
                 .padding(start = 16.dp)

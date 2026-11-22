@@ -31,7 +31,7 @@ class MainScreenViewModel @Inject constructor(
     val prefsCore: PrefsCore,
     val prefs: IPreferences,
     val storageProvider: StorageProvider,
-    @param:ApplicationContext context: Context
+    @ApplicationContext context: Context
 ) : ViewModel() {
 
     init {
