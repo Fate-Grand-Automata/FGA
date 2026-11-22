@@ -49,29 +49,29 @@ You can use the Support selection screen, or the Friend List, where you don't ha
 
    Support Selection screen:
 
-   ![Support Selection](https://i.imgur.com/ztFcyDq.png)
+   ![Support Selection](img/support-image-maker/support-selection.png)
 
    Friend List screen:
 
-   ![Friend List](https://i.imgur.com/amGZlCc.png)
+   ![Friend List](img/support-image-maker/friend-list.png)
 
 4. FGA takes images of the first 2 supports that are fully on screen: Servant, CE and friend name. For Grand Servants, it takes both CEs in the free and bonus-up slots.
 
    Servant & CE
 
-   ![Servant & CE](https://i.imgur.com/VRuOlwM.png)
+   ![Servant & CE](img/support-image-maker/servant-and-ce.png)
 
    CE & Friend
-   ![CE & Friend](https://i.imgur.com/uRPAviO.png)
+   ![CE & Friend](img/support-image-maker/ce-and-friend.png)
 
 5. Check the images you want to keep and give each a name, without `.png`.
 
    Use `Folder/name` to save into a subfolder, for example `Nero/asc1` saves `asc1.png` in `support/servant/Nero`.
 
-   ![Saving](https://i.imgur.com/gBXrveP.png)
+   ![Saving](img/support-image-maker/saving.png)
 
 6. Press **Done**. The images are saved to the right folders.
 
-   ![Done](https://i.imgur.com/yYpb2lH.png)
+   ![Done](img/support-image-maker/done.png)
 
 7. You can now select them in your battle configs.

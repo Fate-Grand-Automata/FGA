@@ -18,23 +18,23 @@ Open it by tapping **Command** in a battle config.
 
 Each Servant in your party has a number from 1 to 6, from first to last. Positions 1 to 3 are on the field, 4 to 6 are the backline.
 
-![Battle Configs - Servant Position in FGO ](https://i.imgur.com/w14U3rm.jpeg "Servant Position in FGO ")
-![Battle Configs - Servant Position Reference in FGA](https://i.imgur.com/v0Bllrk.jpeg "Servant Position Reference in FGA")
+![Battle Configs - Servant Position in FGO ](img/command-editor/servant-positions-fgo.jpeg "Servant Position in FGO ")
+![Battle Configs - Servant Position Reference in FGA](img/command-editor/servant-positions-fga.jpeg "Servant Position Reference in FGA")
 
 # Servant skills
 
 The skills of the 3 Servants on the field are the letters `a` to `i`: `a b c` for the first Servant, `d e f` for the second and `g h i` for the third.
 
-![Battle Configs - FGO to FGA Command mapping | Servant skills](https://i.imgur.com/qsYHZBi.jpeg "FGO to FGA Command mapping | Servant skills")
-![Battle Configs - FGO to FGA Command mapping | Servant skills](https://i.imgur.com/O3WlnEK.jpeg "FGA Command | Servant skills")
+![Battle Configs - FGO to FGA Command mapping | Servant skills](img/command-editor/servant-skills-fgo.jpeg "FGO to FGA Command mapping | Servant skills")
+![Battle Configs - FGO to FGA Command mapping | Servant skills](img/command-editor/servant-skills-fga.jpeg "FGA Command | Servant skills")
 
 ## Targeting
 
 After tapping a skill, choose the Servant it targets, or **No Target** for skills that don't target anyone.
 **Long-press** a skill to add it without a target, skipping the target screen.
 
-![Battle Configs - FGA Command | Servant skills - targetable](https://i.imgur.com/CSwxJbX.jpeg "FGA Command | Servant skills - targetable")
-![Battle Configs - FGO to FGA Command mapping | Servant skills - targetable](https://i.imgur.com/48SRqqX.jpeg "FGO to FGA Command mapping | Servant skills - targetable")
+![Battle Configs - FGA Command | Servant skills - targetable](img/command-editor/targetable-skills-fga.jpeg "FGA Command | Servant skills - targetable")
+![Battle Configs - FGO to FGA Command mapping | Servant skills - targetable](img/command-editor/targetable-skills-fgo.jpeg "FGO to FGA Command mapping | Servant skills - targetable")
 
 ## Special skills
 
@@ -65,7 +65,7 @@ Pick `Option 1` or `Option 2`.
 
 ![Updating Button labels for choices 2 option](https://github.com/user-attachments/assets/53f7d44b-9af8-4a49-a9ea-525e00eff1da)
 
-![Kuku s1/s3](https://i.imgur.com/JwD0rAe.gif)
+![Kuku s1/s3](img/command-editor/kukulkan-s1-s3.webp)
 
 ![Barghest s3](https://github.com/user-attachments/assets/d8cfd999-d6b8-493e-b967-ec9751db1477)
 
@@ -77,7 +77,7 @@ Here you must first select the Servant. The options stay disabled until you do.
 - **Dante Alighieri:** "Paradise (Arts Up)" or "Inferno (Buster Up)".
 - **Summer Shiki:** "Moonlight (AOE)" or "Sun (ST)".
 
-![kuku s2](https://i.imgur.com/b7Pdy4E.gif)
+![kuku s2](img/command-editor/kukulkan-s2.webp)
 
 ### Choices (3)
 
@@ -92,7 +92,7 @@ Pick one of 3 options.
 
 ![Updating Button labels for choice three option slot 3](https://github.com/user-attachments/assets/efff0a9c-ad4c-40e8-af36-40139a8269ca)
 
-![Soujuurou](https://i.imgur.com/Dg3k6jM.gif)
+![Soujuurou](img/command-editor/soujuurou.webp)
 
 ### NP Type (2)
 
@@ -100,12 +100,12 @@ Emiya and BB Dubai can change their NP type with their 3rd skill. Pick the left 
 
 Only use it for an Emiya whose 3rd skill is fully upgraded. FGA can't check that, but you can make sure with [Friends Only](Support-Selection#friends) when Emiya is your support.
 
-![Emiya's Third Skill Max Upgrade](https://i.imgur.com/ZKH1qSV.png)
-![Emiya's Support Third Skill Max Upgrade](https://i.imgur.com/sFI8IQx.png)
+![Emiya's Third Skill Max Upgrade](img/command-editor/emiya-s3-max-upgrade.png)
+![Emiya's Support Third Skill Max Upgrade](img/command-editor/emiya-support-s3-max-upgrade.png)
 
 ![Emiya and BB Dubai Options](https://github.com/user-attachments/assets/3c608461-9809-4c8d-851c-9c8bdcb5e0f1)
 
-![Emiya](https://i.imgur.com/sYxXXO2.gif)
+![Emiya](img/command-editor/emiya.webp)
 
 ### NP Type (3)
 
@@ -113,7 +113,7 @@ Space Ishtar's [2nd skill](https://fategrandorder.fandom.com/wiki/Space_Ishtar#S
 
 ![Updating Button labels for three targets option](https://github.com/user-attachments/assets/43997d9f-154b-4c7c-89e7-a2d405c154df)
 
-![Ishtar](https://i.imgur.com/CuBYrDT.gif)
+![Ishtar](img/command-editor/ishtar.webp)
 
 ### Transform
 
@@ -122,7 +122,7 @@ Mélusine's [3rd skill at Ascension 1 and 2](https://fategrandorder.fandom.com/w
 
 ![Mélusine/Ptolemaios Option](https://github.com/user-attachments/assets/2b224ce2-48a6-4a21-9753-c328b207c7a2)
 
-![Mélusine option](https://i.imgur.com/hX2mGjA.gif)
+![Mélusine option](img/command-editor/melusine.webp)
 
 - **Mélusine** only transforms once. Use the normal 3rd skill for every later use, for example `c` when she is in the 1st position. If she starts the battle in Ascension 3, don't use `Transform` at all.
 - **Ptolemaios** transforms on every use, so always use `Transform`.
@@ -131,20 +131,20 @@ Mélusine's [3rd skill at Ascension 1 and 2](https://fategrandorder.fandom.com/w
 
 Enemies are numbered too. Selecting an enemy adds a target change to the command. Like in FGO, only one enemy can be targeted at a time.
 
-![Battle Configs - FGO to FGA Command mapping | Enemy Targeting](https://i.imgur.com/bWmlZxc.jpeg "FGO to FGA Command mapping | Enemy Targeting")![Battle Configs - FGA Command | Enemy Targeting](https://i.imgur.com/obg3W9d.jpeg "FGA Command | Enemy Targeting")
+![Battle Configs - FGO to FGA Command mapping | Enemy Targeting](img/command-editor/enemy-targeting-fgo.jpeg "FGO to FGA Command mapping | Enemy Targeting")![Battle Configs - FGA Command | Enemy Targeting](img/command-editor/enemy-targeting-fga.jpeg "FGA Command | Enemy Targeting")
 
-![Battle Configs - FGA Command | Enemy Targeting](https://i.imgur.com/174JOiI.gif "FGA Command | Enemy Targeting")
+![Battle Configs - FGA Command | Enemy Targeting](img/command-editor/enemy-targeting.webp "FGA Command | Enemy Targeting")
 
 # Noble Phantasms
 
 Tap **Attack**, then the Servants whose NPs to use. They're used in the order you tap them.
 
-![Battle Configs - FGO to FGA Command mapping | Noble Phantasm](https://i.imgur.com/QqAdwQO.jpeg "FGO to FGA Command mapping | Noble Phantasm")
-![Battle Configs - FGA Command | Noble Phantasm](https://i.imgur.com/wGC1mDx.jpeg "FGA Command | Noble Phantasm")
+![Battle Configs - FGO to FGA Command mapping | Noble Phantasm](img/command-editor/noble-phantasms-fgo.jpeg "FGO to FGA Command mapping | Noble Phantasm")
+![Battle Configs - FGA Command | Noble Phantasm](img/command-editor/noble-phantasms-fga.jpeg "FGA Command | Noble Phantasm")
 
 **Cards before NP** plays 1 or 2 face cards before the NPs.
 
-![Cards before NP](https://i.imgur.com/XTrJTZT.png)
+![Cards before NP](img/command-editor/cards-before-np.png)
 
 The remaining face cards are picked by [Card Priority](Card-Priority).
 
@@ -152,18 +152,18 @@ The remaining face cards are picked by [Card Priority](Card-Priority).
 
 Master skills work the same for every Mystic Code: `j`, `k` and `l`. Like Servant skills, long-press one to add it without a target.
 
-![Battle Configs - FGO to FGA Command mapping | Mystic Codes](https://i.imgur.com/2FTn2rj.jpeg "FGO to FGA Command mapping | Mystic Codes")
+![Battle Configs - FGO to FGA Command mapping | Mystic Codes](img/command-editor/mystic-code-fgo.jpeg "FGO to FGA Command mapping | Mystic Codes")
 
-![Battle Configs - FGA Command | Mystic Code](https://i.imgur.com/c97pPEU.jpeg "FGA Command | Mystic Code")
+![Battle Configs - FGA Command | Mystic Code](img/command-editor/mystic-code-fga.jpeg "FGA Command | Mystic Code")
 
 ## Order Change
 
 For Mystic Codes whose 3rd skill is Order Change, such as the Plugsuit or the Chaldea Combat Uniform, use **Order Change / Plug-suit** instead of `l`.
 Pick the Starting Member to swap out and the Sub Member to swap in.
 
-![Battle Configs - FGA Command | Mystic Code - Plugsuit](https://i.imgur.com/LQVSDkA.png "FGA Command | Mystic Code - Plugsuit")
+![Battle Configs - FGA Command | Mystic Code - Plugsuit](img/command-editor/mystic-code-plugsuit.png "FGA Command | Mystic Code - Plugsuit")
 
-![Order Change](https://i.imgur.com/BY5izMc.png)
+![Order Change](img/command-editor/order-change.png)
 
 # Command Spells
 
@@ -176,37 +176,37 @@ FGA can't read how many Command Spells your account has. If there are none left 
 
 # Waves and turns
 
-![Battle Configs - FGA Command | Wave and Turn options](https://i.imgur.com/L1PhUKr.jpeg "FGA Command | Wave and Turn options")
+![Battle Configs - FGA Command | Wave and Turn options](img/command-editor/wave-and-turn-options.jpeg "FGA Command | Wave and Turn options")
 
 After the skills and NPs of a turn, tap Attack and choose how to continue:
 
 - **Next Wave:** wait for the next wave. The wave counter is in the top right in FGO.
 
-  ![Battle Configs - FGA Command | Wave](https://i.imgur.com/2AKqyb4.jpeg)
+  ![Battle Configs - FGA Command | Wave](img/command-editor/wave.jpeg)
 
   Everything you add afterwards is only used in the next wave, so check your command for mistakes.
 
-  ![Battle Configs - FGA Command | Next Wave Symbol](https://i.imgur.com/1oxfjxB.jpeg "Next Wave Symbol")
+  ![Battle Configs - FGA Command | Next Wave Symbol](img/command-editor/next-wave-symbol.jpeg "Next Wave Symbol")
 
 - **Next Turn in same wave:** for waves that take more than one turn.
 
-  ![Battle Configs - FGA Command | Next Turn Symbol](https://i.imgur.com/oLEXWYG.jpeg "Next Turn Symbol")
+  ![Battle Configs - FGA Command | Next Turn Symbol](img/command-editor/next-turn-symbol.jpeg "Next Turn Symbol")
 
-  ![Battle Configs - FGA Command | Next Turn Symbol](https://i.imgur.com/YuEz0sl.jpeg "Next Turn Symbol")
+  ![Battle Configs - FGA Command | Next Turn Symbol](img/command-editor/next-turn-symbol-2.jpeg "Next Turn Symbol")
 
 The Command Editor shows the current wave and turn.
 
-![Main menu](https://i.imgur.com/yvcme5d.png)
+![Main menu](img/command-editor/main-menu.png)
 
-![Attack Menu](https://i.imgur.com/x9Jzjxg.png)
+![Attack Menu](img/command-editor/attack-menu.png)
 
 ## Raid battles
 
 Raid battles often have only 1 wave, so use **Next Turn in same wave** instead of Next Wave.
 
-![Raid](https://i.imgur.com/cCjdCIM.jpeg)
+![Raid](img/command-editor/raid.jpeg)
 
-![Raid Option](https://i.imgur.com/oBUJcqJ.png)
+![Raid Option](img/command-editor/raid-option.png)
 
 Also turn on the [Raid Turn Delay](Battle#raid).
 

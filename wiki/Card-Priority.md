@@ -2,13 +2,13 @@ Card Priority tells FGA which face cards to pick after the NPs from the [command
 
 Open it with **Card Priority** in a [battle config](Battle).
 
-![Battle Configs - Card Priority](https://i.imgur.com/XbdSqhZ.jpeg "Battle Configs - Card Priority")
+![Battle Configs - Card Priority](img/attack/card-priority.jpeg "Battle Configs - Card Priority")
 
 ## Card order
 
 Drag the cards to reorder them. Cards at the top (HIGH) are picked before cards at the bottom (LOW).
 
-![Battle Configs - Card Priority Interface](https://i.imgur.com/VGszBHI.jpeg)
+![Battle Configs - Card Priority Interface](img/attack/card-priority-interface.jpeg)
 
 | Symbol | Card |
 |---|---|
@@ -20,15 +20,15 @@ Examples:
 
 - Damage, Buster first:
 
-  ![Battle Configs - Card Priority | Buster](https://i.imgur.com/0I1BRzp.jpeg "Battle Configs - Card Priority | Buster")
+  ![Battle Configs - Card Priority | Buster](img/attack/card-priority-buster.jpeg "Battle Configs - Card Priority | Buster")
 
 - Charging NP, Arts first:
 
-  ![Battle Configs - Card Priority | Art](https://i.imgur.com/c0IRnTr.jpeg "Battle Configs - Card Priority | Art")
+  ![Battle Configs - Card Priority | Art](img/attack/card-priority-arts.jpeg "Battle Configs - Card Priority | Art")
 
 - Critical stars, Quick first:
 
-  ![Battle Configs - Card Priority | Quick](https://i.imgur.com/2a483et.jpeg "Battle Configs - Card Priority | Quick")
+  ![Battle Configs - Card Priority | Quick](img/attack/card-priority-quick.jpeg "Battle Configs - Card Priority | Quick")
 
 ## Waves
 
@@ -158,7 +158,7 @@ With Chain Priority off, FGA picks cards the same way it did before Chain Priori
 
 How each option combines with Chain Priority is described under [Chain Priority](#chain-priority).
 
-![Battle Configs - Card Priority | Brave Chain options](https://i.imgur.com/nhPPIM0.jpeg "Battle Configs - Card Priority | Brave Chain options")
+![Battle Configs - Card Priority | Brave Chain options](img/attack/card-priority-brave-chain-options.jpeg "Battle Configs - Card Priority | Brave Chain options")
 
 ## Rearrange Cards
 

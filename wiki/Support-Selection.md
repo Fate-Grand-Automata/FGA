@@ -1,6 +1,6 @@
 The **Support** section of a [battle config](Battle) decides which support FGA picks.
 
-![Support settings](https://i.imgur.com/DSjRziN.png)
+![Support settings](img/support-selection/support-settings.png)
 
 - [Class](#class)
 - [Selection Mode](#selection-mode)
@@ -16,7 +16,7 @@ The **Support** section of a [battle config](Battle) decides which support FGA p
 Select the class tab FGA opens on the support screen: All, one of the classes, Extra or Mix.
 Tap the selected class again to deselect it. FGA then stays on whichever tab is open.
 
-![Battle Configs - Support Selection | Class Selection](https://i.imgur.com/fM3HW6p.png "Battle Configs - Support Selection | Class Selection")
+![Battle Configs - Support Selection | Class Selection](img/support-selection/class-selection.png "Battle Configs - Support Selection | Class Selection")
 
 **Also check All** is available when a single class is selected. If no matching support is found in that class, FGA also searches the All tab before refreshing.
 
@@ -28,13 +28,13 @@ Tap the selected class again to deselect it. FGA then stays on whichever tab is 
 - **Manual:** stop and let you pick the support yourself. Press PLAY again afterwards.
 - **Preferred** (default): pick a support that matches the [Preferred](#preferred) settings.
 
-![Battle Configs - Support Selection](https://i.imgur.com/ZAJsjDK.png "Battle Configs - Support Selection")
+![Battle Configs - Support Selection](img/support-selection/support-selection.png "Battle Configs - Support Selection")
 
 ## Preferred
 
 Tap **Preferred** to choose what to look for. You need at least one Servant or one CE.
 
-![Battle Configs - Support Selection | Preferred Selection](https://i.imgur.com/VcKxqmu.png "Battle Configs - Support Selection | Preferred Selection")
+![Battle Configs - Support Selection | Preferred Selection](img/support-selection/preferred-selection.png "Battle Configs - Support Selection | Preferred Selection")
 
 FGA recognizes Servants, CEs and friends by images in your storage folder. The app comes with images of common supports. For anything else, create them with the [Support Image Maker](Support-Image-Maker).
 
@@ -42,7 +42,7 @@ FGA recognizes Servants, CEs and friends by images in your storage folder. The a
 
 Select one or more Servants in **Preferred Servants**. Any of them is accepted.
 
-![Servants](https://i.imgur.com/G2aheeG.png)
+![Servants](img/support-selection/servants.png)
 
 Once a Servant is selected, more options appear:
 
@@ -50,15 +50,15 @@ Once a Servant is selected, more options appear:
 - **Grand Servant:** only accept Grand supports, see [Grand Servants](#grand-servants).
 - **Max Skills:** only accept supports with these skills at level 10. FGA can only tell whether a skill is at level 10, not its exact level.
 
-![Servant Settings](https://i.imgur.com/NRpwsuV.png)
+![Servant Settings](img/support-selection/servant-settings.png)
 
 ### Craft Essences
 
 Select one or more CEs in **Preferred CEs**. **Max-limit broken** only accepts MLB CEs.
 
-![CE](https://i.imgur.com/017VHsd.png)
+![CE](img/support-selection/ce.png)
 
-![CE Settings](https://i.imgur.com/SimCcz4.png)
+![CE Settings](img/support-selection/ce-settings.png)
 
 For event CEs, using the in-game CE filter is easier than creating CE images.
 
@@ -69,9 +69,9 @@ FGA can't read Servant levels, NP levels or Append skills, so this is how you ma
 
 Friend name images are created with the [Support Image Maker](Support-Image-Maker). Until you have some, the list is empty:
 
-![Preferred Friends](https://i.imgur.com/GAq5wIK.png)
+![Preferred Friends](img/support-selection/preferred-friends.png)
 
-![Preferred Friends](https://i.imgur.com/yJGbnsn.png)
+![Preferred Friends](img/support-selection/preferred-friends-2.png)
 
 ## Grand Servants
 
