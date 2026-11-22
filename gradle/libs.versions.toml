@@ -8,33 +8,33 @@ flow_preferences_version = "1.9.1"
 hilt_navigation_compose_version = "1.4.0"
 kotlinx_coroutines_core_version = "1.11.0"
 kotlinx_serialization_version = "1.13.0"
-lifecycle_version = "2.11.0"
+lifecycle_version = "2.11.1"
 hilt_version = "2.60.1"
 
 
 kotlin_version = "2.4.21"
 ksp_version = "2.3.14"
 
-agp_version = "9.4.0"
+agp_version = "9.5.2"
 
 
-ben-manes_versions = "0.61.0"
+ben-manes_versions = "0.67.0"
 accompanist_version = "0.37.3"
 
 google_android_play_version = "2.1.0"
 
 activity_version = "1.13.0"
-mockk_version = "1.14.11"
+mockk_version = "1.14.12"
 
 opencv_version = "5.1.0"
-nav3_core_version = "1.1.7"
+nav3_core_version = "1.2.2"
 
 reorderable_version = "3.1.0"
 tesseract4android_version = "4.9.0"
 
 timber_version = "5.0.1"
 
-compose_bom_version = "2026.08.00"
+compose_bom_version = "2026.11.01"
 
 
 coil_version = "3.6.3"

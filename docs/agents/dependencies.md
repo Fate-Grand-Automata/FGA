@@ -18,9 +18,10 @@
   `build/intermediates/built_in_kotlinc/`, not `build/tmp/kotlin-classes/`, and the root
   block's `tasks.withType<KotlinCompile>` no longer reaches them: per-module compiler
   settings belong in that module's `android { kotlin { compilerOptions { } } }`.
-- `compileSdk` is **37** while `targetSdk` stays **36** — recent androidx libraries force
+- `compileSdk` is **37.1** while `targetSdk` stays **36** — recent androidx libraries force
   the compile level, but nothing opts into new runtime behavior. Keep the two decoupled;
-  bumping `targetSdk` is a separate, user-visible decision.
+  bumping `targetSdk` is a separate, user-visible decision. A minor API level needs the
+  `compileSdk { version = release(37) { minorApiLevel = 1 } }` block, not `compileSdk = 37`.
 - Build types: `debug`, `release`, and `ci` (`initWith(release)`, debug-signed, ARM-only
   ABIs). The `ci` type must exist in every Android module (`app`, `prefs`).
 - CI's Gradle cache comes from `gradle/actions/setup-gradle`, not `setup-java`'s

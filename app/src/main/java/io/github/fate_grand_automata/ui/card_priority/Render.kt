@@ -116,10 +116,11 @@ private fun BraveChainsItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { braveChainDialog.show() },
-        headlineContent = { Text(stringResource(R.string.p_brave_chains)) },
         supportingContent = { Text(stringResource(shownBraveChains.stringRes)) },
         colors = FGAListItemColors()
-    )
+    ) {
+        Text(stringResource(R.string.p_brave_chains))
+    }
 }
 
 @Composable
@@ -134,7 +135,6 @@ private fun CheckboxItem(
     ListItem(
         modifier = modifier
             .clickable { checked = !checked },
-        headlineContent = { Text(title) },
         supportingContent = summary?.let { { Text(it) } },
         trailingContent = {
             Checkbox(
@@ -143,7 +143,9 @@ private fun CheckboxItem(
             )
         },
         colors = FGAListItemColors()
-    )
+    ) {
+        Text(title)
+    }
 }
 
 @Composable
