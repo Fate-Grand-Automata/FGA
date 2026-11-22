@@ -49,14 +49,13 @@ jobs:
             first=false
 
             echo "Uploading $folder as $language"
-            # overwrite=0 only fills in translations that are empty in POEditor,
-            # so work done by translators since the last export is kept.
             response=$(curl --silent --show-error -X POST https://api.poeditor.com/v2/projects/upload \
               -F "api_token=$POEDITOR_API_TOKEN" \
               -F "id=$POEDITOR_PROJECT_ID" \
               -F "updating=translations" \
               -F "language=$language" \
-              -F "overwrite=0" \
+              -F "overwrite=1" \
+              -F "fuzzy_trigger=1" \
               -F "type=android_strings" \
               -F "file=@app/src/main/res/$folder/localized.xml")
 
