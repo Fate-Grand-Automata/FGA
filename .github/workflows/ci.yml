@@ -19,6 +19,7 @@ on:
       - 'docs/**'
       - '.claude/**'
       - '**/AGENTS.md'
+      - 'Gemfile.lock'
   workflow_dispatch:
 
 concurrency:
