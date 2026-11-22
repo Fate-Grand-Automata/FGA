@@ -52,30 +52,44 @@ Then drag the team positions into the order you want. The positions are the same
 
 ![Chain priority on](img/attack/chain-priority-toggle.png)
 
-Turn on **Chain Priority** in a wave to enable Chain Priority for that wave. It allows for attempts at `Mighty`, **Buster**, **Arts** or **Quick** Chains, based on the order that the chains are chosen in. There is an additional option called "Avoid", which when used attempts to avoid any of the other chains. 
+Turn on **Chain Priority** in a wave to enable Chain Priority for that wave. It allows for attempts at **Mighty**, **Buster**, **Arts** or **Quick** Chains, based on the order that the chains are chosen in. There is an additional option called **Avoid**, which when used attempts to avoid any of the other chains. 
 
 | Sample orders                                                                       | Name                            | Description                                                                                                                                                                                                                          | 
 |:------------------------------------------------------------------------------------|:--------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ![Chain priority options default](img/attack/chain-priority-options-default.png) | Default order                   | The default order used when Chain Priority is turned on. This disables Avoid Chain.                                                                                                                                                  | 
-| ![Chain priority options buster](img/attack/chain-priority-options-buster.png)   | **Buster** focused | This order disables all chains except **Buster** (highest priority) and `Mighty` (second priority). Failure to execute any of these chains will result in no other chain being (actively) used.                         |
+| ![Chain priority options buster](img/attack/chain-priority-options-buster.png)   | **Buster** focused | This order disables all chains except **Buster** (highest priority) and **Mighty** (second priority). Failure to execute any of these chains will result in no other chain being (actively) used.                         |
 | ![Chain priority options arts](img/attack/chain-priority-options-arts.png)       | **Arts** only     | Only **Arts** chains will be attempted. All other chain checks are skipped.                                                                                                                                            | 
-| ![Chain priority options avoid](img/attack/chain-priority-options-avoid.png)     | "Avoid" only                    | Mighty and Color Chains will be avoided, unless it is absolutely impossible (e.g. all cards are **Quick** cards). To also avoid Brave Chains, set [Brave Chains](#brave-chains) to "Avoid".                            | 
+| ![Chain priority options avoid](img/attack/chain-priority-options-avoid.png)     | **Avoid** only                | Mighty and Color Chains will be avoided, unless it is absolutely impossible (e.g. all cards are **Quick** cards). To also avoid Brave Chains, set [Brave Chains](#brave-chains) to **Avoid**.                            | 
 | ![Chain priority options none](img/attack/chain-priority-options-none.png)       | None                            | All chains are grey, so no chain is attempted, but cards are still picked by Chain Priority's own [Brave Chains](#brave-chains) and [Rearrange Cards](#rearrange-cards) handling: **Always** is available, **With NP** only prefers the NP owner's cards when they complete a Brave Chain, and **Avoid** tries more card combinations to avoid one. NP types are also still read again after skills that change them. To pick cards as without Chain Priority, untick **Chain Priority** for the wave instead. |
 
-Chain Priority needs [face-card checks](#face-card-checks) to know each Servant's cards and NP type, so it doesn't work when `Skip servant face-card checks` is on.
-FGA reads the NP type when a Servant enters the field and checks it again after a skill with a choice, such as Emiya's or BB Dubai's. Space Ishtar's NP type choice is not recognized, so Chain Priority keeps using the type FGA read when she entered the field. If it reads a different type, Chain Priority uses that type and checks again next turn. Checks end when FGA reads the current form's usual NP type. If the usual type was never recorded, FGA saves the first readable type for that form and stops checking.
+Tap a chain to turn it on or off. Grayed out chains are never tried, but keep their place in the order. Hold and drag a chain to change the order.
 
-The game's NP type change banner can hide the changed type. When the type is unreadable, FGA tries to read the banner's turn counter and checks again when the effect should end. One turn left means a check at the start of the next turn. If the counter is unreadable, FGA retries each turn. Until it recognizes the type, Chain Priority uses the last known type, which may differ from the active one, or treats it as unknown if it has never been read.
+Chain Priority checks for Chains in the order shown, from left to right. As soon as it finds one, it uses that chain.
 
-Tap a chain to turn it on or off. Grey chains are never tried, but keep their place in the order. Hold and drag a chain to change the order.
+E.g. with the **Default order**:
 
-The way Chain Priority works is that it checks for Chains in the order that is shown (from left to right). If it finds a chain, then it will use that chain immediately.
+1. It checks for a **Mighty** Chain first.
+2. If there is no valid **Mighty** Chain, it checks for a **Buster** Chain.
+3. If there is no valid **Buster** Chain, it checks for an **Arts** Chain, and so on.
+4. If an **Arts** Chain is found, it uses it immediately and skips the check for a **Quick** Chain.
 
-E.g. If Chain Priority is on and `Default order` is used, it will attempt to check for a `Mighty` Chain first. If there is no valid `Mighty` Chain, then it will attempt to check for a **Buster** Chain. If there is no valid **Buster** Chain, it will attempt to check for an **Arts** Chain and so on and so forth. If an **Arts** Chain was found, it will skip checking for a **Quick** Chain using the cards and will immediately use the **Arts** Chain. However, if all options fail to find any usable Chain, it will fallback to Servant Priority + Card Priority to determine the cards used.   
+If no usable Chain is found, it falls back to Servant Priority + Card Priority to pick the cards.
 
 |                         Flowchart of entire system                         | 
 |:--------------------------------------------------------------------------:|
 | ![Attack Priority flow chart](img/attack/attack-priority-flowchart.png) |
+
+### NP types
+
+Chain Priority needs [face-card checks](#face-card-checks) to know each Servant's cards and NP type, so it doesn't work when **Skip servant face-card checks** is on.
+
+FGA reads the NP type when a Servant enters the field and checks it again after a skill with a choice, such as Emiya's or BB Dubai's. If it reads a different type, Chain Priority uses that type and checks again next turn. Checks end when FGA reads the current form's usual NP type. If the usual type was never recorded, FGA saves the first readable type for that form and stops checking.
+
+Space Ishtar's NP type choice is not recognized, so Chain Priority keeps using the type FGA read when she entered the field.
+
+The game's NP type change banner can hide the changed type. When the type is unreadable, FGA tries to read the banner's turn counter and checks again when the effect should end. One turn left means a check at the start of the next turn. If the counter is unreadable, FGA retries each turn.
+
+Until it recognizes the type, Chain Priority uses the last known type, which may differ from the active one, or treats it as unknown if it has never been read.
 
 ### Interaction with other priorities
 
@@ -136,7 +150,7 @@ A **Buster** / **Arts** / **Quick** Chain is made by choosing 3 cards of the sam
 |:-----------------------------------------------------------------:|
 | ![Avoid Chain flowchart](img/attack/avoid-chain-flowchart.png) |
 
-The default behaviour of Avoid Chain in the system is to only avoid Mighty Chain and Color Chain as much as possible. This is the option, that, when combined with 'Avoid Brave Chains', tries its best to completely avoid any kind of chain possible. When it is not possible to avoid a Chain, it will be skipped over.
+The default behaviour of Avoid Chain in the system is to only avoid Mighty Chain and Color Chain as much as possible. This is the option, that, when combined with [Brave Chains](#brave-chains) set to **Avoid**, tries its best to completely avoid any kind of chain possible. When it is not possible to avoid a Chain, it will be skipped over.
 
 The default implementation of this system attempts to stagger Servant cards if there are at least 2 Servants available that can make a non-Chain. This is due to the expected use case being to use this option only when face cards are to be used for efficient farming of simple and easy maps like Fuyuki.
 
@@ -184,4 +198,4 @@ Without Rearrange Cards, the Arts card would be 2nd and the Castoria card last.
 ## Face-card checks
 
 Servant Priority, [Chain Priority](#chain-priority), Brave Chains and [Shuffle cards](Battle#shuffle-cards) need to know which card belongs to which Servant. For this, FGA opens each Servant's details once when they enter the field, to see their face.
-`Skip servant face-card checks` in [More Options](More-Options#battle) turns this off, but then those features don't work.
+**Skip servant face-card checks** in [More Options](More-Options#battle) turns this off, but then those features don't work.
