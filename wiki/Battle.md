@@ -49,19 +49,19 @@ The dialog saves everything when it closes, even when you press Cancel.
 
 On the FGA main screen, open **Battle Configs**.
 
-![Battle Configs image](https://i.imgur.com/gHvukdq.jpeg "Battle Configs")
+![Battle Configs image](img/battle/battle-configs.jpeg "Battle Configs")
 
 Create a new config with the floating action button.
 
-![Battle Configs - Create New Script](https://i.imgur.com/9zUDLWf.jpeg "Battle Configs - Create New Script")
+![Battle Configs - Create New Script](img/battle/create-new-config.jpeg "Battle Configs - Create New Script")
 
 Give it a name. The notes are optional, for example which Servants the config is meant for.
 
-![Battle Configs - Name Script](https://i.imgur.com/O108gg6.jpeg "Battle Configs - Name Script")
+![Battle Configs - Name Script](img/battle/name-config.jpeg "Battle Configs - Name Script")
 
-Then record the command, which tells FGA which skills and NPs to use in which wave. Tap **Command** to open the [Skill Maker](Skill-Maker).
+Then record the command, which tells FGA which skills and NPs to use in which wave. Tap **Command** to open the [Command Editor](Command-Editor).
 
-![Battle Configs - Command](https://i.imgur.com/2pzGUNp.jpeg "Command")
+![Battle Configs - Command](img/battle/command.jpeg "Command")
 
 The terminal icon next to it lets you type or paste a command as text instead.
 
@@ -69,7 +69,7 @@ The terminal icon next to it lets you type or paste a command as text instead.
 
 | Setting | Page |
 |---|---|
-| Command | [Skill Maker](Skill-Maker) |
+| Command | [Command Editor](Command-Editor) |
 | Materials, Server, Party, Raid | below |
 | Spam | [Spam](Spam) |
 | Card Priority | [Card Priority](Card-Priority) |
@@ -83,31 +83,31 @@ Everything except the command is optional.
 Select the materials you want to farm. FGA counts their drops for the **Materials** [limit](#limits) and shows them when the script ends.
 With nothing selected, the cell shows "Don't count".
 
-![Battle Configs - Material](https://i.imgur.com/ctteami.jpeg "Battle Configs - Material")
+![Battle Configs - Material](img/battle/materials.jpeg "Battle Configs - Material")
 
-![Material Selection](https://i.imgur.com/2IQKvSj.png)
+![Material Selection](img/battle/material-selection.png)
 
 Selected materials move to the top of the list.
 
-![Selected Material](https://i.imgur.com/FGyjJng.png)
+![Selected Material](img/battle/selected-material.png)
 
 ## Server
 
 If you play on several servers, set the server a config is meant for. The PLAY dialog only lists configs for the current server, plus the configs without a server.
 The config list also gets one tab per server.
 
-![Battle Configs - Server Selection](https://i.imgur.com/ihEg1WS.jpeg "Battle Configs - Server Selection")
+![Battle Configs - Server Selection](img/battle/server-selection.jpeg "Battle Configs - Server Selection")
 
 ## Party
 
 Pick one of the 15 party slots. Before each quest, FGA switches to that party if it isn't already selected. **Default** keeps whatever party is selected.
 
-![Battle Configs - Party Selection](https://i.imgur.com/ACFI8kc.jpeg "Battle Configs - Party Selection")
+![Battle Configs - Party Selection](img/battle/party-selection.jpeg "Battle Configs - Party Selection")
 
 ## Raid
 
 **Raid Turn Delay** waits an extra 1 to 10 seconds at the start of every turn, for raid battles.
-Also see [Raid battles](Skill-Maker#raid-battles) in the Skill Maker.
+Also see [Raid battles](Command-Editor#raid-battles) in the Command Editor.
 
 ## Shuffle cards
 

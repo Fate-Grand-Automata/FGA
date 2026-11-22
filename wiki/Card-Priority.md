@@ -1,14 +1,14 @@
-Card Priority tells FGA which face cards to pick after the NPs from the [command](Skill-Maker). It's optional; the default order is `WB, WA, WQ, B, A, Q, RB, RA, RQ`.
+Card Priority tells FGA which face cards to pick after the NPs from the [command](Command-Editor). It's optional; the default order is `WB, WA, WQ, B, A, Q, RB, RA, RQ`.
 
 Open it with **Card Priority** in a [battle config](Battle).
 
-![Battle Configs - Card Priority](https://i.imgur.com/XbdSqhZ.jpeg "Battle Configs - Card Priority")
+![Battle Configs - Card Priority](img/attack/card-priority.jpeg "Battle Configs - Card Priority")
 
 ## Card order
 
 Drag the cards to reorder them. Cards at the top (HIGH) are picked before cards at the bottom (LOW).
 
-![Battle Configs - Card Priority Interface](https://i.imgur.com/VGszBHI.jpeg)
+![Battle Configs - Card Priority Interface](img/attack/card-priority-interface.jpeg)
 
 | Symbol | Card |
 |---|---|
@@ -20,15 +20,15 @@ Examples:
 
 - Damage, Buster first:
 
-  ![Battle Configs - Card Priority | Buster](https://i.imgur.com/0I1BRzp.jpeg "Battle Configs - Card Priority | Buster")
+  ![Battle Configs - Card Priority | Buster](img/attack/card-priority-buster.jpeg "Battle Configs - Card Priority | Buster")
 
 - Charging NP, Arts first:
 
-  ![Battle Configs - Card Priority | Art](https://i.imgur.com/c0IRnTr.jpeg "Battle Configs - Card Priority | Art")
+  ![Battle Configs - Card Priority | Art](img/attack/card-priority-arts.jpeg "Battle Configs - Card Priority | Art")
 
 - Critical stars, Quick first:
 
-  ![Battle Configs - Card Priority | Quick](https://i.imgur.com/2a483et.jpeg "Battle Configs - Card Priority | Quick")
+  ![Battle Configs - Card Priority | Quick](img/attack/card-priority-quick.jpeg "Battle Configs - Card Priority | Quick")
 
 ## Waves
 
@@ -44,7 +44,7 @@ Turn on **Servant Priority** in a wave to prefer the cards of some Servants over
 
 ![Servant priority on](img/attack/servant-priority-toggle.png)
 
-Then drag the team positions into the order you want. The positions are the same as in the [Skill Maker](Skill-Maker#positions).
+Then drag the team positions into the order you want. The positions are the same as in the [Command Editor](Command-Editor#positions).
 
 ![Servant priority](img/attack/servant-priority.png)
 
@@ -158,7 +158,7 @@ With Chain Priority off, FGA picks cards the same way it did before Chain Priori
 
 How each option combines with Chain Priority is described under [Chain Priority](#chain-priority).
 
-![Battle Configs - Card Priority | Brave Chain options](https://i.imgur.com/nhPPIM0.jpeg "Battle Configs - Card Priority | Brave Chain options")
+![Battle Configs - Card Priority | Brave Chain options](img/attack/card-priority-brave-chain-options.jpeg "Battle Configs - Card Priority | Brave Chain options")
 
 ## Rearrange Cards
 
@@ -167,7 +167,7 @@ In FGO, the position of a card changes its effect, and the first card gives a bo
 Rearrange Cards changes the order of the ranked face cards based on where the NPs go.
 
 - With no NP, it moves the second-ranked face card behind the third when three faces are available and swaps the two faces when only two are available. With one NP played first, it swaps the first two faces so the highest-ranked face plays last. **Don't care** and **With NP** both use these rules when Chain Priority is off.
-- With one NP and one [card before it](Skill-Maker#noble-phantasms), it swaps the first two faces so the highest-ranked face plays right after the NP. With Chain Priority off, this swap applies only to **With NP**, including a saved **Always** setting.
+- With one NP and one [card before it](Command-Editor#noble-phantasms), it swaps the first two faces so the highest-ranked face plays right after the NP. With Chain Priority off, this swap applies only to **With NP**, including a saved **Always** setting.
 - With Chain Priority on, its own card orders use both rules in every Brave Chains mode. The one-card-before-NP swap requires at least two faces and a playable second face. Rearranging also preserves the order whenever a proposed change would move an unreadable face ahead of a readable, playable face, or a stunned face ahead of any playable face. When Chain Priority falls back to the default picker, it uses the default rules and applies the same usability check to the rearranged result.
 
 With [Brave Chains](#brave-chains) set to **Avoid**, the default picker has its own rearrangement rule. It tries to stagger the top face cards across Servants, drawing from further down the priority list if the top three all belong to one Servant. This also applies when Chain Priority falls back to the default picker. It needs [face-card checks](#face-card-checks) to tell which cards belong to which Servants.
