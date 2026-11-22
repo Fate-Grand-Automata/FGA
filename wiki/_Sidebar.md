@@ -5,7 +5,7 @@
 
 **Battle**
 - [Battle](Battle)
-- [Skill Maker](Skill-Maker)
+- [Command Editor](Command-Editor)
 - [Card Priority](Card-Priority)
 - [Support Selection](Support-Selection)
 - [Spam](Spam)

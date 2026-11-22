@@ -23,7 +23,7 @@
             Android 16 (targetSdk 36) ignores android:screenOrientation, resizeableActivity
             and aspect-ratio restrictions on displays >= 600dp. This property opts out and
             keeps SkillMakerActivity landscape-locked there.
-            TODO: this opt-out is ignored at targetSdk 37 - make Skill Maker work in
+            TODO: this opt-out is ignored at targetSdk 37 - make the Command Editor work in
             portrait / freely resized windows before bumping targetSdk again.
         -->
         <property
@@ -32,7 +32,7 @@
 
         <activity
             android:name=".ui.skill_maker.SkillMakerActivity"
-            android:label="Skill Maker"
+            android:label="Command Editor"
             android:screenOrientation="sensorLandscape" />
 
         <service

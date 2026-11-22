@@ -12,7 +12,7 @@
     <string name="accessibility_service">"ユーザー補助: "</string>
     <string name="avg_time_per_run">"1回あたりの平均時間: %s"</string>
     <string name="battle_config_cmd_invalid">"無効なスキルコマンド: %1$s"</string>
-    <string name="battle_config_cmd_not_set">"未記録 — スキルメーカーを開いてください"</string>
+    <string name="battle_config_cmd_not_set">"未記録 — コマンドエディターを開いてください"</string>
     <string name="battle_config_edit">"バトルの設定"</string>
     <string name="battle_config_item_copy">"コピー"</string>
     <string name="battle_config_item_copy_name">"%s (コピー)"</string>

@@ -59,7 +59,7 @@ Give it a name. The notes are optional, for example which Servants the config is
 
 ![Battle Configs - Name Script](https://i.imgur.com/O108gg6.jpeg "Battle Configs - Name Script")
 
-Then record the command, which tells FGA which skills and NPs to use in which wave. Tap **Command** to open the [Skill Maker](Skill-Maker).
+Then record the command, which tells FGA which skills and NPs to use in which wave. Tap **Command** to open the [Command Editor](Command-Editor).
 
 ![Battle Configs - Command](https://i.imgur.com/2pzGUNp.jpeg "Command")
 
@@ -69,7 +69,7 @@ The terminal icon next to it lets you type or paste a command as text instead.
 
 | Setting | Page |
 |---|---|
-| Command | [Skill Maker](Skill-Maker) |
+| Command | [Command Editor](Command-Editor) |
 | Materials, Server, Party, Raid | below |
 | Spam | [Spam](Spam) |
 | Card Priority | [Card Priority](Card-Priority) |
@@ -107,7 +107,7 @@ Pick one of the 15 party slots. Before each quest, FGA switches to that party if
 ## Raid
 
 **Raid Turn Delay** waits an extra 1 to 10 seconds at the start of every turn, for raid battles.
-Also see [Raid battles](Skill-Maker#raid-battles) in the Skill Maker.
+Also see [Raid battles](Command-Editor#raid-battles) in the Command Editor.
 
 ## Shuffle cards
 

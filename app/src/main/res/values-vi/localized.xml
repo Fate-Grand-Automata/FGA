@@ -12,7 +12,7 @@ Vui lòng bật khả năng truy cập cho ứng dụng này từ cài đặt H�
     <string name="accessibility_service">"Dịch vụ tiếp cận: "</string>
     <string name="avg_time_per_run">"Thời gian trung bình mỗi lần chạy: %s"</string>
     <string name="battle_config_cmd_invalid">"Câu lệnh kỹ năng không hợp lệ: %1$s"</string>
-    <string name="battle_config_cmd_not_set">"Chưa ghi — hãy mở Skill Maker"</string>
+    <string name="battle_config_cmd_not_set">"Chưa ghi — hãy mở Trình chỉnh sửa câu lệnh"</string>
     <string name="battle_config_edit">"Chỉnh sửa cấu hình"</string>
     <string name="battle_config_item_copy">"Sao chép"</string>
     <string name="battle_config_item_copy_name">"%s (Sao chép)"</string>

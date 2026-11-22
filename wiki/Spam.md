@@ -1,4 +1,4 @@
-Spam makes FGA use skills and NPs whenever they are ready, on top of the [command](Skill-Maker). It's useful for long fights where you don't want to plan every turn, like raids or challenge quests.
+Spam makes FGA use skills and NPs whenever they are ready, on top of the [command](Command-Editor). It's useful for long fights where you don't want to plan every turn, like raids or challenge quests.
 
 Open it with **Spam** in a [battle config](Battle).
 
@@ -14,7 +14,7 @@ Spam is configured per team position. Pick the Servant position (1 to 6) at the 
     - **Spam:** use it whenever it's ready.
     - **Danger:** only use it when an enemy shows a danger or Servant icon. Needs **Auto choose target**.
   - **Waves:** the waves to spam in.
-- Skills also have a **Target**: None, Self, Slot1 to Slot3, Left or Right (for [NP Type (2)](Skill-Maker#np-type-2) skills).
+- Skills also have a **Target**: None, Self, Slot1 to Slot3, Left or Right (for [NP Type (2)](Command-Editor#np-type-2) skills).
 
 **PRESETS** set all Servants at once: SPAM ALL, SPAM ALL DANGER and NO SPAM.
 

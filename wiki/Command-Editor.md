@@ -1,4 +1,4 @@
-The Skill Maker records the command of a [battle config](Battle): which skills, NPs and Master skills to use, in which wave and turn.
+The Command Editor records the command of a [battle config](Battle): which skills, NPs and Master skills to use, in which wave and turn.
 Open it by tapping **Command** in a battle config.
 
 - [Positions](#positions)
@@ -194,7 +194,7 @@ After the skills and NPs of a turn, tap Attack and choose how to continue:
 
   ![Battle Configs - FGA Command | Next Turn Symbol](https://i.imgur.com/YuEz0sl.jpeg "Next Turn Symbol")
 
-The Skill Maker shows the current wave and turn.
+The Command Editor shows the current wave and turn.
 
 ![Main menu](https://i.imgur.com/yvcme5d.png)
 
@@ -218,7 +218,7 @@ Also turn on the [Raid Turn Delay](Battle#raid).
 
 # Command text format
 
-You can also type a command as text in the battle config. This is the format the Skill Maker produces:
+You can also type a command as text in the battle config. This is the format the Command Editor produces:
 
 | Text | Meaning |
 |---|---|
