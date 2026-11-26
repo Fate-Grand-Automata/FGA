@@ -64,7 +64,7 @@ jobs:
         working-directory: ./app
         run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
 
-      - uses: ruby/setup-ruby@v1.343.0
+      - uses: ruby/setup-ruby@v1.345.0
         with:
           ruby-version: '4.0.10'
           bundler-cache: true
