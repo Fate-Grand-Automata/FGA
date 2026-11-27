@@ -24,7 +24,11 @@ class ServantLevelLocations @Inject constructor(
     val emptyEmberOrQPDialogRegion =
         Region(-113, 1086, 224, 76).xFromCenter()
 
-    val finalConfirmRegion = Region(339, 1143, 124, 64).xFromCenter()
+    /**
+     * The OK button of the final confirmation dialog, with margin around the label because the OK
+     * templates are cropped at different offsets from their text, e.g. KR's "확인" and "결정".
+     */
+    val finalConfirmRegion = Region(321, 1125, 170, 100).xFromCenter()
 
     val servantMaxLevelRegion = when (isWide) {
         true -> Region(613, 1007, 58, 128).xFromCenter()
@@ -43,7 +47,11 @@ class ServantLevelLocations @Inject constructor(
         }
     }
 
-    val autoSelectMinEmberLowQPRegion = Region(339, 1092, 128, 66).xFromCenter()
+    /**
+     * The OK button of the dialog offering to auto-select fewer embers when QP is low, with the
+     * same margin as [finalConfirmRegion].
+     */
+    val autoSelectMinEmberLowQPRegion = Region(321, 1074, 170, 100).xFromCenter()
 
     val autoSelectMinEmberLowQPLocation = Location(402, 1126).xFromCenter()
 
