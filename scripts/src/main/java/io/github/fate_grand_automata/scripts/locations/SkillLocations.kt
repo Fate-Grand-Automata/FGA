@@ -59,5 +59,9 @@ class SkillLocations @Inject constructor(
         }
     }
 
-    val confirmationDialogRegion = Region(341, 1146, 121, 60).xFromCenter()
+    /**
+     * The OK button of the skill confirmation dialog, with margin around the label because the OK
+     * templates are cropped at different offsets from their text, e.g. KR's "확인" and "결정".
+     */
+    val confirmationDialogRegion = Region(321, 1126, 170, 100).xFromCenter()
 }
