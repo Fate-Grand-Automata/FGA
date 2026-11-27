@@ -18,30 +18,33 @@ class SupportScreenRefresher @Inject constructor(
 ) {
     private var lastSupportRefreshTimestamp: TimeMark? = null
     private val supportRefreshThreshold = 10.seconds
+    private val refreshPollInterval = 0.5.seconds
 
     fun refreshSupportList() {
-        val refreshAvailable = screen.refreshAvailable()
-        if (refreshAvailable){
-            screen.refresh()
-        } else {
-            performRefresh()
-        }
+        waitUntilRefreshAvailable()
+        screen.refresh()
 
         waitForSupportScreenToLoad()
     }
 
-    private fun performRefresh() {
-        lastSupportRefreshTimestamp?.elapsedNow()?.let { elapsed ->
-            val toWait = supportRefreshThreshold - elapsed
+    /**
+     * Waits until the game shows the refresh icon on the update button.
+     *
+     * The local timer starts once the list is seen loaded, which is later than the game's own
+     * cooldown start, so it only serves as an upper bound in case the icon is not detected.
+     */
+    private fun waitUntilRefreshAvailable() {
+        val lastRefresh = lastSupportRefreshTimestamp ?: return
+        val toWait = supportRefreshThreshold - lastRefresh.elapsedNow()
 
-            if (toWait.isPositive()) {
-                messages.notify(ScriptNotify.SupportListUpdatingIn(toWait))
+        if (!toWait.isPositive() || screen.refreshAvailable()) return
 
-                screen.delay(toWait)
-            }
+        messages.notify(ScriptNotify.SupportListUpdatingIn(toWait))
+
+        val deadline = TimeSource.Monotonic.markNow() + toWait
+        while (deadline.hasNotPassedNow() && !screen.refreshAvailable()) {
+            screen.delay(refreshPollInterval)
         }
-
-        screen.refresh()
     }
 
     private fun updateLastSupportRefreshTimestamp() {
