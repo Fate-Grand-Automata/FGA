@@ -25,8 +25,8 @@ class ServantLevelLocations @Inject constructor(
         Region(-113, 1086, 224, 76).xFromCenter()
 
     /**
-     * The OK button of the final confirmation dialog, with margin around the label because the OK
-     * templates are cropped at different offsets from their text, e.g. KR's "확인" and "결정".
+     * The OK button of the final confirmation dialog, with margin around the label because the
+     * button can land a pixel off depending on the device, which drops the match below the threshold.
      */
     val finalConfirmRegion = Region(321, 1125, 170, 100).xFromCenter()
 

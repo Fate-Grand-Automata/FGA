@@ -60,8 +60,8 @@ class SkillLocations @Inject constructor(
     }
 
     /**
-     * The OK button of the skill confirmation dialog, with margin around the label because the OK
-     * templates are cropped at different offsets from their text, e.g. KR's "확인" and "결정".
+     * The OK button of the skill confirmation dialog, with margin around the label because the
+     * button can land a pixel off depending on the device, which drops the match below the threshold.
      */
     val confirmationDialogRegion = Region(321, 1126, 170, 100).xFromCenter()
 }
