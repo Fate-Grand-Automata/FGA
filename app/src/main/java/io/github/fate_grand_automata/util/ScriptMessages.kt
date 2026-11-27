@@ -125,7 +125,7 @@ class ScriptMessages @Inject constructor(
 
             is ScriptNotify.SupportListUpdatingIn -> {
                 toast(
-                    context.getString(R.string.support_list_updated_in, action.time.toString(DurationUnit.SECONDS, 2))
+                    context.getString(R.string.support_list_updated_in, action.time.toString(DurationUnit.SECONDS, 0))
                 )
             }
 
